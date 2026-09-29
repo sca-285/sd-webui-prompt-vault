@@ -1,4 +1,4 @@
-# Prompt Vault
+# Stable Diffusion WebUI Prompt Vault
 
 A prompt workbench for **Stable Diffusion WebUI Forge**, **reForge** and **Forge Classic (Neo)**:
 a searchable tag library, saved prompts and history, and three local AI helpers (TIPO,
