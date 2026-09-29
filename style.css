@@ -1,0 +1,139 @@
+/* Prompt Vault. "html body" outweighs Gradio's own button and input reset. Colours come from the theme's own variables (Gradio 3 and 4), so it follows light, dark and Lobe. */
+
+#pv_library, #pv_saved, #pv_editor_tools { --pv-radius: 8px; --pv-gap: 6px; }
+
+html body .pv-lib, html body .pv-saved { display: flex; flex-direction: column; gap: 10px; }
+html body .pv-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; font-size: 1.15em; font-weight: 600; }
+html body .pv-hint, html body .pv-note, html body .pv-loading { font-size: 0.85em; font-weight: normal; opacity: 0.75; }
+html body .pv-loading { padding: 16px 0; }
+html body .pv-help p { font-size: 0.9em; opacity: 0.8; margin: 0; }
+html body .pv-scores { opacity: 0.7; font-size: 0.85em; }
+
+html body .pv-toolbar { display: flex; flex-direction: column; gap: var(--pv-gap); }
+html body .pv-toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pv-gap); }
+
+#pv_library .pv-search {
+    width: 100%; box-sizing: border-box; min-height: 38px; padding: 6px 12px; font-size: 1em;
+    border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius);
+    background: var(--input-background-fill, var(--block-background-fill)); color: var(--body-text-color);
+}
+
+html body .pv-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    min-height: 32px; padding: 4px 12px; font-size: 0.9em; cursor: pointer; text-decoration: none;
+    border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius);
+    background: var(--button-secondary-background-fill); color: var(--button-secondary-text-color, var(--body-text-color));
+}
+html body .pv-btn:hover { background: var(--button-secondary-background-fill-hover, var(--button-secondary-background-fill)); filter: brightness(1.08); }
+html body .pv-btn.pv-primary { background: var(--button-primary-background-fill); color: var(--button-primary-text-color); border-color: transparent; }
+html body .pv-btn.pv-danger { color: var(--error-text-color, #d33); }
+
+html body .pv-mini {
+    min-width: 32px; min-height: 32px; padding: 0 6px; cursor: pointer; font-size: 0.9em; line-height: 1;
+    border: 1px solid var(--border-color-primary); border-radius: 6px;
+    background: var(--button-secondary-background-fill); color: var(--body-text-color);
+}
+html body .pv-mini:disabled { opacity: 0.35; cursor: default; }
+
+html body .pv-switch { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; cursor: pointer;
+    border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius); font-size: 0.9em; }
+html body .pv-switch input { margin: 0; }
+
+/* categories */
+html body .pv-cat { border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius); background: var(--block-background-fill); }
+html body .pv-cat-head { display: flex; align-items: center; gap: 4px; padding-right: 6px; }
+html body .pv-cat-toggle {
+    flex: 1; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 12px;
+    background: none; border: none; cursor: pointer; color: var(--body-text-color); text-align: left; font-size: 1em;
+}
+html body .pv-cat-name { font-weight: 600; }
+html body .pv-arrow { width: 1em; opacity: 0.7; }
+html body .pv-count { margin-left: auto; font-size: 0.8em; opacity: 0.6; white-space: nowrap; }
+html body .pv-group-head .pv-count { margin-left: 6px; }
+html body .pv-badge { font-size: 0.72em; padding: 1px 6px; border-radius: 10px; background: var(--error-background-fill, rgba(220, 60, 60, 0.15)); }
+html body .pv-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 4px 12px 12px; }
+html body .pv-group-head { display: flex; align-items: center; gap: 4px; min-height: 32px; font-size: 0.9em; font-weight: 600; opacity: 0.9; }
+html body .pv-group-name { margin-right: 2px; }
+
+/* chips */
+html body .pv-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+html body .pv-chip {
+    min-height: 32px; padding: 4px 11px; cursor: pointer; font-size: 0.93em; line-height: 1.2; text-align: left;
+    border: 1px solid var(--border-color-primary); border-radius: 16px;
+    background: var(--button-secondary-background-fill); color: var(--body-text-color);
+    transition: background 0.12s, border-color 0.12s;
+}
+html body .pv-chip:hover { border-color: var(--color-accent, var(--button-primary-background-fill)); }
+html body .pv-chip.pv-on { background: var(--button-primary-background-fill); color: var(--button-primary-text-color); border-color: transparent; }
+html body .pv-chip.pv-on-other { border-style: dashed; border-color: var(--color-accent, var(--button-primary-background-fill)); }
+html body .pv-editing .pv-chip { border-style: dashed; }
+html body .pv-chip.pv-unknown { margin: 2px; }
+html body .pv-empty { font-size: 0.8em; opacity: 0.55; padding: 6px 0; }
+html body .pv-results { display: flex; flex-direction: column; gap: 8px; }
+
+/* weight popup */
+html body .pv-weight {
+    position: fixed; z-index: 10000; display: flex; align-items: center; gap: 4px; padding: 6px;
+    border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius);
+    background: var(--background-fill-primary, var(--block-background-fill)); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+html body .pv-weight-value { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* dialog */
+html body .pv-shade { position: fixed; inset: 0; z-index: 9999; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; padding: 16px; }
+html body .pv-dialog {
+    width: min(460px, 100%); display: flex; flex-direction: column; gap: 10px; padding: 18px;
+    border-radius: 12px; border: 1px solid var(--border-color-primary);
+    background: var(--background-fill-primary, var(--block-background-fill)); color: var(--body-text-color);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+html body .pv-dialog-title { font-weight: 600; font-size: 1.05em; word-break: break-word; }
+html body .pv-dialog label { display: flex; flex-direction: column; gap: 4px; font-size: 0.88em; }
+html body .pv-dialog input, html body .pv-dialog select, html body .pv-dialog textarea {
+    min-height: 36px; padding: 6px 10px; font-size: 1em; border-radius: 6px;
+    border: 1px solid var(--border-color-primary); background: var(--input-background-fill, var(--block-background-fill)); color: var(--body-text-color);
+}
+html body .pv-dialog textarea { min-height: 72px; resize: vertical; }
+html body .pv-dialog-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin-top: 4px; }
+html body .pv-dialog-buttons .pv-danger { margin-right: auto; }
+
+/* saved prompts and history */
+html body .pv-entries { display: flex; flex-direction: column; gap: 6px; max-height: 520px; overflow-y: auto; }
+html body .pv-entry { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius); }
+html body .pv-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; flex: none; }
+html body .pv-entry-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+html body .pv-entry-title { font-weight: 600; font-size: 0.92em; }
+html body .pv-entry-prompt, html body .pv-entry-neg { font-size: 0.84em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html body .pv-entry-neg { opacity: 0.6; }
+html body .pv-entry-actions { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+
+/* suggestions */
+html body .pv-suggest {
+    position: absolute; left: 8px; right: 8px; top: 100%; z-index: 1000; max-height: 320px; overflow-y: auto;
+    border: 1px solid var(--border-color-primary); border-radius: var(--pv-radius);
+    background: var(--background-fill-primary, var(--block-background-fill)); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+html body .pv-suggest-item { display: flex; justify-content: space-between; gap: 12px; padding: 7px 12px; cursor: pointer; font-size: 0.9em; }
+html body .pv-suggest-item.pv-active, html body .pv-suggest-item:hover { background: var(--button-secondary-background-fill); }
+html body .pv-suggest-cat { font-size: 0.8em; opacity: 0.6; white-space: nowrap; }
+html body .pv-cat-character { color: #3a9d5d; opacity: 0.9; }
+html body .pv-cat-vault { color: var(--color-accent, #7c5cff); opacity: 0.9; }
+
+html body .pv-check { margin-top: 6px; }
+#pv_editor_tools { margin: 4px 0; }
+
+#pv_toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); z-index: 10001;
+    padding: 9px 16px; border-radius: 20px; font-size: 0.9em; opacity: 0; pointer-events: none;
+    background: var(--button-primary-background-fill, #333); color: var(--button-primary-text-color, #fff);
+    transition: opacity 0.2s, transform 0.2s;
+}
+#pv_toast.pv-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#pv_toast.pv-bad { background: var(--error-background-fill, #c33); color: var(--error-text-color, #fff); }
+
+#pv_io_row button, #pv_tipo button, #pv_qwen button, #pv_image button, #pv_saved_acc button, #pv_ai_row button { min-height: 36px; }
+
+@media (max-width: 640px) {
+    html body .pv-groups { grid-template-columns: 1fr; padding: 4px 8px 10px; }
+    html body .pv-entry { flex-wrap: wrap; }
+}

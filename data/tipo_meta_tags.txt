@@ -1,0 +1,939 @@
+highres
+commentary request
+partial commentary
+chinese commentary
+translation request
+absurdres
+character request
+commentary
+english commentary
+translated
+commission
+symbol-only commentary
+copyright request
+spoilers
+artist request
+second-party source
+animated
+animated gif
+looping animation
+skeb commission
+ai-generated
+non-web source
+tagme
+ugoira
+official art
+marker (medium)
+traditional media
+photo-referenced
+lowres
+paid reward available
+footwear request
+procreate (medium)
+alternate language
+video
+glaze artifacts
+sound
+mixed-language commentary
+check gender
+korean commentary
+dated commentary
+cropped
+third-party edit
+hashtag-only commentary
+promotional art
+adoptable
+source request
+third-party source
+official wallpaper
+revision
+has bad revision
+has downscaled revision
+md5 mismatch
+resolution mismatch
+source smaller
+off-topic
+game cg
+audible music
+audible speech
+english audio
+indonesian commentary
+pixiv commission
+screenshot
+ink (medium)
+magazine scan
+scan
+painting (medium)
+watercolor (medium)
+textless version
+variant set
+self-upload
+vehicle request
+fanbox reward
+paid reward
+key visual
+gift art
+bad id
+bad pixiv id
+corrupted twitter file
+clip studio paint (medium)
+concept art
+unfinished
+headwear request
+incredibly absurdres
+commissioner upload
+commentary typo
+bad twitter id
+redrawn
+food request
+annotated
+making-of available
+derivative work
+resized
+upscaled
+bad source
+check character
+end card
+guest art
+check commentary
+colored pencil (medium)
+pastel (medium)
+koikatsu (medium)
+check copyright
+instrument request
+game screenshot
+clothing request
+photoshop (medium)
+ai-assisted
+photo (medium)
+bad mihuashi id
+blender (medium)
+romaji commentary
+logo request
+object request
+bad link
+jpeg artifacts
+collaboration
+ibispaint (medium)
+check translation
+hard-translated
+check flower
+parody request
+latte art (medium)
+unconventional media
+audible internal cumshot
+graphite (medium)
+bad weibo id
+costume request
+annotation request
+partially annotated
+protected link
+oil painting (medium)
+making-of
+partially translated
+print request
+flower request
+japanese audio
+tall image
+production art
+source larger
+bird request
+pose request
+spanish commentary
+bad tumblr id
+live2d
+weapon request
+french commentary
+extraction
+russian commentary
+machine translated
+crayon (medium)
+inactive account
+downscaled
+duplicate
+pixel-perfect duplicate
+bad bcy id
+screenshot redraw
+cosplay photo
+vietnamese commentary
+thai commentary
+wide image
+comic panel redraw
+mikumikudance (medium)
+source filmmaker (medium)
+check clothing
+scan artifacts
+stable diffusion
+anime screenshot
+nib pen (medium)
+novel illustration
+epilepsy warning
+colorized
+check artist
+nude filter
+thumbnail surprise
+alt text
+painttool sai (medium)
+meme request
+album cover redraw
+gif artifacts
+reference request
+hairstyle request
+image sample
+yandere sample
+has censored revision
+vrchat (medium)
+check food
+italian commentary
+neckwear request
+twitter banner
+makeup request
+flipnote studio (medium)
+vgen commission
+ballpoint pen (medium)
+vector trace
+hard-translated (non-english)
+music video
+plant request
+60+fps
+engrish audio
+lego (medium)
+psd available
+creature request
+second-party edit
+alpha transparency
+acrylic paint (medium)
+mojibake commentary
+medium request
+ugoira conversion
+rotated
+patreon reward
+check weapon
+stitched
+completion time
+twitter thumbnail collage
+german commentary
+pattern request
+book cover redraw
+flyer (medium)
+fruit request
+reference photo
+line sticker available
+korean audio
+cosplay request
+aliasing
+merchandise available
+artbook
+archived source
+app filter
+malay commentary
+pdf available
+tegaki draw and tweet
+bad reddit id
+has lossy revision
+bad misskey.io id
+bmp-to-png conversion
+color halftone
+electronic dictionary (medium)
+roblox (medium)
+krita (medium)
+fish request
+volume warning
+gouache (medium)
+bad fanbox id
+webp-to-png conversion
+check plant
+check spoilers
+watercolor pencil (medium)
+engrish commentary
+video crop
+bad imgur id
+flipaclip (medium)
+french audio
+mixed-language audio
+pixiv banner
+bad deviantart id
+acrylic gouache (medium)
+morse code commentary
+toon boom (medium)
+gender request
+style request
+e-hentai sample
+constellation request
+goo engine (medium)
+color ink (medium)
+song request
+microsoft paint (medium)
+origami (medium)
+art trade
+medibang paint (medium)
+pen (medium)
+character counter request
+self-portrait
+gibberish commentary
+detexted
+zip available
+bilibili sample
+expression request
+gumroad reward
+dog request
+location request
+hard annotated
+jewelry request
+turkish commentary
+twitter sample
+poster redraw
+portuguese commentary
+color banding
+fudepen (medium)
+bad lofter id
+animal ear request
+kisekae
+check source
+zbrush (medium)
+has cropped revision
+canvas (medium)
+bad foundation id
+sankaku sample
+masking tape (medium)
+swedish audio
+crepe commission
+check background
+exif rotation
+collaboration request
+reversed
+millipen (medium)
+language request
+low frame rate
+check instrument
+has watermarked revision
+spine (medium)
+figure available
+reddit sample
+nai diffusion
+third-party watermark
+hebrew commentary
+brush (medium)
+bad hentai-foundry id
+earring request
+fantia reward
+animated png
+inkscape (medium)
+decensored
+bug request
+video game cover redraw
+headshop
+hair ornament request
+rotoscoping
+animal request
+crease
+sound effect request
+lossy-lossless
+imageboard desourced
+papercraft (medium)
+calligraphy brush (medium)
+microsoft word (medium)
+jumpscare warning
+spanish audio
+check vehicle
+autodesk 3ds max (medium)
+bad facebook id
+countdown illustration
+png-to-jpg conversion
+chinese audio
+color issue
+cleaned
+pixai
+clay (medium)
+latin commentary
+deviantart sample
+charcoal (medium)
+bad skeb id
+bad drawr id
+goodnotes (medium)
+metadata pun
+pixiv sample
+symbol request
+tumblr sample
+whiteboard fox (medium)
+maya (medium)
+bad furaffinity id
+paintschainer
+embroidery (medium)
+check font
+waifu2x
+whiteboard (medium)
+background request
+google sketchup (medium)
+bad nijie id
+mecha request
+zerochan sample
+download link
+recolored
+vietnamese audio
+paper cutout (medium)
+bad patreon id
+artstyle request
+source mismatch
+gesture request
+ukrainian commentary
+animatic
+roulette animation
+fixed
+reference work request
+russian audio
+ai-synthesized speech
+bad blogspot id
+fan request
+check annotation
+rebelle (medium)
+check medium
+bad nicovideo id
+adobe fresco (medium)
+tempera (medium)
+swedish commentary
+check headwear
+check animal
+gimp (medium)
+nintendo 3ds (medium)
+zalgo commentary
+arabic commentary
+bad pinterest id
+avatar generator
+picrew (medium)
+tagalog commentary
+after effects (medium)
+bad artstation id
+corrupted file
+midjourney
+bad newgrounds id
+skima commission
+greek commentary
+pinyin commentary
+xnalara
+upside-down commentary
+polish audio
+polish commentary
+non-repeating animation
+anime screencap
+screencap redraw
+hashtag only commentary
+mouth noise
+reverse translation
+bad nicoseiga id
+cd (source)
+bilibili commission
+has artifacted revision
+3d custom girl
+adobe illustrator (medium)
+custom maid 3d 2
+game model
+nekopaint (medium)
+bad bilibili id
+daz studio (medium)
+bad poipiku id
+dutch commentary
+flag request
+iphone notes (medium)
+bad pawoo id
+emofuri
+unreal (medium)
+solid color thumbnail
+bad thumbnail
+check hairstyle
+bad instagram id
+tool request
+felt (medium)
+bad booth id
+finnish commentary
+bad baraag id
+custom order maid 3d 2
+dall-e
+noise reduction
+voice actor request
+indonesian audio
+serbo-croatian commentary
+parallax
+bad aspect ratio
+opencanvas (medium)
+wallpaper forced
+modo (medium)
+fantia sample
+azpainter (medium)
+hindi commentary
+portuguese audio
+bad fantia id
+microsoft powerpoint (medium)
+toonio (medium)
+tatar commentary
+motion interpolation
+bad youtube id
+nicoseiga sample
+eyecatch
+webp-to-jpg conversion
+lofter sample
+reverse commentary
+magazine request
+poorly translated
+egyptian commentary
+artstation sample
+subscribestar reward
+finnish audio
+low bitrate
+fast animated gif
+mihuashi sample
+scan dust
+capcut (medium)
+actiondirector (medium)
+bad hoyolab id
+german audio
+bad postype id
+bad blogpost id
+poser (medium)
+jav
+imageboard sample
+bad inkbunny id
+binding discoloration
+self-scan
+bad dropbox id
+aircraft request
+bad yandere id
+arabic audio
+video available
+romanian commentary
+latin audio
+corel painter
+cinema 4d (medium)
+corrupted metadata
+picarto sample
+bleed through
+custom maid 3d
+tagalog audio
+ghosting
+paint.net (medium)
+furaffinity sample
+newgrounds sample
+bad privatter id
+second-party revision
+kid pix (medium)
+catalan commentary
+keyshot (medium)
+fantia commission
+base64 commentary
+fake translation
+bad superrare id
+lossless-lossy
+high efficiency video coding
+armenian commentary
+has glazed revision
+bad artstreet id
+skin request
+doujinshi
+weibo sample
+bad e-hentai id
+moho pro 12 (medium)
+virt-a-mate (medium)
+italian audio
+garry's mod (medium)
+ci-en sample
+czech commentary
+albanian commentary
+bad drawtwit id
+gracg sample
+mypaint (medium)
+artweaver (medium)
+enty reward
+phone request
+minnan commentary
+bad baidu id
+disc menu
+self edit
+danish commentary
+flash
+ruffle compatible
+hentai-foundry sample
+bad vkontakte id
+bad pillowfort id
+hungarian commentary
+bad ci-en id
+bad tinami id
+ko-fi sample
+bcy sample
+emblem request
+bad google+ id
+bad stash id
+adjusted color balance
+voice actor connection request
+model request
+flash game
+bad behance id
+plurk sample
+cyrillic commentary
+r'lyehian commentary
+konachan sample
+interactive
+bad photobucket id
+uchor sample
+kurdish commentary
+colorblind mistake
+tinami sample
+deviantart reward available
+bad miiverse id
+bad drawcrowd id
+gamma correction
+drawcrowd sample
+flash conversion
+hymmnos commentary
+slovak commentary
+bad cgsociety id
+exif thumbnail surprise
+minecraft (medium)
+bad fandom id
+bad cghub id
+photoscape (medium)
+iscribble (medium)
+esperanto commentary
+missing thumbnail
+poorly stitched
+flash 9
+open in internet explorer
+twitpic sample
+easytoon (medium)
+bad picasa id
+corrupted flash
+flame painter
+hidden file
+bmp-to-jpg conversion
+archived file
+open in winamp
+number-only commentary
+animation meme
+food art (medium)
+kyaraben (medium)
+blockbench (medium)
+fiverr commission
+ko-fi commission
+hevc conversion
+coffee (medium)
+has uncensored revision
+perler beads (medium)
+font request
+ych commission
+stop motion animation
+game request
+tail request
+bad xiaohongshu id
+firealpaca (medium)
+strawpage (medium)
+thai audio
+filipino commentary
+bad skima id
+garage kit (medium)
+background color dependent
+product request
+desmos (medium)
+unity (medium)
+cutoff commentary
+cardboard (medium)
+bad bluesky id
+danbooru sample
+javanese commentary
+cuneiform commentary
+sundanese commentary
+large variant set
+untranslatable commentary
+game asset
+self-datamine
+visual novel cg
+adversarial noise
+bilingual commentary
+artist collaboration
+mihuashi commission
+card commentary
+official artist extra
+multi-source commentary
+missing commentary
+voice drama available
+multilingual commentary
+fancy embedded notes
+paint chat (medium)
+thumbnail collage
+story in commentary
+fanfiction available
+flower stand art
+official art redraw
+single frame
+aseprite (medium)
+bad discord link
+youtube video thumbnail
+sprite redraw
+variant set available
+imageboard first-party source
+traditional chinese commentary
+merged layers
+art program request
+art fight attack
+paywall cliffhanger
+transcoded
+bad twitter link
+emotelab (medium)
+magma (medium)
+collage (medium)
+artist-provided artwork
+drawpile (medium)
+figure-referenced
+huashijie (medium)
+comic cover redraw
+bad miyoushe link
+alight motion (medium)
+first-party extraction
+drink request
+bad arca.live id
+wigglypaint (medium)
+postage stamp (medium)
+slideshow animation
+magicaldraw (medium)
+dotpict (medium)
+third-party ai edit
+bad e-hentai link
+cameo request
+bad bilibili link
+color study
+unreal engine (medium)
+bad fc2 link
+engraving (medium)
+art academy (medium)
+fashion style request
+heic-to-png conversion
+longer video available
+24-hour relay
+anatomy study
+diorama (medium)
+trimmed
+horizontally flipped
+motion capture animation
+species request
+xiaohongshu sample
+bad tumblr link
+bad xfolio link
+check object
+corel painter (medium)
+bad pawoo link
+bad pinterest link
+bad vk link
+bad weibo link
+check costume
+marmoset toolbag (medium)
+bad facebook link
+game available
+ascii art commentary
+character counter check
+hat request
+lighting study
+model kit (medium)
+armor request
+art relay
+third-party extraction
+corrected aspect ratio
+meme attire request
+tif-to-png conversion
+patreon sample
+cosplay-referenced
+japanese ranguage commentary
+glitter (medium)
+material study
+pose study
+kirigami (medium)
+xnalara (medium)
+circuit board (medium)
+environment study
+bad carrd link
+mongolian commentary
+rule34.xxx sample
+avif-to-png conversion
+bad newgrounds link
+doll available
+plate (medium)
+voice actor drawing own character
+animal jam (medium)
+bad mihuashi link
+bad steam link
+gacha life (medium)
+hair color request
+has adversarial noise revision
+stained glass (medium)
+adobe animate (medium)
+eye color request
+pokemon request
+realistic paint studio (medium)
+style study
+webp-to-gif conversion
+autodesk sketchbook (medium)
+bookmark (medium)
+cat request
+ema (medium)
+heavy adversarial noise
+magica voxel (medium)
+mention-only commentary
+number only commentary
+tensor art
+toonsquid (medium)
+bad reddit link
+bad ruliweb link
+bad vkontakte link
+binary commentary
+chatgpt (medium)
+check language
+check species
+correction fluid (medium)
+fanbox banner
+gartic phone (medium)
+hair study
+nurimas template
+official ad
+requestor upload
+tattoo (medium)
+affinity photo (medium)
+artstudio (medium)
+autodesk arnold (medium)
+autodesk maya (medium)
+bad blogger link
+bad bluesky link
+bad instagram link
+bad livejournal link
+bad naver id
+bad skeb link
+bad xiaohongshu link
+check hair ornament
+check mecha
+czech audio
+discord source
+gelbooru sample
+gemstone request
+luxembourgish commentary
+map part
+metadata reference
+microsoft paint 3d (medium)
+multiple commentaries
+naver sample
+opentoonz (medium)
+paintbbs (medium)
+patreon banner
+splatoon 2 square art
+tuxpaint (medium)
+wplace (medium)
+3d printing (medium)
+adobe firefly (medium)
+advertisement redraw
+art rpg
+artrage (medium)
+bad adobe portfolio link
+bad arca.live link
+bad discord id
+bad furaffinity link
+bad nico seiga link
+bad paheal link
+bad plurk link
+building request
+butterfly request
+cake (medium)
+check cosplay
+check rating
+clothing available
+gold foil (medium)
+heartopia (medium)
+heavypaint (medium)
+high dynamic range
+inshot (medium)
+irish commentary
+jpg-to-png conversion
+laser engraving (medium)
+norwegian commentary
+paint marker (medium)
+png-to-webp conversion
+romanian audio
+rust (game) (medium)
+scottish english audio
+tank request
+thumbnail redraw
+tibetan commentary
+variant available
+video star (medium)
+youtube sample
+4chan commission
+adobe premiere (medium)
+aggie.io (medium)
+architecture request
+background color request
+bad artstation link
+bad booth link
+bad cara id
+bad dlsite link
+bad fanbox link
+bad fantia link
+bad huaban link
+bad ibispaint link
+bad inkbunny link
+bad know your meme link
+bengali commentary
+british english commentary
+bryce (medium)
+canva (medium)
+changing aspect ratio
+check censorship
+check gesture
+check pose
+clip available
+commissioner self-insert
+composition request
+cutting board (medium)
+deepseek (medium)
+denoised
+designdoll (medium)
+dragonbones (medium)
+dzongkha commentary
+filmora (medium)
+freeboard (medium)
+futhark commentary
+gacha club (medium)
+gaelic commentary
+garageband (medium)
+graphicraft (medium)
+graphicsgale (medium)
+hexadecimal commentary
+infinite painter (medium)
+jpg-to-webp conversion
+kinemaster (medium)
+knife (medium)
+lightwave (medium)
+lithograph (medium)
+mapping pen (medium)
+mario paint (medium)
+microsoft excel medium
+music request
+paper: sketch draw and create (medium)
+patch (medium)
+pcb silkscreen (medium)
+persian audio
+pixilart (medium)
+pixiv profile picture
+recompressed duplicate
+request
+rice paddy (medium)
+rock (medium)
+runic commentary
+sand (medium)
+sinhala commentary
+spanglish commentary
+tattoo request
+textless version available
+tomodachi life (medium)
+tos compliance edit
+tumblr banner
+tvpaint (medium)
+twitch commission
+unit request
+uzbek commentary
+weibo banner
+wood carving (medium)
+zangskari commentary
