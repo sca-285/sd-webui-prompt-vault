@@ -28,12 +28,23 @@ Qwen-VL and the WD14 tagger) in one tab.
   language into English, or any instruction ("make it night time").
 - **🏞️ Image → Prompt**: exact Danbooru tags with WD14, a description with Qwen, or both.
   An image made by the WebUI gives back its own prompt with 🧾.
+- **💡 Muse**, a floating button on every tab: a prompt idea now and then (every 5–30
+  minutes, never while an image is generating) or whenever you ask (`Alt+M`).
+  - Ideas come from **packs** (portrait, film, horror, sci-fi… and NSFW packs, off until you
+    turn them on). Pick the ones you want on its settings page (the gear).
+  - **Send** writes the idea into txt2img, img2img or the Vault editor, replacing or
+    appending, and adds the idea's negatives that are missing from your negative prompt.
+  - Edit the idea before sending, step back through the last 20 with ‹ ›, expand it with
+    **TIPO**, keep words out with **Never use**, give the button your own **avatar**.
+  - Drag the button anywhere; the ring around it fills up until the next idea.
+  - NSFW ideas never carry minor-related tags, whatever a pack says, and always send
+    `child, loli, shota, underage` as negatives.
 
 ![The AI tools](docs/ai-tools.webp)
 
 ## Your data is safe
 
-The library, saved prompts and history live **outside the extension**, in a
+The library, saved prompts, history and Muse's settings live **outside the extension**, in a
 `prompt_vault` folder in the WebUI folder (**Settings → Prompt Vault** can move it).
 Updating or reinstalling the extension never touches them.
 
@@ -95,7 +106,8 @@ TIPO run in llama-server, a separate program: nothing else is installed into the
 
 ## Settings
 
-**Settings → Prompt Vault**: the data folder, suggestions, history, hiding NSFW by default.
+**Settings → Prompt Vault**: the data folder, suggestions, history, hiding NSFW by default,
+showing Muse at all. Everything else about Muse is on its own panel.
 **Prompt Vault (Qwen / llama-server)**, **(TIPO)** and **(WD14 tagger)**: the models and
 how they run; see [SETUP_AI.md](SETUP_AI.md).
 
@@ -106,7 +118,11 @@ prompt_vault/            (in the WebUI folder)
 ├─ library.json          your library
 ├─ prompts.json          saved prompts
 ├─ history.json          history
-└─ backups/              earlier versions of the library
+├─ backups/              earlier versions of the library
+└─ muse/
+   ├─ state.json         Muse's settings
+   ├─ avatar.png         your avatar, if you chose one
+   └─ packs/             packs of your own (optional)
 models/prompt_vault/
 ├─ tipo/
 │  └─ TIPO-500M-ft-F16.gguf
@@ -114,6 +130,20 @@ models/prompt_vault/
    └─ wd-swinv2-tagger-v3/
       ├─ model.onnx
       └─ selected_tags.csv
+```
+
+## Muse packs of your own
+
+A pack is a JSON file in `prompt_vault/muse/packs/`. An idea takes one entry from each list;
+a pack with the id of a shipped one (see `data/muse_packs/`) replaces it.
+
+```json
+{
+  "id": "my_pack", "name": "My pack", "nsfw": false,
+  "subjects": ["1girl, silver hair"], "actions": ["looking back"], "settings": ["night market"],
+  "lighting": ["paper lanterns"], "camera": ["35mm, low angle"], "styles": ["film still"],
+  "twists": ["one lantern is blue"], "negatives": ["blurry", "watermark"]
+}
 ```
 
 ## Credits

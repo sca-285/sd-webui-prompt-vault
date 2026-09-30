@@ -1,0 +1,49 @@
+{
+  "id": "myth",
+  "name": "Myth / ritual",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1girl in ritual white",
+    "1boy crowned in iron",
+    "masked priest, no face",
+    "two figures exchanging a bowl"
+  ],
+  "actions": [
+    "pouring into fire",
+    "kneeling at a threshold",
+    "holding a still-living wreath"
+  ],
+  "settings": [
+    "stone circle",
+    "temple interior, smoke",
+    "river at night",
+    "mountain shrine"
+  ],
+  "lighting": [
+    "firelight",
+    "moon through incense",
+    "single lantern"
+  ],
+  "camera": [
+    "ceremonial wide",
+    "close on hands and bowl"
+  ],
+  "styles": [
+    "mythic painting",
+    "dark folklore illustration",
+    "Kodachrome pilgrimage"
+  ],
+  "twists": [
+    "the offering is a modern house key",
+    "everyone else's shadow is wrong"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

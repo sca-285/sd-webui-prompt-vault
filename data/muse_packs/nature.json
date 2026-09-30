@@ -1,0 +1,56 @@
+{
+  "id": "nature",
+  "name": "Nature / weather",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "no humans, ancient tree",
+    "1girl, small in the landscape",
+    "1boy, hiking pack, ridge line",
+    "herd in fog",
+    "lone cabin, no people"
+  ],
+  "actions": [
+    "standing still in wind",
+    "looking at the horizon",
+    "shelter under a jacket",
+    "crossing a stream",
+    "no action, scenery focus"
+  ],
+  "settings": [
+    "alpine lake at dawn",
+    "bamboo after rain",
+    "coastal cliff",
+    "birch forest in snow",
+    "volcanic plain",
+    "rice terraces"
+  ],
+  "lighting": [
+    "golden hour",
+    "storm light",
+    "fog diffusion",
+    "crepuscular rays"
+  ],
+  "camera": [
+    "24mm landscape",
+    "telephoto compression on peaks",
+    "drone-high wide"
+  ],
+  "styles": [
+    "landscape photography",
+    "ukiyo-e weather print",
+    "cinematic nature still"
+  ],
+  "twists": [
+    "the weather on the left does not match the right",
+    "a single electric light in the wilderness"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

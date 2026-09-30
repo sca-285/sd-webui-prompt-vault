@@ -1,0 +1,62 @@
+{
+  "id": "film",
+  "name": "Film frame",
+  "nsfw": false,
+  "subjects": [
+    "1girl in a tailored coat",
+    "1boy, rumpled shirt, holster unused",
+    "two people across a diner table",
+    "a driver, only the eyes in the rear-view",
+    "hotel clerk under a brass lamp",
+    "dancer after the number, still in costume"
+  ],
+  "actions": [
+    "sliding an envelope across the table",
+    "not saying the thing both of them know",
+    "watching the door",
+    "pouring a drink they will not finish",
+    "checking a watch that has stopped",
+    "standing up too quickly"
+  ],
+  "settings": [
+    "motel room, ugly lamp, open suitcase",
+    "night diner, one other customer",
+    "underground car park",
+    "theatre wings, ropes and dust",
+    "train compartment at night",
+    "rooftop water tower",
+    "police station hallway at 3am"
+  ],
+  "lighting": [
+    "venetian blind shadows",
+    "single practical lamp",
+    "sick green fluorescent",
+    "headlights sweeping the room",
+    "match flare lighting a face",
+    "moon through dirty glass"
+  ],
+  "camera": [
+    "anamorphic widescreen still",
+    "over-the-shoulder two shot",
+    "insert on hands",
+    "wide, subject small in the frame",
+    "push-in close-up"
+  ],
+  "styles": [
+    "1970s film still, soft halation",
+    "neo-noir, wet streets implied",
+    "desaturated thriller",
+    "technicolor melodrama",
+    "handheld 16mm grain"
+  ],
+  "twists": [
+    "the clock on the wall does not match the one on the nightstand",
+    "there is a third coffee cup and only two people",
+    "the gun on the table has never been mentioned",
+    "the window looks onto a different city than the door",
+    "credits would roll if anyone moved"
+  ],
+  "negatives": [
+    "modern smartphone", "influencer pose", "watermark", "text", "logo"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "interior",
+  "name": "Interior / still room",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1girl reading on a sofa",
+    "1boy at a kitchen table",
+    "empty room, lived-in",
+    "cat on a windowsill, no humans"
+  ],
+  "actions": [
+    "pouring tea",
+    "looking out the window",
+    "taking off shoes at the door"
+  ],
+  "settings": [
+    "sunlit apartment",
+    "tiny kitchen at night",
+    "study with stacked books",
+    "bathroom with a fogged mirror",
+    "genkan, shoes lined up"
+  ],
+  "lighting": [
+    "window slats",
+    "paper lamp",
+    "fridge light only"
+  ],
+  "camera": [
+    "35mm room photograph",
+    "from the doorway",
+    "detail on a table"
+  ],
+  "styles": [
+    "quiet interior photo",
+    "Ghibli room background",
+    "Kodachrome home"
+  ],
+  "twists": [
+    "a second cup is already poured",
+    "the clock is missing an hour hand"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

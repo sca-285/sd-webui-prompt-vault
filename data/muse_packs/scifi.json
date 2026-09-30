@@ -1,0 +1,50 @@
+{
+  "id": "scifi",
+  "name": "Sci-fi interior",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1girl in a worn flightsuit",
+    "1boy, visor up, tired",
+    "empty cryo hall",
+    "android with a scuffed faceplate"
+  ],
+  "actions": [
+    "reading a flickering panel",
+    "waiting for an airlock",
+    " taping a cracked helmet"
+  ],
+  "settings": [
+    "narrow corridor with pipework",
+    "observation deck",
+    "medbay after hours",
+    "cafeteria on a long haul"
+  ],
+  "lighting": [
+    "cool strip LEDs",
+    "red emergency only",
+    "earthlight through a port"
+  ],
+  "camera": [
+    "widescreen corridor",
+    "helmet-cam feel",
+    "wide empty deck"
+  ],
+  "styles": [
+    "lived-in sci-fi",
+    "desaturated space still",
+    "anime space background"
+  ],
+  "twists": [
+    "a plant is thriving where it should not",
+    "the date on the log is years ahead"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

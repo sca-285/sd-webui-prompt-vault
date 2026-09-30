@@ -1,0 +1,65 @@
+{
+  "id": "fashion",
+  "name": "Fashion editorial",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1girl, tall, couture gown",
+    "1boy, tailored suit, no tie",
+    "1girl, oversized coat, bare legs",
+    "androgynous model, sharp cut jacket",
+    "1girl, knitwear, wind in hair",
+    "1boy, workwear layered over a shirt"
+  ],
+  "actions": [
+    "walking toward camera",
+    "looking back mid-stride",
+    "hands in pockets",
+    "coat flaring",
+    "sitting on the floor of a studio",
+    "adjusting a cuff"
+  ],
+  "settings": [
+    "white cyclorama",
+    "industrial rooftop",
+    "marble lobby",
+    "night street, wet asphalt",
+    "desert highway",
+    "old palazzo hallway"
+  ],
+  "lighting": [
+    "window light",
+    "soft key light",
+    "golden hour",
+    "practical lamp only",
+    "neon rim light",
+    "overcast diffused light",
+    "hard sun, sharp shadow",
+    "hard beauty dish",
+    "colored gel rim"
+  ],
+  "camera": [
+    "85mm editorial",
+    "full-body 35mm",
+    "crop at the waist",
+    "lookbook three-quarter"
+  ],
+  "styles": [
+    "high fashion photography",
+    "film lookbook",
+    "avant-garde editorial"
+  ],
+  "twists": [
+    "the garment is on backwards on purpose",
+    "sand on the hem of a ballgown",
+    "a price tag is still attached"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

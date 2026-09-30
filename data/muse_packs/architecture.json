@@ -1,0 +1,51 @@
+{
+  "id": "architecture",
+  "name": "Architecture",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "no humans, concrete atrium",
+    "1boy, tiny at the foot of stairs",
+    "1girl walking a colonnade",
+    "empty corridor, vanishing point"
+  ],
+  "actions": [
+    "crossing a shaft of light",
+    "hand on a banister",
+    "no action, space focus"
+  ],
+  "settings": [
+    "brutalist interior",
+    "glass tower lobby",
+    "ruined basilica",
+    "subway cathedral station",
+    "courtyard with a single tree"
+  ],
+  "lighting": [
+    "shaft of sun through a slit",
+    "overcast even light",
+    "night interior practicals"
+  ],
+  "camera": [
+    "tilt-shift feel",
+    "one-point perspective",
+    "corner two-point"
+  ],
+  "styles": [
+    "architectural photography",
+    "beige concrete render",
+    "inked plan overlay"
+  ],
+  "twists": [
+    "every door is slightly ajar",
+    "the stairs lead to a wall"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

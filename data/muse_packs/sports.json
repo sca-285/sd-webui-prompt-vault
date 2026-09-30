@@ -1,0 +1,50 @@
+{
+  "id": "sports",
+  "name": "Sports / motion",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1boy, boxed stance, taped hands",
+    "1girl mid-sprint",
+    "swimmer breaking the surface",
+    "footballer sliding"
+  ],
+  "actions": [
+    "just after impact",
+    "catching breath",
+    "tying a shoe on the sideline"
+  ],
+  "settings": [
+    "empty stadium night",
+    "gym with high windows",
+    "rain-soaked pitch",
+    "rooftop court"
+  ],
+  "lighting": [
+    "strobe freeze",
+    "sodium field lights",
+    "golden hour dust"
+  ],
+  "camera": [
+    "long lens compression",
+    "ground-level",
+    "freeze-frame splash"
+  ],
+  "styles": [
+    "sports photography",
+    "grainy 16mm",
+    "dynamic anime action"
+  ],
+  "twists": [
+    "the crowd is missing, seats wet",
+    "the clock shows extra time already gone"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

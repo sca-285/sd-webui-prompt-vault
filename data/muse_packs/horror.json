@@ -1,0 +1,60 @@
+{
+  "id": "horror",
+  "name": "Horror",
+  "nsfw": false,
+  "subjects": [
+    "1girl, pale, listening",
+    "1boy, flashlight under the chin unused",
+    "child at the end of a corridor",
+    "something wearing a familiar coat",
+    "caretaker with a ring of keys",
+    "1girl, muddy hem, no shoes"
+  ],
+  "actions": [
+    "holding the door almost closed",
+    "counting the same pictures again",
+    "whispering to an empty chair",
+    "not turning around",
+    "pressing an ear to the wall",
+    "smiling a second too late"
+  ],
+  "settings": [
+    "flooded basement, bulb on a wire",
+    "school after hours",
+    "forest road, car doors open",
+    "hospital wing with the lights on one side only",
+    "attic, insulation torn",
+    "playground at night, one swing moving"
+  ],
+  "lighting": [
+    "failing flashlight beam",
+    "red exit sign only",
+    "lightning through boarded windows",
+    "tv static as the only light",
+    "moon, then not"
+  ],
+  "camera": [
+    "found-footage framing",
+    "still from the far end of the hall",
+    "dutch angle, tight",
+    "what the peephole sees",
+    "macro on a hand on the knob"
+  ],
+  "styles": [
+    "desaturated horror still",
+    "liminal photography",
+    "analog video noise",
+    "ink-wash nightmare illustration",
+    "cold clinical photography"
+  ],
+  "twists": [
+    "the reflection blinks first",
+    "there are more coats than people",
+    "the hallway is longer when you look back",
+    "the sound is coming from inside the walls and also from the drain",
+    "the date on the newspaper is tomorrow"
+  ],
+  "negatives": [
+    "gore for its own sake", "watermark", "text", "jump-scare stock pose", "clown"
+  ]
+}

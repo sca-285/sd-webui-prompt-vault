@@ -1,0 +1,50 @@
+{
+  "id": "mech",
+  "name": "Mech / vehicle",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "tall mech, pilot visible in chest glass",
+    "1boy beside a parked mech",
+    "1girl in a flight suit, cockpit",
+    "motorcycle in rain, no rider"
+  ],
+  "actions": [
+    "powering down",
+    "looking up at the machine",
+    "hand on a hydraulic piston"
+  ],
+  "settings": [
+    "hangar at night",
+    "rubble street",
+    "desert test range",
+    "orbital dock"
+  ],
+  "lighting": [
+    "welding sparks",
+    "hangar floods",
+    "sunset on metal"
+  ],
+  "camera": [
+    "low angle hero shot",
+    "scale shot with a human",
+    "cockpit insert"
+  ],
+  "styles": [
+    "mecha concept art",
+    "industrial photo",
+    "anime mechanical background"
+  ],
+  "twists": [
+    "the machine is kneeling as if tired",
+    "fresh flowers tied to an antenna"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

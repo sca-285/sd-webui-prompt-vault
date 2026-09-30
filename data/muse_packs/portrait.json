@@ -1,0 +1,73 @@
+{
+  "id": "portrait",
+  "name": "Portrait",
+  "nsfw": false,
+  "subjects": [
+    "1girl, solo, looking at viewer",
+    "1boy, solo, sharp jawline",
+    "1girl, short hair, freckles",
+    "1girl, silver hair, heterochromia",
+    "elderly man, deep wrinkles, kind eyes",
+    "androgynous person, undercut",
+    "1girl, glasses, messy bun",
+    "1boy, stubble, tired eyes"
+  ],
+  "actions": [
+    "slight smile",
+    "serious expression",
+    "looking over shoulder",
+    "chin resting on hand",
+    "eyes closed, peaceful",
+    "smirk, one eyebrow raised",
+    "windswept hair",
+    "holding a cup near the face"
+  ],
+  "settings": [
+    "studio backdrop, seamless grey",
+    "window light, apartment interior",
+    "rain-streaked cafe window",
+    "rooftop at dusk",
+    "library aisle, warm lamps",
+    "train seat by the window",
+    "greenhouse, condensed glass",
+    "neon alley reflection"
+  ],
+  "lighting": [
+    "rembrandt lighting",
+    "soft box key light, gentle fill",
+    "golden hour side light",
+    "overcast diffused light",
+    "hard noon sun, sharp shadow",
+    "neon rim light, cyan and magenta",
+    "candlelight, warm falloff",
+    "practical lamp only, deep shadows"
+  ],
+  "camera": [
+    "85mm portrait, f/1.8, eye focus",
+    "50mm, slight low angle",
+    "close-up on eyes",
+    "medium shot, head and shoulders",
+    "profile view, 85mm",
+    "over-the-shoulder glance",
+    "film grain, 35mm still"
+  ],
+  "styles": [
+    "photorealistic, natural skin texture",
+    "editorial fashion photography",
+    "painterly portrait, visible brush",
+    "anime illustration, clean linework",
+    "cinematic still, shallow depth of field",
+    "black and white photography"
+  ],
+  "twists": [
+    "the catchlight is a tiny window, not a studio light",
+    "one earring does not match the other",
+    "steam from a cup cuts across the face",
+    "a second face is only in the glasses reflection",
+    "dust hangs in the key light",
+    "the backdrop is slightly torn at one corner"
+  ],
+  "negatives": [
+    "blurry", "worst quality", "extra fingers", "deformed face", "watermark", "text"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "creature",
+  "name": "Creature / monster",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "feathered drake, no humans",
+    "1girl facing a huge animal",
+    "1boy offering a hand to a beast",
+    "deep-sea thing in a tank"
+  ],
+  "actions": [
+    "breathing mist",
+    "circling",
+    "asleep with one eye open"
+  ],
+  "settings": [
+    "moss hall",
+    "cliff nest",
+    "flooded temple",
+    "lab observation room"
+  ],
+  "lighting": [
+    "bioluminescence",
+    "storm flash",
+    "museum spot"
+  ],
+  "camera": [
+    "wide to show scale",
+    "macro on an eye",
+    "over-the-creature-shoulder"
+  ],
+  "styles": [
+    "creature concept art",
+    "nature documentary still",
+    "ink wash monster"
+  ],
+  "twists": [
+    "it is wearing a collar with a human name",
+    "the reflection is a different species"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

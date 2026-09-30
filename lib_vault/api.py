@@ -17,13 +17,13 @@ _vocab_cache = {"key": None, "data": None}
 def _vocab():
     from . import wd14
 
-    lib = store.all_tags()
     try:
         danbooru = wd14.vocabulary()
     except Exception:
         danbooru = []
-    key = (len(lib), hash(tuple(lib)), len(danbooru), id(danbooru))
+    key = (store.revision(), len(danbooru), id(danbooru))
     if _vocab_cache["key"] != key:
+        lib = store.all_tags()
         seen, items = set(), []
         for t in lib:
             k = t.lower()
@@ -107,3 +107,40 @@ def register(app):
     @app.post(f"{BASE}/history/clear")
     def clear_history():
         return run(lambda: (store.clear_history(), {"history": []})[1])
+
+    # ------------------------------------------------------------------ Muse
+
+    from . import muse
+
+    @app.get(f"{BASE}/muse")
+    def muse_snapshot():
+        return run(muse.snapshot)
+
+    @app.post(f"{BASE}/muse/state")
+    def muse_state(body: dict = Body(...)):
+        return run(lambda: {"state": muse.save_state(body)})
+
+    @app.post(f"{BASE}/muse/next")
+    def muse_next():
+        return run(lambda: {"idea": muse.compose()})
+
+    @app.post(f"{BASE}/muse/tipo")
+    def muse_tipo(body: dict = Body(...)):
+        return run(lambda: muse.expand_with_tipo(str(body.get("positive") or "")))
+
+    @app.get(f"{BASE}/muse/avatar")
+    def muse_avatar():
+        from fastapi.responses import FileResponse
+
+        path = muse.avatar_file()
+        if not path:
+            return Response(status_code=404)
+        return FileResponse(path, headers={"Cache-Control": "max-age=31536000"})
+
+    @app.post(f"{BASE}/muse/avatar")
+    def muse_avatar_set(body: dict = Body(...)):
+        return run(lambda: {"avatar": muse.save_avatar(body.get("data"))})
+
+    @app.post(f"{BASE}/muse/avatar/clear")
+    def muse_avatar_clear():
+        return run(lambda: {"avatar": muse.clear_avatar()})

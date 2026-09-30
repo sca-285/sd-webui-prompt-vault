@@ -1,0 +1,73 @@
+{
+  "id": "nsfw_tease",
+  "name": "NSFW · clothing & tease",
+  "nsfw": true,
+  "group": "nsfw",
+  "subjects": [
+    "1girl, fully clothed but tight",
+    "1boy, unbuttoned dress shirt no undershirt",
+    "1girl, strap slipping off one shoulder",
+    "1boy, towel at hips",
+    "1girl, silk robe hanging open",
+    "1boy, sweatpants low on hips, underwear waistband showing",
+    "1girl, wet-white shirt",
+    "1girl, keyhole neckline",
+    "1boy, open robe"
+  ],
+  "actions": [
+    "top button undone",
+    "shirt unbuttoned to sternum",
+    "hem in fists",
+    "sitting so a hem rides up",
+    "pulling shirt off over head",
+    "jeans pushed to mid-thigh",
+    "catching a falling strap",
+    "coat held closed with one hand",
+    "hoodie unzipped down the front"
+  ],
+  "settings": [
+    "hotel room, late afternoon",
+    "bathroom mirror, fogged",
+    "sunlit bedroom",
+    "changing room, one bulb",
+    "elevator just after closing"
+  ],
+  "lighting": [
+    "window light on fabric",
+    "bathroom vanity bulbs",
+    "neon through blinds"
+  ],
+  "camera": [
+    "50mm mid-shot",
+    "mirror angle",
+    "crop at the ribs"
+  ],
+  "styles": [
+    "suggestive editorial photo",
+    "erotic illustration",
+    "polaroid snapshot"
+  ],
+  "twists": [
+    "only a necklace left",
+    "sheet as the only cover",
+    "one sock left",
+    "clothes in a pile on a chair"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed",
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored bar",
+    "mosaic censor"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "food",
+  "name": "Food / still life",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "bowl of ramen, rising steam",
+    "cut fruit on dark stone",
+    "1girl reaching for bread",
+    "messy baking table, no face"
+  ],
+  "actions": [
+    "breaking an egg",
+    "pouring sauce",
+    "hands only, cutting"
+  ],
+  "settings": [
+    "restaurant pass",
+    "home counter at night",
+    "market stall"
+  ],
+  "lighting": [
+    "soft overhead",
+    "window side light",
+    "candle"
+  ],
+  "camera": [
+    "50mm food photo",
+    "overhead flat lay",
+    "macro on steam"
+  ],
+  "styles": [
+    "cookbook photography",
+    "baroque still life",
+    "film snapshot"
+  ],
+  "twists": [
+    "one utensil does not belong to this cuisine",
+    "smoke, not steam"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed"
+  ]
+}

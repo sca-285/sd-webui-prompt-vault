@@ -1,0 +1,85 @@
+{
+  "id": "male_portrait",
+  "name": "Male portrait · 1boy",
+  "nsfw": false,
+  "group": "sfw",
+  "subjects": [
+    "1boy, solo, male focus, looking at viewer",
+    "1boy, solo, stubble, sharp jawline",
+    "1boy, solo, full beard, tired eyes",
+    "1boy, solo, undercut, earrings",
+    "1boy, solo, glasses, messy hair",
+    "1boy, solo, silver hair, pale skin",
+    "1boy, solo, dark skin, broad shoulders",
+    "1boy, solo, mid-30s, laugh lines",
+    "1boy, solo, muscular, veins on forearms",
+    "1boy, solo, lanky, hollow cheeks",
+    "1boy, solo, long hair tied back",
+    "elderly man, deep wrinkles, kind eyes"
+  ],
+  "actions": [
+    "slight smile",
+    "serious expression",
+    "looking over shoulder",
+    "chin resting on a fist",
+    "loosening a tie",
+    "hands in coat pockets",
+    "smoking, smoke across the face",
+    "reading, eyes just above the page",
+    "windswept hair",
+    "smirk, one eyebrow raised"
+  ],
+  "settings": [
+    "studio backdrop, seamless grey",
+    "bar at closing time",
+    "train seat by the window",
+    "office after hours",
+    "rooftop at dusk",
+    "garage with a workbench",
+    "library aisle",
+    "rain-streaked cafe window"
+  ],
+  "lighting": [
+    "window light",
+    "soft key light",
+    "golden hour",
+    "practical lamp only",
+    "neon rim light",
+    "overcast diffused light",
+    "hard sun, sharp shadow"
+  ],
+  "camera": [
+    "85mm f/1.8",
+    "50mm mid-shot",
+    "35mm environmental",
+    "close-up",
+    "low angle",
+    "over-the-shoulder",
+    "from above",
+    "profile view"
+  ],
+  "styles": [
+    "photorealistic portrait",
+    "editorial menswear photo",
+    "black and white photography",
+    "cinematic still",
+    "anime male illustration"
+  ],
+  "twists": [
+    "the catchlight is a neon sign, not a studio light",
+    "one cufflink is missing",
+    "a wedding band line is paler than the rest of the finger",
+    "steam from a cup cuts across the face",
+    "the backdrop paper is torn at one corner"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed",
+    "1girl",
+    "female focus"
+  ]
+}

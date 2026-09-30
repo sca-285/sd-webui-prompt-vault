@@ -1,0 +1,70 @@
+{
+  "id": "nsfw_body",
+  "name": "NSFW · body study",
+  "nsfw": true,
+  "group": "nsfw",
+  "subjects": [
+    "1girl, nude, full breasts, natural hang",
+    "1girl, nude, small breasts, tight nipples",
+    "1girl, nude, wide hips, thick thighs",
+    "1boy, nude, broad chest, happy trail",
+    "1boy, nude, erect penis, defined Adonis belt",
+    "1girl, sheer robe slipping off a shoulder",
+    "1girl, stockings, nothing else",
+    "androgynous nude, soft lighting"
+  ],
+  "actions": [
+    "standing nude facing viewer",
+    "sitting nude on the edge of the bed",
+    "on all fours looking back",
+    "arching back, chest forward",
+    "covering breasts",
+    "hands behind head",
+    "on side knees drawn",
+    "presenting from behind"
+  ],
+  "settings": [
+    "studio seamless, warm grey",
+    "sunlit bedroom, unmade bed",
+    "artist's loft",
+    "bathroom mirror, fogged",
+    "hotel room"
+  ],
+  "lighting": [
+    "window light on skin",
+    "soft key, barely any fill",
+    "vanity bulbs"
+  ],
+  "camera": [
+    "50mm mid-shot",
+    "85mm crop at the ribs",
+    "from above on the bed"
+  ],
+  "styles": [
+    "tasteful nude photography",
+    "fine-art figure study",
+    "explicit photoreal skin"
+  ],
+  "twists": [
+    "strategic shadow",
+    "frosted glass silhouette",
+    "a camera on a tripod is in the reflection, no photographer"
+  ],
+  "negatives": [
+    "blurry",
+    "worst quality",
+    "watermark",
+    "text",
+    "extra fingers",
+    "deformed",
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored bar",
+    "mosaic censor"
+  ]
+}

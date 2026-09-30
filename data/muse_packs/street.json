@@ -1,0 +1,68 @@
+{
+  "id": "street",
+  "name": "Street / candid",
+  "nsfw": false,
+  "subjects": [
+    "1girl, coat, walking",
+    "1boy, backpack, crossing the street",
+    "couple under one umbrella",
+    "street vendor at a stall",
+    "cyclist stopped at a light",
+    "child with a red balloon, distant",
+    "office worker, loosened tie",
+    "musician with a case"
+  ],
+  "actions": [
+    "mid-stride",
+    "checking a phone without looking up",
+    "looking back through a crowd",
+    "waiting for the signal",
+    "lighting a cigarette in the wind",
+    "hailing a cab",
+    "running for a bus",
+    "leaning on a railing"
+  ],
+  "settings": [
+    "wet asphalt, night city",
+    "morning market, steam and signs",
+    "subway entrance, harsh fluorescents",
+    "narrow old-town alley",
+    "overpass above traffic",
+    "convenience store at 2am",
+    "tram stop in light snow",
+    "crosswalk in heavy rain"
+  ],
+  "lighting": [
+    "sodium street lamps",
+    "mixed neon and headlights",
+    "overcast daylight",
+    "blue hour, shop windows glowing",
+    "single fluorescent from a doorway",
+    "lightning flash, instant contrast"
+  ],
+  "camera": [
+    "35mm street photography",
+    "28mm, slightly tilted",
+    "shot through a rain-specked windshield",
+    "from a second-storey window",
+    "low angle from the gutter",
+    "telephoto compression across a plaza"
+  ],
+  "styles": [
+    "candid documentary photo",
+    "cinematic night street",
+    "grainy 35mm film",
+    "anime city background, detailed",
+    "muted film still"
+  ],
+  "twists": [
+    "every sign is in a language that does not belong to this city",
+    "the puddle reflection shows a sunny day",
+    "nobody else in the crowd has a face in focus",
+    "a paper flyer is stuck to the subject's shoulder",
+    "the traffic light is stuck on amber"
+  ],
+  "negatives": [
+    "blurry", "worst quality", "watermark", "extra limbs", "empty street when a crowd is described"
+  ]
+}
