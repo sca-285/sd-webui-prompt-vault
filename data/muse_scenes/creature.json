@@ -1,7 +1,6 @@
 {
- "id": "creature",
- "name": "Creature / monster",
- "nsfw": false,
+ "theme": "Creature",
+ "rating": "sfw",
  "styles": [
   "creature concept art",
   "nature documentary photograph",
@@ -24,10 +23,12 @@
  "scenes": [
   {
    "title": "Dragon's nest",
-   "subjects": [
-    "feathered dragon, no humans",
-    "black-scaled dragon, no humans"
-   ],
+   "subjects": {
+    "nonhuman": [
+     "feathered dragon",
+     "black-scaled dragon"
+    ]
+   },
    "actions": [
     "curled around its eggs",
     "spreading its wings",
@@ -51,10 +52,18 @@
   },
   {
    "title": "The gentle giant",
-   "subjects": [
-    "1girl, small, hooded cloak",
-    "1boy, traveler, backpack"
+   "mood": [
+    "calm",
+    "happy"
    ],
+   "subjects": {
+    "1girl": [
+     "small, hooded cloak"
+    ],
+    "1boy": [
+     "traveler, backpack"
+    ]
+   },
    "actions": [
     "reaching out to a giant creature",
     "standing face to face with a huge beast",
@@ -78,10 +87,12 @@
   },
   {
    "title": "Deep-sea specimen",
-   "subjects": [
-    "bioluminescent deep sea creature, no humans",
-    "anglerfish monster, no humans"
-   ],
+   "subjects": {
+    "nonhuman": [
+     "bioluminescent deep sea creature",
+     "anglerfish monster"
+    ]
+   },
    "actions": [
     "pressed against the glass",
     "drifting in the tank"
@@ -100,10 +111,12 @@
   },
   {
    "title": "Flooded temple",
-   "subjects": [
-    "giant serpent, no humans",
-    "water spirit, translucent body"
-   ],
+   "subjects": {
+    "nonhuman": [
+     "giant serpent",
+     "water spirit, translucent body"
+    ]
+   },
    "actions": [
     "rising from the water",
     "coiled around a pillar"

@@ -1,0 +1,238 @@
+{
+ "theme": "Sci-fi",
+ "rating": "sfw",
+ "styles": [
+  "lived-in sci-fi, realistic",
+  "anime sci-fi, detailed mechanical",
+  "retro-futurism, 1970s sci-fi illustration"
+ ],
+ "camera": [
+  "wide shot",
+  "upper body",
+  "from side"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Long-haul cafeteria",
+   "mood": [
+    "melancholy",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "worn flight suit"
+    ],
+    "1boy": [
+     "engineer, jumpsuit"
+    ]
+   },
+   "actions": [
+    "eating alone at a long table",
+    "drinking coffee"
+   ],
+   "settings": [
+    "spaceship cafeteria, metal tables, porthole"
+   ],
+   "lighting": [
+    "cold strip lights",
+    "earthlight through a porthole"
+   ],
+   "details": [
+    "plant growing in a jar",
+    "stars through the porthole"
+   ]
+  },
+  {
+   "title": "Observation deck",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "spacesuit, helmet under arm"
+    ],
+    "nonhuman": [
+     "android, scuffed faceplate"
+    ]
+   },
+   "actions": [
+    "looking out at the planet",
+    "hand on the glass"
+   ],
+   "settings": [
+    "observation deck, huge window, planet below"
+   ],
+   "lighting": [
+    "planet glow",
+    "blue earthlight"
+   ],
+   "details": [
+    "reflection on the glass",
+    "distant ship lights"
+   ]
+  },
+  {
+   "title": "Maintenance corridor",
+   "mood": [
+    "serious"
+   ],
+   "subjects": {
+    "1boy": [
+     "space engineer, tool belt"
+    ],
+    "1girl": [
+     "mechanic, goggles"
+    ]
+   },
+   "actions": [
+    "repairing a panel, sparks",
+    "crawling through the corridor"
+   ],
+   "settings": [
+    "narrow ship corridor, exposed pipes"
+   ],
+   "lighting": [
+    "red emergency lights",
+    "flashlight beam"
+   ],
+   "details": [
+    "steam venting",
+    "warning stripes"
+   ]
+  },
+  {
+   "title": "Cryo hall",
+   "mood": [
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "bodysuit"
+    ],
+    "1boy": [
+     "bodysuit"
+    ]
+   },
+   "actions": [
+    "waking up in a cryo pod",
+    "climbing out of a cryo pod"
+   ],
+   "settings": [
+    "cryo hall, rows of pods"
+   ],
+   "lighting": [
+    "cold blue light",
+    "flickering lights"
+   ],
+   "details": [
+    "frost on the glass",
+    "mist spilling out of the pod"
+   ]
+  },
+  {
+   "title": "Hangar at night",
+   "mood": [
+    "calm",
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "pilot suit"
+    ],
+    "1boy": [
+     "mechanic, jumpsuit, grease stains"
+    ]
+   },
+   "actions": [
+    "looking up at the mecha",
+    "sitting on a crate, helmet on lap"
+   ],
+   "settings": [
+    "hangar at night, giant kneeling mecha, scaffolding"
+   ],
+   "lighting": [
+    "floodlights",
+    "dim work lights"
+   ],
+   "camera": [
+    "wide shot, size difference",
+    "from below"
+   ],
+   "details": [
+    "cables hanging",
+    "welding sparks"
+   ]
+  },
+  {
+   "title": "Ruined city",
+   "subjects": {
+    "nonhuman": [
+     "giant mecha",
+     "battle-damaged mecha"
+    ]
+   },
+   "actions": [
+    "walking through the ruins",
+    "standing guard, rifle lowered"
+   ],
+   "settings": [
+    "destroyed city street, rubble"
+   ],
+   "lighting": [
+    "sunset through smoke",
+    "overcast, dust"
+   ],
+   "camera": [
+    "from below",
+    "wide shot"
+   ],
+   "details": [
+    "smoke plumes",
+    "flowers tied to the antenna"
+   ]
+  },
+  {
+   "title": "Cockpit",
+   "mood": [
+    "serious",
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "pilot suit, helmet"
+    ],
+    "1boy": [
+     "pilot suit, visor up"
+    ]
+   },
+   "actions": [
+    "gripping the controls",
+    "leaning back, exhausted"
+   ],
+   "settings": [
+    "mecha cockpit, holographic displays"
+   ],
+   "lighting": [
+    "glow of the screens",
+    "red warning lights"
+   ],
+   "camera": [
+    "upper body"
+   ],
+   "details": [
+    "cracked display",
+    "photo taped to the console"
+   ]
+  }
+ ]
+}

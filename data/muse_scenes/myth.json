@@ -1,7 +1,6 @@
 {
- "id": "myth",
- "name": "Myth / ritual",
- "nsfw": false,
+ "theme": "Myth",
+ "rating": "sfw",
  "styles": [
   "mythic oil painting",
   "dark folklore illustration",
@@ -24,13 +23,24 @@
  "scenes": [
   {
    "title": "River offering",
-   "subjects": [
-    "1girl, white ritual robes, flower crown",
-    "1boy, white robes, bare feet"
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "white ritual robes, flower crown"
+    ],
+    "1boy": [
+     "white robes, bare feet"
+    ]
+   },
+   "gestures": [
+    "hands together in prayer",
+    "head bowed"
    ],
    "actions": [
     "placing a floating lantern on the river",
-    "kneeling at the water's edge, hands together"
+    "kneeling at the water's edge"
    ],
    "settings": [
     "river at night, floating lanterns"
@@ -46,10 +56,18 @@
   },
   {
    "title": "Mountain shrine",
-   "subjects": [
-    "masked priest, ceremonial robes",
-    "1girl, miko, red hakama"
+   "mood": [
+    "calm",
+    "serious"
    ],
+   "subjects": {
+    "1girl": [
+     "miko, red hakama"
+    ],
+    "1boy": [
+     "masked priest, ceremonial robes"
+    ]
+   },
    "actions": [
     "ringing a bell",
     "burning incense",
@@ -69,10 +87,17 @@
   },
   {
    "title": "Stone circle",
-   "subjects": [
-    "druid, antler headdress, cloak",
-    "1girl, hooded cloak, holding a torch"
+   "mood": [
+    "serious"
    ],
+   "subjects": {
+    "1boy": [
+     "druid, antler headdress, cloak"
+    ],
+    "1girl": [
+     "hooded cloak, holding a torch"
+    ]
+   },
    "actions": [
     "raising hands to the sky",
     "walking between the stones"
@@ -91,10 +116,18 @@
   },
   {
    "title": "The iron court",
-   "subjects": [
-    "1boy, king, iron crown, fur cloak",
-    "1girl, queen, iron crown, dark gown"
+   "mood": [
+    "serious",
+    "cool"
    ],
+   "subjects": {
+    "1boy": [
+     "king, iron crown, fur cloak"
+    ],
+    "1girl": [
+     "queen, iron crown, dark gown"
+    ]
+   },
    "actions": [
     "sitting on a stone throne",
     "holding a sword across the lap"
@@ -108,6 +141,35 @@
    "details": [
     "wolf lying at the feet",
     "smoke"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "mood": [
+    "playful",
+    "calm"
+   ],
+   "subjects": {
+    "nonhuman": [
+     "fairy, dragonfly wings, flower dress",
+     "forest spirit, antlers, bark skin"
+    ]
+   },
+   "actions": [
+    "dancing among mushrooms",
+    "sitting on a toadstool",
+    "holding a glowing orb"
+   ],
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "glowing fireflies at dusk",
+    "moonbeams through the canopy"
+   ],
+   "details": [
+    "floating light particles",
+    "dew on the grass"
    ]
   }
  ]

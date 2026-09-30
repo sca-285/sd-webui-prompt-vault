@@ -1,7 +1,6 @@
 {
- "id": "street",
- "name": "Street / candid",
- "nsfw": false,
+ "theme": "Street",
+ "rating": "sfw",
  "styles": [
   "candid street photography, 35mm film",
   "cinematic night photography",
@@ -26,11 +25,21 @@
  "scenes": [
   {
    "title": "Crosswalk in heavy rain",
-   "subjects": [
-    "1girl, yellow raincoat",
-    "1boy, business suit, black umbrella",
-    "1girl and 1boy, couple sharing one umbrella"
+   "mood": [
+    "calm",
+    "happy"
    ],
+   "subjects": {
+    "1girl": [
+     "yellow raincoat"
+    ],
+    "1boy": [
+     "business suit, black umbrella"
+    ],
+    "1girl1boy": [
+     "couple sharing one umbrella"
+    ]
+   },
    "actions": [
     "waiting at the crosswalk",
     "crossing the street",
@@ -50,11 +59,19 @@
   },
   {
    "title": "Morning market",
-   "subjects": [
-    "1girl, tote bag, cardigan",
-    "old woman, street vendor, apron",
-    "1boy, delivery rider, helmet"
+   "mood": [
+    "happy",
+    "calm"
    ],
+   "subjects": {
+    "1girl": [
+     "tote bag, cardigan",
+     "old woman, street vendor, apron"
+    ],
+    "1boy": [
+     "delivery rider, helmet"
+    ]
+   },
    "actions": [
     "picking out fruit",
     "counting change",
@@ -74,10 +91,18 @@
   },
   {
    "title": "Convenience store, 2am",
-   "subjects": [
-    "1girl, hoodie, sneakers",
-    "1boy, headphones, bomber jacket"
+   "mood": [
+    "calm",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "hoodie, sneakers"
+    ],
+    "1boy": [
+     "headphones, bomber jacket"
+    ]
+   },
    "actions": [
     "eating instant noodles at the window counter",
     "standing outside with a canned coffee",
@@ -96,10 +121,18 @@
   },
   {
    "title": "Tram stop in snow",
-   "subjects": [
-    "1girl, wool coat, scarf",
-    "old man, flat cap, overcoat"
+   "mood": [
+    "calm",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "wool coat, scarf"
+    ],
+    "1boy": [
+     "old man, flat cap, overcoat"
+    ]
+   },
    "actions": [
     "waiting at the tram stop",
     "breathing into cupped hands",
@@ -119,10 +152,18 @@
   },
   {
    "title": "Old-town alley",
-   "subjects": [
-    "1boy, street musician, guitar",
-    "1girl, walking a bicycle"
+   "mood": [
+    "happy",
+    "calm"
    ],
+   "subjects": {
+    "1boy": [
+     "street musician, guitar"
+    ],
+    "1girl": [
+     "walking a bicycle, sundress"
+    ]
+   },
    "actions": [
     "walking up stone stairs",
     "leaning on a wall",
@@ -142,10 +183,18 @@
   },
   {
    "title": "Subway rush",
-   "subjects": [
-    "1girl, office worker, blazer",
-    "1boy, office worker, loosened tie"
+   "mood": [
+    "serious",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "office worker, blazer"
+    ],
+    "1boy": [
+     "office worker, loosened tie"
+    ]
+   },
    "actions": [
     "hurrying down the stairs",
     "checking a phone",

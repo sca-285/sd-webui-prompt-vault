@@ -1,0 +1,240 @@
+{
+ "theme": "Bath & shower",
+ "rating": "nude",
+ "styles": [
+  "photorealistic, detailed skin",
+  "hentai, anime illustration",
+  "handheld amateur photo",
+  "painterly erotic illustration"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot",
+  "upper body"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious"
+ ],
+ "scenes": [
+  {
+   "title": "Fogged mirror",
+   "mood": [
+    "calm",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, wet hair",
+     "towel wrapped around the body, wet shoulders"
+    ],
+    "1boy": [
+     "nude, wet skin",
+     "towel around the waist, wet hair"
+    ]
+   },
+   "actions": [
+    "wiping the fogged mirror",
+    "towel-drying hair",
+    "looking at own reflection"
+   ],
+   "settings": [
+    "bathroom, fogged mirror, steam"
+   ],
+   "lighting": [
+    "warm vanity lights"
+   ],
+   "details": [
+    "water droplets on skin",
+    "reflection in the mirror"
+   ],
+   "rating": "nude"
+  },
+  {
+   "title": "Bubble bath",
+   "mood": [
+    "calm",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, hair up in a bun"
+    ],
+    "1boy": [
+     "nude, arms on the rim"
+    ],
+    "2girls": [
+     "nude, sharing the tub"
+    ]
+   },
+   "actions": [
+    "relaxing in the bath",
+    "lifting a leg out of the water",
+    "resting the head on the rim"
+   ],
+   "settings": [
+    "clawfoot bathtub, bubbles, candles"
+   ],
+   "lighting": [
+    "candlelight"
+   ],
+   "details": [
+    "glass of wine on the edge",
+    "rose petals on the water"
+   ],
+   "rating": "nude"
+  },
+  {
+   "title": "Shower alone",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, wet skin",
+     "nude, curvy, wet hair"
+    ],
+    "1boy": [
+     "nude, muscular, wet skin",
+     "nude, lean, wet hair"
+    ]
+   },
+   "actions": [
+    "masturbating in the shower",
+    "hand on the wall, water running down the back",
+    "soaping the body slowly"
+   ],
+   "settings": [
+    "shower, glass wall, steam"
+   ],
+   "lighting": [
+    "warm light through steam"
+   ],
+   "details": [
+    "fogged glass",
+    "water droplets"
+   ],
+   "rating": "explicit"
+  },
+  {
+   "title": "Shower together",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl1boy": [
+     "nude, wet skin"
+    ],
+    "2girls": [
+     "nude, wet skin"
+    ],
+    "2boys": [
+     "nude, wet skin",
+     "nude, bara, wet skin"
+    ]
+   },
+   "actions": [
+    "standing sex against the tiles",
+    "sex from behind, hands on the wall",
+    "kissing under the water",
+    "lifted against the tiles"
+   ],
+   "settings": [
+    "shower stall, steam"
+   ],
+   "lighting": [
+    "bathroom light through steam"
+   ],
+   "details": [
+    "water running over their bodies",
+    "fogged glass"
+   ],
+   "rating": "explicit"
+  },
+  {
+   "title": "Onsen",
+   "mood": [
+    "calm",
+    "playful"
+   ],
+   "subjects": {
+    "group": [
+     "3girls, nude, towels on heads",
+     "3boys, bara, nude"
+    ],
+    "2boys": [
+     "bara, muscular, nude"
+    ],
+    "2girls": [
+     "nude"
+    ]
+   },
+   "actions": [
+    "soaking in the hot spring",
+    "sitting on the rocks at the edge",
+    "sharing a drink in the water"
+   ],
+   "settings": [
+    "outdoor onsen, rocks, steam"
+   ],
+   "lighting": [
+    "evening lantern light",
+    "moonlight through steam"
+   ],
+   "details": [
+    "steam rising",
+    "snow on the rocks"
+   ],
+   "rating": "nude"
+  },
+  {
+   "title": "Hot spring spirit",
+   "mood": [
+    "sultry",
+    "calm"
+   ],
+   "subjects": {
+    "nonhuman": [
+     "lamia, snake lower body, nude upper body",
+     "kitsune, fox ears, nine tails, nude"
+    ],
+    "furry": [
+     "anthro cat, female, nude, wet fur",
+     "anthro wolf, male, nude, wet fur"
+    ]
+   },
+   "actions": [
+    "lounging in the hot spring",
+    "wringing out the tail",
+    "looking over the shoulder"
+   ],
+   "settings": [
+    "hot spring in a mountain forest"
+   ],
+   "lighting": [
+    "moonlight through steam"
+   ],
+   "details": [
+    "steam",
+    "floating maple leaves"
+   ],
+   "rating": "nude"
+  }
+ ]
+}

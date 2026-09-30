@@ -28,18 +28,23 @@ Qwen-VL and the WD14 tagger) in one tab.
   language into English, or any instruction ("make it night time").
 - **🏞️ Image → Prompt**: exact Danbooru tags with WD14, a description with Qwen, or both.
   An image made by the WebUI gives back its own prompt with 🧾.
-- **💡 Muse**, a floating button on every tab: a prompt idea now and then (every 5–30
-  minutes, never while an image is generating) or whenever you ask (`Alt+M`).
-  - Ideas come from **packs** (portrait, film, horror, sci-fi… and NSFW packs, off until you
-    turn them on), each made of coherent scenes: the subject, action, place and light of an
-    idea always belong together. Pick the packs you want on its settings page (the gear).
-  - **Send** writes the idea into txt2img, img2img or the Vault editor, replacing or
-    appending, and adds the idea's negatives that are missing from your negative prompt.
-  - Edit the idea before sending, step back through the last 20 with ‹ ›, expand it with
-    **TIPO**, keep words out with **Never use**, give the button your own **avatar**.
-  - Drag the button anywhere; the ring around it fills up until the next idea.
-  - NSFW ideas never carry minor-related tags, whatever a pack says, and always send
-    `child, loli, shota, underage` as negatives.
+- **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
+  (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
+  (never while an image is generating).
+  - **Three filters**: *Theme* (Portrait, Film, Horror, Street, Bedroom, Hotel…), *Cast*
+    (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, 3+, furry, non-human) and *Level*
+    (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
+    choice shows how many scenes it leaves.
+  - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
+    do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
+    for the next idea (same scene).
+  - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
+    appending, with the idea's negatives added where they are missing.
+  - Edit the prompt before sending, step back through the last 20 ideas with ‹ ›, expand
+    with **TIPO**, keep words out with **Never use**, give the button your own **avatar**,
+    drag it anywhere.
+  - NSFW ideas are adults only: every one carries `adult`, minor-related words are
+    dropped from any scene, and `child, loli, shota, underage` always go to the negatives.
 
 ![The AI tools](docs/ai-tools.webp)
 
@@ -123,7 +128,7 @@ prompt_vault/            (in the WebUI folder)
 └─ muse/
    ├─ state.json         Muse's settings
    ├─ avatar.png         your avatar, if you chose one
-   └─ packs/             packs of your own (optional)
+   └─ scenes/            scenes of your own (optional)
 models/prompt_vault/
 ├─ tipo/
 │  └─ TIPO-500M-ft-F16.gguf
@@ -133,22 +138,22 @@ models/prompt_vault/
       └─ selected_tags.csv
 ```
 
-## Muse packs of your own
+## Muse scenes of your own
 
-A pack is a JSON file in `prompt_vault/muse/packs/`; a pack with the id of a shipped one
-(see `data/muse_packs/`) replaces it. It is made of **scenes**: each scene holds what
-belongs together (who is there, what they do, where, in what light), and an idea takes
-one scene, then one entry of each of its lists. Keep every entry of a list compatible
-with every entry of the others *in the same scene*, and the ideas stay coherent.
+Put JSON files in `prompt_vault/muse/scenes/`; the shipped ones in `data/muse_scenes/` are
+examples. A file holds scenes; every entry of a list must suit every entry of the other
+lists *of the same scene*, and the ideas stay coherent.
 
 ```json
 {
-  "id": "my_pack", "name": "My pack", "nsfw": false,
+  "theme": "Festival", "rating": "sfw",
   "styles": ["film still, 35mm"], "negatives": ["blurry", "watermark"],
   "scenes": [
-    {"title": "Night market",
-     "subjects": ["1girl, yukata", "1boy, jinbei"],
-     "actions": ["holding a candy apple", "looking at the lanterns"],
+    {"title": "Night market", "mood": ["happy", "calm"],
+     "subjects": {"1girl": ["yukata, hair ornament"], "1boy": ["jinbei"],
+                  "1girl1boy": ["couple in yukata"]},
+     "gestures": ["looking up"],
+     "actions": ["holding a candy apple", "watching the fireworks"],
      "settings": ["summer festival at night, food stalls"],
      "lighting": ["paper lantern light"],
      "camera": ["cowboy shot"],
@@ -157,8 +162,13 @@ with every entry of the others *in the same scene*, and the ideas stay coherent.
 }
 ```
 
-A list a scene leaves out (here `styles`) comes from the pack, so the pack's own lists must
-suit every scene. The first pack format, without scenes, still works as one big scene.
+- `subjects` is keyed by cast: `none`, `1girl`, `1boy`, `1girl1boy`, `2girls`, `2boys`,
+  `group`, `furry`, `nonhuman`. Muse writes the cast's own tags (`1girl, solo`) in front.
+- `rating` is `sfw`, `suggestive`, `nude` or `explicit`, for the file or per scene.
+- `mood` picks the faces: calm, happy, serious, tense, melancholy, cool, playful, shy,
+  sultry, passion, afterglow. Or list your own `expressions`.
+- A list a scene leaves out comes from the file (here `styles`, `negatives`).
+- Packs made for the first versions of Muse still load, each as a theme of its own.
 
 ## Credits
 

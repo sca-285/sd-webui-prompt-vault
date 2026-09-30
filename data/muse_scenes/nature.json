@@ -1,7 +1,6 @@
 {
- "id": "nature",
- "name": "Nature / weather",
- "nsfw": false,
+ "theme": "Nature",
+ "rating": "sfw",
  "styles": [
   "landscape photography",
   "ukiyo-e woodblock print",
@@ -24,10 +23,12 @@
  "scenes": [
   {
    "title": "Alpine lake at dawn",
-   "subjects": [
-    "no humans",
-    "1other, hiker, tiny figure in the landscape"
-   ],
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "hiker, backpack, tiny figure in the landscape"
+    ]
+   },
    "settings": [
     "alpine lake at dawn, mountains, mirror reflection"
    ],
@@ -42,9 +43,17 @@
   },
   {
    "title": "Bamboo after rain",
-   "subjects": [
-    "no humans",
-    "1girl, umbrella, walking away"
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "kimono, paper umbrella"
+    ]
+   },
+   "actions": [
+    "walking away along the path"
    ],
    "settings": [
     "bamboo forest after rain, stone path"
@@ -60,10 +69,11 @@
   },
   {
    "title": "Storm on the coast",
-   "subjects": [
-    "no humans",
-    "lighthouse, no humans"
-   ],
+   "subjects": {
+    "none": [
+     "lighthouse"
+    ]
+   },
    "settings": [
     "rocky coastal cliff, crashing waves"
    ],
@@ -78,11 +88,14 @@
   },
   {
    "title": "Birch forest in snow",
-   "subjects": [
-    "no humans",
-    "deer in the snow",
-    "1other, walking with a lantern"
-   ],
+   "subjects": {
+    "none": [
+     "deer in the snow"
+    ],
+    "1girl": [
+     "red coat, walking with a lantern, small in the frame"
+    ]
+   },
    "settings": [
     "birch forest in deep snow"
    ],
@@ -97,10 +110,12 @@
   },
   {
    "title": "Rice terraces",
-   "subjects": [
-    "no humans",
-    "farmer, conical hat, working in the field"
-   ],
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "farmer, conical hat, working in the field"
+    ]
+   },
    "settings": [
     "rice terraces, mountains"
    ],

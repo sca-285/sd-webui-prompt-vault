@@ -1,7 +1,6 @@
 {
- "id": "film",
- "name": "Film frame",
- "nsfw": false,
+ "theme": "Film",
+ "rating": "sfw",
  "styles": [
   "film still, 35mm, film grain",
   "neo-noir, high contrast",
@@ -27,13 +26,26 @@
  "scenes": [
   {
    "title": "Night diner",
-   "subjects": [
-    "1girl, trench coat, red lipstick",
-    "1boy, rumpled shirt, stubble",
-    "1girl and 1boy, sitting across a booth table"
+   "mood": [
+    "tense",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "trench coat, red lipstick"
+    ],
+    "1boy": [
+     "rumpled shirt, stubble"
+    ],
+    "1girl1boy": [
+     "sitting across a booth table from each other"
+    ],
+    "2boys": [
+     "two detectives across a booth table"
+    ]
+   },
    "actions": [
-    "stirring coffee, not drinking it",
+    "stirring coffee without drinking it",
     "staring out the window",
     "sliding an envelope across the table"
    ],
@@ -52,11 +64,18 @@
   },
   {
    "title": "Motel room",
-   "subjects": [
-    "1girl, slip dress, messy hair",
-    "1boy, open collar, suspenders",
-    "1girl, sunglasses, headscarf"
+   "mood": [
+    "tense"
    ],
+   "subjects": {
+    "1girl": [
+     "slip dress, messy hair",
+     "sunglasses, headscarf"
+    ],
+    "1boy": [
+     "open collar, suspenders"
+    ]
+   },
    "actions": [
     "sitting on the edge of the bed",
     "packing a suitcase in a hurry",
@@ -76,10 +95,18 @@
   },
   {
    "title": "Underground car park",
-   "subjects": [
-    "1boy, long coat",
-    "1girl, leather gloves, belted coat"
+   "mood": [
+    "tense",
+    "serious"
    ],
+   "subjects": {
+    "1boy": [
+     "long coat"
+    ],
+    "1girl": [
+     "leather gloves, belted coat"
+    ]
+   },
    "actions": [
     "waiting by a car",
     "walking between the pillars",
@@ -99,13 +126,21 @@
   },
   {
    "title": "Theatre wings",
-   "subjects": [
-    "1girl, dancer, sequin costume, stage makeup",
-    "1boy, performer, tuxedo, loosened bow tie"
+   "mood": [
+    "melancholy",
+    "happy"
    ],
+   "subjects": {
+    "1girl": [
+     "dancer, sequin costume, stage makeup"
+    ],
+    "1boy": [
+     "performer, tuxedo, loosened bow tie"
+    ]
+   },
    "actions": [
     "catching breath after the show",
-    "sitting on a crate, head down",
+    "sitting on a crate",
     "looking toward the stage"
    ],
    "settings": [
@@ -122,11 +157,21 @@
   },
   {
    "title": "Night train compartment",
-   "subjects": [
-    "1girl, fur collar coat",
-    "1boy, three-piece suit",
-    "1girl and 1boy, strangers facing each other"
+   "mood": [
+    "tense",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "fur collar coat"
+    ],
+    "1boy": [
+     "three-piece suit"
+    ],
+    "1girl1boy": [
+     "strangers sitting face to face"
+    ]
+   },
    "actions": [
     "reading a letter",
     "looking out at the dark",
@@ -146,10 +191,18 @@
   },
   {
    "title": "Police station, 3am",
-   "subjects": [
-    "1boy, detective, loosened tie, shoulder holster",
-    "1girl, detective, blazer, tired eyes"
+   "mood": [
+    "serious",
+    "melancholy"
    ],
+   "subjects": {
+    "1boy": [
+     "detective, loosened tie, shoulder holster"
+    ],
+    "1girl": [
+     "detective, blazer, tired eyes"
+    ]
+   },
    "actions": [
     "drinking vending machine coffee",
     "reading a case file",

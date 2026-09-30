@@ -1,5 +1,6 @@
-// Prompt Vault Muse: a floating button on every tab that offers prompt ideas, now and then or on demand.
-// The ideas come from lib_vault/muse.py (packs in data/muse_packs); this file only shows them.
+// Prompt Vault Muse: a floating button on every tab that gives prompt ideas, on demand or on a timer.
+// Ideas come from lib_vault/muse.py (scenes in data/muse_scenes); this file shows them and lets
+// you filter them, roll or lock each part, and send them to a prompt box.
 
 (() => {
     'use strict';
@@ -30,15 +31,18 @@
 
     // stroke icons, not emoji: Lobe Theme swaps the label of any button holding certain emoji
     const PATHS = {
-        spark: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z',
+        idea: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z',
         gear: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',
         close: 'M6 6l12 12M18 6L6 18',
-        pause: 'M9 5v14M15 5v14',
-        play: 'M7 4l13 8-13 8z',
+        clock: 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z',
         prev: 'M15 5l-7 7 7 7',
         next: 'M9 5l7 7-7 7',
         back: 'M19 12H5M11 5l-7 7 7 7',
         copy: 'M9 9h11v11H9zM5 15V4h11',
+        roll: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',
+        lock: 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z',
+        unlock: 'M7 11V8a5 5 0 0 1 9.6-2M5 11h14v10H5z',
+        down: 'M6 9l6 6 6-6',
     };
     function icon(name) {
         const ns = 'http://www.w3.org/2000/svg';
@@ -76,12 +80,13 @@
     // ------------------------------------------------------------------ state
 
     const M = {
-        snap: null,                         // {state, packs, avatar}
-        ideas: LS.get('ideas', []),
+        snap: null,                         // {state, catalogue, avatar}
+        ideas: LS.get('ideas', []).filter((i) => i && Array.isArray(i.parts)),
         at: -1,
         open: false,
         view: 'idea',                       // or 'settings'
-        busy: '',                           // '', 'next' or 'tipo'
+        tray: '',                           // the open filter: '', 'themes', 'casts' or 'ratings'
+        busy: '',                           // '', 'next', 'tipo' or the slot being rolled
         due: LS.get('due', 0),              // when the timer brings the next idea (ms)
         fresh: false,                       // an idea came while the panel was closed
         dragged: false,
@@ -91,10 +96,85 @@
     const st = () => (M.snap && M.snap.state) || {};
     const idea = () => M.ideas[M.at] || null;
     const intervalMs = () => Math.max(5, Math.min(30, +st().interval_minutes || 15)) * 60000;
-    const timed = () => !!M.snap && st().enabled && !st().paused;
+    const timed = () => !!M.snap && !!st().enabled;
 
     function setDue(t) { M.due = t; LS.set('due', t); }
     function saveIdeas() { LS.set('ideas', M.ideas.slice(-KEEP)); }
+
+    const PART_NAMES = {subject: 'Who', expression: 'Face', gesture: 'Pose', action: 'Doing', detail: 'Detail',
+        setting: 'Where', lighting: 'Light', camera: 'Camera', style: 'Style'};
+    const RATING_NSFW = (r) => r !== 'sfw';
+
+    // ------------------------------------------------------------------ filters
+
+    function ratingsOn(s) { return (s.ratings || []).filter((r) => r === 'sfw' || s.allow_nsfw); }
+
+    // how many scenes match, with one of the three filters replaced by `over`
+    function countMatching(over) {
+        const cat = M.snap.catalogue, s = st();
+        const themes = new Set(over && over.themes || s.themes || []);
+        const casts = new Set(over && over.casts || s.casts || []);
+        const ratings = new Set(over && over.ratings || ratingsOn(s));
+        let n = 0;
+        for (const [ti, sc, r] of cat.index) {
+            if (!ratings.has(r)) continue;
+            if (themes.size && !themes.has(cat.themes[ti])) continue;
+            if (casts.size && !sc.some((c) => casts.has(c))) continue;
+            n++;
+        }
+        return n;
+    }
+
+    function summary(key) {
+        const s = st(), cat = M.snap.catalogue;
+        if (key === 'themes') return s.themes.length ? (s.themes.length === 1 ? s.themes[0] : s.themes.length + ' themes') : 'All themes';
+        if (key === 'casts') {
+            if (!s.casts.length) return 'Anyone';
+            const names = Object.fromEntries(cat.casts);
+            return s.casts.length <= 2 ? s.casts.map((c) => names[c] || c).join(', ') : s.casts.length + ' casts';
+        }
+        const on = ratingsOn(s);
+        const names = Object.fromEntries(cat.ratings);
+        return on.length ? (on.length <= 2 ? on.map((r) => names[r]).join(', ') : on.length + ' levels') : 'No level';
+    }
+
+    function filterBar() {
+        const pill = (key, label) => el('button', {
+            type: 'button', class: 'pv-muse-filter' + (M.tray === key ? ' pv-on' : ''), 'aria-expanded': M.tray === key ? 'true' : 'false',
+            title: label, onclick: () => { M.tray = M.tray === key ? '' : key; render(); },
+        }, el('span', {class: 'pv-muse-filter-label', text: label}), el('span', {class: 'pv-muse-filter-value', text: summary(key)}), icon('down'));
+        const n = countMatching();
+        return el('div', {class: 'pv-muse-filters'},
+            el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level')),
+            M.tray ? tray(M.tray) : null,
+            M.tray ? el('div', {class: 'pv-muse-hint', text: n ? `${n} scene${n === 1 ? '' : 's'} match` : 'Nothing matches: loosen a filter'}) : null);
+    }
+
+    function tray(key) {
+        const s = st(), cat = M.snap.catalogue;
+        const chosen = new Set(key === 'ratings' ? s.ratings : s[key]);
+        const options = key === 'themes' ? cat.themes.map((t) => [t, t]) : cat[key];
+        const toggle = (value) => {
+            const next = new Set(chosen);
+            if (next.has(value)) next.delete(value); else next.add(value);
+            patch({[key]: [...next]});
+        };
+        const chips = options.map(([value, label]) => {
+            const nsfwLocked = key === 'ratings' && RATING_NSFW(value) && !s.allow_nsfw;
+            const n = nsfwLocked ? 0 : countMatching({[key]: [value]});
+            const on = chosen.has(value) && !nsfwLocked;
+            return el('button', {
+                type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (n ? '' : ' pv-muse-none') + (key === 'ratings' && RATING_NSFW(value) ? ' pv-muse-nsfw' : ''),
+                'aria-pressed': on ? 'true' : 'false', disabled: nsfwLocked,
+                title: nsfwLocked ? 'Turn NSFW on first' : `${n} scene${n === 1 ? '' : 's'} with the other filters`,
+                onclick: () => toggle(value),
+            }, label, key !== 'ratings' ? el('small', {text: String(n)}) : null);
+        });
+        const all = key !== 'ratings' ? el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'), text: key === 'themes' ? 'All' : 'Anyone', onclick: () => patch({[key]: []})}) : null;
+        return el('div', {class: 'pv-muse-tray'},
+            key === 'ratings' ? toggleSwitch('NSFW', s.allow_nsfw, (v) => patch(v ? {allow_nsfw: true} : {allow_nsfw: false}), 'adults only; minors are always kept out') : null,
+            el('div', {class: 'pv-muse-chips'}, all, chips));
+    }
 
     // ------------------------------------------------------------------ the WebUI's prompt boxes
 
@@ -133,11 +213,10 @@
         return false;
     }
 
-    function send() {
+    function send(target) {
         const it = idea();
         if (!it) return;
         const s = st();
-        const target = TARGETS[s.target] ? s.target : 'txt2img';
         const [posId, negId] = TARGETS[target];
         const pos = area(posId);
         if (!pos) { toast('The ' + TARGET_NAMES[target] + ' prompt box is not on the page', true); return; }
@@ -151,13 +230,32 @@
 
     // ------------------------------------------------------------------ ideas
 
+    // the parts to keep: the locked ones, or all of them when one part is rolled
+    function keepOf(it, all) {
+        const keep = {};
+        for (const p of it.parts) if (all || (it.locks && it.locks[p.slot])) keep[p.slot] = p.value;
+        return keep;
+    }
+    const lockCount = (it) => (it && it.locks ? Object.values(it.locks).filter(Boolean).length : 0);
+
     async function nextIdea(quiet) {
         if (M.busy) return;
+        const cur = idea();
+        const locked = !quiet && lockCount(cur) && fits(cur);
         M.busy = 'next';
         render();
         try {
-            const data = await call('/muse/next', {});
-            M.ideas.push(data.idea);
+            const body = locked ? {scene: cur.scene, cast: cur.cast, keep: keepOf(cur)} : {};
+            let data;
+            try {
+                data = await call('/muse/next', body);
+            } catch (e) {
+                if (!locked) throw e;
+                data = await call('/muse/next', {}); // the scene is gone: a fresh idea, locks dropped
+            }
+            const it = data.idea;
+            if (locked && it.scene === cur.scene) it.locks = Object.assign({}, cur.locks);
+            M.ideas.push(it);
             if (M.ideas.length > KEEP) M.ideas.splice(0, M.ideas.length - KEEP);
             M.at = M.ideas.length - 1;
             saveIdeas();
@@ -172,6 +270,32 @@
         }
     }
 
+    async function rollPart(slot) {
+        const it = idea();
+        if (!it || M.busy) return;
+        M.busy = slot;
+        render();
+        try {
+            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, keep: keepOf(it, true), roll: slot});
+            const fresh = Object.assign(data.idea, {locks: it.locks});
+            M.ideas[M.at] = fresh;
+            saveIdeas();
+        } catch (e) {
+            toast(e.message, true);
+        } finally {
+            M.busy = '';
+            render();
+        }
+    }
+
+    function toggleLock(slot) {
+        const it = idea();
+        if (!it) return;
+        it.locks = Object.assign({}, it.locks, {[slot]: !(it.locks && it.locks[slot])});
+        saveIdeas();
+        render();
+    }
+
     async function expandTipo() {
         const it = idea();
         if (!it || M.busy) return;
@@ -181,6 +305,7 @@
             const data = await call('/muse/tipo', {positive: it.positive});
             it.positive = data.positive;
             it.note = data.note;
+            it.edited = true;
             saveIdeas();
         } catch (e) {
             toast(e.message, true);
@@ -219,17 +344,15 @@
     }
 
     function statusText() {
-        const s = st();
         if (!M.snap) return '';
-        if (!s.enabled) return 'Timer off';
-        if (s.paused) return 'Paused';
+        if (!timed()) return 'On demand · Alt+M';
         const min = Math.max(0, Math.ceil((M.due - Date.now()) / 60000));
         return min <= 1 ? 'Next idea soon' : `Next idea in ${min} min`;
     }
 
     function avatarNode(cls) {
         const url = M.snap && M.snap.avatar && M.snap.avatar.url;
-        return url ? el('img', {class: cls, src: root() + API + url, alt: '', draggable: 'false'}) : el('span', {class: cls + ' pv-muse-noface'}, icon('spark'));
+        return url ? el('img', {class: cls, src: root() + API + url, alt: '', draggable: 'false'}) : el('span', {class: cls + ' pv-muse-noface'}, icon('idea'));
     }
 
     function header() {
@@ -239,47 +362,87 @@
             : el('div', {class: 'pv-muse-title'}, avatarNode('pv-muse-face-sm'),
                 el('div', {class: 'pv-muse-title-text'}, el('strong', {text: 'Muse'}), el('span', {class: 'pv-muse-status', id: 'pv_muse_status', text: statusText()})));
         return el('div', {class: 'pv-muse-head'}, title,
-            s.enabled ? iconButton(s.paused ? 'play' : 'pause', s.paused ? 'Resume the timer' : 'Pause the timer', () => patch({paused: !s.paused})) : null,
+            iconButton('clock', s.enabled ? `Timer on, every ${s.interval_minutes} min: turn off` : 'Timer off: turn on', () => patch({enabled: !s.enabled}),
+                {class: 'pv-muse-icon-btn' + (s.enabled ? ' pv-on' : ''), 'aria-pressed': s.enabled ? 'true' : 'false'}),
             M.view === 'idea' ? iconButton('gear', 'Settings', () => { M.view = 'settings'; render(); }) : null,
             iconButton('close', 'Close (Esc)', () => openPanel(false)));
     }
 
+    function partRow(it, p) {
+        const locked = !!(it.locks && it.locks[p.slot]);
+        const rolling = M.busy === p.slot;
+        return el('div', {class: 'pv-muse-part' + (locked ? ' pv-muse-locked' : '') + (p.value ? '' : ' pv-muse-empty-part')},
+            el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot}),
+            el('span', {class: 'pv-muse-part-value', text: p.value || '—', title: p.value}),
+            iconButton('roll', 'Another ' + (PART_NAMES[p.slot] || p.slot).toLowerCase(), () => rollPart(p.slot),
+                {disabled: !!M.busy || locked || (p.choices < 2 && !!p.value), class: 'pv-muse-icon-btn' + (rolling ? ' pv-muse-spin' : '')}),
+            iconButton(locked ? 'lock' : 'unlock', locked ? 'Unlock' : 'Lock: keep it for the next idea', () => toggleLock(p.slot),
+                {class: 'pv-muse-icon-btn' + (locked ? ' pv-on' : ''), 'aria-pressed': locked ? 'true' : 'false', disabled: !p.value}));
+    }
+
     function ideaView() {
         const it = idea();
-        if (!it) {
-            return el('div', {class: 'pv-muse-body pv-muse-empty'},
-                el('p', {text: M.busy ? 'Thinking…' : 'No idea yet.'}),
-                el('button', {type: 'button', class: 'pv-btn pv-primary', text: 'Give me one', disabled: !!M.busy, onclick: () => nextIdea(false)}));
-        }
         const s = st();
-        const prompt = el('textarea', {class: 'pv-muse-text', rows: '5', spellcheck: 'false', 'aria-label': 'Positive prompt'});
+        if (!it) {
+            return el('div', {class: 'pv-muse-body'}, filterBar(),
+                el('div', {class: 'pv-muse-empty'},
+                    el('p', {text: M.busy ? 'Thinking…' : 'No idea yet.'}),
+                    el('button', {type: 'button', class: 'pv-btn pv-primary', text: 'Give me one', disabled: !!M.busy, onclick: () => nextIdea(false)})));
+        }
+        const prompt = el('textarea', {class: 'pv-muse-text', rows: '3', spellcheck: 'false', 'aria-label': 'Prompt'});
         prompt.value = it.positive;
-        prompt.addEventListener('input', () => { it.positive = prompt.value; clearTimeout(ideaView.t); ideaView.t = setTimeout(saveIdeas, 400); });
+        prompt.addEventListener('input', () => { it.positive = prompt.value; it.edited = true; clearTimeout(ideaView.t); ideaView.t = setTimeout(saveIdeas, 400); });
         const nav = M.ideas.length > 1 ? el('div', {class: 'pv-muse-nav'},
             iconButton('prev', 'Previous idea', () => { M.at--; render(); }, {disabled: M.at <= 0}),
             el('span', {text: `${M.at + 1}/${M.ideas.length}`}),
             iconButton('next', 'Next idea', () => { M.at++; render(); }, {disabled: M.at >= M.ideas.length - 1})) : null;
 
         return el('div', {class: 'pv-muse-body'},
-            el('div', {class: 'pv-muse-meta'},
-                el('span', {class: 'pv-muse-pill' + (it.nsfw ? ' pv-muse-nsfw' : ''), text: it.pack_name}), nav),
-            it.spark ? el('div', {class: 'pv-muse-spark', text: it.spark}) : null,
-            it.twist ? el('div', {class: 'pv-muse-twist', text: it.twist}) : null,
+            filterBar(),
+            el('div', {class: 'pv-muse-card'},
+                el('div', {class: 'pv-muse-card-head'},
+                    el('div', {class: 'pv-muse-card-title'},
+                        el('strong', {text: it.title}),
+                        el('div', {class: 'pv-muse-tags'},
+                            el('span', {text: it.theme}), el('span', {text: it.cast_label}),
+                            el('span', {class: it.nsfw ? 'pv-muse-nsfw' : '', text: (M.snap.catalogue.ratings.find((r) => r[0] === it.rating) || [0, it.rating])[1]}))),
+                    nav),
+                el('div', {class: 'pv-muse-parts'}, it.parts.map((p) => partRow(it, p)))),
+            el('details', {class: 'pv-muse-prompt', open: LS.get('prompt_open', true) ? true : null,
+                ontoggle: (e) => LS.set('prompt_open', e.target.open)},
+            el('summary', {text: it.edited ? 'Prompt (edited: rolling a part rewrites it)' : 'Prompt'}),
             prompt,
-            it.negative ? el('details', {class: 'pv-muse-neg'},
-                el('summary', {text: s.send_negative ? 'Negatives, added on send' : 'Negatives, not sent'}),
-                el('div', {text: it.negative})) : null,
-            it.note ? el('div', {class: 'pv-muse-note', text: it.note}) : null,
+            it.negative ? el('div', {class: 'pv-muse-neg', title: it.negative, text: (s.send_negative ? 'Negatives added on send: ' : 'Negatives (not sent): ') + it.negative}) : null,
+            it.note ? el('div', {class: 'pv-muse-hint', text: it.note}) : null));
+    }
+
+    // always in view, under the scrolling part
+    function ideaFooter() {
+        const it = idea();
+        const s = st();
+        if (!it) return null;
+        const locks = lockCount(it);
+        return el('div', {class: 'pv-muse-foot'},
             el('div', {class: 'pv-muse-actions'},
-                el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-send', text: 'Send to ' + (s.target === 'vault' ? 'Vault' : s.target || 'txt2img'), onclick: send}),
-                el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'next' ? 'Thinking…' : 'Another', disabled: !!M.busy, onclick: () => nextIdea(false)}),
-                s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? 'TIPO…' : 'TIPO', title: 'Expand with TIPO (settings: Prompt Vault (TIPO))', disabled: !!M.busy, onclick: expandTipo}) : null,
+                el('button', {type: 'button', class: 'pv-btn pv-muse-new', disabled: !!M.busy, onclick: () => nextIdea(false),
+                    title: locks ? 'Same scene, the locked parts stay' : 'A new scene (Alt+M)'},
+                icon('roll'), M.busy === 'next' ? 'Thinking…' : (locks ? `New, keep ${locks} locked` : 'New idea')),
+                s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? 'TIPO…' : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: expandTipo}) : null,
                 iconButton('copy', 'Copy the prompt', () => {
-                    navigator.clipboard.writeText(prompt.value).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
-                })));
+                    navigator.clipboard.writeText(it.positive).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
+                })),
+            el('div', {class: 'pv-muse-send'},
+                el('span', {class: 'pv-muse-send-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
+                ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn' + (t === 'txt2img' ? ' pv-primary' : ''), text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)}))));
     }
 
     // ------------------------------------------------------------------ settings
+
+    function fits(it) {
+        const s = st();
+        return (!s.themes.length || s.themes.includes(it.theme)) && (!s.casts.length || s.casts.includes(it.cast))
+            && ratingsOn(s).includes(it.rating);
+    }
 
     async function patch(body) {
         try {
@@ -287,15 +450,23 @@
             const data = await call('/muse/state', body);
             M.snap.state = data.state;
             const s = data.state;
-            if (s.interval_minutes !== before.interval_minutes || (s.enabled && !s.paused && (!before.enabled || before.paused))) setDue(Date.now() + intervalMs());
+            if (s.enabled && (!before.enabled || s.interval_minutes !== before.interval_minutes)) setDue(Date.now() + intervalMs());
         } catch (e) {
             toast(e.message, true);
         }
         render();
         paintFab();
+        // a filter changed and the idea on the card no longer fits it: a fitting one, once the clicks settle
+        if (['themes', 'casts', 'ratings', 'allow_nsfw'].some((k) => k in body)) {
+            clearTimeout(patch.t);
+            patch.t = setTimeout(() => {
+                const it = idea();
+                if (M.open && M.view === 'idea' && (!it || !fits(it)) && countMatching()) nextIdea(false);
+            }, 450);
+        }
     }
 
-    function toggle(label, on, change, hint) {
+    function toggleSwitch(label, on, change, hint) {
         return el('button', {type: 'button', class: 'pv-muse-switch', role: 'switch', 'aria-checked': on ? 'true' : 'false', onclick: () => change(!on)},
             el('span', {class: 'pv-muse-track'}),
             el('span', {class: 'pv-muse-switch-text'}, el('span', {text: label}), hint ? el('small', {text: hint}) : null));
@@ -315,29 +486,9 @@
         return el('section', {class: 'pv-muse-section'}, el('h4', {text: title}), ...children);
     }
 
-    function packChips(list, chosen) {
-        return el('div', {class: 'pv-muse-chips'}, list.map((p) => {
-            const on = chosen.has(p.id);
-            return el('button', {
-                type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (p.nsfw ? ' pv-muse-nsfw' : ''),
-                'aria-pressed': on ? 'true' : 'false', title: `${p.size} scene${p.size === 1 ? '' : 's'}${p.custom ? ', your own pack' : ''}`, text: p.name,
-                onclick: () => {
-                    const next = new Set(chosen);
-                    if (on) next.delete(p.id); else next.add(p.id);
-                    const visible = (M.snap.packs || []).filter((x) => st().allow_nsfw || !x.nsfw);
-                    if (!visible.some((x) => next.has(x.id))) { toast('Keep at least one pack on', true); return; }
-                    patch({packs: [...next]});
-                },
-            });
-        }));
-    }
-
     function settingsView() {
         const s = st();
-        const packs = M.snap.packs || [];
-        const chosen = new Set(s.packs || packs.filter((p) => !p.nsfw).map((p) => p.id));
-
-        const range = el('input', {type: 'range', min: '5', max: '30', step: '1', value: String(s.interval_minutes), 'aria-label': 'Minutes between ideas', disabled: !s.enabled});
+        const range = el('input', {type: 'range', min: '5', max: '30', step: '1', value: String(s.interval_minutes), 'aria-label': 'Minutes between ideas'});
         const rangeText = el('output', {text: s.interval_minutes + ' min'});
         range.addEventListener('input', () => { rangeText.textContent = range.value + ' min'; });
         range.addEventListener('change', () => patch({interval_minutes: +range.value}));
@@ -347,27 +498,16 @@
         blacklist.addEventListener('change', () => patch({blacklist: blacklist.value}));
 
         const file = el('input', {type: 'file', accept: 'image/png,image/webp,image/jpeg,image/gif', hidden: true, onchange: onAvatar});
-        const sfw = packs.filter((p) => !p.nsfw), nsfw = packs.filter((p) => p.nsfw);
 
         return el('div', {class: 'pv-muse-body pv-muse-settings'},
             section('Timer',
-                toggle('Bring ideas by themselves', s.enabled, (v) => patch({enabled: v}), 'never while an image is generating'),
+                toggleSwitch('Bring ideas by themselves', s.enabled, (v) => patch({enabled: v}), 'never while an image is generating; the clock on top does the same'),
                 el('div', {class: 'pv-muse-field' + (s.enabled ? '' : ' pv-muse-off')}, el('span', {class: 'pv-muse-field-label', text: 'Every'}), range, rangeText)),
-            section('Packs',
-                packChips(sfw, chosen),
-                toggle('NSFW packs', s.allow_nsfw, (v) => {
-                    // turning NSFW off with only NSFW packs chosen falls back to every SFW pack
-                    const sfwLeft = sfw.some((p) => chosen.has(p.id));
-                    patch(v || sfwLeft ? {allow_nsfw: v} : {allow_nsfw: v, packs: null});
-                }, 'adults only; minors are always kept out'),
-                s.allow_nsfw && nsfw.length ? packChips(nsfw, chosen) : null,
-                el('div', {class: 'pv-muse-hint', text: 'Packs of your own: JSON files in prompt_vault/muse/packs.'})),
             section('Send',
-                seg('To', 'target', [['txt2img', 'txt2img'], ['img2img', 'img2img'], ['vault', 'Vault']]),
                 seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
-                toggle('Add the idea\'s negatives too', s.send_negative, (v) => patch({send_negative: v}), 'only the ones missing from the negative prompt')),
+                toggleSwitch('Add the idea\'s negatives too', s.send_negative, (v) => patch({send_negative: v}), 'only the ones missing from the negative prompt')),
             section('TIPO',
-                toggle('Show the TIPO button', s.use_tipo, (v) => patch({use_tipo: v}), 'expands an idea with the TIPO set up in the Vault tab'),
+                toggleSwitch('Show the TIPO button', s.use_tipo, (v) => patch({use_tipo: v}), 'expands an idea with the TIPO set up in the Vault tab'),
                 s.use_tipo ? seg('Output', 'tipo_output', [['Tags', 'Tags'], ['Natural language', 'Words'], ['Tags + natural language', 'Both']]) : null,
                 s.use_tipo ? seg('Length', 'tipo_length', [['very short', 'XS'], ['short', 'S'], ['long', 'L'], ['very long', 'XL']]) : null),
             section('Never use', blacklist,
@@ -375,7 +515,8 @@
             section('Avatar',
                 el('div', {class: 'pv-muse-avatar-row'}, avatarNode('pv-muse-face-lg'),
                     el('button', {type: 'button', class: 'pv-btn', text: 'Choose an image…', onclick: () => file.click()}), file,
-                    M.snap.avatar.url ? el('button', {type: 'button', class: 'pv-btn', text: 'Remove', onclick: () => setAvatar(call('/muse/avatar/clear', {}))}) : null)));
+                    M.snap.avatar.url ? el('button', {type: 'button', class: 'pv-btn', text: 'Remove', onclick: () => setAvatar(call('/muse/avatar/clear', {}))}) : null)),
+            el('div', {class: 'pv-muse-hint', text: 'Scenes of your own: JSON files in prompt_vault/muse/scenes (see the README).'}));
     }
 
     function onAvatar(ev) {
@@ -404,7 +545,7 @@
         if (!panel || !M.open || !M.snap) return;
         const scroll = panel.querySelector('.pv-muse-body');
         const y = scroll ? scroll.scrollTop : 0;
-        panel.replaceChildren(header(), M.view === 'settings' ? settingsView() : ideaView());
+        panel.replaceChildren(...[header(), ...(M.view === 'settings' ? [settingsView()] : [ideaView(), ideaFooter()])].filter(Boolean));
         const again = panel.querySelector('.pv-muse-body');
         if (again) again.scrollTop = y;
         place();
@@ -426,7 +567,7 @@
         const ring = fab.querySelector('.pv-muse-ring-fill');
         const left = timed() ? Math.max(0, Math.min(1, (M.due - Date.now()) / intervalMs())) : 1;
         ring.style.strokeDashoffset = String(100 * left);
-        fab.title = 'Muse: ' + (statusText() || 'ideas') + ' · Alt+M: an idea now';
+        fab.title = 'Muse: ' + (statusText() || 'ideas');
         const status = $('#pv_muse_status');
         if (status) status.textContent = statusText();
     }
@@ -472,7 +613,6 @@
         y = Math.max(pad, Math.min(innerHeight - size - pad, y));
         fab.style.left = x + 'px';
         fab.style.top = y + 'px';
-        return {x, y};
     }
 
     function dragging(fab) {

@@ -1,7 +1,6 @@
 {
- "id": "sports",
- "name": "Sports / motion",
- "nsfw": false,
+ "theme": "Sports",
+ "rating": "sfw",
  "styles": [
   "sports photography, telephoto",
   "grainy 16mm film",
@@ -23,13 +22,20 @@
  "scenes": [
   {
    "title": "Boxing gym",
-   "subjects": [
-    "1boy, boxer, taped hands, shirtless",
-    "1girl, boxer, sports bra, taped hands"
+   "mood": [
+    "serious"
    ],
+   "subjects": {
+    "1boy": [
+     "boxer, taped hands, shirtless"
+    ],
+    "1girl": [
+     "boxer, sports bra, taped hands"
+    ]
+   },
    "actions": [
     "hitting a heavy bag",
-    "resting on the ropes, catching breath",
+    "resting on the ropes",
     "shadowboxing"
    ],
    "settings": [
@@ -46,10 +52,17 @@
   },
   {
    "title": "Sprint",
-   "subjects": [
-    "1girl, sprinter, running kit",
-    "1boy, sprinter, running kit"
+   "mood": [
+    "serious"
    ],
+   "subjects": {
+    "1girl": [
+     "sprinter, running kit"
+    ],
+    "1boy": [
+     "sprinter, running kit"
+    ]
+   },
    "actions": [
     "exploding out of the blocks",
     "mid-sprint"
@@ -72,12 +85,16 @@
   },
   {
    "title": "Swimmer",
-   "subjects": [
-    "1girl, swimmer, swim cap, goggles",
-    "1boy, swimmer, swim cap"
-   ],
+   "subjects": {
+    "1girl": [
+     "swimmer, swim cap, goggles"
+    ],
+    "1boy": [
+     "swimmer, swim cap"
+    ]
+   },
    "actions": [
-    "breaking the surface, gasping",
+    "breaking the surface",
     "mid-butterfly stroke"
    ],
    "settings": [
@@ -94,10 +111,18 @@
   },
   {
    "title": "Rain-soaked pitch",
-   "subjects": [
-    "1boy, football player, muddy kit",
-    "1girl, football player, muddy kit"
+   "mood": [
+    "serious",
+    "happy"
    ],
+   "subjects": {
+    "1boy": [
+     "football player, muddy kit"
+    ],
+    "1girl": [
+     "football player, muddy kit"
+    ]
+   },
    "actions": [
     "sliding tackle",
     "celebrating, arms spread"
@@ -115,14 +140,28 @@
   },
   {
    "title": "Rooftop court",
-   "subjects": [
-    "1boy, basketball player",
-    "1girl, basketball player"
+   "mood": [
+    "happy",
+    "serious"
    ],
+   "subjects": {
+    "1boy": [
+     "basketball player"
+    ],
+    "1girl": [
+     "basketball player"
+    ],
+    "2boys": [
+     "streetball players, one-on-one"
+    ],
+    "group": [
+     "3boys, streetball players"
+    ]
+   },
    "actions": [
     "mid-jump shot",
     "dribbling",
-    "tying a shoe on the sideline"
+    "resting on the sideline"
    ],
    "settings": [
     "rooftop basketball court, city behind"

@@ -1,7 +1,6 @@
 {
- "id": "architecture",
- "name": "Architecture",
- "nsfw": false,
+ "theme": "Architecture",
+ "rating": "sfw",
  "styles": [
   "architectural photography",
   "architectural concept art",
@@ -24,10 +23,12 @@
  "scenes": [
   {
    "title": "Brutalist atrium",
-   "subjects": [
-    "no humans",
-    "1other, silhouette, tiny figure for scale"
-   ],
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "silhouette, tiny figure for scale"
+    ]
+   },
    "settings": [
     "brutalist concrete atrium, massive staircase"
    ],
@@ -42,10 +43,12 @@
   },
   {
    "title": "Ruined basilica",
-   "subjects": [
-    "no humans",
-    "1other, walking in the nave, tiny figure for scale"
-   ],
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "walking in the nave, tiny figure for scale"
+    ]
+   },
    "settings": [
     "ruined basilica, collapsed roof, overgrown with vines"
    ],
@@ -60,10 +63,12 @@
   },
   {
    "title": "Glass tower lobby",
-   "subjects": [
-    "no humans",
-    "people walking, motion blur"
-   ],
+   "subjects": {
+    "none": [],
+    "group": [
+     "crowd of people walking, motion blur"
+    ]
+   },
    "settings": [
     "modern glass tower lobby, marble floor, tall atrium"
    ],
@@ -78,9 +83,9 @@
   },
   {
    "title": "Temple courtyard",
-   "subjects": [
-    "no humans"
-   ],
+   "subjects": {
+    "none": []
+   },
    "settings": [
     "quiet courtyard with a single old tree, white walls",
     "japanese temple courtyard, raked gravel"
@@ -96,10 +101,12 @@
   },
   {
    "title": "Cathedral metro",
-   "subjects": [
-    "no humans",
-    "1other, waiting on the platform, tiny figure for scale"
-   ],
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "waiting on the platform, tiny figure for scale"
+    ]
+   },
    "settings": [
     "vast underground metro station, vaulted ceiling, arches"
    ],

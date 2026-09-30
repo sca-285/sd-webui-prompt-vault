@@ -1,10 +1,8 @@
 {
- "id": "food",
- "name": "Food / still life",
- "nsfw": false,
+ "theme": "Food",
+ "rating": "sfw",
  "styles": [
   "professional food photography",
-  "still life oil painting, baroque",
   "anime food illustration",
   "film snapshot"
  ],
@@ -20,9 +18,11 @@
  "scenes": [
   {
    "title": "Ramen at night",
-   "subjects": [
-    "bowl of ramen, chashu, soft-boiled egg, no humans"
-   ],
+   "subjects": {
+    "none": [
+     "bowl of ramen, chashu, soft-boiled egg"
+    ]
+   },
    "actions": [
     "chopsticks lifting noodles",
     "steam rising"
@@ -45,10 +45,12 @@
   },
   {
    "title": "Baroque table",
-   "subjects": [
-    "cut fruit, grapes, pomegranate, no humans",
-    "silver platter, oysters, lemon halves, no humans"
-   ],
+   "subjects": {
+    "none": [
+     "cut fruit, grapes, pomegranate",
+     "silver platter, oysters, lemon halves"
+    ]
+   },
    "settings": [
     "dark stone table, draped cloth"
    ],
@@ -70,10 +72,18 @@
   },
   {
    "title": "Home baking",
-   "subjects": [
-    "hands kneading dough, flour",
-    "1girl, apron, flour on cheek"
+   "mood": [
+    "happy",
+    "calm"
    ],
+   "subjects": {
+    "1girl": [
+     "apron, flour on cheek"
+    ],
+    "1boy": [
+     "apron, rolled-up sleeves"
+    ]
+   },
    "actions": [
     "kneading dough",
     "taking bread out of the oven",
@@ -93,10 +103,17 @@
   },
   {
    "title": "Night market grill",
-   "subjects": [
-    "street food stall, skewers on the grill, no humans",
-    "street vendor, grilling skewers"
+   "mood": [
+    "happy"
    ],
+   "subjects": {
+    "none": [
+     "street food stall, skewers on the grill"
+    ],
+    "1boy": [
+     "street vendor, headband, apron"
+    ]
+   },
    "actions": [
     "smoke rising from the grill"
    ],
@@ -114,9 +131,11 @@
   },
   {
    "title": "Breakfast flat lay",
-   "subjects": [
-    "breakfast spread, pancakes, berries, coffee, no humans"
-   ],
+   "subjects": {
+    "none": [
+     "breakfast spread, pancakes, berries, coffee"
+    ]
+   },
    "settings": [
     "wooden table"
    ],

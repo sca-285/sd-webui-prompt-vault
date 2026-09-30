@@ -1,22 +1,26 @@
-"""Muse: timed idea cards, drawn over every tab by javascript/prompt_vault_muse.js.
+"""Muse: prompt ideas on a floating card, drawn over every tab by javascript/prompt_vault_muse.js.
 
-Packs ship in data/muse_packs. Packs of your own go in <data folder>/muse/packs and
-win over a shipped pack with the same id. Muse's settings and the optional avatar
-live in <data folder>/muse, next to the library, so updates never touch them.
+Ideas come from scenes. A scene holds what belongs together: who can be there, what they
+do, where, in what light and mood. An idea takes one scene, then one entry of each of its
+lists, so every combination makes sense. Every part of an idea can be rolled again or
+locked on the card; locked parts keep the scene.
 
-A pack is a JSON file made of scenes. A scene holds things that belong together: who is
-there, what they do, where, in what light. An idea takes one scene of one pack, then one
-entry of each of its lists, so every combination makes sense:
+Scenes ship in data/muse_scenes. Files of your own go in <data folder>/muse/scenes. Muse's
+settings and the optional avatar live in <data folder>/muse, so updates never touch them.
 
-  {"id": "...", "name": "...", "nsfw": false,
-   "styles": [...], "negatives": [...],          <- for every scene of the pack
+A scene file:
+
+  {"theme": "Film", "rating": "sfw",                 <- defaults for its scenes
+   "styles": [...], "camera": [...], "negatives": [...],
    "scenes": [
-     {"title": "Rainy café window",
-      "subjects": [...], "actions": [...], "settings": [...],
-      "lighting": [...], "camera": [...], "details": [...]}]}
+     {"title": "Night diner", "mood": ["tense", "melancholy"],
+      "subjects": {"1girl": ["trench coat, red lipstick"], "1boy": ["rumpled shirt"]},
+      "gestures": [...], "actions": [...], "settings": [...], "lighting": [...],
+      "details": [...]}]}
 
-A list a scene leaves out comes from the pack, so the pack's own lists must suit every
-scene. A pack without scenes (the first format) is one big scene.
+subjects is keyed by cast (see CASTS); the cast's own tags ("1girl, solo") are added by
+Muse. rating is one of RATINGS. mood picks the expressions (see MOODS); a scene may list
+its own "expressions" instead. A list a scene leaves out comes from its file.
 """
 
 from __future__ import annotations
@@ -33,16 +37,50 @@ import uuid
 from . import TAG, settings, store, text
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PACK_DIR = os.path.join(EXT_ROOT, "data", "muse_packs")
-SLOTS = ("subjects", "actions", "settings", "lighting", "camera", "styles", "details")
-DETAIL_CHANCE = 0.6  # a detail makes an idea specific; on every idea it becomes a tic
+SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
+
+# cast: (label on the card, tags in front of every idea, extra tags when the idea is NSFW)
+CASTS = {
+    "none": ("No humans", "no humans", ""),
+    "1girl": ("1girl", "1girl, solo", ""),
+    "1boy": ("1boy", "1boy, solo, male focus", ""),
+    "1girl1boy": ("1girl 1boy", "1girl, 1boy", "hetero"),
+    "2girls": ("2girls", "2girls", "yuri"),
+    "2boys": ("2boys", "2boys, male focus", "yaoi"),
+    "group": ("3+", "", ""),
+    "furry": ("Furry", "anthro, furry", ""),
+    "nonhuman": ("Non-human", "", ""),
+    "any": ("Other", "", ""),
+}
+RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit": "Explicit"}
+
+# the parts of an idea, in the order they go into the prompt
+SLOTS = ("subject", "expression", "gesture", "action", "detail", "setting", "lighting", "camera", "style")
+LISTS = {"subject": "subjects", "expression": "expressions", "gesture": "gestures", "action": "actions",
+         "detail": "details", "setting": "settings", "lighting": "lighting", "camera": "camera", "style": "styles"}
+CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
+
+MOODS = {
+    "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile"],
+    "happy": ["smile", "laughing", "grin", "bright smile"],
+    "serious": ["serious expression", "determined expression", "focused expression", "stern expression"],
+    "tense": ["worried expression", "wide eyes", "nervous expression", "fearful expression", "holding breath"],
+    "melancholy": ["sad expression", "tired eyes", "wistful expression", "downcast eyes"],
+    "cool": ["smirk", "confident expression", "half-lidded eyes", "expressionless"],
+    "playful": ["playful smile", "tongue out", "one eye closed, wink", "teasing smile"],
+    "shy": ["blush", "shy smile", "embarrassed expression", "flustered"],
+    "sultry": ["seductive smile", "biting lip", "half-lidded eyes, blush", "parted lips"],
+    "passion": ["flushed face, heavy breathing", "moaning, open mouth", "half-closed eyes, blush", "biting lip, sweat",
+                "tears of pleasure", "gasping"],
+    "afterglow": ["satisfied smile", "sleepy eyes", "blush, relaxed", "content expression"],
+}
 
 TARGETS = ("txt2img", "img2img", "vault")
 MODES = ("replace", "append")
 TIPO_OUTPUTS = ("Tags", "Natural language", "Tags + natural language")
 TIPO_LENGTHS = ("very short", "short", "long", "very long")
 
-# NSFW ideas never carry these, whatever a pack says, and always send them as negatives.
+# NSFW ideas never carry these, whatever a file says, and always send them as negatives.
 MINOR = re.compile(r"\b(child|children|kid|kids|loli|lolicon|shota|shotacon|underage|minor|teen|teenager|"
                    r"preteen|toddler|infant|schoolgirl|schoolboy|cub|young girl|young boy|little girl|little boy)\b",
                    re.IGNORECASE)
@@ -57,12 +95,12 @@ AVATAR_TYPES = {  # extension: leading bytes
 AVATAR_MAX = 4 * 1024 * 1024
 
 DEFAULT_STATE = {
-    "enabled": True,
-    "paused": False,
+    "enabled": False,        # the timer: ideas by themselves
     "interval_minutes": 15,
     "allow_nsfw": False,
-    "packs": None,           # None (or empty): every SFW pack; a list: exactly those
-    "target": "txt2img",
+    "themes": [],            # empty: every theme
+    "casts": [],             # empty: every cast
+    "ratings": ["sfw"],
     "send_mode": "replace",
     "send_negative": True,
     "use_tipo": False,
@@ -72,7 +110,7 @@ DEFAULT_STATE = {
 }
 
 _lock = threading.RLock()
-_packs = {"sig": None, "list": []}
+_scenes = {"sig": None, "list": [], "by_id": {}}
 
 
 # ------------------------------------------------------------------ places
@@ -84,8 +122,8 @@ def muse_dir():
     return path
 
 
-def user_pack_dir():
-    return os.path.join(muse_dir(), "packs")
+def user_scene_dir():
+    return os.path.join(muse_dir(), "scenes")
 
 
 def _state_path():
@@ -95,19 +133,25 @@ def _state_path():
 # ------------------------------------------------------------------ state
 
 
+def _names(value, allowed=None):
+    items = value if isinstance(value, list) else []
+    out = list(dict.fromkeys(str(v).strip() for v in items if str(v).strip()))
+    return [v for v in out if v in allowed] if allowed is not None else out
+
+
 def _normalise(data):
     out = dict(DEFAULT_STATE)
     out.update({k: v for k, v in data.items() if k in DEFAULT_STATE})
-    for key in ("enabled", "paused", "allow_nsfw", "send_negative", "use_tipo"):
+    for key in ("enabled", "allow_nsfw", "send_negative", "use_tipo"):
         out[key] = bool(out[key])
     try:
         out["interval_minutes"] = max(5, min(30, int(out["interval_minutes"])))
     except (TypeError, ValueError):
         out["interval_minutes"] = DEFAULT_STATE["interval_minutes"]
-    packs = out["packs"] if isinstance(out["packs"], list) else []
-    out["packs"] = list(dict.fromkeys(str(p).strip() for p in packs if str(p).strip())) or None
-    for key, allowed in (("target", TARGETS), ("send_mode", MODES),
-                         ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS)):
+    out["themes"] = _names(out["themes"])[:100]
+    out["casts"] = _names(out["casts"], CASTS)
+    out["ratings"] = _names(out["ratings"], RATINGS)
+    for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS)):
         if out[key] not in allowed:
             out[key] = DEFAULT_STATE[key]
     out["blacklist"] = str(out["blacklist"] or "")[:4000]
@@ -131,16 +175,21 @@ def save_state(patch):
         return data
 
 
-# ------------------------------------------------------------------ packs
+def _ratings_on(st):
+    return [r for r in st["ratings"] if r == "sfw" or st["allow_nsfw"]]
 
 
-def _pack_files():
-    shipped = sorted(glob.glob(os.path.join(PACK_DIR, "*.json")))
-    mine = sorted(glob.glob(os.path.join(user_pack_dir(), "*.json")))
-    return shipped + mine  # later wins: a pack of your own replaces a shipped one with its id
+# ------------------------------------------------------------------ scenes
 
 
-def _clean_list(items, nsfw):
+def _scene_files():
+    shipped = sorted(glob.glob(os.path.join(SCENE_DIR, "*.json")))
+    mine = sorted(glob.glob(os.path.join(user_scene_dir(), "*.json")))
+    mine += sorted(glob.glob(os.path.join(muse_dir(), "packs", "*.json")))  # where the first versions kept them
+    return [(f, False) for f in shipped] + [(f, True) for f in mine]
+
+
+def _clean(items, nsfw):
     out = []
     for item in items if isinstance(items, list) else []:
         item = str(item).strip()
@@ -149,68 +198,101 @@ def _clean_list(items, nsfw):
     return out
 
 
-def _slots(data, nsfw):
-    """The lists of a pack or a scene; 'twists' is the first format's name for 'details'."""
-    data = dict(data)
-    data.setdefault("details", data.get("twists"))
-    return {slot: _clean_list(data.get(slot), nsfw) for slot in SLOTS}
-
-
-def _read_pack(data, custom):
-    nsfw = bool(data.get("nsfw"))
-    pack = {"id": str(data["id"]).strip(), "name": str(data.get("name") or data["id"]), "nsfw": nsfw,
-            "custom": custom, "negatives": _clean_list(data.get("negatives"), False)}
-    pack.update(_slots(data, nsfw))
-    scenes = []
-    for raw in data.get("scenes") or [{}]:
+def _read_file(path, custom):
+    """The scenes of one file. Also takes the pack formats of the first versions."""
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        return []
+    stem = os.path.splitext(os.path.basename(path))[0]
+    if "id" in data and "theme" not in data:  # a pack of the first versions
+        data = dict(data, theme=data.get("name") or data["id"], rating="explicit" if data.get("nsfw") else "sfw")
+        data.setdefault("details", data.get("twists"))
+        raw_scenes = data.get("scenes") or [{}]
+    else:
+        raw_scenes = data.get("scenes") or []
+    out = []
+    for i, raw in enumerate(raw_scenes):
         if not isinstance(raw, dict):
             continue
-        scene = _slots(raw, nsfw)
-        # what the scene leaves out, the pack gives
-        for slot in SLOTS:
-            scene[slot] = scene[slot] or pack[slot]
-        scene["title"] = str(raw.get("title") or "").strip()
-        if scene["subjects"] or scene["settings"]:
-            scenes.append(scene)
-    pack["scenes"] = scenes
-    return pack if scenes else None
+        rating = raw.get("rating") or data.get("rating") or "sfw"
+        if rating not in RATINGS:
+            continue
+        nsfw = rating != "sfw"
+        lists = {}
+        for slot, key in LISTS.items():
+            if slot == "subject":
+                continue
+            lists[slot] = _clean(raw.get(key), nsfw) or _clean(data.get(key), nsfw)
+        subjects = raw.get("subjects") if "subjects" in raw else data.get("subjects")
+        if isinstance(subjects, list):
+            subjects = {"any": subjects}
+        casts = {}
+        for cast, items in (subjects or {}).items():
+            if cast not in CASTS:
+                continue
+            clean = _clean(items, nsfw)
+            if clean or cast == "none":
+                casts[cast] = clean or [""]
+        if not casts:
+            continue
+        moods = raw.get("mood") or data.get("mood") or []
+        moods = [moods] if isinstance(moods, str) else moods
+        if not lists["expression"]:
+            lists["expression"] = [e for m in moods for e in MOODS.get(m, [])]
+        out.append({
+            "id": f"{'my' if custom else 'x'}:{stem}:{raw.get('id') or i}",
+            "title": str(raw.get("title") or data.get("theme") or stem),
+            "theme": str(raw.get("theme") or data.get("theme") or stem),
+            "rating": rating,
+            "casts": casts,
+            "lists": lists,
+            "negatives": _clean(data.get("negatives"), False) + _clean(raw.get("negatives"), False),
+            "custom": custom,
+        })
+    return out
 
 
-def load_packs():
-    """Every pack, read again only when a file was added, removed or changed."""
-    files = _pack_files()
-    sig = tuple((f, os.path.getmtime(f)) for f in files if os.path.isfile(f))
+def load_scenes():
+    """Every scene, read again only when a file was added, removed or changed."""
+    files = _scene_files()
+    sig = tuple((f, os.path.getmtime(f)) for f, _ in files if os.path.isfile(f))
     with _lock:
-        if _packs["sig"] == sig:
-            return _packs["list"]
-        found = {}
-        for path in files:
-            try:
-                with open(path, encoding="utf-8") as f:
-                    data = json.load(f)
-            except Exception as exc:
-                print(f"{TAG} Muse pack {os.path.basename(path)} skipped: {exc}")
-                continue
-            if not isinstance(data, dict) or not str(data.get("id") or "").strip():
-                continue
-            pack = _read_pack(data, custom=not path.startswith(PACK_DIR))
-            if pack:
-                found[pack["id"]] = pack
-        _packs.update(sig=sig, list=sorted(found.values(), key=lambda p: (p["nsfw"], p["name"].lower())))
-        return _packs["list"]
+        if _scenes["sig"] != sig:
+            found = []
+            for path, custom in files:
+                try:
+                    found.extend(_read_file(path, custom))
+                except Exception as exc:
+                    print(f"{TAG} Muse: {os.path.basename(path)} skipped: {exc}")
+            _scenes.update(sig=sig, list=found, by_id={s["id"]: s for s in found})
+        return _scenes["list"]
 
 
-def packs_public():
-    return [{"id": p["id"], "name": p["name"], "nsfw": p["nsfw"], "custom": p["custom"],
-             "size": len(p["scenes"])} for p in load_packs()]
+def catalogue():
+    """What the filters on the card need: every theme, cast and rating, and which go together."""
+    scenes = load_scenes()
+    themes = list(dict.fromkeys(s["theme"] for s in scenes))
+    return {
+        "themes": themes,
+        "casts": [[k, v[0]] for k, v in CASTS.items() if any(k in s["casts"] for s in scenes)],
+        "ratings": [[k, v] for k, v in RATINGS.items()],
+        # one row per scene: [theme index, [casts], rating]
+        "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"]] for s in scenes],
+    }
 
 
-def _active_packs(st):
-    usable = [p for p in load_packs() if st["allow_nsfw"] or not p["nsfw"]]
-    if st["packs"] is None:
-        return [p for p in usable if not p["nsfw"]]
-    wanted = set(st["packs"])
-    return [p for p in usable if p["id"] in wanted]
+def _matching(st):
+    ratings = set(_ratings_on(st))
+    themes, casts = set(st["themes"]), set(st["casts"])
+    out = []
+    for s in load_scenes():
+        if s["rating"] not in ratings or (themes and s["theme"] not in themes):
+            continue
+        usable = [c for c in s["casts"] if not casts or c in casts]
+        if usable:
+            out.append((s, usable))
+    return out
 
 
 # ------------------------------------------------------------------ blacklist
@@ -230,56 +312,85 @@ def _blacklist_test(rules):
 # ------------------------------------------------------------------ ideas
 
 
-def compose(seed=None):
+def _pools(scene, cast):
+    pools = dict(scene["lists"])
+    pools["subject"] = scene["casts"][cast]
+    if cast == "none":  # nobody to have a face or hands
+        pools["expression"], pools["gesture"] = [], []
+    return pools
+
+
+def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None):
+    """A new idea. With scene_id, the same scene again: the parts in keep stay as they are
+    (the locked ones), the rest is drawn afresh. roll names a part of keep that must change."""
     st = state()
-    packs = _active_packs(st)
-    if not packs:
-        raise store.VaultError("No pack is on. Pick at least one on the Muse settings page.")
     rules = parse_blacklist(st["blacklist"])
     blocked = _blacklist_test(rules)
     rng = random.Random(seed)
+    keep = {k: str(v) for k, v in (keep or {}).items() if k in SLOTS and isinstance(v, str)}
+    current = keep.pop(roll, None) if roll else None  # the part being rolled: anything but this
+
+    load_scenes()
+    if scene_id:
+        scene = _scenes["by_id"].get(scene_id)
+        if not scene:
+            raise store.VaultError("That scene is gone (its file changed). Take a new idea.")
+        if scene["rating"] != "sfw" and not st["allow_nsfw"]:
+            raise store.VaultError("NSFW is off.")
+        choices = [(scene, [cast] if cast in scene["casts"] else list(scene["casts"]))]
+    else:
+        choices = _matching(st)
+        if not choices:
+            raise store.VaultError("Nothing matches these filters. Loosen them a little.")
 
     for _ in range(24):
-        pack = rng.choice(packs)
-        scene = rng.choice(pack["scenes"])
+        scene, casts = rng.choice(choices)
+        who = rng.choice(casts)
+        pools = _pools(scene, who)
         parts = {}
         for slot in SLOTS:
-            pool = [x for x in scene[slot] if not blocked(x)]
+            if slot in keep:
+                parts[slot] = keep[slot]
+                continue
+            pool = [x for x in pools[slot] if not blocked(x)]
+            if slot == roll and len(pool) > 1:
+                pool = [x for x in pool if x != current]
+            if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:
+                pool = []
             parts[slot] = rng.choice(pool) if pool else ""
-        if scene["subjects"] and not parts["subjects"]:
-            continue  # the blacklist took every subject: this scene is not a scene anymore
-        if rng.random() >= DETAIL_CHANCE:
-            parts["details"] = ""
-        # subject first, then what they do, where, the light, the framing, the look
-        order = ("subjects", "actions", "details", "settings", "lighting", "camera", "styles")
+        if pools["subject"] != [""] and not parts["subject"]:
+            continue  # the blacklist took every subject of this scene
+
+        nsfw = scene["rating"] != "sfw"
+        label, cast_tags, nsfw_tags = CASTS[who]
+        front = [cast_tags] + ([nsfw_tags, "adult"] if nsfw and who != "none" else [])
         seen, pieces = set(), []
-        for slot in order:
-            for piece in text.split(parts[slot]):
+        for chunk in front + [parts[s] for s in SLOTS]:
+            for piece in text.split(chunk):
                 if not blocked(piece) and text.key(piece) not in seen:
                     seen.add(text.key(piece))
                     pieces.append(piece)
-        if not pieces:
-            continue
 
-        negatives = list(pack["negatives"]) + (GUARD_NEGATIVES if pack["nsfw"] else []) + rules
         seen, negative = set(), []
-        for n in negatives:
+        for n in scene["negatives"] + (GUARD_NEGATIVES if nsfw else []) + rules:
             if text.key(n) not in seen:
                 seen.add(text.key(n))
                 negative.append(n)
 
-        spark = scene["title"] or " · ".join(x for x in (parts["subjects"], parts["actions"], parts["settings"]) if x)
         return {
             "id": uuid.uuid4().hex[:12],
-            "pack": pack["id"],
-            "pack_name": pack["name"],
-            "nsfw": pack["nsfw"],
-            "spark": spark,
-            "twist": parts["details"],
+            "scene": scene["id"],
+            "title": scene["title"],
+            "theme": scene["theme"],
+            "cast": who,
+            "cast_label": label,
+            "rating": scene["rating"],
+            "nsfw": nsfw,
+            "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS if any(pools[s]) or parts[s]],
             "positive": text.join(pieces),
             "negative": text.join(negative),
         }
-    raise store.VaultError("Every idea hit the blacklist: loosen it or turn more packs on.")
+    raise store.VaultError("Every idea hit the Never use list: loosen it or the filters.")
 
 
 def expand_with_tipo(positive):
@@ -344,4 +455,4 @@ def clear_avatar():
 
 
 def snapshot():
-    return {"state": state(), "packs": packs_public(), "avatar": avatar_info()}
+    return {"state": state(), "catalogue": catalogue(), "avatar": avatar_info()}

@@ -184,7 +184,7 @@ html body .pv-muse-icon { width: 18px; height: 18px; fill: none; stroke: current
 /* the panel */
 html body #pv_muse_panel {
     --pv-muse-accent: var(--color-accent, var(--button-primary-background-fill, #7c5cff));
-    position: fixed; z-index: 901; width: min(360px, calc(100vw - 16px)); max-height: min(600px, calc(100vh - 16px));
+    position: fixed; z-index: 901; width: min(380px, calc(100vw - 16px)); max-height: min(700px, calc(100vh - 16px));
     display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;
     border: 1px solid var(--border-color-primary); border-radius: 14px;
     background: var(--background-fill-primary, var(--block-background-fill, #1a1a1a)); color: var(--body-text-color);
@@ -210,22 +210,10 @@ html body #pv_muse_panel .pv-muse-icon-btn:hover:not(:disabled) { opacity: 1; ba
 html body #pv_muse_panel .pv-muse-icon-btn:disabled { opacity: 0.25; cursor: default; }
 
 #pv_muse_panel .pv-muse-body { flex: 1; min-height: 0; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-#pv_muse_panel .pv-muse-empty { align-items: center; justify-content: center; padding: 28px 12px; text-align: center; }
+#pv_muse_panel .pv-muse-empty { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 24px 12px; text-align: center; }
 #pv_muse_panel .pv-muse-empty p { margin: 0; opacity: 0.7; }
-
-#pv_muse_panel .pv-muse-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px; }
-#pv_muse_panel .pv-muse-pill {
-    display: inline-block; max-width: 100%; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    background: color-mix(in srgb, var(--pv-muse-accent) 16%, transparent); color: var(--body-text-color);
-}
-#pv_muse_panel .pv-muse-pill.pv-muse-nsfw { background: rgba(220, 70, 70, 0.18); }
-#pv_muse_panel .pv-muse-nav { display: flex; align-items: center; gap: 0; font-size: 12px; opacity: 0.85; font-variant-numeric: tabular-nums; }
-html body #pv_muse_panel .pv-muse-nav .pv-muse-icon-btn { width: 26px; height: 26px; }
-
-#pv_muse_panel .pv-muse-spark { font-size: 15px; font-weight: 600; line-height: 1.35; }
-#pv_muse_panel .pv-muse-twist { font-size: 13px; font-style: italic; opacity: 0.75; margin-top: -4px; }
-#pv_muse_panel .pv-muse-note, #pv_muse_panel .pv-muse-hint { font-size: 12px; opacity: 0.6; }
+#pv_muse_panel .pv-muse-hint { font-size: 12px; opacity: 0.6; }
+#pv_muse_panel .pv-muse-body > * { flex-shrink: 0; }
 
 html body #pv_muse_panel .pv-muse-text {
     width: 100%; min-height: 0; margin: 0; padding: 8px 10px; resize: vertical;
@@ -235,15 +223,71 @@ html body #pv_muse_panel .pv-muse-text {
 }
 html body #pv_muse_panel .pv-muse-text:focus { outline: none; border-color: var(--pv-muse-accent); }
 
-#pv_muse_panel .pv-muse-neg { font-size: 12px; }
-#pv_muse_panel .pv-muse-neg summary { cursor: pointer; opacity: 0.7; }
-#pv_muse_panel .pv-muse-neg div { margin-top: 4px; opacity: 0.7; word-break: break-word; }
+/* filters: three pills, one tray open at a time */
+#pv_muse_panel .pv-muse-filters { display: flex; flex-direction: column; gap: 8px; }
+#pv_muse_panel .pv-muse-filter-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+html body #pv_muse_panel .pv-muse-filter {
+    display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 2px; align-items: center;
+    min-height: 0; margin: 0; padding: 5px 6px 5px 9px; text-align: left; cursor: pointer; font: inherit;
+    border: 1px solid var(--border-color-primary); border-radius: 8px; background: transparent; color: var(--body-text-color);
+}
+html body #pv_muse_panel .pv-muse-filter:hover, html body #pv_muse_panel .pv-muse-filter.pv-on { border-color: var(--pv-muse-accent); }
+#pv_muse_panel .pv-muse-filter-label { grid-column: 1; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.55; }
+#pv_muse_panel .pv-muse-filter-value { grid-column: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#pv_muse_panel .pv-muse-filter .pv-muse-icon { grid-column: 2; grid-row: 1 / 3; width: 14px; height: 14px; opacity: 0.6; transition: transform 0.15s; }
+#pv_muse_panel .pv-muse-filter.pv-on .pv-muse-icon { transform: rotate(180deg); }
+#pv_muse_panel .pv-muse-tray { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 10px; background: var(--button-secondary-background-fill); }
+html body #pv_muse_panel .pv-muse-chip small { margin-left: 5px; font-size: 11px; opacity: 0.55; }
+html body #pv_muse_panel .pv-muse-chip.pv-muse-none:not(.pv-on) { opacity: 0.35; }
+html body #pv_muse_panel .pv-muse-chip:disabled { opacity: 0.3; cursor: not-allowed; }
 
+/* the idea: a title, then one row per part */
+#pv_muse_panel .pv-muse-card { border: 1px solid var(--border-color-primary); border-radius: 10px; overflow: hidden; }
+#pv_muse_panel .pv-muse-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 10px 10px 8px 12px; }
+#pv_muse_panel .pv-muse-card-title { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+#pv_muse_panel .pv-muse-card-title strong { font-size: 15px; line-height: 1.3; }
+#pv_muse_panel .pv-muse-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+#pv_muse_panel .pv-muse-tags span {
+    padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+    background: color-mix(in srgb, var(--pv-muse-accent) 14%, transparent);
+}
+#pv_muse_panel .pv-muse-tags span.pv-muse-nsfw { background: rgba(220, 70, 70, 0.2); }
+#pv_muse_panel .pv-muse-nav { display: flex; align-items: center; font-size: 12px; opacity: 0.85; font-variant-numeric: tabular-nums; flex: none; }
+html body #pv_muse_panel .pv-muse-nav .pv-muse-icon-btn { width: 26px; height: 26px; }
+
+#pv_muse_panel .pv-muse-parts { display: flex; flex-direction: column; border-top: 1px solid var(--border-color-primary); }
+#pv_muse_panel .pv-muse-part {
+    display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; align-items: center; gap: 2px 6px;
+    padding: 3px 4px 3px 12px; border-bottom: 1px solid color-mix(in srgb, var(--border-color-primary) 55%, transparent);
+}
+#pv_muse_panel .pv-muse-part:last-child { border-bottom: none; }
+#pv_muse_panel .pv-muse-part-name { font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.5; }
+#pv_muse_panel .pv-muse-part-value { font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+#pv_muse_panel .pv-muse-empty-part .pv-muse-part-value { opacity: 0.35; }
+#pv_muse_panel .pv-muse-locked { background: color-mix(in srgb, var(--pv-muse-accent) 10%, transparent); }
+html body #pv_muse_panel .pv-muse-part .pv-muse-icon-btn { width: 28px; height: 26px; }
+html body #pv_muse_panel .pv-muse-part .pv-muse-icon { width: 15px; height: 15px; }
+html body #pv_muse_panel .pv-muse-icon-btn.pv-on { opacity: 1; color: var(--pv-muse-accent); }
+html body #pv_muse_panel .pv-muse-spin .pv-muse-icon { animation: pv-muse-spin 0.8s linear infinite; }
+@keyframes pv-muse-spin { to { transform: rotate(360deg); } }
+
+#pv_muse_panel .pv-muse-prompt { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+#pv_muse_panel .pv-muse-prompt summary { cursor: pointer; opacity: 0.7; font-size: 12px; }
+#pv_muse_panel .pv-muse-prompt[open] summary { margin-bottom: 6px; }
+#pv_muse_panel .pv-muse-neg {
+    margin-top: 6px; opacity: 0.6; word-break: break-word;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+#pv_muse_panel .pv-muse-foot { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid var(--border-color-primary); }
 #pv_muse_panel .pv-muse-actions { display: flex; align-items: center; gap: 6px; }
 html body #pv_muse_panel .pv-btn { font-family: inherit; }
 html body #pv_muse_panel .pv-btn:disabled { opacity: 0.5; cursor: default; }
-html body #pv_muse_panel .pv-muse-send { flex: 1; }
-#pv_muse_panel .pv-muse-actions .pv-muse-icon-btn { margin-left: auto; }
+html body #pv_muse_panel .pv-muse-new { flex: 1; }
+html body #pv_muse_panel .pv-muse-new .pv-muse-icon { width: 15px; height: 15px; }
+#pv_muse_panel .pv-muse-send { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); align-items: center; gap: 6px; }
+#pv_muse_panel .pv-muse-send-label { font-size: 12px; opacity: 0.6; }
+html body #pv_muse_panel .pv-muse-send .pv-btn { padding: 4px 6px; }
 
 /* settings */
 #pv_muse_panel .pv-muse-settings { gap: 0; padding-top: 4px; }
@@ -257,7 +301,7 @@ html body #pv_muse_panel .pv-muse-switch {
 }
 #pv_muse_panel .pv-muse-track {
     position: relative; flex: none; width: 34px; height: 20px; border-radius: 999px;
-    background: var(--border-color-primary, #555); transition: background 0.15s;
+    background: color-mix(in srgb, var(--body-text-color) 28%, transparent); transition: background 0.15s;
 }
 #pv_muse_panel .pv-muse-track::after {
     content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%;

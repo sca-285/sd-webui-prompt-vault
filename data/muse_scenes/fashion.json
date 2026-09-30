@@ -1,7 +1,6 @@
 {
- "id": "fashion",
- "name": "Fashion editorial",
- "nsfw": false,
+ "theme": "Fashion",
+ "rating": "sfw",
  "styles": [
   "high fashion photography, editorial",
   "film photography, lookbook",
@@ -23,11 +22,20 @@
  "scenes": [
   {
    "title": "Cyclorama lookbook",
-   "subjects": [
-    "1girl, tall, oversized wool coat, wide trousers",
-    "1boy, tailored suit, no tie, loafers",
-    "androgynous model, sharp-cut blazer, slicked hair"
+   "mood": [
+    "cool"
    ],
+   "subjects": {
+    "1girl": [
+     "tall, oversized wool coat, wide trousers"
+    ],
+    "1boy": [
+     "tailored suit, no tie, loafers"
+    ],
+    "nonhuman": [
+     "androgynous android model, sharp-cut blazer, porcelain skin"
+    ]
+   },
    "actions": [
     "walking toward camera",
     "standing, hands in pockets",
@@ -51,14 +59,22 @@
   },
   {
    "title": "Desert highway",
-   "subjects": [
-    "1girl, flowing silk gown",
-    "1boy, linen suit, sunglasses",
-    "1girl, leather jacket, long skirt"
+   "mood": [
+    "cool",
+    "calm"
    ],
+   "subjects": {
+    "1girl": [
+     "flowing silk gown",
+     "leather jacket, long skirt"
+    ],
+    "1boy": [
+     "linen suit, sunglasses"
+    ]
+   },
    "actions": [
-    "walking along the road, fabric in the wind",
-    "standing on the centre line, looking at viewer",
+    "walking along the road",
+    "standing on the centre line",
     "sitting on the hood of a vintage car"
    ],
    "settings": [
@@ -66,7 +82,7 @@
    ],
    "lighting": [
     "golden hour, long shadows",
-    "harsh midday sun, deep shadows"
+    "harsh midday sun"
    ],
    "camera": [
     "full body, wide shot",
@@ -79,11 +95,19 @@
   },
   {
    "title": "Palazzo hallway",
-   "subjects": [
-    "1girl, couture ball gown, long gloves",
-    "1boy, velvet tuxedo",
-    "1girl, tailored cape, statement earrings"
+   "mood": [
+    "cool",
+    "calm"
    ],
+   "subjects": {
+    "1girl": [
+     "couture ball gown, long gloves",
+     "tailored cape, statement earrings"
+    ],
+    "1boy": [
+     "velvet tuxedo"
+    ]
+   },
    "actions": [
     "walking down the hallway, looking back",
     "leaning on a marble column",
@@ -103,11 +127,19 @@
   },
   {
    "title": "Night street flash",
-   "subjects": [
-    "1girl, vinyl trench coat, knee boots",
-    "1boy, oversized puffer jacket, cargo pants",
-    "1girl, sequin dress, faux fur coat"
+   "mood": [
+    "cool",
+    "playful"
    ],
+   "subjects": {
+    "1girl": [
+     "vinyl trench coat, knee boots",
+     "sequin dress, faux fur coat"
+    ],
+    "1boy": [
+     "oversized puffer jacket, cargo pants"
+    ]
+   },
    "actions": [
     "crossing the street",
     "standing under a street lamp",
@@ -127,11 +159,21 @@
   },
   {
    "title": "Industrial rooftop",
-   "subjects": [
-    "1girl, knitwear set, wind in hair",
-    "1boy, layered workwear jacket",
-    "androgynous model, monochrome streetwear"
+   "mood": [
+    "cool"
    ],
+   "subjects": {
+    "1girl": [
+     "knitwear set",
+     "monochrome streetwear"
+    ],
+    "1boy": [
+     "layered workwear jacket"
+    ],
+    "2girls": [
+     "matching streetwear, contrasting colours"
+    ]
+   },
    "actions": [
     "sitting on the ledge",
     "leaning on the railing",

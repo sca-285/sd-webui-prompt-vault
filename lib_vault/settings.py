@@ -155,7 +155,7 @@ def register():
         "pv_hide_nsfw": O(False, "Hide the NSFW categories of the library by default")
         .info("categories with NSFW in their name; the tab has a switch too"),
         "pv_muse": O(True, "Show Muse, the floating idea button, on every tab")
-        .info("its packs, timer and NSFW switch are on its own panel (the gear); applies after a page reload"),
+        .info("its filters, timer and NSFW switch are on its own card; applies after a page reload"),
     })
     add(SECTION_QWEN, {
         "pv_llama_server_path": O("", "llama-server executable", gr.Textbox)

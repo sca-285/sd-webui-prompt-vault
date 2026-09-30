@@ -1,7 +1,6 @@
 {
- "id": "interior",
- "name": "Interior / still room",
- "nsfw": false,
+ "theme": "Home",
+ "rating": "sfw",
  "styles": [
   "quiet interior photography",
   "anime background, ghibli style",
@@ -23,10 +22,27 @@
  "scenes": [
   {
    "title": "Sunday afternoon",
-   "subjects": [
-    "1girl, oversized sweater",
-    "1boy, t-shirt, socks"
+   "mood": [
+    "calm",
+    "happy"
    ],
+   "subjects": {
+    "1girl": [
+     "oversized sweater"
+    ],
+    "1boy": [
+     "t-shirt, socks"
+    ],
+    "1girl1boy": [
+     "couple in loungewear"
+    ],
+    "2girls": [
+     "friends in loungewear"
+    ],
+    "2boys": [
+     "roommates, hoodies"
+    ]
+   },
    "actions": [
     "reading on the sofa",
     "napping on the sofa",
@@ -45,10 +61,18 @@
   },
   {
    "title": "Tiny kitchen at night",
-   "subjects": [
-    "1girl, pajamas",
-    "1boy, hoodie"
+   "mood": [
+    "calm",
+    "melancholy"
    ],
+   "subjects": {
+    "1girl": [
+     "pajamas"
+    ],
+    "1boy": [
+     "hoodie"
+    ]
+   },
    "actions": [
     "waiting for the kettle to boil",
     "eating noodles at a small table",
@@ -68,9 +92,9 @@
   },
   {
    "title": "Cluttered study",
-   "subjects": [
-    "no humans"
-   ],
+   "subjects": {
+    "none": []
+   },
    "settings": [
     "cluttered study, stacked books, writing desk by the window"
    ],
@@ -86,9 +110,9 @@
   },
   {
    "title": "Genkan",
-   "subjects": [
-    "no humans"
-   ],
+   "subjects": {
+    "none": []
+   },
    "settings": [
     "japanese apartment entrance, genkan, shoes lined up"
    ],
@@ -103,9 +127,9 @@
   },
   {
    "title": "Steamy bathroom",
-   "subjects": [
-    "no humans"
-   ],
+   "subjects": {
+    "none": []
+   },
    "settings": [
     "small bathroom, fogged mirror, white tiles"
    ],
