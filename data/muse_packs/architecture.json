@@ -1,51 +1,116 @@
 {
-  "id": "architecture",
-  "name": "Architecture",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "no humans, concrete atrium",
-    "1boy, tiny at the foot of stairs",
-    "1girl walking a colonnade",
-    "empty corridor, vanishing point"
-  ],
-  "actions": [
-    "crossing a shaft of light",
-    "hand on a banister",
-    "no action, space focus"
-  ],
-  "settings": [
-    "brutalist interior",
-    "glass tower lobby",
-    "ruined basilica",
-    "subway cathedral station",
-    "courtyard with a single tree"
-  ],
-  "lighting": [
-    "shaft of sun through a slit",
-    "overcast even light",
-    "night interior practicals"
-  ],
-  "camera": [
-    "tilt-shift feel",
-    "one-point perspective",
-    "corner two-point"
-  ],
-  "styles": [
-    "architectural photography",
-    "beige concrete render",
-    "inked plan overlay"
-  ],
-  "twists": [
-    "every door is slightly ajar",
-    "the stairs lead to a wall"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+ "id": "architecture",
+ "name": "Architecture",
+ "nsfw": false,
+ "styles": [
+  "architectural photography",
+  "architectural concept art",
+  "watercolor architectural sketch"
+ ],
+ "camera": [
+  "wide shot, one-point perspective",
+  "wide angle, from below",
+  "two-point perspective"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Brutalist atrium",
+   "subjects": [
+    "no humans",
+    "1other, silhouette, tiny figure for scale"
+   ],
+   "settings": [
+    "brutalist concrete atrium, massive staircase"
+   ],
+   "lighting": [
+    "single shaft of sunlight through a slit window",
+    "overcast, even light"
+   ],
+   "details": [
+    "long shadows on concrete",
+    "puddle reflecting the ceiling"
+   ]
+  },
+  {
+   "title": "Ruined basilica",
+   "subjects": [
+    "no humans",
+    "1other, walking in the nave, tiny figure for scale"
+   ],
+   "settings": [
+    "ruined basilica, collapsed roof, overgrown with vines"
+   ],
+   "lighting": [
+    "god rays through the broken roof",
+    "misty morning light"
+   ],
+   "details": [
+    "birds flying inside",
+    "moss on the columns"
+   ]
+  },
+  {
+   "title": "Glass tower lobby",
+   "subjects": [
+    "no humans",
+    "people walking, motion blur"
+   ],
+   "settings": [
+    "modern glass tower lobby, marble floor, tall atrium"
+   ],
+   "lighting": [
+    "night, interior lights, city outside",
+    "morning sunlight through the glass wall"
+   ],
+   "details": [
+    "reflections on the polished floor",
+    "indoor trees"
+   ]
+  },
+  {
+   "title": "Temple courtyard",
+   "subjects": [
+    "no humans"
+   ],
+   "settings": [
+    "quiet courtyard with a single old tree, white walls",
+    "japanese temple courtyard, raked gravel"
+   ],
+   "lighting": [
+    "soft afternoon light",
+    "autumn light"
+   ],
+   "details": [
+    "fallen leaves on stone",
+    "stone lantern"
+   ]
+  },
+  {
+   "title": "Cathedral metro",
+   "subjects": [
+    "no humans",
+    "1other, waiting on the platform, tiny figure for scale"
+   ],
+   "settings": [
+    "vast underground metro station, vaulted ceiling, arches"
+   ],
+   "lighting": [
+    "warm chandeliers",
+    "cold fluorescent strips"
+   ],
+   "details": [
+    "train arriving, motion blur",
+    "mosaic tiled walls"
+   ]
+  }
+ ]
 }

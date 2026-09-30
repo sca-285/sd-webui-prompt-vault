@@ -1,60 +1,164 @@
 {
-  "id": "horror",
-  "name": "Horror",
-  "nsfw": false,
-  "subjects": [
-    "1girl, pale, listening",
-    "1boy, flashlight under the chin unused",
-    "child at the end of a corridor",
-    "something wearing a familiar coat",
-    "caretaker with a ring of keys",
-    "1girl, muddy hem, no shoes"
-  ],
-  "actions": [
-    "holding the door almost closed",
-    "counting the same pictures again",
-    "whispering to an empty chair",
-    "not turning around",
-    "pressing an ear to the wall",
-    "smiling a second too late"
-  ],
-  "settings": [
-    "flooded basement, bulb on a wire",
-    "school after hours",
-    "forest road, car doors open",
-    "hospital wing with the lights on one side only",
-    "attic, insulation torn",
-    "playground at night, one swing moving"
-  ],
-  "lighting": [
-    "failing flashlight beam",
-    "red exit sign only",
-    "lightning through boarded windows",
-    "tv static as the only light",
-    "moon, then not"
-  ],
-  "camera": [
-    "found-footage framing",
-    "still from the far end of the hall",
-    "dutch angle, tight",
-    "what the peephole sees",
-    "macro on a hand on the knob"
-  ],
-  "styles": [
-    "desaturated horror still",
-    "liminal photography",
-    "analog video noise",
-    "ink-wash nightmare illustration",
-    "cold clinical photography"
-  ],
-  "twists": [
-    "the reflection blinks first",
-    "there are more coats than people",
-    "the hallway is longer when you look back",
-    "the sound is coming from inside the walls and also from the drain",
-    "the date on the newspaper is tomorrow"
-  ],
-  "negatives": [
-    "gore for its own sake", "watermark", "text", "jump-scare stock pose", "clown"
-  ]
+ "id": "horror",
+ "name": "Horror",
+ "nsfw": false,
+ "styles": [
+  "desaturated horror film still",
+  "found footage, vhs noise",
+  "grainy analog photograph",
+  "dark ink illustration"
+ ],
+ "camera": [
+  "wide shot",
+  "dutch angle",
+  "from behind"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "gore",
+  "clown"
+ ],
+ "scenes": [
+  {
+   "title": "Flooded basement",
+   "subjects": [
+    "1girl, pale, wet hair, nightgown",
+    "1boy, rain jacket, holding a flashlight"
+   ],
+   "actions": [
+    "wading through water",
+    "shining a flashlight into the dark",
+    "frozen, listening"
+   ],
+   "settings": [
+    "flooded basement, bare bulb on a wire, rusty pipes"
+   ],
+   "lighting": [
+    "flashlight beam in the darkness",
+    "flickering bare bulb"
+   ],
+   "details": [
+    "something floating in the water",
+    "reflections on black water"
+   ]
+  },
+  {
+   "title": "Hospital wing",
+   "subjects": [
+    "1girl, hospital gown, bare feet",
+    "1boy, night guard uniform"
+   ],
+   "actions": [
+    "walking down the corridor",
+    "looking back over shoulder",
+    "standing still in a doorway"
+   ],
+   "settings": [
+    "abandoned hospital corridor, empty gurney"
+   ],
+   "lighting": [
+    "half the lights out, flickering",
+    "red emergency light"
+   ],
+   "details": [
+    "wheelchair in the distance",
+    "doors left ajar"
+   ]
+  },
+  {
+   "title": "Forest road",
+   "subjects": [
+    "1girl, torn jacket, muddy",
+    "1boy, flannel shirt, car keys in hand"
+   ],
+   "actions": [
+    "standing by the open car door",
+    "staring into the trees",
+    "running toward the camera"
+   ],
+   "settings": [
+    "forest road at night, car with its doors open"
+   ],
+   "lighting": [
+    "car headlights in fog",
+    "red hazard lights"
+   ],
+   "details": [
+    "fog between the trees",
+    "a tall silhouette among the trees"
+   ]
+  },
+  {
+   "title": "Attic",
+   "subjects": [
+    "1girl, holding a candle",
+    "1boy, holding a lantern"
+   ],
+   "actions": [
+    "opening an old trunk",
+    "crouching, peering into the dark",
+    "climbing through the hatch"
+   ],
+   "settings": [
+    "dusty attic, furniture under white sheets"
+   ],
+   "lighting": [
+    "candlelight",
+    "moonlight through a small window"
+   ],
+   "details": [
+    "cobwebs",
+    "covered mirror",
+    "porcelain doll on a chair"
+   ]
+  },
+  {
+   "title": "Empty pool",
+   "subjects": [
+    "no humans"
+   ],
+   "settings": [
+    "abandoned indoor swimming pool, tiled walls",
+    "empty indoor pool, dirty water at the bottom"
+   ],
+   "lighting": [
+    "humming fluorescent light",
+    "dim light from dirty skylights"
+   ],
+   "camera": [
+    "wide shot, one-point perspective"
+   ],
+   "details": [
+    "a single towel on the floor",
+    "wet footprints on the tiles"
+   ]
+  },
+  {
+   "title": "TV static",
+   "subjects": [
+    "1girl, sitting cross-legged on the floor",
+    "1boy, sitting on the edge of the bed"
+   ],
+   "actions": [
+    "staring at the tv",
+    "holding the remote, not moving"
+   ],
+   "settings": [
+    "dark bedroom, old crt tv"
+   ],
+   "lighting": [
+    "tv static as the only light"
+   ],
+   "details": [
+    "a figure standing behind them",
+    "curtains moving"
+   ]
+  }
+ ]
 }

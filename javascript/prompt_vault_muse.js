@@ -320,7 +320,7 @@
             const on = chosen.has(p.id);
             return el('button', {
                 type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (p.nsfw ? ' pv-muse-nsfw' : ''),
-                'aria-pressed': on ? 'true' : 'false', title: `${p.size} entries${p.custom ? ', your own pack' : ''}`, text: p.name,
+                'aria-pressed': on ? 'true' : 'false', title: `${p.size} scene${p.size === 1 ? '' : 's'}${p.custom ? ', your own pack' : ''}`, text: p.name,
                 onclick: () => {
                     const next = new Set(chosen);
                     if (on) next.delete(p.id); else next.add(p.id);

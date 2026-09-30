@@ -1,70 +1,150 @@
 {
-  "id": "nsfw_body",
-  "name": "NSFW · body study",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "1girl, nude, full breasts, natural hang",
-    "1girl, nude, small breasts, tight nipples",
-    "1girl, nude, wide hips, thick thighs",
-    "1boy, nude, broad chest, happy trail",
-    "1boy, nude, erect penis, defined Adonis belt",
-    "1girl, sheer robe slipping off a shoulder",
-    "1girl, stockings, nothing else",
-    "androgynous nude, soft lighting"
-  ],
-  "actions": [
-    "standing nude facing viewer",
-    "sitting nude on the edge of the bed",
-    "on all fours looking back",
-    "arching back, chest forward",
-    "covering breasts",
-    "hands behind head",
-    "on side knees drawn",
-    "presenting from behind"
-  ],
-  "settings": [
-    "studio seamless, warm grey",
-    "sunlit bedroom, unmade bed",
-    "artist's loft",
-    "bathroom mirror, fogged",
-    "hotel room"
-  ],
-  "lighting": [
-    "window light on skin",
-    "soft key, barely any fill",
-    "vanity bulbs"
-  ],
-  "camera": [
-    "50mm mid-shot",
-    "85mm crop at the ribs",
-    "from above on the bed"
-  ],
-  "styles": [
-    "tasteful nude photography",
-    "fine-art figure study",
-    "explicit photoreal skin"
-  ],
-  "twists": [
-    "strategic shadow",
-    "frosted glass silhouette",
-    "a camera on a tripod is in the reflection, no photographer"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor"
-  ]
+ "id": "nsfw_body",
+ "name": "NSFW · body study",
+ "nsfw": true,
+ "styles": [
+  "fine art nude photography",
+  "figure drawing, charcoal",
+  "photorealistic, detailed skin",
+  "anime illustration"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot",
+  "from side"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious"
+ ],
+ "scenes": [
+  {
+   "title": "Morning bed",
+   "subjects": [
+    "1girl, solo, adult woman, nude, medium breasts, messy hair",
+    "1girl, solo, adult woman, nude, curvy, wide hips",
+    "1boy, solo, adult man, nude, male focus, lean muscles"
+   ],
+   "actions": [
+    "lying on rumpled sheets, stretching",
+    "sitting on the edge of the bed",
+    "lying on stomach, looking at viewer"
+   ],
+   "settings": [
+    "sunlit bedroom, white sheets"
+   ],
+   "lighting": [
+    "morning window light on skin",
+    "soft backlight"
+   ],
+   "details": [
+    "sheet draped over one thigh",
+    "window frame shadows on the skin"
+   ]
+  },
+  {
+   "title": "Studio figure",
+   "subjects": [
+    "1girl, solo, adult woman, nude, athletic body",
+    "1girl, solo, adult woman, nude, plump, soft belly",
+    "1boy, solo, adult man, nude, male focus, muscular"
+   ],
+   "actions": [
+    "standing, contrapposto",
+    "sitting on a stool, arched back",
+    "kneeling, hands on thighs"
+   ],
+   "settings": [
+    "studio, warm grey backdrop"
+   ],
+   "lighting": [
+    "soft key light, deep shadows",
+    "rim light outlining the body"
+   ],
+   "details": [
+    "dramatic shadows across the body",
+    "goosebumps"
+   ]
+  },
+  {
+   "title": "Fogged bathroom mirror",
+   "subjects": [
+    "1girl, solo, adult woman, nude, wet hair",
+    "1boy, solo, adult man, nude, male focus, wet skin"
+   ],
+   "actions": [
+    "wiping the fogged mirror",
+    "towel-drying hair",
+    "looking at own reflection"
+   ],
+   "settings": [
+    "bathroom, fogged mirror, steam"
+   ],
+   "lighting": [
+    "warm vanity lights"
+   ],
+   "details": [
+    "water droplets on skin",
+    "reflection in the mirror"
+   ]
+  },
+  {
+   "title": "Artist's loft",
+   "subjects": [
+    "1girl, solo, adult woman, nude, long hair",
+    "1boy, solo, adult man, nude, male focus"
+   ],
+   "actions": [
+    "reclining on a chaise longue",
+    "lying on a sofa, one arm behind head"
+   ],
+   "settings": [
+    "artist's loft, easel, canvases"
+   ],
+   "lighting": [
+    "soft daylight from a large skylight"
+   ],
+   "details": [
+    "paint-stained drop cloth",
+    "unfinished painting in the background"
+   ]
+  },
+  {
+   "title": "Hotel window",
+   "subjects": [
+    "1girl, solo, adult woman, nude, open silk robe",
+    "1boy, solo, adult man, nude, male focus, open bathrobe"
+   ],
+   "actions": [
+    "standing at the window, looking out",
+    "leaning on the window frame, looking back at viewer"
+   ],
+   "settings": [
+    "hotel room, floor-to-ceiling window, city at night"
+   ],
+   "lighting": [
+    "city lights on skin, dark room"
+   ],
+   "details": [
+    "silhouette against the glass",
+    "reflection in the window"
+   ]
+  }
+ ]
 }

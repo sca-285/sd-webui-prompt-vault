@@ -4,11 +4,19 @@ Packs ship in data/muse_packs. Packs of your own go in <data folder>/muse/packs 
 win over a shipped pack with the same id. Muse's settings and the optional avatar
 live in <data folder>/muse, next to the library, so updates never touch them.
 
-A pack is a JSON file:
+A pack is a JSON file made of scenes. A scene holds things that belong together: who is
+there, what they do, where, in what light. An idea takes one scene of one pack, then one
+entry of each of its lists, so every combination makes sense:
+
   {"id": "...", "name": "...", "nsfw": false,
-   "subjects": [...], "actions": [...], "settings": [...], "lighting": [...],
-   "camera": [...], "styles": [...], "twists": [...], "negatives": [...]}
-An idea takes one entry from each list of one pack.
+   "styles": [...], "negatives": [...],          <- for every scene of the pack
+   "scenes": [
+     {"title": "Rainy café window",
+      "subjects": [...], "actions": [...], "settings": [...],
+      "lighting": [...], "camera": [...], "details": [...]}]}
+
+A list a scene leaves out comes from the pack, so the pack's own lists must suit every
+scene. A pack without scenes (the first format) is one big scene.
 """
 
 from __future__ import annotations
@@ -26,9 +34,8 @@ from . import TAG, settings, store, text
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PACK_DIR = os.path.join(EXT_ROOT, "data", "muse_packs")
-SLOTS = ("subjects", "actions", "settings", "lighting", "camera", "styles", "twists")
-TAG_SLOTS = ("subjects", "actions", "settings", "lighting", "camera", "styles")
-MIX = 0.1  # chance, per slot and per other enabled SFW pack, that its entries join the draw
+SLOTS = ("subjects", "actions", "settings", "lighting", "camera", "styles", "details")
+DETAIL_CHANCE = 0.6  # a detail makes an idea specific; on every idea it becomes a tic
 
 TARGETS = ("txt2img", "img2img", "vault")
 MODES = ("replace", "append")
@@ -142,6 +149,33 @@ def _clean_list(items, nsfw):
     return out
 
 
+def _slots(data, nsfw):
+    """The lists of a pack or a scene; 'twists' is the first format's name for 'details'."""
+    data = dict(data)
+    data.setdefault("details", data.get("twists"))
+    return {slot: _clean_list(data.get(slot), nsfw) for slot in SLOTS}
+
+
+def _read_pack(data, custom):
+    nsfw = bool(data.get("nsfw"))
+    pack = {"id": str(data["id"]).strip(), "name": str(data.get("name") or data["id"]), "nsfw": nsfw,
+            "custom": custom, "negatives": _clean_list(data.get("negatives"), False)}
+    pack.update(_slots(data, nsfw))
+    scenes = []
+    for raw in data.get("scenes") or [{}]:
+        if not isinstance(raw, dict):
+            continue
+        scene = _slots(raw, nsfw)
+        # what the scene leaves out, the pack gives
+        for slot in SLOTS:
+            scene[slot] = scene[slot] or pack[slot]
+        scene["title"] = str(raw.get("title") or "").strip()
+        if scene["subjects"] or scene["settings"]:
+            scenes.append(scene)
+    pack["scenes"] = scenes
+    return pack if scenes else None
+
+
 def load_packs():
     """Every pack, read again only when a file was added, removed or changed."""
     files = _pack_files()
@@ -159,19 +193,16 @@ def load_packs():
                 continue
             if not isinstance(data, dict) or not str(data.get("id") or "").strip():
                 continue
-            nsfw = bool(data.get("nsfw"))
-            pack = {"id": str(data["id"]).strip(), "name": str(data.get("name") or data["id"]), "nsfw": nsfw,
-                    "custom": not path.startswith(PACK_DIR)}
-            for slot in SLOTS + ("negatives",):
-                pack[slot] = _clean_list(data.get(slot), nsfw and slot != "negatives")
-            found[pack["id"]] = pack
+            pack = _read_pack(data, custom=not path.startswith(PACK_DIR))
+            if pack:
+                found[pack["id"]] = pack
         _packs.update(sig=sig, list=sorted(found.values(), key=lambda p: (p["nsfw"], p["name"].lower())))
         return _packs["list"]
 
 
 def packs_public():
     return [{"id": p["id"], "name": p["name"], "nsfw": p["nsfw"], "custom": p["custom"],
-             "size": sum(len(p[s]) for s in SLOTS)} for p in load_packs()]
+             "size": len(p["scenes"])} for p in load_packs()]
 
 
 def _active_packs(st):
@@ -208,25 +239,27 @@ def compose(seed=None):
     blocked = _blacklist_test(rules)
     rng = random.Random(seed)
 
-    for _ in range(12):
+    for _ in range(24):
         pack = rng.choice(packs)
-        others = [p for p in packs if p is not pack and not p["nsfw"]] if not pack["nsfw"] else []
-
-        def take(slot):
-            pool = list(pack[slot])
-            for other in others:
-                if rng.random() < MIX:
-                    pool.extend(other[slot])
-            pool = [x for x in pool if not blocked(x)]
-            return rng.choice(pool) if pool else ""
-
-        parts = {slot: take(slot) for slot in SLOTS}
-        pieces = [p for slot in TAG_SLOTS for p in text.split(parts[slot]) if not blocked(p)]
+        scene = rng.choice(pack["scenes"])
+        parts = {}
+        for slot in SLOTS:
+            pool = [x for x in scene[slot] if not blocked(x)]
+            parts[slot] = rng.choice(pool) if pool else ""
+        if scene["subjects"] and not parts["subjects"]:
+            continue  # the blacklist took every subject: this scene is not a scene anymore
+        if rng.random() >= DETAIL_CHANCE:
+            parts["details"] = ""
+        # subject first, then what they do, where, the light, the framing, the look
+        order = ("subjects", "actions", "details", "settings", "lighting", "camera", "styles")
+        seen, pieces = set(), []
+        for slot in order:
+            for piece in text.split(parts[slot]):
+                if not blocked(piece) and text.key(piece) not in seen:
+                    seen.add(text.key(piece))
+                    pieces.append(piece)
         if not pieces:
             continue
-        positive = text.join(list(dict.fromkeys(pieces)))
-        if parts["twists"]:
-            positive = f"{positive}, {parts['twists']}"
 
         negatives = list(pack["negatives"]) + (GUARD_NEGATIVES if pack["nsfw"] else []) + rules
         seen, negative = set(), []
@@ -235,14 +268,15 @@ def compose(seed=None):
                 seen.add(text.key(n))
                 negative.append(n)
 
+        spark = scene["title"] or " · ".join(x for x in (parts["subjects"], parts["actions"], parts["settings"]) if x)
         return {
             "id": uuid.uuid4().hex[:12],
             "pack": pack["id"],
             "pack_name": pack["name"],
             "nsfw": pack["nsfw"],
-            "spark": " · ".join(x for x in (parts["subjects"], parts["actions"], parts["settings"]) if x),
-            "twist": parts["twists"],
-            "positive": positive,
+            "spark": spark,
+            "twist": parts["details"],
+            "positive": text.join(pieces),
             "negative": text.join(negative),
         }
     raise store.VaultError("Every idea hit the blacklist: loosen it or turn more packs on.")

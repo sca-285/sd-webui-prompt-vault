@@ -1,78 +1,162 @@
 {
-  "id": "nsfw_positions",
-  "name": "NSFW · positions (library)",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "1girl, 1boy",
-    "2boys",
-    "2girls",
-    "1girl, 2boys, ffm avoided, mmf",
-    "1boy, 2girls, ffm threesome"
-  ],
-  "actions": [
+ "id": "nsfw_positions",
+ "name": "NSFW · positions",
+ "nsfw": true,
+ "styles": [
+  "hentai, anime illustration",
+  "photorealistic, detailed skin",
+  "clean pose reference"
+ ],
+ "camera": [
+  "full body",
+  "from side"
+ ],
+ "lighting": [
+  "soft light",
+  "window light",
+  "bedside lamp"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious"
+ ],
+ "scenes": [
+  {
+   "title": "On the bed",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, nude"
+   ],
+   "actions": [
     "missionary",
-    "legs over head",
-    "anvil position",
+    "mating press",
+    "legs up",
+    "spooning sex",
+    "cowgirl position",
+    "reverse cowgirl position",
+    "69"
+   ],
+   "settings": [
+    "bed"
+   ],
+   "camera": [
+    "full body, from side",
+    "from above"
+   ]
+  },
+  {
+   "title": "Standing",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, nude"
+   ],
+   "actions": [
+    "standing sex, lifted, legs wrapped around him",
     "standing split",
     "full nelson",
-    "wheelbarrow position",
-    "amazon position",
-    "reverse cowgirl",
-    "flatiron position",
-    "leapfrog position",
-    "spork position",
-    "69",
-    "double penetration",
+    "sex from behind, standing, bent over"
+   ],
+   "settings": [
+    "against a wall"
+   ],
+   "camera": [
+    "full body, from side"
+   ]
+  },
+  {
+   "title": "On a chair",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, nude"
+   ],
+   "actions": [
+    "sitting on his lap, facing him",
+    "reverse cowgirl on a chair"
+   ],
+   "settings": [
+    "wooden chair in a bedroom"
+   ]
+  },
+  {
+   "title": "Over the desk",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, nude"
+   ],
+   "actions": [
+    "bent over the desk, from behind",
+    "sitting on the desk, legs spread, missionary"
+   ],
+   "settings": [
+    "desk in a study"
+   ]
+  },
+  {
+   "title": "Threesome, mmf",
+   "subjects": [
+    "1girl, 2boys, mmf threesome, adults, nude"
+   ],
+   "actions": [
     "spitroast",
-    "sandwiched between two partners"
-  ],
-  "settings": [
-    "bed",
-    "chair",
-    "desk",
-    "shower",
-    "against a wall",
-    "stairs"
-  ],
-  "lighting": [
-    "window light",
-    "soft key light",
-    "golden hour",
-    "practical lamp only",
-    "neon rim light"
-  ],
-  "camera": [
-    "full-body to read the pose",
-    "close on the join",
-    "side view"
-  ],
-  "styles": [
-    "explicit positional reference",
-    "hentai illustration",
-    "photoreal"
-  ],
-  "twists": [
-    "a pillow is doing most of the geometry",
-    "they stopped to renegotiate and stayed in the pose"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor",
-    "broken penetration geometry",
-    "fused bodies"
-  ]
+    "double penetration",
+    "sandwiched"
+   ],
+   "settings": [
+    "bed"
+   ]
+  },
+  {
+   "title": "Threesome, ffm",
+   "subjects": [
+    "2girls, 1boy, ffm threesome, adults, nude"
+   ],
+   "actions": [
+    "one riding him, the other kissing him",
+    "cooperative fellatio"
+   ],
+   "settings": [
+    "bed"
+   ]
+  },
+  {
+   "title": "Two men",
+   "subjects": [
+    "2boys, yaoi, adult men, nude"
+   ],
+   "actions": [
+    "anal sex, legs on shoulders",
+    "anal sex, prone bone",
+    "anal sex, riding"
+   ],
+   "settings": [
+    "bed"
+   ]
+  },
+  {
+   "title": "Two women",
+   "subjects": [
+    "2girls, yuri, adult women, nude"
+   ],
+   "actions": [
+    "tribadism",
+    "69",
+    "face sitting"
+   ],
+   "settings": [
+    "bed"
+   ]
+  }
+ ]
 }

@@ -1,70 +1,124 @@
 {
-  "id": "nsfw_furry",
-  "name": "NSFW · furry (adult anthro)",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "anthro wolf, adult, male, solo",
-    "anthro cat, adult, female, solo",
-    "2boys, anthro, wolf and husky, adult",
-    "1girl, 1boy, anthro, adult",
-    "anthro dragon, adult, male focus",
-    "anthro rabbit, adult, female, nude"
-  ],
-  "actions": [
-    "looking at viewer, nude",
-    "ears back, flushed",
-    "mounting from behind",
-    "knot visible",
-    "tail raised",
-    "paw pads on a chest",
-    "muzzle against a neck"
-  ],
-  "settings": [
-    "den, low light",
-    "apartment adapted for digitigrade feet",
-    "forest clearing at night",
-    "shower, fur plastered down"
-  ],
-  "lighting": [
-    "warm den light",
-    "moon through trees",
-    "bathroom LEDs"
-  ],
-  "camera": [
-    "mid-shot",
-    "focus on muzzle and eyes",
-    "from behind, tail in frame"
-  ],
-  "styles": [
-    "explicit furry illustration",
-    "painted anthro, detailed fur",
-    "soft shading ych"
-  ],
-  "twists": [
-    "a human mug they cannot hold properly",
-    "collar with a city address, not a pet name"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor",
-    "cub",
-    "feral sex",
-    "baby animal",
-    "underage",
-    "child"
-  ]
+ "id": "nsfw_furry",
+ "name": "NSFW · furry (adult anthro)",
+ "nsfw": true,
+ "styles": [
+  "furry art, detailed fur",
+  "painted anthro illustration",
+  "soft shading"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious",
+  "cub",
+  "young",
+  "feral",
+  "human"
+ ],
+ "scenes": [
+  {
+   "title": "Den",
+   "subjects": [
+    "anthro, wolf, adult male, muscular, nude",
+    "anthro, fox, adult female, curvy, nude"
+   ],
+   "actions": [
+    "lying on furs, looking at viewer",
+    "stretching, tail curled"
+   ],
+   "settings": [
+    "cozy den, furs, low light"
+   ],
+   "lighting": [
+    "warm firelight"
+   ],
+   "details": [
+    "embers glowing"
+   ]
+  },
+  {
+   "title": "Forest clearing",
+   "subjects": [
+    "duo, anthro, wolf and husky, adult males, nude",
+    "duo, anthro, wolf and fox, adult male and female, nude"
+   ],
+   "actions": [
+    "kissing, muzzles touching",
+    "sex from behind, tail raised",
+    "cuddling in the grass"
+   ],
+   "settings": [
+    "forest clearing at night"
+   ],
+   "lighting": [
+    "moonlight through the trees"
+   ],
+   "details": [
+    "fireflies",
+    "trampled grass"
+   ]
+  },
+  {
+   "title": "Shower",
+   "subjects": [
+    "anthro, cat, adult female, nude, wet fur",
+    "anthro, dragon, adult male, nude, wet scales"
+   ],
+   "actions": [
+    "showering, fur plastered down",
+    "wringing out the tail",
+    "looking over shoulder"
+   ],
+   "settings": [
+    "modern bathroom shower"
+   ],
+   "lighting": [
+    "bright bathroom led light"
+   ],
+   "details": [
+    "steam",
+    "water droplets"
+   ]
+  },
+  {
+   "title": "Apartment couch",
+   "subjects": [
+    "anthro, rabbit, adult female, nude",
+    "anthro, tiger, adult male, nude"
+   ],
+   "actions": [
+    "sitting on the couch, legs spread, looking at viewer",
+    "lying on the couch, tail hanging over the edge"
+   ],
+   "settings": [
+    "apartment living room"
+   ],
+   "lighting": [
+    "lamp light"
+   ],
+   "details": [
+    "mug on the table"
+   ]
+  }
+ ]
 }

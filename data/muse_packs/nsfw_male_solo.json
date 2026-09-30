@@ -1,78 +1,148 @@
 {
-  "id": "nsfw_male_solo",
-  "name": "NSFW · male solo · 1boy",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "1boy, solo, male focus, nude",
-    "1boy, solo, towel at hips",
-    "1boy, solo, unbuttoned dress shirt, no undershirt, erect penis",
-    "1boy, solo, muscular, happy trail",
-    "1boy, solo, lean, Adonis belt",
-    "1boy, solo, broad chest, stubble on jaw and chest",
-    "1boy, solo, sitting nude on the edge of the bed",
-    "1boy, solo, standing nude facing viewer",
-    "1boy, solo, wet skin, just out of the shower"
-  ],
-  "actions": [
-    "stroking a shaft",
-    "thumb on the head",
-    "squeezing balls",
-    "hands behind head",
-    "weight on one hip",
-    "looking at viewer",
-    "reaching between legs",
-    "lying on rumpled sheets",
-    "shirtless with belt still fastened",
-    "underwear halfway down"
-  ],
-  "settings": [
-    "hotel bathroom",
-    "sunlit bedroom",
-    "locker room after hours",
-    "small apartment, blinds half-drawn",
-    "rooftop water tank at night"
-  ],
-  "lighting": [
-    "window light on skin",
-    "harsh overhead",
-    "practical lamp"
-  ],
-  "camera": [
-    "50mm mid-shot",
-    "low angle",
-    "close on torso and hands"
-  ],
-  "styles": [
-    "explicit male photography",
-    "figure study",
-    "bara-leaning illustration",
-    "photoreal skin"
-  ],
-  "twists": [
-    "a wedding ring is on the nightstand",
-    "the shower is still running",
+ "id": "nsfw_male_solo",
+ "name": "NSFW · male solo · 1boy",
+ "nsfw": true,
+ "styles": [
+  "explicit male photography",
+  "figure study",
+  "anime illustration, male focus",
+  "photorealistic, detailed skin"
+ ],
+ "camera": [
+  "cowboy shot",
+  "full body",
+  "from below"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious",
+  "1girl",
+  "female focus",
+  "pussy"
+ ],
+ "scenes": [
+  {
+   "title": "Hotel shower",
+   "subjects": [
+    "1boy, solo, male focus, adult man, nude, muscular, wet skin",
+    "1boy, solo, male focus, adult man, nude, lean, wet hair"
+   ],
+   "actions": [
+    "masturbating in the shower",
+    "hand on the wall, water running down his back",
+    "soaping his chest"
+   ],
+   "settings": [
+    "hotel shower, glass wall, steam"
+   ],
+   "lighting": [
+    "warm light through steam"
+   ],
+   "details": [
+    "water droplets",
+    "fogged glass"
+   ]
+  },
+  {
+   "title": "Alone in bed",
+   "subjects": [
+    "1boy, solo, male focus, adult man, nude, erection",
+    "1boy, solo, male focus, adult man, underwear pulled down, erection"
+   ],
+   "actions": [
+    "lying on the bed, masturbating",
+    "stroking, head thrown back",
+    "looking at viewer, hand on shaft"
+   ],
+   "settings": [
+    "bedroom, rumpled sheets"
+   ],
+   "lighting": [
+    "bedside lamp",
+    "phone screen as the only light"
+   ],
+   "details": [
     "phone face-down on the sheets",
-    "gooseflesh from the air conditioning"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor",
-    "1girl",
-    "female focus",
-    "pussy"
-  ]
+    "sweat on the chest"
+   ]
+  },
+  {
+   "title": "Locker room",
+   "subjects": [
+    "1boy, solo, male focus, adult man, athletic, towel at hips",
+    "1boy, solo, male focus, adult man, athletic, nude"
+   ],
+   "actions": [
+    "sitting on the bench",
+    "stretching, towel slipping",
+    "looking at viewer, smirk"
+   ],
+   "settings": [
+    "locker room after hours"
+   ],
+   "lighting": [
+    "harsh overhead light"
+   ],
+   "details": [
+    "steam from the showers",
+    "gym bag on the bench"
+   ]
+  },
+  {
+   "title": "Morning window",
+   "subjects": [
+    "1boy, solo, male focus, adult man, nude, stubble",
+    "1boy, solo, male focus, adult man, nude, broad chest"
+   ],
+   "actions": [
+    "standing at the window with a coffee",
+    "stretching, arms above head"
+   ],
+   "settings": [
+    "apartment, blinds half open"
+   ],
+   "lighting": [
+    "morning light through the blinds"
+   ],
+   "details": [
+    "stripes of light across the body"
+   ]
+  },
+  {
+   "title": "Office tease",
+   "subjects": [
+    "1boy, solo, male focus, adult man, unbuttoned dress shirt, loosened tie, bulge"
+   ],
+   "actions": [
+    "sitting in the office chair, legs spread",
+    "unbuckling his belt"
+   ],
+   "settings": [
+    "office at night"
+   ],
+   "lighting": [
+    "monitor glow",
+    "city lights"
+   ],
+   "details": [
+    "tie hanging loose"
+   ]
+  }
+ ]
 }

@@ -1,72 +1,159 @@
 {
-  "id": "nsfw_act",
-  "name": "NSFW · act (mixed)",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "1girl, 1boy, naked",
-    "2girls, entangled",
-    "2boys, male focus",
-    "1girl, kneeling, looking up",
-    "1boy, solo, male focus"
-  ],
-  "actions": [
-    "missionary deep",
-    "upright cowgirl",
-    "top-down doggystyle",
-    "lotus position",
+ "id": "nsfw_act",
+ "name": "NSFW · act (mixed)",
+ "nsfw": true,
+ "styles": [
+  "photorealistic, detailed skin",
+  "hentai, anime illustration",
+  "handheld amateur photo",
+  "painterly erotic illustration"
+ ],
+ "camera": [
+  "full body",
+  "from side"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious"
+ ],
+ "scenes": [
+  {
+   "title": "Against the door",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, half undressed"
+   ],
+   "actions": [
+    "kissing against the door, hands under clothes",
+    "standing sex against the door, lifted"
+   ],
+   "settings": [
+    "apartment entrance, door just closed"
+   ],
+   "lighting": [
+    "hallway light",
+    "dark, street light through the window"
+   ],
+   "details": [
+    "keys dropped on the floor",
+    "coat on the floor"
+   ]
+  },
+  {
+   "title": "Desk at night",
+   "subjects": [
+    "2boys, yaoi, adult men, shirts open"
+   ],
+   "actions": [
+    "bent over the desk, sex from behind",
+    "sitting on the desk, kissing"
+   ],
+   "settings": [
+    "study, desk lamp"
+   ],
+   "lighting": [
+    "desk lamp"
+   ],
+   "details": [
+    "papers pushed to the floor"
+   ]
+  },
+  {
+   "title": "Shared shower",
+   "subjects": [
+    "2girls, yuri, adult women, nude, wet skin"
+   ],
+   "actions": [
+    "kissing under the water",
+    "fingering, pressed against the tiles"
+   ],
+   "settings": [
+    "shower, steam"
+   ],
+   "lighting": [
+    "bathroom light through steam"
+   ],
+   "details": [
+    "water droplets"
+   ]
+  },
+  {
+   "title": "On her knees",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, she is nude, he is standing"
+   ],
+   "actions": [
+    "fellatio, looking up",
+    "deepthroat"
+   ],
+   "settings": [
+    "bedroom, beside the bed"
+   ],
+   "lighting": [
+    "bedside lamp"
+   ],
+   "details": [
+    "hand on her head"
+   ]
+  },
+  {
+   "title": "Face sitting",
+   "subjects": [
+    "2girls, yuri, adult women, nude",
+    "1girl, 1boy, hetero, adult couple, nude"
+   ],
+   "actions": [
     "face sitting",
-    "deepthroat",
-    "anal from behind",
-    "paizuri",
-    "afterglow, still touching",
-    "suspended congress",
-    "edge of the bed with partner standing"
-  ],
-  "settings": [
-    "bedroom, lamp still on",
-    "shower stall",
-    "sofa edge",
-    "kitchen counter",
-    "desk at night",
-    "against a door"
-  ],
-  "lighting": [
-    "one bedside lamp",
-    "bathroom light",
-    "city glow"
-  ],
-  "camera": [
-    "close on faces",
-    "from the foot of the bed",
-    "low beside the mattress"
-  ],
-  "styles": [
-    "explicit erotic photography",
-    "hentai illustration",
-    "handheld candid"
-  ],
-  "twists": [
-    "they are both still half-laughing",
-    "the TV is on mute with the news"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor",
-    "non-consensual",
-    "unconscious"
-  ]
+    "cunnilingus"
+   ],
+   "settings": [
+    "bed"
+   ],
+   "lighting": [
+    "soft light"
+   ],
+   "details": [
+    "thighs trembling",
+    "sheets clenched"
+   ]
+  },
+  {
+   "title": "Afterglow",
+   "subjects": [
+    "1girl, 1boy, hetero, adult couple, nude",
+    "2girls, yuri, adult women, nude",
+    "2boys, yaoi, adult men, nude"
+   ],
+   "actions": [
+    "cuddling, afterglow",
+    "lying together, still touching"
+   ],
+   "settings": [
+    "bedroom"
+   ],
+   "lighting": [
+    "morning light",
+    "bedside lamp"
+   ],
+   "details": [
+    "tangled sheets",
+    "sweaty skin"
+   ]
+  }
+ ]
 }

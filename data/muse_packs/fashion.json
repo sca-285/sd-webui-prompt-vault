@@ -1,65 +1,153 @@
 {
-  "id": "fashion",
-  "name": "Fashion editorial",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "1girl, tall, couture gown",
-    "1boy, tailored suit, no tie",
-    "1girl, oversized coat, bare legs",
-    "androgynous model, sharp cut jacket",
-    "1girl, knitwear, wind in hair",
-    "1boy, workwear layered over a shirt"
-  ],
-  "actions": [
+ "id": "fashion",
+ "name": "Fashion editorial",
+ "nsfw": false,
+ "styles": [
+  "high fashion photography, editorial",
+  "film photography, lookbook",
+  "fashion illustration, marker rendering"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Cyclorama lookbook",
+   "subjects": [
+    "1girl, tall, oversized wool coat, wide trousers",
+    "1boy, tailored suit, no tie, loafers",
+    "androgynous model, sharp-cut blazer, slicked hair"
+   ],
+   "actions": [
     "walking toward camera",
-    "looking back mid-stride",
-    "hands in pockets",
-    "coat flaring",
-    "sitting on the floor of a studio",
-    "adjusting a cuff"
-  ],
-  "settings": [
-    "white cyclorama",
-    "industrial rooftop",
-    "marble lobby",
-    "night street, wet asphalt",
-    "desert highway",
-    "old palazzo hallway"
-  ],
-  "lighting": [
-    "window light",
-    "soft key light",
-    "golden hour",
-    "practical lamp only",
-    "neon rim light",
-    "overcast diffused light",
-    "hard sun, sharp shadow",
-    "hard beauty dish",
-    "colored gel rim"
-  ],
-  "camera": [
-    "85mm editorial",
-    "full-body 35mm",
-    "crop at the waist",
-    "lookbook three-quarter"
-  ],
-  "styles": [
-    "high fashion photography",
-    "film lookbook",
-    "avant-garde editorial"
-  ],
-  "twists": [
-    "the garment is on backwards on purpose",
-    "sand on the hem of a ballgown",
-    "a price tag is still attached"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+    "standing, hands in pockets",
+    "mid-stride, coat flaring"
+   ],
+   "settings": [
+    "white cyclorama studio"
+   ],
+   "lighting": [
+    "soft even studio light",
+    "hard beauty dish, crisp shadow"
+   ],
+   "camera": [
+    "full body",
+    "full body, from below"
+   ],
+   "details": [
+    "long shadow on the floor",
+    "fabric in motion"
+   ]
+  },
+  {
+   "title": "Desert highway",
+   "subjects": [
+    "1girl, flowing silk gown",
+    "1boy, linen suit, sunglasses",
+    "1girl, leather jacket, long skirt"
+   ],
+   "actions": [
+    "walking along the road, fabric in the wind",
+    "standing on the centre line, looking at viewer",
+    "sitting on the hood of a vintage car"
+   ],
+   "settings": [
+    "empty desert highway, mountains in the distance"
+   ],
+   "lighting": [
+    "golden hour, long shadows",
+    "harsh midday sun, deep shadows"
+   ],
+   "camera": [
+    "full body, wide shot",
+    "cowboy shot"
+   ],
+   "details": [
+    "dust blowing",
+    "heat haze"
+   ]
+  },
+  {
+   "title": "Palazzo hallway",
+   "subjects": [
+    "1girl, couture ball gown, long gloves",
+    "1boy, velvet tuxedo",
+    "1girl, tailored cape, statement earrings"
+   ],
+   "actions": [
+    "walking down the hallway, looking back",
+    "leaning on a marble column",
+    "sitting on the stairs"
+   ],
+   "settings": [
+    "baroque palazzo hallway, marble floor, gilded mirrors"
+   ],
+   "lighting": [
+    "soft window light",
+    "warm chandelier light"
+   ],
+   "details": [
+    "reflection in the mirror",
+    "long train on the marble floor"
+   ]
+  },
+  {
+   "title": "Night street flash",
+   "subjects": [
+    "1girl, vinyl trench coat, knee boots",
+    "1boy, oversized puffer jacket, cargo pants",
+    "1girl, sequin dress, faux fur coat"
+   ],
+   "actions": [
+    "crossing the street",
+    "standing under a street lamp",
+    "stepping out of a taxi"
+   ],
+   "settings": [
+    "city street at night, wet asphalt"
+   ],
+   "lighting": [
+    "hard on-camera flash",
+    "neon rim light"
+   ],
+   "details": [
+    "puddle reflection",
+    "taxi headlights"
+   ]
+  },
+  {
+   "title": "Industrial rooftop",
+   "subjects": [
+    "1girl, knitwear set, wind in hair",
+    "1boy, layered workwear jacket",
+    "androgynous model, monochrome streetwear"
+   ],
+   "actions": [
+    "sitting on the ledge",
+    "leaning on the railing",
+    "walking toward camera"
+   ],
+   "settings": [
+    "industrial rooftop, pipes and vents, city behind"
+   ],
+   "lighting": [
+    "overcast, soft light",
+    "sunset backlight"
+   ],
+   "details": [
+    "wind in the clothes",
+    "pigeons taking off"
+   ]
+  }
+ ]
 }

@@ -1,56 +1,117 @@
 {
-  "id": "nature",
-  "name": "Nature / weather",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "no humans, ancient tree",
-    "1girl, small in the landscape",
-    "1boy, hiking pack, ridge line",
-    "herd in fog",
-    "lone cabin, no people"
-  ],
-  "actions": [
-    "standing still in wind",
-    "looking at the horizon",
-    "shelter under a jacket",
-    "crossing a stream",
-    "no action, scenery focus"
-  ],
-  "settings": [
-    "alpine lake at dawn",
-    "bamboo after rain",
-    "coastal cliff",
-    "birch forest in snow",
-    "volcanic plain",
-    "rice terraces"
-  ],
-  "lighting": [
+ "id": "nature",
+ "name": "Nature / weather",
+ "nsfw": false,
+ "styles": [
+  "landscape photography",
+  "ukiyo-e woodblock print",
+  "cinematic matte painting"
+ ],
+ "camera": [
+  "wide shot",
+  "panorama",
+  "aerial view"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Alpine lake at dawn",
+   "subjects": [
+    "no humans",
+    "1other, hiker, tiny figure in the landscape"
+   ],
+   "settings": [
+    "alpine lake at dawn, mountains, mirror reflection"
+   ],
+   "lighting": [
+    "pink dawn light",
+    "morning mist"
+   ],
+   "details": [
+    "fog on the water",
+    "wooden canoe"
+   ]
+  },
+  {
+   "title": "Bamboo after rain",
+   "subjects": [
+    "no humans",
+    "1girl, umbrella, walking away"
+   ],
+   "settings": [
+    "bamboo forest after rain, stone path"
+   ],
+   "lighting": [
+    "soft green light",
+    "sunbeams through the bamboo"
+   ],
+   "details": [
+    "water droplets",
+    "moss on the stones"
+   ]
+  },
+  {
+   "title": "Storm on the coast",
+   "subjects": [
+    "no humans",
+    "lighthouse, no humans"
+   ],
+   "settings": [
+    "rocky coastal cliff, crashing waves"
+   ],
+   "lighting": [
+    "storm light, dark clouds, lightning",
+    "sun breaking through clouds"
+   ],
+   "details": [
+    "sea spray",
+    "seagulls"
+   ]
+  },
+  {
+   "title": "Birch forest in snow",
+   "subjects": [
+    "no humans",
+    "deer in the snow",
+    "1other, walking with a lantern"
+   ],
+   "settings": [
+    "birch forest in deep snow"
+   ],
+   "lighting": [
+    "blue hour, snowfall",
+    "low winter sun"
+   ],
+   "details": [
+    "footprints in the snow",
+    "falling snow"
+   ]
+  },
+  {
+   "title": "Rice terraces",
+   "subjects": [
+    "no humans",
+    "farmer, conical hat, working in the field"
+   ],
+   "settings": [
+    "rice terraces, mountains"
+   ],
+   "lighting": [
     "golden hour",
-    "storm light",
-    "fog diffusion",
-    "crepuscular rays"
-  ],
-  "camera": [
-    "24mm landscape",
-    "telephoto compression on peaks",
-    "drone-high wide"
-  ],
-  "styles": [
-    "landscape photography",
-    "ukiyo-e weather print",
-    "cinematic nature still"
-  ],
-  "twists": [
-    "the weather on the left does not match the right",
-    "a single electric light in the wilderness"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+    "morning fog in the valley"
+   ],
+   "details": [
+    "water reflecting the sky",
+    "birds"
+   ]
+  }
+ ]
 }

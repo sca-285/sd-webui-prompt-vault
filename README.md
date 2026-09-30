@@ -31,7 +31,8 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💡 Muse**, a floating button on every tab: a prompt idea now and then (every 5–30
   minutes, never while an image is generating) or whenever you ask (`Alt+M`).
   - Ideas come from **packs** (portrait, film, horror, sci-fi… and NSFW packs, off until you
-    turn them on). Pick the ones you want on its settings page (the gear).
+    turn them on), each made of coherent scenes: the subject, action, place and light of an
+    idea always belong together. Pick the packs you want on its settings page (the gear).
   - **Send** writes the idea into txt2img, img2img or the Vault editor, replacing or
     appending, and adds the idea's negatives that are missing from your negative prompt.
   - Edit the idea before sending, step back through the last 20 with ‹ ›, expand it with
@@ -134,17 +135,30 @@ models/prompt_vault/
 
 ## Muse packs of your own
 
-A pack is a JSON file in `prompt_vault/muse/packs/`. An idea takes one entry from each list;
-a pack with the id of a shipped one (see `data/muse_packs/`) replaces it.
+A pack is a JSON file in `prompt_vault/muse/packs/`; a pack with the id of a shipped one
+(see `data/muse_packs/`) replaces it. It is made of **scenes**: each scene holds what
+belongs together (who is there, what they do, where, in what light), and an idea takes
+one scene, then one entry of each of its lists. Keep every entry of a list compatible
+with every entry of the others *in the same scene*, and the ideas stay coherent.
 
 ```json
 {
   "id": "my_pack", "name": "My pack", "nsfw": false,
-  "subjects": ["1girl, silver hair"], "actions": ["looking back"], "settings": ["night market"],
-  "lighting": ["paper lanterns"], "camera": ["35mm, low angle"], "styles": ["film still"],
-  "twists": ["one lantern is blue"], "negatives": ["blurry", "watermark"]
+  "styles": ["film still, 35mm"], "negatives": ["blurry", "watermark"],
+  "scenes": [
+    {"title": "Night market",
+     "subjects": ["1girl, yukata", "1boy, jinbei"],
+     "actions": ["holding a candy apple", "looking at the lanterns"],
+     "settings": ["summer festival at night, food stalls"],
+     "lighting": ["paper lantern light"],
+     "camera": ["cowboy shot"],
+     "details": ["fireworks in the sky"]}
+  ]
 }
 ```
+
+A list a scene leaves out (here `styles`) comes from the pack, so the pack's own lists must
+suit every scene. The first pack format, without scenes, still works as one big scene.
 
 ## Credits
 

@@ -1,49 +1,135 @@
 {
-  "id": "food",
-  "name": "Food / still life",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "bowl of ramen, rising steam",
-    "cut fruit on dark stone",
-    "1girl reaching for bread",
-    "messy baking table, no face"
-  ],
-  "actions": [
-    "breaking an egg",
-    "pouring sauce",
-    "hands only, cutting"
-  ],
-  "settings": [
-    "restaurant pass",
-    "home counter at night",
-    "market stall"
-  ],
-  "lighting": [
-    "soft overhead",
-    "window side light",
-    "candle"
-  ],
-  "camera": [
-    "50mm food photo",
-    "overhead flat lay",
-    "macro on steam"
-  ],
-  "styles": [
-    "cookbook photography",
-    "baroque still life",
-    "film snapshot"
-  ],
-  "twists": [
-    "one utensil does not belong to this cuisine",
-    "smoke, not steam"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+ "id": "food",
+ "name": "Food / still life",
+ "nsfw": false,
+ "styles": [
+  "professional food photography",
+  "still life oil painting, baroque",
+  "anime food illustration",
+  "film snapshot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Ramen at night",
+   "subjects": [
+    "bowl of ramen, chashu, soft-boiled egg, no humans"
+   ],
+   "actions": [
+    "chopsticks lifting noodles",
+    "steam rising"
+   ],
+   "settings": [
+    "ramen shop counter at night"
+   ],
+   "lighting": [
+    "warm overhead lamp",
+    "moody low light"
+   ],
+   "camera": [
+    "close-up",
+    "from side"
+   ],
+   "details": [
+    "sauce bottles on the counter",
+    "noren curtain in the background"
+   ]
+  },
+  {
+   "title": "Baroque table",
+   "subjects": [
+    "cut fruit, grapes, pomegranate, no humans",
+    "silver platter, oysters, lemon halves, no humans"
+   ],
+   "settings": [
+    "dark stone table, draped cloth"
+   ],
+   "lighting": [
+    "single window light, chiaroscuro"
+   ],
+   "camera": [
+    "still life composition",
+    "close-up"
+   ],
+   "details": [
+    "a fly on the fruit",
+    "tipped-over wine glass"
+   ],
+   "styles": [
+    "still life oil painting, baroque",
+    "fine art still life photography"
+   ]
+  },
+  {
+   "title": "Home baking",
+   "subjects": [
+    "hands kneading dough, flour",
+    "1girl, apron, flour on cheek"
+   ],
+   "actions": [
+    "kneading dough",
+    "taking bread out of the oven",
+    "dusting flour on the counter"
+   ],
+   "settings": [
+    "home kitchen counter, rolling pin, mixing bowls"
+   ],
+   "lighting": [
+    "morning window light",
+    "warm kitchen light"
+   ],
+   "details": [
+    "flour in the air",
+    "bread on a cooling rack"
+   ]
+  },
+  {
+   "title": "Night market grill",
+   "subjects": [
+    "street food stall, skewers on the grill, no humans",
+    "street vendor, grilling skewers"
+   ],
+   "actions": [
+    "smoke rising from the grill"
+   ],
+   "settings": [
+    "night market"
+   ],
+   "lighting": [
+    "string lights",
+    "glow of the charcoal"
+   ],
+   "details": [
+    "paper lanterns",
+    "smoke"
+   ]
+  },
+  {
+   "title": "Breakfast flat lay",
+   "subjects": [
+    "breakfast spread, pancakes, berries, coffee, no humans"
+   ],
+   "settings": [
+    "wooden table"
+   ],
+   "lighting": [
+    "soft morning light"
+   ],
+   "camera": [
+    "from above, flat lay"
+   ],
+   "details": [
+    "syrup dripping",
+    "linen napkin"
+   ]
+  }
+ ]
 }

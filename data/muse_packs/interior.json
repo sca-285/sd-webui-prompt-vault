@@ -1,51 +1,121 @@
 {
-  "id": "interior",
-  "name": "Interior / still room",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "1girl reading on a sofa",
-    "1boy at a kitchen table",
-    "empty room, lived-in",
-    "cat on a windowsill, no humans"
-  ],
-  "actions": [
-    "pouring tea",
-    "looking out the window",
-    "taking off shoes at the door"
-  ],
-  "settings": [
-    "sunlit apartment",
-    "tiny kitchen at night",
-    "study with stacked books",
-    "bathroom with a fogged mirror",
-    "genkan, shoes lined up"
-  ],
-  "lighting": [
-    "window slats",
-    "paper lamp",
-    "fridge light only"
-  ],
-  "camera": [
-    "35mm room photograph",
-    "from the doorway",
-    "detail on a table"
-  ],
-  "styles": [
-    "quiet interior photo",
-    "Ghibli room background",
-    "Kodachrome home"
-  ],
-  "twists": [
-    "a second cup is already poured",
-    "the clock is missing an hour hand"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+ "id": "interior",
+ "name": "Interior / still room",
+ "nsfw": false,
+ "styles": [
+  "quiet interior photography",
+  "anime background, ghibli style",
+  "kodachrome film photograph"
+ ],
+ "camera": [
+  "wide shot",
+  "from the doorway"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Sunday afternoon",
+   "subjects": [
+    "1girl, oversized sweater",
+    "1boy, t-shirt, socks"
+   ],
+   "actions": [
+    "reading on the sofa",
+    "napping on the sofa",
+    "drinking tea by the window"
+   ],
+   "settings": [
+    "sunlit apartment living room, plants, bookshelves"
+   ],
+   "lighting": [
+    "afternoon sun through sheer curtains"
+   ],
+   "details": [
+    "cat sleeping nearby",
+    "blanket draped over the sofa"
+   ]
+  },
+  {
+   "title": "Tiny kitchen at night",
+   "subjects": [
+    "1girl, pajamas",
+    "1boy, hoodie"
+   ],
+   "actions": [
+    "waiting for the kettle to boil",
+    "eating noodles at a small table",
+    "looking inside the fridge"
+   ],
+   "settings": [
+    "tiny apartment kitchen at night"
+   ],
+   "lighting": [
+    "fridge light only",
+    "single pendant light"
+   ],
+   "details": [
+    "dishes in the sink",
+    "city lights through the window"
+   ]
+  },
+  {
+   "title": "Cluttered study",
+   "subjects": [
+    "no humans"
+   ],
+   "settings": [
+    "cluttered study, stacked books, writing desk by the window"
+   ],
+   "lighting": [
+    "late afternoon sun, floating dust",
+    "green desk lamp at night"
+   ],
+   "details": [
+    "open notebook",
+    "cup of cold tea",
+    "cat on the windowsill"
+   ]
+  },
+  {
+   "title": "Genkan",
+   "subjects": [
+    "no humans"
+   ],
+   "settings": [
+    "japanese apartment entrance, genkan, shoes lined up"
+   ],
+   "lighting": [
+    "evening light from the open door",
+    "soft ceiling light"
+   ],
+   "details": [
+    "umbrella stand",
+    "keys on the shelf"
+   ]
+  },
+  {
+   "title": "Steamy bathroom",
+   "subjects": [
+    "no humans"
+   ],
+   "settings": [
+    "small bathroom, fogged mirror, white tiles"
+   ],
+   "lighting": [
+    "warm light through steam"
+   ],
+   "details": [
+    "handprint on the fogged mirror",
+    "towel on the rack"
+   ]
+  }
+ ]
 }

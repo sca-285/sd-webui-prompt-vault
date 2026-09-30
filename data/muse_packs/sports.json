@@ -1,50 +1,140 @@
 {
-  "id": "sports",
-  "name": "Sports / motion",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "1boy, boxed stance, taped hands",
-    "1girl mid-sprint",
-    "swimmer breaking the surface",
-    "footballer sliding"
-  ],
-  "actions": [
-    "just after impact",
-    "catching breath",
+ "id": "sports",
+ "name": "Sports / motion",
+ "nsfw": false,
+ "styles": [
+  "sports photography, telephoto",
+  "grainy 16mm film",
+  "dynamic anime action"
+ ],
+ "camera": [
+  "full body",
+  "dynamic angle"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Boxing gym",
+   "subjects": [
+    "1boy, boxer, taped hands, shirtless",
+    "1girl, boxer, sports bra, taped hands"
+   ],
+   "actions": [
+    "hitting a heavy bag",
+    "resting on the ropes, catching breath",
+    "shadowboxing"
+   ],
+   "settings": [
+    "old boxing gym, high windows"
+   ],
+   "lighting": [
+    "sunlight through high windows, dust",
+    "single overhead light"
+   ],
+   "details": [
+    "sweat drops",
+    "chalk dust"
+   ]
+  },
+  {
+   "title": "Sprint",
+   "subjects": [
+    "1girl, sprinter, running kit",
+    "1boy, sprinter, running kit"
+   ],
+   "actions": [
+    "exploding out of the blocks",
+    "mid-sprint"
+   ],
+   "settings": [
+    "athletics track, empty stadium"
+   ],
+   "lighting": [
+    "stadium floodlights at night",
+    "golden hour"
+   ],
+   "camera": [
+    "from side, motion blur background",
+    "from below"
+   ],
+   "details": [
+    "sweat flying",
+    "track lane lines"
+   ]
+  },
+  {
+   "title": "Swimmer",
+   "subjects": [
+    "1girl, swimmer, swim cap, goggles",
+    "1boy, swimmer, swim cap"
+   ],
+   "actions": [
+    "breaking the surface, gasping",
+    "mid-butterfly stroke"
+   ],
+   "settings": [
+    "indoor swimming pool, lane ropes"
+   ],
+   "lighting": [
+    "overhead lights on the water",
+    "underwater light"
+   ],
+   "details": [
+    "frozen water splash",
+    "bubbles"
+   ]
+  },
+  {
+   "title": "Rain-soaked pitch",
+   "subjects": [
+    "1boy, football player, muddy kit",
+    "1girl, football player, muddy kit"
+   ],
+   "actions": [
+    "sliding tackle",
+    "celebrating, arms spread"
+   ],
+   "settings": [
+    "football pitch in heavy rain"
+   ],
+   "lighting": [
+    "floodlights, rain streaks"
+   ],
+   "details": [
+    "mud spray",
+    "water splashing"
+   ]
+  },
+  {
+   "title": "Rooftop court",
+   "subjects": [
+    "1boy, basketball player",
+    "1girl, basketball player"
+   ],
+   "actions": [
+    "mid-jump shot",
+    "dribbling",
     "tying a shoe on the sideline"
-  ],
-  "settings": [
-    "empty stadium night",
-    "gym with high windows",
-    "rain-soaked pitch",
-    "rooftop court"
-  ],
-  "lighting": [
-    "strobe freeze",
-    "sodium field lights",
-    "golden hour dust"
-  ],
-  "camera": [
-    "long lens compression",
-    "ground-level",
-    "freeze-frame splash"
-  ],
-  "styles": [
-    "sports photography",
-    "grainy 16mm",
-    "dynamic anime action"
-  ],
-  "twists": [
-    "the crowd is missing, seats wet",
-    "the clock shows extra time already gone"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+   ],
+   "settings": [
+    "rooftop basketball court, city behind"
+   ],
+   "lighting": [
+    "sunset",
+    "night, court lights"
+   ],
+   "details": [
+    "chain-link fence",
+    "worn court paint"
+   ]
+  }
+ ]
 }

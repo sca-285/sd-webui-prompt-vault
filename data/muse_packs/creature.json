@@ -1,50 +1,124 @@
 {
-  "id": "creature",
-  "name": "Creature / monster",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "feathered drake, no humans",
-    "1girl facing a huge animal",
-    "1boy offering a hand to a beast",
-    "deep-sea thing in a tank"
-  ],
-  "actions": [
-    "breathing mist",
-    "circling",
-    "asleep with one eye open"
-  ],
-  "settings": [
-    "moss hall",
-    "cliff nest",
-    "flooded temple",
-    "lab observation room"
-  ],
-  "lighting": [
-    "bioluminescence",
-    "storm flash",
-    "museum spot"
-  ],
-  "camera": [
-    "wide to show scale",
-    "macro on an eye",
-    "over-the-creature-shoulder"
-  ],
-  "styles": [
-    "creature concept art",
-    "nature documentary still",
-    "ink wash monster"
-  ],
-  "twists": [
-    "it is wearing a collar with a human name",
-    "the reflection is a different species"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+ "id": "creature",
+ "name": "Creature / monster",
+ "nsfw": false,
+ "styles": [
+  "creature concept art",
+  "nature documentary photograph",
+  "ink wash illustration",
+  "fantasy oil painting"
+ ],
+ "camera": [
+  "wide shot",
+  "from below"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Dragon's nest",
+   "subjects": [
+    "feathered dragon, no humans",
+    "black-scaled dragon, no humans"
+   ],
+   "actions": [
+    "curled around its eggs",
+    "spreading its wings",
+    "breathing mist"
+   ],
+   "settings": [
+    "cliffside nest, stormy sea below"
+   ],
+   "lighting": [
+    "storm light, lightning",
+    "sunset behind clouds"
+   ],
+   "camera": [
+    "wide shot, sense of scale",
+    "close-up of the eye"
+   ],
+   "details": [
+    "bones scattered in the nest",
+    "rain on the scales"
+   ]
+  },
+  {
+   "title": "The gentle giant",
+   "subjects": [
+    "1girl, small, hooded cloak",
+    "1boy, traveler, backpack"
+   ],
+   "actions": [
+    "reaching out to a giant creature",
+    "standing face to face with a huge beast",
+    "sitting on the giant's paw"
+   ],
+   "settings": [
+    "mossy forest, giant gentle creature",
+    "ancient hall overgrown with moss, huge sleeping beast"
+   ],
+   "lighting": [
+    "dappled sunlight",
+    "soft green forest light"
+   ],
+   "camera": [
+    "wide shot, size difference"
+   ],
+   "details": [
+    "butterflies",
+    "flowers growing on the creature's back"
+   ]
+  },
+  {
+   "title": "Deep-sea specimen",
+   "subjects": [
+    "bioluminescent deep sea creature, no humans",
+    "anglerfish monster, no humans"
+   ],
+   "actions": [
+    "pressed against the glass",
+    "drifting in the tank"
+   ],
+   "settings": [
+    "laboratory aquarium tank, dark lab"
+   ],
+   "lighting": [
+    "blue bioluminescent glow",
+    "cold lab lights"
+   ],
+   "details": [
+    "scientist silhouette behind the glass",
+    "rising bubbles"
+   ]
+  },
+  {
+   "title": "Flooded temple",
+   "subjects": [
+    "giant serpent, no humans",
+    "water spirit, translucent body"
+   ],
+   "actions": [
+    "rising from the water",
+    "coiled around a pillar"
+   ],
+   "settings": [
+    "flooded ancient temple, broken pillars"
+   ],
+   "lighting": [
+    "light through the collapsed roof",
+    "moonlight on the water"
+   ],
+   "details": [
+    "lotus flowers on the water",
+    "ripples"
+   ]
+  }
+ ]
 }

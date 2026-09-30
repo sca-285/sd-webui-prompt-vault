@@ -1,68 +1,167 @@
 {
-  "id": "street",
-  "name": "Street / candid",
-  "nsfw": false,
-  "subjects": [
-    "1girl, coat, walking",
-    "1boy, backpack, crossing the street",
-    "couple under one umbrella",
-    "street vendor at a stall",
-    "cyclist stopped at a light",
-    "child with a red balloon, distant",
-    "office worker, loosened tie",
-    "musician with a case"
-  ],
-  "actions": [
-    "mid-stride",
-    "checking a phone without looking up",
-    "looking back through a crowd",
-    "waiting for the signal",
-    "lighting a cigarette in the wind",
-    "hailing a cab",
-    "running for a bus",
-    "leaning on a railing"
-  ],
-  "settings": [
-    "wet asphalt, night city",
-    "morning market, steam and signs",
-    "subway entrance, harsh fluorescents",
-    "narrow old-town alley",
-    "overpass above traffic",
-    "convenience store at 2am",
-    "tram stop in light snow",
-    "crosswalk in heavy rain"
-  ],
-  "lighting": [
-    "sodium street lamps",
-    "mixed neon and headlights",
-    "overcast daylight",
-    "blue hour, shop windows glowing",
-    "single fluorescent from a doorway",
-    "lightning flash, instant contrast"
-  ],
-  "camera": [
-    "35mm street photography",
-    "28mm, slightly tilted",
-    "shot through a rain-specked windshield",
-    "from a second-storey window",
-    "low angle from the gutter",
-    "telephoto compression across a plaza"
-  ],
-  "styles": [
-    "candid documentary photo",
-    "cinematic night street",
-    "grainy 35mm film",
-    "anime city background, detailed",
-    "muted film still"
-  ],
-  "twists": [
-    "every sign is in a language that does not belong to this city",
-    "the puddle reflection shows a sunny day",
-    "nobody else in the crowd has a face in focus",
-    "a paper flyer is stuck to the subject's shoulder",
-    "the traffic light is stuck on amber"
-  ],
-  "negatives": [
-    "blurry", "worst quality", "watermark", "extra limbs", "empty street when a crowd is described"
-  ]
+ "id": "street",
+ "name": "Street / candid",
+ "nsfw": false,
+ "styles": [
+  "candid street photography, 35mm film",
+  "cinematic night photography",
+  "anime background, detailed city",
+  "black and white street photography, grainy"
+ ],
+ "camera": [
+  "wide shot",
+  "from side",
+  "medium shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "extra limbs"
+ ],
+ "scenes": [
+  {
+   "title": "Crosswalk in heavy rain",
+   "subjects": [
+    "1girl, yellow raincoat",
+    "1boy, business suit, black umbrella",
+    "1girl and 1boy, couple sharing one umbrella"
+   ],
+   "actions": [
+    "waiting at the crosswalk",
+    "crossing the street",
+    "running across the street"
+   ],
+   "settings": [
+    "crosswalk, heavy rain, city at night"
+   ],
+   "lighting": [
+    "car headlights and red tail lights",
+    "traffic light reflections on the wet road"
+   ],
+   "details": [
+    "splashing puddles",
+    "blurred umbrellas in the crowd"
+   ]
+  },
+  {
+   "title": "Morning market",
+   "subjects": [
+    "1girl, tote bag, cardigan",
+    "old woman, street vendor, apron",
+    "1boy, delivery rider, helmet"
+   ],
+   "actions": [
+    "picking out fruit",
+    "counting change",
+    "carrying crates"
+   ],
+   "settings": [
+    "morning street market, steaming food stalls, hanging signs"
+   ],
+   "lighting": [
+    "soft morning light through the steam",
+    "sunlight through awnings"
+   ],
+   "details": [
+    "piles of vegetables",
+    "hand-written price signs"
+   ]
+  },
+  {
+   "title": "Convenience store, 2am",
+   "subjects": [
+    "1girl, hoodie, sneakers",
+    "1boy, headphones, bomber jacket"
+   ],
+   "actions": [
+    "eating instant noodles at the window counter",
+    "standing outside with a canned coffee",
+    "browsing the shelves"
+   ],
+   "settings": [
+    "convenience store at night, bright interior, dark street"
+   ],
+   "lighting": [
+    "fluorescent store light spilling onto the street"
+   ],
+   "details": [
+    "bicycle parked outside",
+    "glowing vending machines"
+   ]
+  },
+  {
+   "title": "Tram stop in snow",
+   "subjects": [
+    "1girl, wool coat, scarf",
+    "old man, flat cap, overcoat"
+   ],
+   "actions": [
+    "waiting at the tram stop",
+    "breathing into cupped hands",
+    "reading the timetable"
+   ],
+   "settings": [
+    "tram stop, light snowfall, old european street"
+   ],
+   "lighting": [
+    "blue hour, warm shop windows",
+    "street lamps in falling snow"
+   ],
+   "details": [
+    "tram approaching in the distance",
+    "footprints in fresh snow"
+   ]
+  },
+  {
+   "title": "Old-town alley",
+   "subjects": [
+    "1boy, street musician, guitar",
+    "1girl, walking a bicycle"
+   ],
+   "actions": [
+    "walking up stone stairs",
+    "leaning on a wall",
+    "looking at a paper map"
+   ],
+   "settings": [
+    "narrow cobblestone alley, laundry lines above"
+   ],
+   "lighting": [
+    "dappled afternoon sunlight",
+    "golden hour light down the alley"
+   ],
+   "details": [
+    "cat on a doorstep",
+    "flower pots on windowsills"
+   ]
+  },
+  {
+   "title": "Subway rush",
+   "subjects": [
+    "1girl, office worker, blazer",
+    "1boy, office worker, loosened tie"
+   ],
+   "actions": [
+    "hurrying down the stairs",
+    "checking a phone",
+    "waiting on the platform"
+   ],
+   "settings": [
+    "subway station, tiled walls"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "headlights of an arriving train"
+   ],
+   "details": [
+    "motion blur of a passing train",
+    "crowd in the background"
+   ]
+  }
+ ]
 }

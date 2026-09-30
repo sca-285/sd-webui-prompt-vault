@@ -1,71 +1,148 @@
 {
-  "id": "nsfw_yuri",
-  "name": "NSFW · yuri · 2girls",
-  "nsfw": true,
-  "group": "nsfw",
-  "subjects": [
-    "2girls, nude, dual focus",
-    "2girls, lingerie, matching lace set",
-    "2girls, one still in an open shirt",
-    "2girls, height difference, both adult",
-    "2girls, wet skin, shower"
-  ],
-  "actions": [
-    "open kiss",
-    "scissoring",
-    "face sitting",
-    "fingers between her legs",
-    "pinning wrists above head",
-    "bodies flush, chest to chest",
-    "suck-mark on the neck",
-    "grinding on a thigh",
-    "afterglow, tangled legs"
-  ],
-  "settings": [
-    "sunlit bedroom",
-    "bathroom shower",
-    "tiny apartment sofa",
-    "hotel room",
-    "against the door they forgot to lock"
-  ],
-  "lighting": [
-    "window light on skin",
-    "one bedside lamp",
-    "steam-soft bathroom"
-  ],
-  "camera": [
-    "close on faces",
-    "from above on the bed",
-    "mirror on the wardrobe"
-  ],
-  "styles": [
-    "yuri illustration",
-    "explicit lesbian photography",
-    "painterly erotic scene"
-  ],
-  "twists": [
-    "two different shades of nail polish on the sheets",
-    "a third empty wine glass",
-    "someone's lecture notes on the desk"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed",
-    "child",
-    "loli",
-    "shota",
-    "underage",
-    "childlike proportions",
-    "extra genitals",
-    "fused bodies",
-    "censored bar",
-    "mosaic censor",
-    "1boy",
-    "penis",
-    "male focus"
-  ]
+ "id": "nsfw_yuri",
+ "name": "NSFW · yuri · 2girls",
+ "nsfw": true,
+ "styles": [
+  "yuri illustration",
+  "photorealistic, detailed skin",
+  "painterly erotic illustration"
+ ],
+ "camera": [
+  "full body",
+  "from above",
+  "from side"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious",
+  "1boy",
+  "penis",
+  "male focus"
+ ],
+ "scenes": [
+  {
+   "title": "Lazy morning",
+   "subjects": [
+    "2girls, yuri, adult women, nude",
+    "2girls, yuri, adult women, nude, height difference"
+   ],
+   "actions": [
+    "kissing, tangled legs",
+    "lying face to face, touching",
+    "kissing her neck"
+   ],
+   "settings": [
+    "bedroom, morning, white sheets"
+   ],
+   "lighting": [
+    "window light on skin"
+   ],
+   "details": [
+    "hickey on the neck",
+    "messy hair"
+   ]
+  },
+  {
+   "title": "Shower",
+   "subjects": [
+    "2girls, yuri, adult women, nude, wet skin"
+   ],
+   "actions": [
+    "kissing under the shower",
+    "pressed against the tiles, fingering",
+    "washing each other's hair"
+   ],
+   "settings": [
+    "shower, steam"
+   ],
+   "lighting": [
+    "soft bathroom light through steam"
+   ],
+   "details": [
+    "water droplets",
+    "fogged glass"
+   ]
+  },
+  {
+   "title": "Sofa",
+   "subjects": [
+    "2girls, yuri, adult women, nude",
+    "2girls, yuri, adult women, one in an open shirt, one nude"
+   ],
+   "actions": [
+    "making out on the sofa",
+    "tribadism",
+    "straddling her lap, kissing"
+   ],
+   "settings": [
+    "small apartment sofa"
+   ],
+   "lighting": [
+    "lamp light",
+    "evening light"
+   ],
+   "details": [
+    "clothes on the floor",
+    "cushions scattered"
+   ]
+  },
+  {
+   "title": "Lace and lamplight",
+   "subjects": [
+    "2girls, yuri, adult women, matching lace lingerie",
+    "2girls, yuri, adult women, one in lingerie, one nude"
+   ],
+   "actions": [
+    "undressing each other",
+    "kneeling on the bed, kissing",
+    "cunnilingus"
+   ],
+   "settings": [
+    "hotel room"
+   ],
+   "lighting": [
+    "dim warm light"
+   ],
+   "details": [
+    "lingerie tossed on the floor"
+   ]
+  },
+  {
+   "title": "Afterglow",
+   "subjects": [
+    "2girls, yuri, adult women, nude"
+   ],
+   "actions": [
+    "cuddling, afterglow",
+    "head on her chest",
+    "laughing, tangled in the sheets"
+   ],
+   "settings": [
+    "bedroom"
+   ],
+   "lighting": [
+    "soft light"
+   ],
+   "details": [
+    "tangled legs",
+    "sweaty skin"
+   ]
+  }
+ ]
 }

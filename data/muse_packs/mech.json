@@ -1,50 +1,115 @@
 {
-  "id": "mech",
-  "name": "Mech / vehicle",
-  "nsfw": false,
-  "group": "sfw",
-  "subjects": [
-    "tall mech, pilot visible in chest glass",
-    "1boy beside a parked mech",
-    "1girl in a flight suit, cockpit",
-    "motorcycle in rain, no rider"
-  ],
-  "actions": [
-    "powering down",
-    "looking up at the machine",
-    "hand on a hydraulic piston"
-  ],
-  "settings": [
-    "hangar at night",
-    "rubble street",
-    "desert test range",
-    "orbital dock"
-  ],
-  "lighting": [
-    "welding sparks",
-    "hangar floods",
-    "sunset on metal"
-  ],
-  "camera": [
-    "low angle hero shot",
-    "scale shot with a human",
-    "cockpit insert"
-  ],
-  "styles": [
-    "mecha concept art",
-    "industrial photo",
-    "anime mechanical background"
-  ],
-  "twists": [
-    "the machine is kneeling as if tired",
-    "fresh flowers tied to an antenna"
-  ],
-  "negatives": [
-    "blurry",
-    "worst quality",
-    "watermark",
-    "text",
-    "extra fingers",
-    "deformed"
-  ]
+ "id": "mech",
+ "name": "Mech / vehicle",
+ "nsfw": false,
+ "styles": [
+  "mecha concept art",
+  "anime mecha, detailed mechanical",
+  "industrial photography, realistic"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Hangar at night",
+   "subjects": [
+    "1girl, pilot suit",
+    "1boy, mechanic, jumpsuit, grease stains"
+   ],
+   "actions": [
+    "looking up at the mecha",
+    "sitting on a crate, helmet on lap"
+   ],
+   "settings": [
+    "hangar at night, giant kneeling mecha, scaffolding"
+   ],
+   "lighting": [
+    "floodlights",
+    "dim work lights"
+   ],
+   "camera": [
+    "wide shot, size difference",
+    "from below"
+   ],
+   "details": [
+    "cables hanging",
+    "welding sparks"
+   ]
+  },
+  {
+   "title": "Ruined city",
+   "subjects": [
+    "giant mecha, no humans",
+    "battle-damaged mecha, no humans"
+   ],
+   "actions": [
+    "walking through the ruins",
+    "standing guard, rifle lowered"
+   ],
+   "settings": [
+    "destroyed city street, rubble"
+   ],
+   "lighting": [
+    "sunset through smoke",
+    "overcast, dust"
+   ],
+   "camera": [
+    "from below",
+    "wide shot"
+   ],
+   "details": [
+    "smoke plumes",
+    "flowers tied to the antenna"
+   ]
+  },
+  {
+   "title": "Cockpit",
+   "subjects": [
+    "1girl, pilot suit, helmet",
+    "1boy, pilot suit, visor up"
+   ],
+   "actions": [
+    "gripping the controls",
+    "leaning back, exhausted"
+   ],
+   "settings": [
+    "mecha cockpit, holographic displays"
+   ],
+   "lighting": [
+    "glow of the screens",
+    "red warning lights"
+   ],
+   "camera": [
+    "upper body"
+   ],
+   "details": [
+    "cracked display",
+    "photo taped to the console"
+   ]
+  },
+  {
+   "title": "Bike in the rain",
+   "subjects": [
+    "futuristic motorcycle, no humans",
+    "1girl, riding suit, standing by a motorcycle"
+   ],
+   "settings": [
+    "neon street at night, rain"
+   ],
+   "lighting": [
+    "neon reflections on wet metal"
+   ],
+   "details": [
+    "rain streaks",
+    "steam from the engine"
+   ]
+  }
+ ]
 }
