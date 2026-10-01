@@ -52,6 +52,8 @@ Qwen-VL and the WD14 tagger) in one tab.
     **TIPO**. They use the models already set up for the Vault tab.
   - Edit the prompt before sending, step back through the last 20 ideas with ‹ ›, keep
     words out with **Never use**, give the button your own **avatar**, drag it anywhere.
+  - **⤢ Wide card** (on a window 760 px or wider): the parts on the left, the whole prompt
+    and its negatives on the right; the settings in two columns. Muse remembers it.
   - NSFW ideas are adults only: every one carries `adult`, minor-related words are
     dropped from any scene, and `child, loli, shota, underage` always go to the negatives.
 

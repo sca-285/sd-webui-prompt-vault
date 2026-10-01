@@ -39,6 +39,8 @@
         next: 'M9 5l7 7-7 7',
         back: 'M19 12H5M11 5l-7 7 7 7',
         copy: 'M9 9h11v11H9zM5 15V4h11',
+        widen: 'M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7',
+        narrow: 'M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7',
         roll: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',
         lock: 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z',
         unlock: 'M7 11V8a5 5 0 0 1 9.6-2M5 11h14v10H5z',
@@ -90,7 +92,10 @@
         due: LS.get('due', 0),              // when the timer brings the next idea (ms)
         fresh: false,                       // an idea came while the panel was closed
         dragged: false,
+        wide: LS.get('wide', false),        // the wide card: two columns
     };
+    const WIDE_MIN = 760; // narrower windows get the compact card
+    const isWide = () => M.wide && innerWidth >= WIDE_MIN;
     M.at = M.ideas.length - 1;
 
     const st = () => (M.snap && M.snap.state) || {};
@@ -408,6 +413,8 @@
         return el('div', {class: 'pv-muse-head'}, title,
             iconButton('clock', s.enabled ? `Timer on, every ${s.interval_minutes} min: turn off` : 'Timer off: turn on', () => patch({enabled: !s.enabled}),
                 {class: 'pv-muse-icon-btn' + (s.enabled ? ' pv-on' : ''), 'aria-pressed': s.enabled ? 'true' : 'false'}),
+            innerWidth >= WIDE_MIN ? iconButton(isWide() ? 'narrow' : 'widen', isWide() ? 'Compact card' : 'Wide card: two columns, a bigger prompt',
+                () => { M.wide = !M.wide; LS.set('wide', M.wide); render(); }) : null,
             M.view === 'idea' ? iconButton('gear', 'Settings', () => { M.view = 'settings'; render(); }) : null,
             iconButton('close', 'Close (Esc)', () => openPanel(false)));
     }
@@ -441,9 +448,7 @@
             el('span', {text: `${M.at + 1}/${M.ideas.length}`}),
             iconButton('next', 'Next idea', () => { M.at++; render(); }, {disabled: M.at >= M.ideas.length - 1})) : null;
 
-        return el('div', {class: 'pv-muse-body'},
-            filterBar(),
-            el('div', {class: 'pv-muse-card'},
+        const card = el('div', {class: 'pv-muse-card'},
                 el('div', {class: 'pv-muse-card-head'},
                     el('div', {class: 'pv-muse-card-title'},
                         el('strong', {text: it.title}),
@@ -451,13 +456,27 @@
                             el('span', {text: it.theme}), el('span', {text: it.cast_label}),
                             el('span', {class: it.nsfw ? 'pv-muse-nsfw' : '', text: (M.snap.catalogue.ratings.find((r) => r[0] === it.rating) || [0, it.rating])[1]}))),
                     nav),
-                el('div', {class: 'pv-muse-parts'}, it.parts.map((p) => partRow(it, p)))),
+                el('div', {class: 'pv-muse-parts'}, it.parts.map((p) => partRow(it, p))));
+        const label = it.edited ? 'Prompt (edited: rolling a part rewrites it)' : 'Prompt';
+        const neg = it.negative ? el('div', {class: 'pv-muse-neg', title: it.negative, text: (s.send_negative ? 'Negatives added on send: ' : 'Negatives (not sent): ') + it.negative}) : null;
+        const note = it.note ? el('div', {class: 'pv-muse-hint', text: it.note}) : null;
+
+        if (isWide()) {
+            // the parts on the left, the whole prompt on the right, always open
+            prompt.rows = 12;
+            return el('div', {class: 'pv-muse-body'},
+                filterBar(),
+                el('div', {class: 'pv-muse-cols'},
+                    card,
+                    el('div', {class: 'pv-muse-prompt pv-muse-prompt-wide'},
+                        el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, neg, note)));
+        }
+        return el('div', {class: 'pv-muse-body'},
+            filterBar(),
+            card,
             el('details', {class: 'pv-muse-prompt', open: LS.get('prompt_open', true) ? true : null,
                 ontoggle: (e) => LS.set('prompt_open', e.target.open)},
-            el('summary', {text: it.edited ? 'Prompt (edited: rolling a part rewrites it)' : 'Prompt'}),
-            prompt,
-            it.negative ? el('div', {class: 'pv-muse-neg', title: it.negative, text: (s.send_negative ? 'Negatives added on send: ' : 'Negatives (not sent): ') + it.negative}) : null,
-            it.note ? el('div', {class: 'pv-muse-hint', text: it.note}) : null));
+            el('summary', {text: label}), prompt, neg, note));
     }
 
     // always in view, under the scrolling part
@@ -597,6 +616,7 @@
         if (!panel || !M.open || !M.snap) return;
         const scroll = panel.querySelector('.pv-muse-body');
         const y = scroll ? scroll.scrollTop : 0;
+        panel.classList.toggle('pv-muse-wide', isWide());
         panel.replaceChildren(...[header(), ...(M.view === 'settings' ? [settingsView()] : [ideaView(), ideaFooter()])].filter(Boolean));
         const again = panel.querySelector('.pv-muse-body');
         if (again) again.scrollTop = y;
@@ -676,7 +696,10 @@
             place();
         };
         restore();
-        addEventListener('resize', restore);
+        addEventListener('resize', () => {
+            restore();
+            if (M.open && M.wide && !!$('#pv_muse_panel.pv-muse-wide') !== isWide()) render();
+        });
         fab.addEventListener('pointerdown', (ev) => {
             if (ev.button !== 0) return;
             const r = fab.getBoundingClientRect(), sx = ev.clientX, sy = ev.clientY;
