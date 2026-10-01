@@ -277,7 +277,7 @@
         render();
         try {
             const data = await call('/muse/next', {scene: it.scene, cast: it.cast, keep: keepOf(it, true), roll: slot});
-            const fresh = Object.assign(data.idea, {locks: it.locks});
+            const fresh = Object.assign(data.idea, {locks: it.locks}); // a fresh prompt: any paragraph is gone
             M.ideas[M.at] = fresh;
             saveIdeas();
         } catch (e) {
@@ -296,15 +296,37 @@
         render();
     }
 
-    async function expandTipo() {
+    // the same tools as the Vault tab: arrange the tags, Qwen's paragraph, TIPO
+    const TOOL_NAMES = {arrange: 'Arranging…', describe: 'Writing…', tipo: 'TIPO…'};
+
+    async function tool(kind) {
         const it = idea();
         if (!it || M.busy) return;
-        M.busy = 'tipo';
+        const s = st();
+        M.busy = kind;
         render();
         try {
-            const data = await call('/muse/tipo', {positive: it.positive});
-            it.positive = data.positive;
-            it.note = data.note;
+            // a paragraph Qwen wrote earlier is not fed back in
+            const base = it.described ? it.tags : it.positive;
+            let result, note;
+            if (kind === 'tipo') {
+                const data = await call('/muse/tipo', {positive: base});
+                result = data.positive; note = data.note;
+            } else if (kind === 'arrange' && s.arrange_with !== 'qwen') {
+                ({result, note} = await call('/prompt/arrange', {prompt: base, parts: it.parts}));
+            } else {
+                const task = kind === 'arrange' ? 'Arrange tags' : 'Tags → sentence';
+                ({result, note} = await call('/prompt/qwen', {prompt: base, task}));
+            }
+            if (kind === 'describe') {
+                it.tags = base;
+                it.described = true;
+                it.positive = s.describe_as === 'both' ? base.replace(/[\s,]+$/, '') + ', ' + result : result;
+            } else {
+                it.positive = it.described && s.describe_as === 'both' ? it.positive.replace(base, result) : result;
+                if (it.described) it.tags = result;
+            }
+            it.note = note;
             it.edited = true;
             saveIdeas();
         } catch (e) {
@@ -427,7 +449,11 @@
                 el('button', {type: 'button', class: 'pv-btn pv-muse-new', disabled: !!M.busy, onclick: () => nextIdea(false),
                     title: locks ? 'Same scene, the locked parts stay' : 'A new scene (Alt+M)'},
                 icon('roll'), M.busy === 'next' ? 'Thinking…' : (locks ? `New, keep ${locks} locked` : 'New idea')),
-                s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? 'TIPO…' : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: expandTipo}) : null,
+                el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'arrange' ? TOOL_NAMES.arrange : 'Arrange', disabled: !!M.busy, onclick: () => tool('arrange'),
+                    title: s.arrange_with === 'qwen' ? 'Qwen puts the tags in order, merges duplicates, fixes spelling' : 'Puts the tags in order, from what your library knows of them (instant)'}),
+                el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'describe' ? TOOL_NAMES.describe : 'Describe', disabled: !!M.busy, onclick: () => tool('describe'),
+                    title: s.describe_as === 'both' ? 'Qwen writes a paragraph from the tags and adds it after them' : 'Qwen turns the tags into a paragraph'}),
+                s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? TOOL_NAMES.tipo : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: () => tool('tipo')}) : null,
                 iconButton('copy', 'Copy the prompt', () => {
                     navigator.clipboard.writeText(it.positive).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
                 })),
@@ -506,6 +532,10 @@
             section('Send',
                 seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
                 toggleSwitch('Add the idea\'s negatives too', s.send_negative, (v) => patch({send_negative: v}), 'only the ones missing from the negative prompt')),
+            section('Arrange & describe',
+                seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
+                seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),
+                el('div', {class: 'pv-muse-hint', text: 'Qwen is the model of the Vault tab: Settings → Prompt Vault (Qwen / llama-server).'})),
             section('TIPO',
                 toggleSwitch('Show the TIPO button', s.use_tipo, (v) => patch({use_tipo: v}), 'expands an idea with the TIPO set up in the Vault tab'),
                 s.use_tipo ? seg('Output', 'tipo_output', [['Tags', 'Tags'], ['Natural language', 'Words'], ['Tags + natural language', 'Both']]) : null,

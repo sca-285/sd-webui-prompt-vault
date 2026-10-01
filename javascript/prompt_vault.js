@@ -646,6 +646,11 @@
         const out = el('div', {class: 'pv-check'});
         host.append(el('div', {class: 'pv-toolbar-row'},
             el('button', {class: 'pv-btn', type: 'button', text: '🔍 Check tags', title: 'Tags that are neither in your library nor known Danbooru tags', onclick: checkTags}),
+            el('button', {class: 'pv-btn', type: 'button', text: '🗂️ Arrange', title: 'Put the tags in order (quality, who, body, face, clothes, pose, place, light, camera, style) from what your library knows of them; duplicates go', onclick: () => {
+                const area = box('positive');
+                if (!area.value.trim()) return;
+                call('/prompt/arrange', {prompt: area.value}).then((d) => { setBox(area, d.result); toast(d.note); }).catch((e) => toast(e.message, true));
+            }}),
             el('button', {class: 'pv-btn', type: 'button', text: '🧽 Remove duplicates', onclick: () => {
                 for (const which of ['positive', 'negative']) {
                     const area = box(which);

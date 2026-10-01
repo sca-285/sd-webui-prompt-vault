@@ -108,6 +108,28 @@ def register(app):
     def clear_history():
         return run(lambda: (store.clear_history(), {"history": []})[1])
 
+    # ------------------------------------------------------------------ prompt tools, for the editor and Muse
+
+    def tool(fn):
+        result, note = fn()
+        if not result:
+            raise store.VaultError(note or "nothing came back")
+        return {"result": result, "note": note}
+
+    @app.post(f"{BASE}/prompt/arrange")
+    def prompt_arrange(body: dict = Body(...)):
+        from . import arrange
+
+        parts = body.get("parts") if isinstance(body.get("parts"), list) else None
+        return run(lambda: tool(lambda: arrange.arrange(str(body.get("prompt") or ""), parts)))
+
+    @app.post(f"{BASE}/prompt/qwen")
+    def prompt_qwen(body: dict = Body(...)):
+        from . import qwen
+
+        return run(lambda: tool(lambda: qwen.rewrite(str(body.get("prompt") or ""), str(body.get("task") or ""),
+                                                     str(body.get("instruction") or ""))))
+
     # ------------------------------------------------------------------ Muse
 
     from . import muse

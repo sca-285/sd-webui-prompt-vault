@@ -21,6 +21,11 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **Suggestions while you type**, from your library and about 10,000 Danbooru tags.
   **🔍 Check tags** lists the tags that are neither (typos, made-up tags) and adds them to
   the library in one click.
+- **🗂️ Arrange** puts the tags of the editor in the usual order (quality, who, body, face,
+  clothes, pose, place, time, light, colour, camera, style) and drops duplicates. It knows
+  what each tag is from your library's categories and the Danbooru vocabulary, so it is
+  instant; **✍️ Qwen → Arrange tags** does the same with the model, and also merges
+  near-duplicates, drops contradictions and fixes misspelt tags.
 - **Saved prompts**: the positive and negative prompt under a name, with a thumbnail.
 - **History**: the prompts of your last generations, one click from coming back.
 - **🌱 TIPO** turns a few tags or a short idea into a full prompt.
@@ -40,9 +45,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     for the next idea (same scene).
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending, with the idea's negatives added where they are missing.
-  - Edit the prompt before sending, step back through the last 20 ideas with ‹ ›, expand
-    with **TIPO**, keep words out with **Never use**, give the button your own **avatar**,
-    drag it anywhere.
+  - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
+    **Describe** (Qwen writes a paragraph from the tags, after them or instead of them) and
+    **TIPO**. They use the models already set up for the Vault tab.
+  - Edit the prompt before sending, step back through the last 20 ideas with ‹ ›, keep
+    words out with **Never use**, give the button your own **avatar**, drag it anywhere.
   - NSFW ideas are adults only: every one carries `adult`, minor-related words are
     dropped from any scene, and `child, loli, shota, underage` always go to the negatives.
 

@@ -283,7 +283,8 @@ html body #pv_muse_panel .pv-muse-spin .pv-muse-icon { animation: pv-muse-spin 0
 #pv_muse_panel .pv-muse-actions { display: flex; align-items: center; gap: 6px; }
 html body #pv_muse_panel .pv-btn { font-family: inherit; }
 html body #pv_muse_panel .pv-btn:disabled { opacity: 0.5; cursor: default; }
-html body #pv_muse_panel .pv-muse-new { flex: 1; }
+html body #pv_muse_panel .pv-muse-new { flex: 1; min-width: 0; white-space: nowrap; }
+html body #pv_muse_panel .pv-muse-actions .pv-btn:not(.pv-muse-new) { padding: 4px 9px; }
 html body #pv_muse_panel .pv-muse-new .pv-muse-icon { width: 15px; height: 15px; }
 #pv_muse_panel .pv-muse-send { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); align-items: center; gap: 6px; }
 #pv_muse_panel .pv-muse-send-label { font-size: 12px; opacity: 0.6; }
@@ -314,7 +315,7 @@ html body #pv_muse_panel .pv-muse-switch {
 
 #pv_muse_panel .pv-muse-field { display: flex; align-items: center; gap: 10px; }
 #pv_muse_panel .pv-muse-field.pv-muse-off { opacity: 0.45; }
-#pv_muse_panel .pv-muse-field-label { width: 44px; flex: none; font-size: 13px; opacity: 0.75; }
+#pv_muse_panel .pv-muse-field-label { width: 58px; flex: none; font-size: 13px; opacity: 0.75; }
 #pv_muse_panel .pv-muse-field input[type=range] { flex: 1; min-width: 0; accent-color: var(--pv-muse-accent); }
 #pv_muse_panel .pv-muse-field output { width: 48px; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
 

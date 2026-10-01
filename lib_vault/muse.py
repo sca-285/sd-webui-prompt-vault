@@ -103,6 +103,8 @@ DEFAULT_STATE = {
     "ratings": ["sfw"],
     "send_mode": "replace",
     "send_negative": True,
+    "arrange_with": "library",  # or "qwen"
+    "describe_as": "both",      # "paragraph": Qwen's paragraph alone; "both": the tags, then the paragraph
     "use_tipo": False,
     "tipo_output": "Tags + natural language",
     "tipo_length": "short",
@@ -151,7 +153,8 @@ def _normalise(data):
     out["themes"] = _names(out["themes"])[:100]
     out["casts"] = _names(out["casts"], CASTS)
     out["ratings"] = _names(out["ratings"], RATINGS)
-    for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS)):
+    for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
+                         ("arrange_with", ("library", "qwen")), ("describe_as", ("paragraph", "both"))):
         if out[key] not in allowed:
             out[key] = DEFAULT_STATE[key]
     out["blacklist"] = str(out["blacklist"] or "")[:4000]
