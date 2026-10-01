@@ -1,0 +1,4657 @@
+{
+ "theme": "Myth",
+ "styles": [
+  "mythic oil painting",
+  "art nouveau",
+  "dark folklore illustration"
+ ],
+ "camera": [
+  "wide shot",
+  "full body"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "River offering",
+   "rating": "sfw",
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "white ritual robes, flower crown",
+     "kimono"
+    ],
+    "1boy": [
+     "white robes",
+     "yukata"
+    ],
+    "1girl1boy": [
+     "she in white ritual robes, flower crown, he in white robes",
+     "she in white ritual robes, flower crown, he in yukata",
+     "she in kimono, he in white robes",
+     "she in kimono, he in yukata"
+    ],
+    "2girls": [
+     "white ritual robes, flower crown",
+     "kimono"
+    ],
+    "2boys": [
+     "white robes",
+     "yukata"
+    ],
+    "girls": [
+     "white ritual robes, flower crown",
+     "kimono"
+    ],
+    "boys": [
+     "white robes",
+     "yukata"
+    ],
+    "harem": [
+     "he in white robes, the girls in white ritual robes, flower crown",
+     "he in yukata, the girls in white ritual robes, flower crown",
+     "he in white robes, the girls in kimono"
+    ],
+    "reverse": [
+     "she in white ritual robes, flower crown, the boys in white robes",
+     "she in white ritual robes, flower crown, the boys in yukata",
+     "she in kimono, the boys in white robes"
+    ],
+    "mixed": [
+     "the women in white ritual robes, flower crown, the men in white robes",
+     "the women in white ritual robes, flower crown, the men in yukata",
+     "the women in kimono, the men in white robes"
+    ],
+    "furry": [
+     "wolf, female, white ritual robes, flower crown",
+     "wolf, male, white robes",
+     "fox, female, kimono",
+     "fox, male, yukata",
+     "cat, female, white ritual robes, flower crown",
+     "cat, male, white robes",
+     "rabbit, female, kimono",
+     "rabbit, male, yukata",
+     "tiger, female, white ritual robes, flower crown",
+     "tiger, male, white robes",
+     "deer, female, kimono",
+     "deer, male, yukata",
+     "dragon, female, white ritual robes, flower crown",
+     "dragon, male, white robes",
+     "lion, female, kimono",
+     "lion, male, yukata"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, white ritual robes, flower crown",
+     "1boy, solo, satyr, goat horns, goat legs, yukata",
+     "1girl, solo, dryad, bark skin, leaves in hair, white ritual robes, flower crown",
+     "1girl, solo, kitsune, fox ears, nine tails, kimono",
+     "1boy, solo, faun, small horns, white robes"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "placing a lantern on the river",
+     "kneeling at the water"
+    ],
+    "pair": [
+     "releasing a lantern together"
+    ],
+    "groups": [
+     "festival crowd by the river"
+    ]
+   },
+   "settings": [
+    "river at night, floating lanterns"
+   ],
+   "lighting": [
+    "lantern light",
+    "moonlight"
+   ],
+   "details": [
+    "floating petals",
+    "mist"
+   ]
+  },
+  {
+   "title": "River offering",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "standing in the river, looking over the shoulder",
+     "sitting on the riverbank, knees up"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "embracing in the river"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "splashing each other in the river"
+    ]
+   },
+   "settings": [
+    "river at night, floating lanterns"
+   ],
+   "lighting": [
+    "lantern light",
+    "moonlight"
+   ],
+   "details": [
+    "floating petals",
+    "mist",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "River offering",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "standing in the river",
+     "bathing in the river",
+     "lying on the riverbank, relaxed",
+     "sitting on the riverbank, knees drawn up"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "bathing together in the river",
+     "lying together on the riverbank"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "bathing together in the river",
+     "lounging together on the riverbank"
+    ]
+   },
+   "settings": [
+    "river at night, floating lanterns"
+   ],
+   "lighting": [
+    "lantern light",
+    "moonlight"
+   ],
+   "details": [
+    "floating petals",
+    "mist",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "River offering",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating in the river",
+     "masturbating on the riverbank, spread legs"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating in the river"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "sex in the river, legs wrapped around him",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering in the river",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex in the river",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "group sex in the river",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "group sex in the river",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "group sex in the river",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "group sex in the river",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex in the river",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "river at night, floating lanterns"
+   ],
+   "lighting": [
+    "lantern light",
+    "moonlight"
+   ],
+   "details": [
+    "floating petals",
+    "mist",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Mountain shrine",
+   "rating": "sfw",
+   "mood": [
+    "calm",
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "miko, red hakama",
+     "kimono"
+    ],
+    "1boy": [
+     "shrine priest robes",
+     "hakama"
+    ],
+    "1girl1boy": [
+     "she in miko, red hakama, he in shrine priest robes",
+     "she in miko, red hakama, he in hakama",
+     "she in kimono, he in shrine priest robes",
+     "she in kimono, he in hakama"
+    ],
+    "2girls": [
+     "miko, red hakama",
+     "kimono"
+    ],
+    "2boys": [
+     "shrine priest robes",
+     "hakama"
+    ],
+    "girls": [
+     "miko, red hakama",
+     "kimono"
+    ],
+    "boys": [
+     "shrine priest robes",
+     "hakama"
+    ],
+    "harem": [
+     "he in shrine priest robes, the girls in miko, red hakama",
+     "he in hakama, the girls in miko, red hakama",
+     "he in shrine priest robes, the girls in kimono"
+    ],
+    "reverse": [
+     "she in miko, red hakama, the boys in shrine priest robes",
+     "she in miko, red hakama, the boys in hakama",
+     "she in kimono, the boys in shrine priest robes"
+    ],
+    "mixed": [
+     "the women in miko, red hakama, the men in shrine priest robes",
+     "the women in miko, red hakama, the men in hakama",
+     "the women in kimono, the men in shrine priest robes"
+    ],
+    "furry": [
+     "wolf, female, miko, red hakama",
+     "wolf, male, shrine priest robes",
+     "fox, female, kimono",
+     "fox, male, hakama",
+     "cat, female, miko, red hakama",
+     "cat, male, shrine priest robes",
+     "rabbit, female, kimono",
+     "rabbit, male, hakama",
+     "tiger, female, miko, red hakama",
+     "tiger, male, shrine priest robes",
+     "deer, female, kimono",
+     "deer, male, hakama",
+     "dragon, female, miko, red hakama",
+     "dragon, male, shrine priest robes",
+     "lion, female, kimono",
+     "lion, male, hakama"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, miko, red hakama",
+     "1boy, solo, satyr, goat horns, goat legs, hakama",
+     "1girl, solo, dryad, bark skin, leaves in hair, miko, red hakama",
+     "1girl, solo, kitsune, fox ears, nine tails, kimono",
+     "1boy, solo, faun, small horns, shrine priest robes"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "ringing a bell",
+     "sweeping the steps"
+    ],
+    "pair": [
+     "praying together"
+    ],
+    "groups": [
+     "festival at the shrine"
+    ]
+   },
+   "settings": [
+    "mountain shrine, stone steps, torii gate"
+   ],
+   "lighting": [
+    "morning mist",
+    "sunset through clouds"
+   ],
+   "details": [
+    "incense smoke",
+    "paper talismans"
+   ]
+  },
+  {
+   "title": "Mountain shrine",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the stone steps, knees up",
+     "leaning against the shrine wall, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against the shrine wall, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting"
+    ]
+   },
+   "settings": [
+    "mountain shrine, stone steps, torii gate"
+   ],
+   "lighting": [
+    "morning mist",
+    "sunset through clouds"
+   ],
+   "details": [
+    "incense smoke",
+    "paper talismans",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Mountain shrine",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the stone steps, relaxed",
+     "sitting on the stone steps, knees drawn up",
+     "leaning against the shrine wall"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the stone steps"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the stone steps"
+    ]
+   },
+   "settings": [
+    "mountain shrine, stone steps, torii gate"
+   ],
+   "lighting": [
+    "morning mist",
+    "sunset through clouds"
+   ],
+   "details": [
+    "incense smoke",
+    "paper talismans",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Mountain shrine",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the stone steps, spread legs",
+     "masturbating, back against the shrine wall"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating, one hand on the shrine wall"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the shrine wall",
+     "sex from behind, standing, hands on the shrine wall",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the shrine wall",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the shrine wall",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the shrine wall, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the shrine wall, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "mountain shrine, stone steps, torii gate"
+   ],
+   "lighting": [
+    "morning mist",
+    "sunset through clouds"
+   ],
+   "details": [
+    "incense smoke",
+    "paper talismans",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Stone circle",
+   "rating": "sfw",
+   "mood": [
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "druid robes",
+     "hooded cloak"
+    ],
+    "1boy": [
+     "druid robes, antler headdress",
+     "hooded cloak"
+    ],
+    "1girl1boy": [
+     "she in druid robes, he in druid robes, antler headdress",
+     "she in druid robes, he in hooded cloak",
+     "she in hooded cloak, he in druid robes, antler headdress",
+     "she in hooded cloak, he in hooded cloak"
+    ],
+    "2girls": [
+     "druid robes",
+     "hooded cloak"
+    ],
+    "2boys": [
+     "druid robes, antler headdress",
+     "hooded cloak"
+    ],
+    "girls": [
+     "druid robes",
+     "hooded cloak"
+    ],
+    "boys": [
+     "druid robes, antler headdress",
+     "hooded cloak"
+    ],
+    "harem": [
+     "he in druid robes, antler headdress, the girls in druid robes",
+     "he in hooded cloak, the girls in druid robes",
+     "he in druid robes, antler headdress, the girls in hooded cloak"
+    ],
+    "reverse": [
+     "she in druid robes, the boys in druid robes, antler headdress",
+     "she in druid robes, the boys in hooded cloak",
+     "she in hooded cloak, the boys in druid robes, antler headdress"
+    ],
+    "mixed": [
+     "the women in druid robes, the men in druid robes, antler headdress",
+     "the women in druid robes, the men in hooded cloak",
+     "the women in hooded cloak, the men in druid robes, antler headdress"
+    ],
+    "furry": [
+     "wolf, female, druid robes",
+     "wolf, male, druid robes, antler headdress",
+     "fox, female, hooded cloak",
+     "fox, male, hooded cloak",
+     "cat, female, druid robes",
+     "cat, male, druid robes, antler headdress",
+     "rabbit, female, hooded cloak",
+     "rabbit, male, hooded cloak",
+     "tiger, female, druid robes",
+     "tiger, male, druid robes, antler headdress",
+     "deer, female, hooded cloak",
+     "deer, male, hooded cloak",
+     "dragon, female, druid robes",
+     "dragon, male, druid robes, antler headdress",
+     "lion, female, hooded cloak",
+     "lion, male, hooded cloak"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, druid robes",
+     "1boy, solo, satyr, goat horns, goat legs, hooded cloak",
+     "1girl, solo, dryad, bark skin, leaves in hair, druid robes",
+     "1girl, solo, kitsune, fox ears, nine tails, hooded cloak",
+     "1boy, solo, faun, small horns, druid robes, antler headdress"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "raising hands to the sky",
+     "walking between the stones"
+    ],
+    "pair": [
+     "ritual dance"
+    ],
+    "groups": [
+     "druids in a circle"
+    ]
+   },
+   "settings": [
+    "ancient stone circle on the moor"
+   ],
+   "lighting": [
+    "full moon",
+    "bonfire"
+   ],
+   "details": [
+    "sparks rising",
+    "ravens"
+   ]
+  },
+  {
+   "title": "Stone circle",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the moor grass, knees up",
+     "leaning against a standing stone, looking at viewer",
+     "lying on the altar stone, propped on elbows",
+     "kneeling on the altar stone, looking at viewer",
+     "sitting on the edge of the altar stone"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against a standing stone, kissing",
+     "falling onto the altar stone together"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the altar stone"
+    ]
+   },
+   "settings": [
+    "ancient stone circle on the moor"
+   ],
+   "lighting": [
+    "full moon",
+    "bonfire"
+   ],
+   "details": [
+    "sparks rising",
+    "ravens",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Stone circle",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the moor grass, relaxed",
+     "sitting on the moor grass, knees drawn up",
+     "leaning against a standing stone",
+     "lying on the altar stone",
+     "sitting on the edge of the altar stone"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the moor grass",
+     "lying together on the altar stone"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the moor grass",
+     "lying in a pile on the altar stone"
+    ]
+   },
+   "settings": [
+    "ancient stone circle on the moor"
+   ],
+   "lighting": [
+    "full moon",
+    "bonfire"
+   ],
+   "details": [
+    "sparks rising",
+    "ravens",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Stone circle",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the moor grass, spread legs",
+     "masturbating, back against a standing stone",
+     "lying on the altar stone, fingering herself",
+     "using a vibrator on the altar stone"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating, one hand on a standing stone",
+     "lying back on the altar stone, masturbating"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against a standing stone",
+     "sex from behind, standing, hands on a standing stone",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against a standing stone",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against a standing stone",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against a standing stone, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against a standing stone, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the altar stone, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the altar stone, touching self"
+    ]
+   },
+   "settings": [
+    "ancient stone circle on the moor"
+   ],
+   "lighting": [
+    "full moon",
+    "bonfire"
+   ],
+   "details": [
+    "sparks rising",
+    "ravens",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Iron court",
+   "rating": "sfw",
+   "mood": [
+    "serious",
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "queen, iron crown",
+     "warrior, fur cloak"
+    ],
+    "1boy": [
+     "king, iron crown",
+     "warrior, fur cloak"
+    ],
+    "1girl1boy": [
+     "she in queen, iron crown, he in king, iron crown",
+     "she in queen, iron crown, he in warrior, fur cloak",
+     "she in warrior, fur cloak, he in king, iron crown",
+     "she in warrior, fur cloak, he in warrior, fur cloak"
+    ],
+    "2girls": [
+     "queen, iron crown",
+     "warrior, fur cloak"
+    ],
+    "2boys": [
+     "king, iron crown",
+     "warrior, fur cloak"
+    ],
+    "girls": [
+     "queen, iron crown",
+     "warrior, fur cloak"
+    ],
+    "boys": [
+     "king, iron crown",
+     "warrior, fur cloak"
+    ],
+    "harem": [
+     "he in king, iron crown, the girls in queen, iron crown",
+     "he in warrior, fur cloak, the girls in queen, iron crown",
+     "he in king, iron crown, the girls in warrior, fur cloak"
+    ],
+    "reverse": [
+     "she in queen, iron crown, the boys in king, iron crown",
+     "she in queen, iron crown, the boys in warrior, fur cloak",
+     "she in warrior, fur cloak, the boys in king, iron crown"
+    ],
+    "mixed": [
+     "the women in queen, iron crown, the men in king, iron crown",
+     "the women in queen, iron crown, the men in warrior, fur cloak",
+     "the women in warrior, fur cloak, the men in king, iron crown"
+    ],
+    "furry": [
+     "wolf, female, queen, iron crown",
+     "wolf, male, king, iron crown",
+     "fox, female, warrior, fur cloak",
+     "fox, male, warrior, fur cloak",
+     "cat, female, queen, iron crown",
+     "cat, male, king, iron crown",
+     "rabbit, female, warrior, fur cloak",
+     "rabbit, male, warrior, fur cloak",
+     "tiger, female, queen, iron crown",
+     "tiger, male, king, iron crown",
+     "deer, female, warrior, fur cloak",
+     "deer, male, warrior, fur cloak",
+     "dragon, female, queen, iron crown",
+     "dragon, male, king, iron crown",
+     "lion, female, warrior, fur cloak",
+     "lion, male, warrior, fur cloak"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, queen, iron crown",
+     "1boy, solo, satyr, goat horns, goat legs, warrior, fur cloak",
+     "1girl, solo, dryad, bark skin, leaves in hair, queen, iron crown",
+     "1girl, solo, kitsune, fox ears, nine tails, warrior, fur cloak",
+     "1boy, solo, faun, small horns, king, iron crown"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "sitting on the throne",
+     "holding a sword"
+    ],
+    "pair": [
+     "king and queen side by side"
+    ],
+    "groups": [
+     "court gathered before the throne"
+    ]
+   },
+   "settings": [
+    "dark great hall, stone throne, banners"
+   ],
+   "lighting": [
+    "firelight from braziers"
+   ],
+   "details": [
+    "wolves at the feet",
+    "smoke"
+   ]
+  },
+  {
+   "title": "Iron court",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the stone throne, legs crossed",
+     "leaning against the stone pillar, looking at viewer",
+     "sitting on the furs before the throne, knees up"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against the stone pillar, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting"
+    ]
+   },
+   "settings": [
+    "dark great hall, stone throne, banners"
+   ],
+   "lighting": [
+    "firelight from braziers"
+   ],
+   "details": [
+    "wolves at the feet",
+    "smoke",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Iron court",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "sitting on the stone throne, legs crossed",
+     "leaning against the stone pillar",
+     "lying on the furs before the throne, relaxed",
+     "sitting on the furs before the throne, knees drawn up"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the furs before the throne"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the furs before the throne"
+    ]
+   },
+   "settings": [
+    "dark great hall, stone throne, banners"
+   ],
+   "lighting": [
+    "firelight from braziers"
+   ],
+   "details": [
+    "wolves at the feet",
+    "smoke",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Iron court",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the stone throne, legs over the armrests",
+     "masturbating, back against the stone pillar",
+     "masturbating on the furs before the throne, spread legs"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating on the stone throne, legs spread",
+     "masturbating, one hand on the stone pillar"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "sex on the stone throne, she sits on his lap",
+     "reverse cowgirl on the stone throne",
+     "standing sex, lifted against the stone pillar",
+     "sex from behind, standing, hands on the stone pillar",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "straddling on the stone throne, fingering",
+     "fingering, pressed against the stone pillar",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "riding him on the stone throne",
+     "anal sex, standing against the stone pillar",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the stone pillar, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the stone pillar, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "dark great hall, stone throne, banners"
+   ],
+   "lighting": [
+    "firelight from braziers"
+   ],
+   "details": [
+    "wolves at the feet",
+    "smoke",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "rating": "sfw",
+   "mood": [
+    "playful",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "flower dress",
+     "leaf crown"
+    ],
+    "1boy": [
+     "leaf cloak",
+     "flower crown"
+    ],
+    "1girl1boy": [
+     "she in flower dress, he in leaf cloak",
+     "she in flower dress, he in flower crown",
+     "she in leaf crown, he in leaf cloak",
+     "she in leaf crown, he in flower crown"
+    ],
+    "2girls": [
+     "flower dress",
+     "leaf crown"
+    ],
+    "2boys": [
+     "leaf cloak",
+     "flower crown"
+    ],
+    "girls": [
+     "flower dress",
+     "leaf crown"
+    ],
+    "boys": [
+     "leaf cloak",
+     "flower crown"
+    ],
+    "harem": [
+     "he in leaf cloak, the girls in flower dress",
+     "he in flower crown, the girls in flower dress",
+     "he in leaf cloak, the girls in leaf crown"
+    ],
+    "reverse": [
+     "she in flower dress, the boys in leaf cloak",
+     "she in flower dress, the boys in flower crown",
+     "she in leaf crown, the boys in leaf cloak"
+    ],
+    "mixed": [
+     "the women in flower dress, the men in leaf cloak",
+     "the women in flower dress, the men in flower crown",
+     "the women in leaf crown, the men in leaf cloak"
+    ],
+    "furry": [
+     "wolf, female, flower dress",
+     "wolf, male, leaf cloak",
+     "fox, female, leaf crown",
+     "fox, male, flower crown",
+     "cat, female, flower dress",
+     "cat, male, leaf cloak",
+     "rabbit, female, leaf crown",
+     "rabbit, male, flower crown",
+     "tiger, female, flower dress",
+     "tiger, male, leaf cloak",
+     "deer, female, leaf crown",
+     "deer, male, flower crown",
+     "dragon, female, flower dress",
+     "dragon, male, leaf cloak",
+     "lion, female, leaf crown",
+     "lion, male, flower crown"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, flower dress",
+     "1boy, solo, satyr, goat horns, goat legs, flower crown",
+     "1girl, solo, dryad, bark skin, leaves in hair, flower dress",
+     "1girl, solo, kitsune, fox ears, nine tails, leaf crown",
+     "1boy, solo, faun, small horns, leaf cloak"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "dancing in the fairy ring",
+     "sitting on a toadstool"
+    ],
+    "pair": [
+     "dancing together"
+    ],
+    "groups": [
+     "fae revelry"
+    ]
+   },
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "fireflies at dusk",
+    "moonbeams"
+   ],
+   "details": [
+    "floating lights",
+    "dew"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the moss, knees up",
+     "leaning against an ancient oak, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against an ancient oak, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting"
+    ]
+   },
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "fireflies at dusk",
+    "moonbeams"
+   ],
+   "details": [
+    "floating lights",
+    "dew",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the moss, relaxed",
+     "sitting on the moss, knees drawn up",
+     "leaning against an ancient oak"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the moss"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the moss"
+    ]
+   },
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "fireflies at dusk",
+    "moonbeams"
+   ],
+   "details": [
+    "floating lights",
+    "dew",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the moss, spread legs",
+     "masturbating, back against an ancient oak"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating, one hand on an ancient oak"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against an ancient oak",
+     "sex from behind, standing, hands on an ancient oak",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against an ancient oak",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against an ancient oak",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against an ancient oak, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against an ancient oak, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "fireflies at dusk",
+    "moonbeams"
+   ],
+   "details": [
+    "floating lights",
+    "dew",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "River Styx",
+   "rating": "sfw",
+   "mood": [
+    "melancholy",
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "black shroud",
+     "pale gown"
+    ],
+    "1boy": [
+     "ferryman's cloak",
+     "black robes"
+    ],
+    "1girl1boy": [
+     "she in black shroud, he in ferryman's cloak",
+     "she in black shroud, he in black robes",
+     "she in pale gown, he in ferryman's cloak",
+     "she in pale gown, he in black robes"
+    ],
+    "2girls": [
+     "black shroud",
+     "pale gown"
+    ],
+    "2boys": [
+     "ferryman's cloak",
+     "black robes"
+    ],
+    "girls": [
+     "black shroud",
+     "pale gown"
+    ],
+    "boys": [
+     "ferryman's cloak",
+     "black robes"
+    ],
+    "harem": [
+     "he in ferryman's cloak, the girls in black shroud",
+     "he in black robes, the girls in black shroud",
+     "he in ferryman's cloak, the girls in pale gown"
+    ],
+    "reverse": [
+     "she in black shroud, the boys in ferryman's cloak",
+     "she in black shroud, the boys in black robes",
+     "she in pale gown, the boys in ferryman's cloak"
+    ],
+    "mixed": [
+     "the women in black shroud, the men in ferryman's cloak",
+     "the women in black shroud, the men in black robes",
+     "the women in pale gown, the men in ferryman's cloak"
+    ],
+    "furry": [
+     "wolf, female, black shroud",
+     "wolf, male, ferryman's cloak",
+     "fox, female, pale gown",
+     "fox, male, black robes",
+     "cat, female, black shroud",
+     "cat, male, ferryman's cloak",
+     "rabbit, female, pale gown",
+     "rabbit, male, black robes",
+     "tiger, female, black shroud",
+     "tiger, male, ferryman's cloak",
+     "deer, female, pale gown",
+     "deer, male, black robes",
+     "dragon, female, black shroud",
+     "dragon, male, ferryman's cloak",
+     "lion, female, pale gown",
+     "lion, male, black robes"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, black shroud",
+     "1boy, solo, satyr, goat horns, goat legs, black robes",
+     "1girl, solo, dryad, bark skin, leaves in hair, black shroud",
+     "1girl, solo, kitsune, fox ears, nine tails, pale gown",
+     "1boy, solo, faun, small horns, ferryman's cloak"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "standing on the ferry",
+     "holding a coin"
+    ],
+    "pair": [
+     "crossing together on the ferry"
+    ],
+    "groups": [
+     "souls waiting on the shore"
+    ]
+   },
+   "settings": [
+    "underworld river, ferry, pale lanterns"
+   ],
+   "lighting": [
+    "cold blue light",
+    "pale lanterns"
+   ],
+   "details": [
+    "pale mist",
+    "coins"
+   ]
+  },
+  {
+   "title": "River Styx",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the ferry deck, knees up",
+     "standing in the dark river, looking over the shoulder"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "embracing in the dark river"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "splashing each other in the dark river"
+    ]
+   },
+   "settings": [
+    "underworld river, ferry, pale lanterns"
+   ],
+   "lighting": [
+    "cold blue light",
+    "pale lanterns"
+   ],
+   "details": [
+    "pale mist",
+    "coins",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "River Styx",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the ferry deck, relaxed",
+     "sitting on the ferry deck, knees drawn up",
+     "standing in the dark river",
+     "bathing in the dark river"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the ferry deck",
+     "bathing together in the dark river"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the ferry deck",
+     "bathing together in the dark river"
+    ]
+   },
+   "settings": [
+    "underworld river, ferry, pale lanterns"
+   ],
+   "lighting": [
+    "cold blue light",
+    "pale lanterns"
+   ],
+   "details": [
+    "pale mist",
+    "coins",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "River Styx",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the ferry deck, spread legs",
+     "masturbating in the dark river"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating in the dark river"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "sex in the dark river, legs wrapped around him",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering in the dark river",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex in the dark river",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "group sex in the dark river",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "group sex in the dark river",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "group sex in the dark river",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "group sex in the dark river",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex in the dark river",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "underworld river, ferry, pale lanterns"
+   ],
+   "lighting": [
+    "cold blue light",
+    "pale lanterns"
+   ],
+   "details": [
+    "pale mist",
+    "coins",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Olympus",
+   "rating": "sfw",
+   "mood": [
+    "calm",
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "goddess, white chiton, gold jewelry",
+     "huntress, short chiton"
+    ],
+    "1boy": [
+     "god, laurel wreath, chiton",
+     "warrior god, bronze armor"
+    ],
+    "1girl1boy": [
+     "she in goddess, white chiton, gold jewelry, he in god, laurel wreath, chiton",
+     "she in goddess, white chiton, gold jewelry, he in warrior god, bronze armor",
+     "she in huntress, short chiton, he in god, laurel wreath, chiton",
+     "she in huntress, short chiton, he in warrior god, bronze armor"
+    ],
+    "2girls": [
+     "goddess, white chiton, gold jewelry",
+     "huntress, short chiton"
+    ],
+    "2boys": [
+     "god, laurel wreath, chiton",
+     "warrior god, bronze armor"
+    ],
+    "girls": [
+     "goddess, white chiton, gold jewelry",
+     "huntress, short chiton"
+    ],
+    "boys": [
+     "god, laurel wreath, chiton",
+     "warrior god, bronze armor"
+    ],
+    "harem": [
+     "he in god, laurel wreath, chiton, the girls in goddess, white chiton, gold jewelry",
+     "he in warrior god, bronze armor, the girls in goddess, white chiton, gold jewelry",
+     "he in god, laurel wreath, chiton, the girls in huntress, short chiton"
+    ],
+    "reverse": [
+     "she in goddess, white chiton, gold jewelry, the boys in god, laurel wreath, chiton",
+     "she in goddess, white chiton, gold jewelry, the boys in warrior god, bronze armor",
+     "she in huntress, short chiton, the boys in god, laurel wreath, chiton"
+    ],
+    "mixed": [
+     "the women in goddess, white chiton, gold jewelry, the men in god, laurel wreath, chiton",
+     "the women in goddess, white chiton, gold jewelry, the men in warrior god, bronze armor",
+     "the women in huntress, short chiton, the men in god, laurel wreath, chiton"
+    ],
+    "furry": [
+     "wolf, female, goddess, white chiton, gold jewelry",
+     "wolf, male, god, laurel wreath, chiton",
+     "fox, female, huntress, short chiton",
+     "fox, male, warrior god, bronze armor",
+     "cat, female, goddess, white chiton, gold jewelry",
+     "cat, male, god, laurel wreath, chiton",
+     "rabbit, female, huntress, short chiton",
+     "rabbit, male, warrior god, bronze armor",
+     "tiger, female, goddess, white chiton, gold jewelry",
+     "tiger, male, god, laurel wreath, chiton",
+     "deer, female, huntress, short chiton",
+     "deer, male, warrior god, bronze armor",
+     "dragon, female, goddess, white chiton, gold jewelry",
+     "dragon, male, god, laurel wreath, chiton",
+     "lion, female, huntress, short chiton",
+     "lion, male, warrior god, bronze armor"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, goddess, white chiton, gold jewelry",
+     "1boy, solo, satyr, goat horns, goat legs, warrior god, bronze armor",
+     "1girl, solo, dryad, bark skin, leaves in hair, goddess, white chiton, gold jewelry",
+     "1girl, solo, kitsune, fox ears, nine tails, huntress, short chiton",
+     "1boy, solo, faun, small horns, god, laurel wreath, chiton"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "reclining with a goblet",
+     "looking down at the world"
+    ],
+    "pair": [
+     "feasting together"
+    ],
+    "groups": [
+     "gods at a banquet"
+    ]
+   },
+   "settings": [
+    "palace among the clouds, marble and gold"
+   ],
+   "lighting": [
+    "golden divine light",
+    "sunset clouds"
+   ],
+   "details": [
+    "clouds below",
+    "golden goblets"
+   ]
+  },
+  {
+   "title": "Olympus",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, lace lingerie",
+     "1boy, solo, satyr, goat horns, goat legs, towel around the waist",
+     "1girl, solo, dryad, bark skin, leaves in hair, oversized shirt, bare legs",
+     "1girl, solo, kitsune, fox ears, nine tails, unbuttoned blouse, bra visible",
+     "1boy, solo, faun, small horns, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the golden couch, propped on elbows",
+     "kneeling on the golden couch, looking at viewer",
+     "sitting on the edge of the golden couch",
+     "leaning against a marble column, looking at viewer",
+     "standing in the nectar pool, looking over the shoulder"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the golden couch together",
+     "pinned against a marble column, kissing",
+     "embracing in the nectar pool"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the golden couch",
+     "splashing each other in the nectar pool"
+    ]
+   },
+   "settings": [
+    "palace among the clouds, marble and gold"
+   ],
+   "lighting": [
+    "golden divine light",
+    "sunset clouds"
+   ],
+   "details": [
+    "clouds below",
+    "golden goblets",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Olympus",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the golden couch",
+     "sitting on the edge of the golden couch",
+     "leaning against a marble column",
+     "standing in the nectar pool",
+     "bathing in the nectar pool"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the golden couch",
+     "bathing together in the nectar pool"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the golden couch",
+     "bathing together in the nectar pool"
+    ]
+   },
+   "settings": [
+    "palace among the clouds, marble and gold"
+   ],
+   "lighting": [
+    "golden divine light",
+    "sunset clouds"
+   ],
+   "details": [
+    "clouds below",
+    "golden goblets",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  },
+  {
+   "title": "Olympus",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, nymph, flower crown, pointy ears, nude",
+     "1boy, solo, satyr, goat horns, goat legs, nude",
+     "1girl, solo, dryad, bark skin, leaves in hair, nude",
+     "1girl, solo, kitsune, fox ears, nine tails, nude",
+     "1boy, solo, faun, small horns, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the golden couch, fingering herself",
+     "using a vibrator on the golden couch",
+     "masturbating, back against a marble column",
+     "masturbating in the nectar pool"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the golden couch, masturbating",
+     "masturbating, one hand on a marble column",
+     "masturbating in the nectar pool"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against a marble column",
+     "sex from behind, standing, hands on a marble column",
+     "sex in the nectar pool, legs wrapped around him",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against a marble column",
+     "fingering in the nectar pool",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against a marble column",
+     "anal sex in the nectar pool",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "group sex in the nectar pool",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "group sex in the nectar pool",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against a marble column, the others kissing his neck",
+     "group sex in the nectar pool",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against a marble column, the others watching",
+     "group sex in the nectar pool",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex in the nectar pool",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the golden couch, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the golden couch, touching self"
+    ]
+   },
+   "settings": [
+    "palace among the clouds, marble and gold"
+   ],
+   "lighting": [
+    "golden divine light",
+    "sunset clouds"
+   ],
+   "details": [
+    "clouds below",
+    "golden goblets",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "classical oil painting, nude"
+   ]
+  }
+ ]
+}

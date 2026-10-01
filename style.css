@@ -331,6 +331,7 @@ html body #pv_muse_panel .pv-muse-switch {
 #pv_muse_panel .pv-muse-field { display: flex; align-items: center; gap: 10px; }
 #pv_muse_panel .pv-muse-field.pv-muse-off { opacity: 0.45; }
 #pv_muse_panel .pv-muse-field-label { width: 58px; flex: none; font-size: 13px; opacity: 0.75; }
+#pv_muse_panel .pv-muse-field > .pv-muse-hint { flex: 1; }
 #pv_muse_panel .pv-muse-field input[type=range] { flex: 1; min-width: 0; accent-color: var(--pv-muse-accent); }
 #pv_muse_panel .pv-muse-field output { width: 48px; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
 
