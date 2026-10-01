@@ -57,14 +57,21 @@ Qwen-VL and the WD14 tagger) in one tab.
     night market no morning. Lock the When part and roll the rest, or the other way round.
   - **Tags, never sentences.** Every part is written the way a prompt is: `sitting by window,
     holding cup`, not "she sits by the window holding her cup"; no "she in…, he in…".
-  - **Kink** (a fourth filter, there once NSFW is on), 19 of them: BDSM, toys, fluids,
-    breeding & x-ray (cross-section, cum inside, insemination, ovum, sperm cell), pregnancy &
-    lactation, anal, oral, femdom, feet, pet play, costume play, exhibitionism, latex & fetish
-    wear, bites & marks; tentacles, slime, monsters and blood & bites only in the themes they
-    belong to. A kink only joins the casts it makes sense for (breeding needs a penis and a
-    pussy); the others are greyed out with the reason. The chosen kink is a part of the idea
-    of its own, rolled and locked like the others. Also: hypnosis & mind control,
-    watersports, scat.
+  - **Act and Kink**, a second tier of filters once NSFW is on: what happens in the scene.
+    *Act* picks the family of the explicit act: vaginal, anal, oral, hands & body (handjob,
+    fingering, paizuri, tribadism…) or solo. A position ("doggystyle", "mating press") is
+    penetration without saying where: vaginal or anal, as the Act filter says.
+    *Kink*, 31 of them: BDSM, bondage, toys, fluids, breeding & x-ray, pregnancy & lactation,
+    anal, oral, femdom, feet, pet play, costume play, exhibitionism & voyeurism, hypnosis &
+    mind control, watersports, scat, latex & fetish wear, bites & marks, size difference,
+    small dom big sub, big dom small sub, muscle growth, transformation, inflation & bulge,
+    omegaverse, chastity; tentacles, slime, monsters, corruption and blood & bites only in the
+    themes they belong to.
+    A kink goes with the act: an x-ray shows the womb with vaginal sex, the rectum with anal,
+    the throat with a blowjob, and never a womb with a blowjob. Breeding works for 2boys and
+    2girls too, through omegaverse (mpreg, an alpha female's knot). A kink that is an act of
+    its own (footjob, pegging, golden shower) takes the Doing's place. Casts and acts a kink has
+    nothing for are greyed out with the reason.
   - **Body**, a part of every NSFW idea: breasts, nipples, pussy, pectorals, chest hair,
     penis, body hair, prosthetics on androids and in Sci-fi; for anthros the anatomy of their
     kind (canine knot and sheath, flared equine, spiked feline, ribbed or scaled reptile,
@@ -76,8 +83,7 @@ Qwen-VL and the WD14 tagger) in one tab.
     `1furry, solo, anthro female, fox, orange fur, fluffy tail`. **Human + furry** puts a
     human and an anthro in one frame: `1furry, interspecies, 1girl, anthro male, human with
     furry, wolf, grey fur…` (`human on furry` or `furry on human` when explicit). A werewolf
-    is a monster, not a furry: it is a non-human, and its ideas send `anthro, furry, kemono`
-    as negatives.
+    is a monster, not a furry: it is a non-human.
   - **Pose** comes from the library's pose groups, for a woman or a man, and fits what the
     idea is doing: no "lying on back" for someone riding. **Style**, a fifth filter, swaps the
     scene's styles for families of the library's Style & Medium category (pixel art,
@@ -89,7 +95,7 @@ Qwen-VL and the WD14 tagger) in one tab.
     do, a detail, where, when, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
-    appending, with the idea's negatives added where they are missing.
+    appending. Muse writes the positive prompt only: your negative prompt stays yours.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
     **Describe** (Qwen writes a paragraph from the tags, after them or instead of them) and
     **TIPO**. They use the models already set up for the Vault tab.
@@ -97,9 +103,9 @@ Qwen-VL and the WD14 tagger) in one tab.
     bin next to them, or the settings, clears that history), keep
     words out with **Never use**, give the button your own **avatar**, drag it anywhere.
   - **⤢ Wide card** (on a window 760 px or wider): the parts on the left, the whole prompt
-    and its negatives on the right; the settings in two columns. Muse remembers it.
-  - NSFW ideas are adults only: every one carries `adult`, minor-related words are
-    dropped from any scene, and `child, loli, shota, underage` always go to the negatives.
+    on the right; the settings in two columns. Muse remembers it.
+  - NSFW ideas are adults only: every one carries `adult`, and minor-related words are
+    dropped from any scene.
 
 ![The AI tools](docs/ai-tools.webp)
 
@@ -210,7 +216,7 @@ lists *of the same scene*, and the ideas stay coherent.
 ```json
 {
   "theme": "Festival", "rating": "sfw",
-  "styles": ["film still, 35mm"], "negatives": ["blurry", "watermark"],
+  "styles": ["film still, 35mm"],
   "scenes": [
     {"title": "Night market", "mood": ["happy", "calm"],
      "subjects": {"1girl": ["yukata, hair ornament"], "1boy": ["jinbei"],
@@ -234,7 +240,7 @@ lists *of the same scene*, and the ideas stay coherent.
 - `rating` is `sfw`, `suggestive`, `nude` or `explicit`, for the file or per scene.
 - `mood` picks the faces: calm, happy, serious, tense, melancholy, cool, playful, shy,
   sultry, passion, afterglow. Or list your own `expressions`.
-- A list a scene leaves out comes from the file (here `styles`, `negatives`).
+- A list a scene leaves out comes from the file (here `styles`).
 - Any list can be given by cast too, so one place serves every cast with what suits it:
   `"actions": {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}`. `solo` is
   1girl, 1boy, furry and non-human; `pair` the pairs; `groups` the five groups;
