@@ -581,8 +581,10 @@
         return {start: start + lead.length, text: raw.slice(lead.length)};
     }
 
-    function attachSuggest(area) {
-        if (!area || area.dataset.pvSuggest) return;
+    // a list of tags under a box while you type in it: the editor here, the WebUI's prompts if you want,
+    // and Muse's boxes (window.promptVault.attachSuggest). onAccept: after a tag is put in.
+    function attachSuggest(area, onAccept) {
+        if (!area || !area.parentElement || area.dataset.pvSuggest) return;
         area.dataset.pvSuggest = '1';
         const list = el('div', {class: 'pv-suggest'});
         list.style.display = 'none';
@@ -602,6 +604,7 @@
             const caret = f.start + insert.length;
             area.setSelectionRange(caret, caret);
             close();
+            if (onAccept) onAccept(area);
         };
         const draw = () => {
             list.replaceChildren(...items.map((it, i) => el('div', {class: 'pv-suggest-item' + (i === active ? ' pv-active' : ''),
@@ -632,8 +635,8 @@
             if (!items.length || list.style.display === 'none') return;
             if (ev.key === 'ArrowDown') { active = (active + 1) % items.length; draw(); ev.preventDefault(); }
             else if (ev.key === 'ArrowUp') { active = (active - 1 + items.length) % items.length; draw(); ev.preventDefault(); }
-            else if (ev.key === 'Enter' || ev.key === 'Tab') { accept(active); ev.preventDefault(); ev.stopPropagation(); }
-            else if (ev.key === 'Escape') { close(); ev.preventDefault(); ev.stopPropagation(); }
+            else if (ev.key === 'Enter' || ev.key === 'Tab') { accept(active); ev.preventDefault(); ev.stopImmediatePropagation(); }
+            else if (ev.key === 'Escape') { close(); ev.preventDefault(); ev.stopImmediatePropagation(); }
         }, true);
         area.addEventListener('blur', () => setTimeout(close, 150));
     }
@@ -709,6 +712,7 @@
                 attachSuggest(area);
             }
         }
+        webuiSuggest();
         watchGenerate();
         // the AI tools write the editor from Python, without an input event: follow the value
         let last = '';
@@ -723,7 +727,16 @@
         return true;
     }
 
-    window.promptVault = {reloadSaved, reloadLibrary: loadLibrary, split, key};
+    // the same suggestions in the txt2img and img2img prompts, when the settings ask for them and the
+    // tag autocomplete extension is not there to do it already (two lists under one box would fight)
+    function webuiSuggest() {
+        if (!window.opts || !opts.pv_autocomplete_webui || typeof TAC_CFG !== 'undefined' || $('#autocompleteResults')) return;
+        for (const id of ['txt2img_prompt', 'txt2img_neg_prompt', 'img2img_prompt', 'img2img_neg_prompt']) {
+            attachSuggest($(`#${id} textarea`));
+        }
+    }
+
+    window.promptVault = {reloadSaved, reloadLibrary: loadLibrary, split, key, attachSuggest};
 
     const boot = () => { if (!start()) setTimeout(boot, 500); };
     if (typeof onUiLoaded === 'function') onUiLoaded(boot);

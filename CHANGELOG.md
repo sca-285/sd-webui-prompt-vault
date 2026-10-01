@@ -39,7 +39,12 @@ The first release.
 - Act and Kink filters for explicit ideas (33 kinks), with anatomy tags that fit the cast.
 - Tags, never sentences. NSFW ideas are adults only: every one carries `mature`, and
   minor-related words are dropped from any scene.
-- **Your prompt**: a box for what every idea starts with, kept as ideas change.
+- **Your prompt**, two ways: *Keep in front* (what every idea starts with, kept as ideas change)
+  or *Build around* (Muse reads your tags into parts, picks a scene that has them and draws
+  the rest to fit; 🌱 marks your parts).
+- Double-click a part on the card to write it yourself (locked, ✎); double-click a + chip for a
+  part the idea left out.
+- Tag suggestions while typing in Muse's boxes; optional in the txt2img and img2img prompts.
 - Send to txt2img, img2img or the Vault; **Generate** in txt2img or img2img, the image back
   on the card; Arrange, Describe and TIPO on the card; Save; 500 ideas of history.
 - A wide two-column card, an avatar of your own, a draggable button.

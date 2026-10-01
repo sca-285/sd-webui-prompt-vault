@@ -75,4 +75,26 @@ c.post(B + "/muse/state", json={"themes": ["Portrait"], "blacklist": "1girl, rai
 for _ in range(100):
     i = nx().json()["idea"]
     assert not re.search(r"(?<!\w)(1girl|rain)(?!\w)", i["positive"], re.I), i["positive"]
+
+# Build around: your tags read into parts, a scene that has them, the rest drawn around
+plan = muse.seed_plan("masterpiece, 1girl, red hair, bikini, beach, sunset, smile, <lora:x:0.7>")
+assert plan["cast"] == "1girl" and plan["parts"]["hair"] == ["red hair"] and plan["parts"]["outfit"] == ["bikini"], plan
+assert plan["parts"]["setting"] == ["beach"] and plan["parts"]["time"] == ["sunset"], plan
+assert "masterpiece" in plan["front"] and "<lora:x:0.7>" in plan["front"], plan
+c.post(B + "/muse/state", json={"themes": [], "casts": [], "blacklist": "", "ratings": ["sfw"], "allow_nsfw": False,
+                                "fixed_prompt": "1girl, red hair, bikini, beach, sunset", "prompt_mode": "around"})
+for _ in range(20):
+    i = nx().json()["idea"]
+    low = i["positive"].lower()
+    assert i["cast"] == "1girl" and all(t in low for t in ("red hair", "bikini", "beach", "sunset")), i["positive"]
+    assert "beach" in json.dumps(i["parts"]).lower() and {"hair", "outfit", "setting", "time"} <= set(i["seeded"]), i
+    assert not any(p["slot"] == "job" and p["value"] for p in i["parts"]), i  # your wear, not a job's
+# rolling a part of yours gives it back to Muse
+parts = {p["slot"]: p["value"] for p in i["parts"]}
+j = nx(scene=i["scene"], cast=i["cast"], keep=parts, roll="hair").json()["idea"]
+assert "hair" not in j["seeded"] and "red hair" not in j["positive"], j["positive"]
+# Keep in front: the idea itself does not carry it (the card puts it in front)
+c.post(B + "/muse/state", json={"prompt_mode": "front"})
+assert "seeded" in nx().json()["idea"] and not nx().json()["idea"]["seeded"]
+c.post(B + "/muse/state", json={"fixed_prompt": ""})
 print("ALL OK")

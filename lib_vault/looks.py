@@ -91,11 +91,15 @@ PETS_BY_THEME = {"Home": "home", "Bedroom": "home", "Portrait": "home", "Studio"
 WITH_PET = ["holding animal", "animal on shoulder", "animal on lap", "petting", "animal hug", "carrying animal", "walking animal",
             "looking at animal", "animal at feet", "feeding animal"]
 
+# too big to hold, carry or have on a lap
+BIG_ANIMALS = {"horse", "white horse", "pony", "deer", "stag", "wolf", "goat", "sheep", "dolphin", "husky", "golden retriever"}
+WITH_BIG = ["petting", "looking at animal", "feeding animal", "walking animal"]
+
 
 def pets_for(theme, rng):
     """A few real animals for the theme, each with what the people do with it now and then."""
     kinds = PETS[PETS_BY_THEME.get(theme, "home")]
-    return [k if rng.random() < 0.4 else f"{k}, {rng.choice(WITH_PET)}" for k in kinds]
+    return [k if rng.random() < 0.4 else f"{k}, {rng.choice(WITH_BIG if k in BIG_ANIMALS else WITH_PET)}" for k in kinds]
 
 
 # ------------------------------------------------------------------ camera

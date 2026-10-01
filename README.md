@@ -152,9 +152,26 @@ Qwen-VL and the WD14 tagger) in one tab.
     there); the button says which tab it uses.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending. Muse writes the positive prompt only: your negative prompt stays yours.
-  - **Your prompt**, a box under the filters for what every idea should start with
-    (`masterpiece, best quality, <lora:name:0.8>`): new ideas never touch it, and Send,
-    Generate, Copy and Save put it in front of the idea, joined by a comma. Muse remembers it.
+  - **Your prompt**, a box under the filters, in one of two ways:
+    - *Keep in front*: what every idea should start with (`masterpiece, best quality,
+      <lora:name:0.8>`). New ideas never touch it; Send, Generate, Copy and Save put it in
+      front of the idea, joined by a comma.
+    - *Build around*: tags you already have, and Muse builds the whole prompt around them.
+      It reads each tag into its part (`red hair` → Hair, `bikini` → Wear, `beach` → Where,
+      `sunset` → When, `1girl` → the cast), picks a scene that has your places and doings,
+      and draws the rest to fit: no job's uniform over your bikini, no grin over your smile.
+      Your parts carry a 🌱 on the card; ↻ on one gives it back to Muse. LoRAs, weighted tags
+      and what no part takes stay in front, as you wrote them. Enter in the box: a new idea.
+      The filters still hold: with Theme set to Kitchen, `beach` stays your tag in a kitchen.
+  - **Write a part yourself**: double-click any part on the card and type; Enter keeps it
+    (locked, with a ✎), Esc does not. Double-click a **+** chip to write a part the idea
+    left out (a single click still draws it).
+  - **Tag suggestions while you type**, the same as the Vault tab's (your library and about
+    10,000 Danbooru tags): in Your prompt, in a part you write, and in the card's prompt.
+    **Settings → Prompt Vault** can add them to the txt2img and img2img prompts too (off by
+    default, and left off when the tag autocomplete extension is installed).
+
+    ![Tag suggestions in Your prompt, Build around](docs/muse-suggest.webp)
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
     **Describe** (Qwen writes a paragraph from the tags, after them or instead of them) and
     **TIPO**. They use the models already set up for the Vault tab.
