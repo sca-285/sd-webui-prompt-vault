@@ -146,7 +146,8 @@ def register(app):
     def muse_next(body: dict = Body(None)):
         b = body or {}
         return run(lambda: {"idea": muse.compose(scene_id=b.get("scene"), cast=b.get("cast"),
-                                                 keep=b.get("keep"), roll=b.get("roll"))})
+                                                 keep=b.get("keep"), roll=b.get("roll"),
+                                                 size=b.get("size"), girls=b.get("girls"))})
 
     @app.post(f"{BASE}/muse/tipo")
     def muse_tipo(body: dict = Body(...)):

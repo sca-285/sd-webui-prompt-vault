@@ -154,8 +154,11 @@
     "2boys": [
      "streetball players, one-on-one"
     ],
-    "group": [
-     "3boys, streetball players"
+    "boys": [
+     "streetball players"
+    ],
+    "mixed": [
+     "streetball players, mixed teams"
     ]
    },
    "actions": [

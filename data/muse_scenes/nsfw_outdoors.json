@@ -38,10 +38,17 @@
     "playful"
    ],
    "subjects": {
-    "group": [
-     "3girls, bikinis",
-     "2girls, 1boy, swimwear",
-     "3boys, swim trunks, muscular"
+    "girls": [
+     "bikinis"
+    ],
+    "boys": [
+     "swim trunks, muscular"
+    ],
+    "mixed": [
+     "swimwear"
+    ],
+    "harem": [
+     "he in swim trunks, the girls in bikinis"
     ]
    },
    "actions": [

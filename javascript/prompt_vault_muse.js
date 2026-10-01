@@ -115,11 +115,15 @@
         const themes = new Set(over && over.themes || s.themes || []);
         const casts = new Set(over && over.casts || s.casts || []);
         const ratings = new Set(over && over.ratings || ratingsOn(s));
+        const sizes = new Set(over && over.sizes || s.sizes || []);
+        const groups = cat.group_sizes || {};
+        // a group cast counts only with a size the scene, the cast and the size filter all allow
+        const usable = (c, scSizes) => !groups[c] || scSizes.some((n) => groups[c].includes(n) && (!sizes.size || sizes.has(n)));
         let n = 0;
-        for (const [ti, sc, r] of cat.index) {
+        for (const [ti, sc, r, scSizes] of cat.index) {
             if (!ratings.has(r)) continue;
             if (themes.size && !themes.has(cat.themes[ti])) continue;
-            if (casts.size && !sc.some((c) => casts.has(c))) continue;
+            if (!sc.some((c) => (!casts.size || casts.has(c)) && usable(c, scSizes || []))) continue;
             n++;
         }
         return n;
@@ -173,7 +177,25 @@
         const all = key !== 'ratings' ? el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'), text: key === 'themes' ? 'All' : 'Anyone', onclick: () => patch({[key]: []})}) : null;
         return el('div', {class: 'pv-muse-tray'},
             key === 'ratings' ? toggleSwitch('NSFW', s.allow_nsfw, (v) => patch(v ? {allow_nsfw: true} : {allow_nsfw: false}), 'adults only; minors are always kept out') : null,
-            el('div', {class: 'pv-muse-chips'}, all, chips));
+            el('div', {class: 'pv-muse-chips'}, all, chips),
+            key === 'casts' ? sizeRow() : null);
+    }
+
+    // how many people in a group: only for the 3+ casts
+    function sizeRow() {
+        const s = st(), cat = M.snap.catalogue;
+        const chosen = new Set(s.sizes);
+        return el('div', {class: 'pv-muse-size'},
+            el('span', {class: 'pv-muse-field-label', text: 'Group of'}),
+            el('div', {class: 'pv-muse-chips'},
+                el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'), text: 'Any', onclick: () => patch({sizes: []})}),
+                cat.sizes.map(([n, label]) => {
+                    const on = chosen.has(n);
+                    const count = countMatching({sizes: [n]});
+                    return el('button', {type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (count ? '' : ' pv-muse-none'),
+                        'aria-pressed': on ? 'true' : 'false', title: `${count} scenes for a group of ${label}`,
+                        onclick: () => { const next = new Set(chosen); if (on) next.delete(n); else next.add(n); patch({sizes: [...next]}); }}, label);
+                })));
     }
 
     // ------------------------------------------------------------------ the WebUI's prompt boxes
@@ -245,7 +267,7 @@
         M.busy = 'next';
         render();
         try {
-            const body = locked ? {scene: cur.scene, cast: cur.cast, keep: keepOf(cur)} : {};
+            const body = locked ? {scene: cur.scene, cast: cur.cast, size: cur.size, girls: cur.girls, keep: keepOf(cur)} : {};
             let data;
             try {
                 data = await call('/muse/next', body);
@@ -276,7 +298,7 @@
         M.busy = slot;
         render();
         try {
-            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, keep: keepOf(it, true), roll: slot});
+            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true), roll: slot});
             const fresh = Object.assign(data.idea, {locks: it.locks}); // a fresh prompt: any paragraph is gone
             M.ideas[M.at] = fresh;
             saveIdeas();
@@ -467,7 +489,7 @@
     function fits(it) {
         const s = st();
         return (!s.themes.length || s.themes.includes(it.theme)) && (!s.casts.length || s.casts.includes(it.cast))
-            && ratingsOn(s).includes(it.rating);
+            && ratingsOn(s).includes(it.rating) && (!it.size || !s.sizes.length || s.sizes.includes(it.size));
     }
 
     async function patch(body) {
@@ -483,7 +505,7 @@
         render();
         paintFab();
         // a filter changed and the idea on the card no longer fits it: a fitting one, once the clicks settle
-        if (['themes', 'casts', 'ratings', 'allow_nsfw'].some((k) => k in body)) {
+        if (['themes', 'casts', 'ratings', 'sizes', 'allow_nsfw'].some((k) => k in body)) {
             clearTimeout(patch.t);
             patch.t = setTimeout(() => {
                 const it = idea();

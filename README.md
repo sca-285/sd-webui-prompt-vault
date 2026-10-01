@@ -37,7 +37,9 @@ Qwen-VL and the WD14 tagger) in one tab.
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
   - **Three filters**: *Theme* (Portrait, Film, Horror, Street, Bedroom, Hotel…), *Cast*
-    (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, 3+, furry, non-human) and *Level*
+    (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
+    (harem), 1girl + boys (reverse harem), mixed group, furry, non-human; groups of 3, 4, 5
+    or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
     choice shows how many scenes it leaves.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
@@ -170,7 +172,11 @@ lists *of the same scene*, and the ideas stay coherent.
 ```
 
 - `subjects` is keyed by cast: `none`, `1girl`, `1boy`, `1girl1boy`, `2girls`, `2boys`,
-  `group`, `furry`, `nonhuman`. Muse writes the cast's own tags (`1girl, solo`) in front.
+  `girls`, `boys`, `harem`, `reverse`, `mixed` (groups of 3 and more), `furry`, `nonhuman`.
+  Muse writes the cast's own tags in front (`1girl, solo`; for a group, its count tags).
+  `group` is a group that writes its own count tags.
+- `sizes` (3, 4, 5, 6 for 6+) says which group sizes a scene suits, e.g. `[3]` for a
+  threesome; a mixed group is 4 or more.
 - `rating` is `sfw`, `suggestive`, `nude` or `explicit`, for the file or per scene.
 - `mood` picks the faces: calm, happy, serious, tense, melancholy, cool, playful, shy,
   sultry, passion, afterglow. Or list your own `expressions`.

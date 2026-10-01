@@ -47,12 +47,52 @@ CASTS = {
     "1girl1boy": ("1girl 1boy", "1girl, 1boy", "hetero"),
     "2girls": ("2girls", "2girls", "yuri"),
     "2boys": ("2boys", "2boys, male focus", "yaoi"),
-    "group": ("3+", "", ""),
+    # groups of three and more: their count tags depend on how many, see _group_tags
+    "girls": ("Girls 3+", None, "yuri"),
+    "boys": ("Boys 3+", None, "yaoi"),
+    "harem": ("1boy + girls", None, "hetero"),
+    "reverse": ("1girl + boys", None, "hetero"),
+    "mixed": ("Mixed group", None, "hetero"),
+    "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
     "furry": ("Furry", "anthro, furry", ""),
     "nonhuman": ("Non-human", "", ""),
     "any": ("Other", "", ""),
 }
 RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit": "Explicit"}
+
+# how many people a group can be; 6 stands for 6 and more
+SIZES = (3, 4, 5, 6)
+GROUP_SIZES = {"girls": SIZES, "boys": SIZES, "harem": SIZES, "reverse": SIZES, "mixed": (4, 5, 6)}
+
+
+def _count(n, word):
+    """3 'girl' -> '3girls'; 1 -> '1girl'; 6 and more -> '6+girls'."""
+    return f"1{word}" if n == 1 else (f"6+{word}s" if n >= 6 else f"{n}{word}s")
+
+
+def _plus(n):
+    return "6+" if n >= 6 else str(n)
+
+
+def _group_tags(kind, size, girls=None):
+    """(count tags, label on the card, girls in a mixed group) for a group of size people."""
+    if kind == "girls":
+        return f"{_count(size, 'girl')}, multiple girls", f"{_plus(size)} girls", None
+    if kind == "boys":
+        return f"{_count(size, 'boy')}, multiple boys, male focus", f"{_plus(size)} boys", None
+    if kind == "harem":
+        n = size - 1 if size < 6 else 6
+        return f"1boy, {_count(n, 'girl')}, multiple girls, harem", f"1boy + {_plus(n)} girls", None
+    if kind == "reverse":
+        n = size - 1 if size < 6 else 6
+        return f"1girl, {_count(n, 'boy')}, multiple boys, reverse harem", f"1girl + {_plus(n)} boys", None
+    # mixed: as many girls as given, the rest boys
+    total = min(size, 6)
+    girls = girls if girls and 2 <= girls <= total - 2 else total // 2
+    boys = total - girls
+    plus = " (6+)" if size >= 6 else ""
+    return (f"{_count(girls, 'girl')}, {_count(boys, 'boy')}, multiple girls, multiple boys",
+            f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
 SLOTS = ("subject", "expression", "gesture", "action", "detail", "setting", "lighting", "camera", "style")
@@ -101,6 +141,7 @@ DEFAULT_STATE = {
     "themes": [],            # empty: every theme
     "casts": [],             # empty: every cast
     "ratings": ["sfw"],
+    "sizes": [],             # groups: empty, any size; else some of SIZES
     "send_mode": "replace",
     "send_negative": True,
     "arrange_with": "library",  # or "qwen"
@@ -153,6 +194,8 @@ def _normalise(data):
     out["themes"] = _names(out["themes"])[:100]
     out["casts"] = _names(out["casts"], CASTS)
     out["ratings"] = _names(out["ratings"], RATINGS)
+    sizes = out["sizes"] if isinstance(out["sizes"], list) else []
+    out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
     for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
                          ("arrange_with", ("library", "qwen")), ("describe_as", ("paragraph", "both"))):
         if out[key] not in allowed:
@@ -249,6 +292,8 @@ def _read_file(path, custom):
             "theme": str(raw.get("theme") or data.get("theme") or stem),
             "rating": rating,
             "casts": casts,
+            "sizes": sorted({int(n) for n in (raw.get("sizes") or data.get("sizes") or SIZES)
+                             if str(n).isdigit() and int(n) in SIZES}) or list(SIZES),
             "lists": lists,
             "negatives": _clean(data.get("negatives"), False) + _clean(raw.get("negatives"), False),
             "custom": custom,
@@ -280,9 +325,19 @@ def catalogue():
         "themes": themes,
         "casts": [[k, v[0]] for k, v in CASTS.items() if any(k in s["casts"] for s in scenes)],
         "ratings": [[k, v] for k, v in RATINGS.items()],
-        # one row per scene: [theme index, [casts], rating]
-        "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"]] for s in scenes],
+        "sizes": [[n, _plus(n)] for n in SIZES],
+        "group_sizes": {k: list(v) for k, v in GROUP_SIZES.items()},
+        # one row per scene: [theme index, [casts], rating, [group sizes]]
+        "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
     }
+
+
+def _sizes(scene, cast, wanted=()):
+    """The group sizes a scene allows its cast, within the ones wanted (none wanted: any)."""
+    if cast not in GROUP_SIZES:
+        return [0]
+    sizes = [n for n in scene["sizes"] if n in GROUP_SIZES[cast]]
+    return [n for n in sizes if n in wanted] if wanted else sizes
 
 
 def _matching(st):
@@ -292,7 +347,7 @@ def _matching(st):
     for s in load_scenes():
         if s["rating"] not in ratings or (themes and s["theme"] not in themes):
             continue
-        usable = [c for c in s["casts"] if not casts or c in casts]
+        usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"])]
         if usable:
             out.append((s, usable))
     return out
@@ -323,7 +378,7 @@ def _pools(scene, cast):
     return pools
 
 
-def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None):
+def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None, girls=None):
     """A new idea. With scene_id, the same scene again: the parts in keep stay as they are
     (the locked ones), the rest is drawn afresh. roll names a part of keep that must change."""
     st = state()
@@ -350,6 +405,14 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None):
         scene, casts = rng.choice(choices)
         who = rng.choice(casts)
         pools = _pools(scene, who)
+        if who in GROUP_SIZES:
+            allowed = _sizes(scene, who, [] if scene_id else st["sizes"])
+            people = int(size) if str(size).isdigit() and int(size) in allowed else rng.choice(allowed)
+            mix = int(girls) if scene_id and str(girls).isdigit() else (rng.randint(2, min(people, 6) - 2) if who == "mixed" else None)
+            cast_tags, label, mix = _group_tags(who, people, mix)
+        else:
+            people, mix = 0, None
+            label, cast_tags = CASTS[who][0], CASTS[who][1]
         parts = {}
         for slot in SLOTS:
             if slot in keep:
@@ -365,8 +428,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None):
             continue  # the blacklist took every subject of this scene
 
         nsfw = scene["rating"] != "sfw"
-        label, cast_tags, nsfw_tags = CASTS[who]
-        front = [cast_tags] + ([nsfw_tags, "adult"] if nsfw and who != "none" else [])
+        nsfw_tags = CASTS[who][2]
+        front = [cast_tags] + ([nsfw_tags, "adults" if who in GROUP_SIZES else "adult"] if nsfw and who != "none" else [])
         seen, pieces = set(), []
         for chunk in front + [parts[s] for s in SLOTS]:
             for piece in text.split(chunk):
@@ -387,6 +450,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None):
             "theme": scene["theme"],
             "cast": who,
             "cast_label": label,
+            "size": people,
+            "girls": mix,
             "rating": scene["rating"],
             "nsfw": nsfw,
             "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS if any(pools[s]) or parts[s]],
