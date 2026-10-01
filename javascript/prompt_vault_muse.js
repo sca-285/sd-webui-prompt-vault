@@ -110,7 +110,7 @@
         for (const n of [KEEP, 200, 50]) if (LS.set('ideas', M.ideas.slice(-n))) return;
     }
 
-    const PART_NAMES = {subject: 'Who', expression: 'Face', gesture: 'Pose', action: 'Doing', kink: 'Kink', detail: 'Detail',
+    const PART_NAMES = {subject: 'Who', body: 'Body', expression: 'Face', gesture: 'Pose', action: 'Doing', kink: 'Kink', detail: 'Detail',
         setting: 'Where', lighting: 'Light', camera: 'Camera', style: 'Style'};
     const RATING_NSFW = (r) => r !== 'sfw';
 
@@ -130,6 +130,10 @@
         const groups = cat.group_sizes || {};
         // with a kink chosen, a scene counts when it is NSFW and of a theme one of the kinks belongs to
         const kinky = (theme, r) => !kinks.size || (r !== 'sfw' && s.allow_nsfw && [...kinks].some((k) => !kinkThemes[k] || kinkThemes[k].includes(theme)));
+        // and a cast counts when one of those kinks has something for it (breeding needs a penis and a pussy)
+        const kinkCasts = cat.kink_casts || {};
+        const castKinky = (c, theme, r) => !kinks.size || [...kinks].some((k) => (!kinkThemes[k] || kinkThemes[k].includes(theme))
+            && ((kinkCasts[k] || {})[r] || []).includes(c));
         // a group cast counts only with a size the scene, the cast and the size filter all allow
         const usable = (c, scSizes) => !groups[c] || scSizes.some((n) => groups[c].includes(n) && (!sizes.size || sizes.has(n)));
         let n = 0;
@@ -137,7 +141,7 @@
             if (!ratings.has(r)) continue;
             if (themes.size && !themes.has(cat.themes[ti])) continue;
             if (!kinky(cat.themes[ti], r)) continue;
-            if (!sc.some((c) => (!casts.size || casts.has(c)) && usable(c, scSizes || []))) continue;
+            if (!sc.some((c) => (!casts.size || casts.has(c)) && usable(c, scSizes || []) && castKinky(c, cat.themes[ti], r))) continue;
             n++;
         }
         return n;
@@ -214,6 +218,13 @@
         const kinkThemes = Object.fromEntries((M.snap.catalogue.kinks || []).map(([k, l, t]) => [k, [l, t]]));
         if (key === 'kinks' && !on.some((r) => r !== 'sfw')) return 'Kinks are NSFW: add a NSFW level.';
         if (key === 'ratings' && value === 'sfw' && s.kinks.length) return 'Kinks are NSFW: an SFW idea carries none. Set Kink to None.';
+        const futa = ['futa', 'futa_girl', 'futa_boy'];
+        if (key === 'casts' && futa.includes(value) && !on.some((r) => r !== 'sfw')) return 'Futanari: NSFW only. Add a NSFW level.';
+        if (key === 'ratings' && value === 'sfw' && s.casts.length && s.casts.every((c) => futa.includes(c))) return 'Futanari: NSFW only.';
+        if (key === 'themes' && value === 'Red light' && !on.some((r) => r !== 'sfw')) return 'Red light: NSFW only. Add a NSFW level.';
+        if (key === 'ratings' && value === 'sfw' && s.themes.length === 1 && s.themes[0] === 'Red light') return 'Red light: NSFW only.';
+        if (key === 'casts' && s.kinks.length) return `${s.kinks.map((k) => kinkThemes[k][0]).join(', ')}: nothing for this cast.`;
+        if (key === 'kinks' && s.casts.length) return 'Nothing for the chosen cast: loosen Cast.';
         if (key === 'kinks' && kinkThemes[value] && kinkThemes[value][1]) return `${kinkThemes[value][0]}: ${kinkThemes[value][1].join(', ')} only.`;
         if (key === 'themes' && s.kinks.length && s.kinks.every((k) => kinkThemes[k] && kinkThemes[k][1])) {
             const where = [...new Set(s.kinks.flatMap((k) => kinkThemes[k][1]))];
@@ -621,7 +632,7 @@
                 toggleSwitch('Bring ideas by themselves', s.enabled, (v) => patch({enabled: v}), 'never while an image is generating; the clock on top does the same'),
                 el('div', {class: 'pv-muse-field' + (s.enabled ? '' : ' pv-muse-off')}, el('span', {class: 'pv-muse-field-label', text: 'Every'}), range, rangeText)),
             s.allow_nsfw ? section('NSFW',
-                toggleSwitch('Anatomy tags', s.anatomy, (v) => patch({anatomy: v}), 'nipples, pussy, penis… on nude and explicit ideas')) : null,
+                toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',
                 seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
                 toggleSwitch('Add the idea\'s negatives too', s.send_negative, (v) => patch({send_negative: v}), 'only the ones missing from the negative prompt')),

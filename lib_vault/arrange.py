@@ -60,7 +60,7 @@ GUESS = [
 ]
 DANBOORU = {"character": "who", "copyright": "who", "artist": "style", "meta": "other"}
 # the parts of a Muse idea -> where their tags go, for tags neither the library nor a guess knows
-MUSE_PARTS = {"expression": "expression", "gesture": "pose", "action": "pose", "kink": "pose", "detail": "place", "setting": "place",
+MUSE_PARTS = {"body": "body", "expression": "expression", "gesture": "pose", "action": "pose", "kink": "pose", "detail": "place", "setting": "place",
               "lighting": "light", "camera": "camera", "style": "style"}
 
 _cache = {"key": None, "map": {}}

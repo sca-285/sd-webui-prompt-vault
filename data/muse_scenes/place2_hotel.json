@@ -88,7 +88,15 @@
      "dragon, female, date outfit",
      "dragon, male, date outfit",
      "lion, female, cocktail dress",
-     "lion, male, shirt and jacket"
+     "lion, male, shirt and jacket",
+     "horse, female, date outfit",
+     "horse, male, date outfit",
+     "husky, female, cocktail dress",
+     "husky, male, shirt and jacket",
+     "lizard, female, date outfit",
+     "lizard, male, date outfit",
+     "leopard, female, cocktail dress",
+     "leopard, male, shirt and jacket"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, date outfit",
@@ -191,6 +199,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -207,7 +232,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -361,6 +394,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -377,7 +426,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -524,6 +581,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -540,7 +615,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -649,6 +732,32 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the round bed, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the round bed, stroking her penis",
+     "stroking in the jacuzzi"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari, standing sex against the mirror wall",
+     "futanari sex in the jacuzzi",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "futanari on male, against the mirror wall",
+     "sex in the jacuzzi",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -770,7 +879,15 @@
      "dragon, female, yukata",
      "dragon, male, yukata",
      "lion, female, kimono",
-     "lion, male, jinbei"
+     "lion, male, jinbei",
+     "horse, female, yukata",
+     "horse, male, yukata",
+     "husky, female, kimono",
+     "husky, male, jinbei",
+     "lizard, female, yukata",
+     "lizard, male, yukata",
+     "leopard, female, kimono",
+     "leopard, male, jinbei"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, yukata",
@@ -873,6 +990,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -889,7 +1023,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -1041,6 +1183,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -1057,7 +1215,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1204,6 +1370,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -1220,7 +1404,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1320,6 +1512,29 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the futon, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the futon, stroking her penis"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari, sex on the low table",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "futanari on male, bent over the low table",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -1442,7 +1657,15 @@
      "dragon, female, denim shorts, tank top",
      "dragon, male, road trip clothes",
      "lion, female, road trip clothes",
-     "lion, male, flannel shirt"
+     "lion, male, flannel shirt",
+     "horse, female, denim shorts, tank top",
+     "horse, male, road trip clothes",
+     "husky, female, road trip clothes",
+     "husky, male, flannel shirt",
+     "lizard, female, denim shorts, tank top",
+     "lizard, male, road trip clothes",
+     "leopard, female, road trip clothes",
+     "leopard, male, flannel shirt"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, denim shorts, tank top",
@@ -1545,6 +1768,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -1561,7 +1801,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -1713,6 +1961,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -1729,7 +1993,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1873,6 +2145,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -1889,7 +2179,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1994,6 +2292,30 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the motel bed, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the motel bed, stroking her penis",
+     "futanari masturbation on the armchair"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari, standing sex against the wall",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "futanari on male, against the wall",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -2116,7 +2438,15 @@
      "dragon, female, bikini, sarong",
      "dragon, male, swim shorts",
      "lion, female, sundress",
-     "lion, male, linen shirt"
+     "lion, male, linen shirt",
+     "horse, female, bikini, sarong",
+     "horse, male, swim shorts",
+     "husky, female, sundress",
+     "husky, male, linen shirt",
+     "lizard, female, bikini, sarong",
+     "lizard, male, swim shorts",
+     "leopard, female, sundress",
+     "leopard, male, linen shirt"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, bikini, sarong",
@@ -2219,6 +2549,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -2235,7 +2582,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -2388,6 +2743,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -2404,7 +2775,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -2554,6 +2933,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -2570,7 +2967,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -2672,6 +3077,30 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the canopy bed, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the canopy bed, stroking her penis",
+     "stroking in the lagoon"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari sex in the lagoon",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "sex in the lagoon",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -2793,7 +3222,15 @@
      "dragon, female, hotel pajamas",
      "dragon, male, hotel pajamas",
      "lion, female, hoodie",
-     "lion, male, salaryman suit"
+     "lion, male, salaryman suit",
+     "horse, female, hotel pajamas",
+     "horse, male, hotel pajamas",
+     "husky, female, hoodie",
+     "husky, male, salaryman suit",
+     "lizard, female, hotel pajamas",
+     "lizard, male, hotel pajamas",
+     "leopard, female, hoodie",
+     "leopard, male, salaryman suit"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, hotel pajamas",
@@ -2895,6 +3332,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -2911,7 +3365,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -3059,6 +3521,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -3075,7 +3553,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -3216,6 +3702,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -3232,7 +3736,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -3323,6 +3835,27 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the pod mattress, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the pod mattress, stroking her penis"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -3444,7 +3977,15 @@
      "dragon, female, wedding dress",
      "dragon, male, wedding suit",
      "lion, female, silk robe",
-     "lion, male, shirt unbuttoned"
+     "lion, male, shirt unbuttoned",
+     "horse, female, wedding dress",
+     "horse, male, wedding suit",
+     "husky, female, silk robe",
+     "husky, male, shirt unbuttoned",
+     "lizard, female, wedding dress",
+     "lizard, male, wedding suit",
+     "leopard, female, silk robe",
+     "leopard, male, shirt unbuttoned"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, wedding dress",
@@ -3547,6 +4088,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -3563,7 +4121,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -3717,6 +4283,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -3733,7 +4315,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -3880,6 +4470,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -3896,7 +4504,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -4005,6 +4621,32 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the bed, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "lying on the bed, stroking her penis",
+     "stroking in the bathtub"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari sex in the bathtub",
+     "futanari, standing sex against the wall",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "sex in the bathtub",
+     "futanari on male, against the wall",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
@@ -4126,7 +4768,15 @@
      "dragon, female, hotel robe",
      "dragon, male, hotel robe",
      "lion, female, slip dress",
-     "lion, male, shirtless, shorts"
+     "lion, male, shirtless, shorts",
+     "horse, female, hotel robe",
+     "horse, male, hotel robe",
+     "husky, female, slip dress",
+     "husky, male, shirtless, shorts",
+     "lizard, female, hotel robe",
+     "lizard, male, hotel robe",
+     "leopard, female, slip dress",
+     "leopard, male, shirtless, shorts"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, hotel robe",
@@ -4229,6 +4879,23 @@
      "the women in lace lingerie, the men in towel around the waist",
      "the women in silk robe, loosely tied, the men in shirt open, bare chest"
     ],
+    "futa": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "futa_girl": [
+     "the futanari in lace lingerie, the girl in silk robe, loosely tied",
+     "the futanari in silk robe, loosely tied, the girl in oversized shirt, bare legs",
+     "the futanari in oversized shirt, bare legs, the girl in unbuttoned blouse, bra visible",
+     "the futanari in unbuttoned blouse, bra visible, the girl in lace lingerie"
+    ],
+    "futa_boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest"
+    ],
     "furry": [
      "wolf, female, lace lingerie",
      "wolf, male, shirt open, bare chest",
@@ -4245,7 +4912,15 @@
      "dragon, female, oversized shirt, bare legs",
      "dragon, male, boxer briefs",
      "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless"
+     "lion, male, unbuttoned jeans, shirtless",
+     "horse, female, lace lingerie",
+     "horse, male, shirt open, bare chest",
+     "husky, female, silk robe, loosely tied",
+     "husky, male, towel around the waist",
+     "lizard, female, oversized shirt, bare legs",
+     "lizard, male, boxer briefs",
+     "leopard, female, unbuttoned blouse, bra visible",
+     "leopard, male, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -4393,6 +5068,22 @@
      "nude, different body types",
      "nude, masks"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -4409,7 +5100,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -4553,6 +5252,24 @@
      "nude, masks",
      "half undressed"
     ],
+    "futa": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "futa_girl": [
+     "nude, the futanari curvy, the girl slender",
+     "nude, the futanari slender, the girl athletic",
+     "nude, the futanari athletic, the girl plump, soft belly",
+     "half undressed"
+    ],
+    "futa_boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "half undressed"
+    ],
     "furry": [
      "wolf, female, nude",
      "wolf, male, nude",
@@ -4569,7 +5286,15 @@
      "dragon, female, nude",
      "dragon, male, nude",
      "lion, female, nude",
-     "lion, male, nude"
+     "lion, male, nude",
+     "horse, female, nude",
+     "horse, male, nude",
+     "husky, female, nude",
+     "husky, male, nude",
+     "lizard, female, nude",
+     "lizard, male, nude",
+     "leopard, female, nude",
+     "leopard, male, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -4672,6 +5397,29 @@
      "spread legs, looking at viewer",
      "presenting",
      "lying back on the floor, touching self"
+    ],
+    "futa": [
+     "futanari masturbation",
+     "stroking her penis, fingering her pussy",
+     "erect penis, looking at viewer",
+     "futanari masturbation on the balcony chair"
+    ],
+    "futa_girl": [
+     "fellatio on the futanari",
+     "cunnilingus, the futanari's penis erect",
+     "futanari, standing sex against the balcony railing",
+     "futanari on female, missionary",
+     "futa on top, cowgirl",
+     "futanari, doggystyle",
+     "69"
+    ],
+    "futa_boy": [
+     "mutual masturbation",
+     "fellatio, both ways",
+     "futanari on male, against the balcony railing",
+     "futanari on male, anal sex",
+     "he rides the futanari",
+     "sex, he penetrates her pussy, her penis erect"
     ]
    },
    "settings": [
