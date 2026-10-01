@@ -154,18 +154,18 @@ PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit", "pet")
 SUBJECT_CASTS = ("furry", "kemono", "mythic", "monster", "synth", "nonhuman")  # their subject says if they are a woman or a man
 
 MOODS = {
-    "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile"],
-    "happy": ["smile", "laughing", "grin", "bright smile"],
-    "serious": ["serious expression", "determined expression", "focused expression", "stern expression"],
-    "tense": ["worried expression", "wide eyes", "nervous expression", "fearful expression", "holding breath"],
-    "melancholy": ["sad expression", "tired eyes", "wistful expression", "downcast eyes"],
-    "cool": ["smirk", "confident expression", "half-lidded eyes", "expressionless"],
-    "playful": ["playful smile", "tongue out", "one eye closed, wink", "teasing smile"],
-    "shy": ["blush", "shy smile", "embarrassed expression", "flustered"],
-    "sultry": ["seductive smile", "biting lip", "half-lidded eyes, blush", "parted lips"],
+    "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile", "serene", "gentle smile", "peaceful"],
+    "happy": ["smile", "laughing", "grin", "bright smile", "happy", "excited", "cheerful", "closed eyes, smile"],
+    "serious": ["serious expression", "determined expression", "focused expression", "stern expression", "frown", "concentrating", "thinking"],
+    "tense": ["worried expression", "wide eyes", "nervous expression", "fearful expression", "holding breath", "scared", "surprised", "shocked", "sweatdrop"],
+    "melancholy": ["sad expression", "tired eyes", "wistful expression", "downcast eyes", "teary eyes", "lonely", "melancholic"],
+    "cool": ["smirk", "confident expression", "half-lidded eyes", "expressionless", "smug", "aloof", "unimpressed", "bored"],
+    "playful": ["playful smile", "tongue out", "one eye closed, wink", "teasing smile", "mischievous smile", "giggling", "cheeky grin"],
+    "shy": ["blush", "shy smile", "embarrassed expression", "flustered", "nervous smile", "averting eyes, blush", "full-face blush"],
+    "sultry": ["seductive smile", "biting lip", "half-lidded eyes, blush", "parted lips", "naughty face", "bedroom eyes", "smoldering gaze"],
     "passion": ["flushed face, heavy breathing", "moaning, open mouth", "half-closed eyes, blush", "biting lip, sweat",
-                "tears of pleasure", "gasping"],
-    "afterglow": ["satisfied smile", "sleepy eyes", "blush, relaxed", "content expression"],
+                "tears of pleasure", "gasping", "drooling", "rolling eyes", "panting", "ecstatic expression"],
+    "afterglow": ["satisfied smile", "sleepy eyes", "blush, relaxed", "content expression", "dazed", "afterglow", "messy hair, smile"],
 }
 
 TARGETS = ("txt2img", "img2img", "vault")
@@ -207,6 +207,7 @@ DEFAULT_STATE = {
     "tipo_output": "Tags + natural language",
     "tipo_length": "short",
     "blacklist": "",
+    "fixed_prompt": "",
 }
 
 _lock = threading.RLock()
@@ -263,6 +264,7 @@ def _normalise(data):
         if out[key] not in allowed:
             out[key] = DEFAULT_STATE[key]
     out["blacklist"] = str(out["blacklist"] or "")[:4000]
+    out["fixed_prompt"] = str(out["fixed_prompt"] or "")[:2000]
     return out
 
 
@@ -599,6 +601,25 @@ ORDER_DRAWN = ("subject", "time", "job", "outfit", "pet", "build", "skin", "body
 DEPENDS = {"job": ("outfit", "accessory", "fx"), "time": ("natural",),
            "subject": ("outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory")}
 # what the hour and the sky can contradict (see when.py)
+# what a part says about the mouth, the eyes or the camera: a small part that would say it again, or say
+# otherwise, is not drawn ("smile" in the doing leaves out "grin"; "looking away" leaves out "looking at viewer")
+FACETS = {
+    "mouth": re.compile(r"\b(smil\w*|laugh\w*|grin\w*|(open|closed|covering|covered) mouth|tongue\w*|lips?|pout\w*|teeth|fangs?|smirk\w*"
+                        r"|moan\w*|gasp\w*|frown\w*|ahegao|kiss\w*|fellatio|licking|sucking|yawn\w*|eating|drinking)\b", re.I),
+    "eyes": re.compile(r"\b(looking|eyes closed|closed eyes|(half-closed|half-lidded|downcast|wide|tired|sleepy|rolling) eyes|wink\w*|glanc\w*"
+                       r"|star(e|ing)|gaze|averting|upturned eyes|eye contact|ahegao|sleeping|blindfold\w*)\b", re.I),
+    "angle": re.compile(r"\b(from above|from below|high angle|low angle|overhead|aerial|worm's eye|dutch angle|eye level|straight-on|tilted frame)\b", re.I),
+    "view": re.compile(r"\b(from side|from behind|profile|pov|back view|three-quarter view|over-the-shoulder|front view|selfie|reflection)\b", re.I),
+    "shot": re.compile(r"\b(close-up|portrait|upper body|cowboy shot|full body|wide shot|medium shot|establishing shot|out of frame)\b", re.I),
+}
+TIDY = ("gesture", "expression", "mouth", "gaze", "angle", "view", "framing")  # drawn only where they add something
+
+
+@functools.lru_cache(maxsize=8192)
+def _facets(value):
+    return frozenset(k for k, rx in FACETS.items() if rx.search(value or ""))
+
+
 UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting", "light_volume", "light_mood", "accessory", "outfit")
 
 
@@ -645,7 +666,7 @@ def _library_poses(scene, who, parts):
         return []
     female, male = kinklib._sexes(who, parts["subject"]) if who in ALIASES["solo"] else (False, False)
     gender = "f" if female and not male else "m" if male and not female else ""
-    return vocab.poses_for(level, "solo" if who in ALIASES["solo"] else "pair", gender, parts["action"])
+    return vocab.poses_for(level, "solo" if who in ALIASES["solo"] else "pair", gender, parts["action"], scene["theme"])
 
 
 def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None, girls=None):
@@ -788,6 +809,9 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                     pool = [a for a in pool if actlib.in_family(a, who, wanted)]
                 if parts.get("kink"):
                     pool = [] if "own" in actlib.needs(parts["kink"]) else [a for a in pool if actlib.fits(parts["kink"], a, who, wanted)]
+            if slot in TIDY and pool:
+                taken = set().union(*(_facets(v) for k, v in {**keep, **parts}.items() if k != slot and k not in hidden and isinstance(v, str)))
+                pool = [x for x in pool if not _facets(x) & taken]
             if slot == roll and len(pool) > 1:
                 pool = [x for x in pool if x != current]
             if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:

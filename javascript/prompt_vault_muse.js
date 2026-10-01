@@ -278,6 +278,17 @@
     }
 
     // why a chip leads nowhere, in words
+    // the levels a theme has scenes at
+    function themeLevels(name) {
+        const cat = M.snap.catalogue;
+        if (!themeLevels.memo || themeLevels.memo.cat !== cat) {
+            const by = {};
+            for (const [ti, , r] of cat.index) (by[cat.themes[ti]] = by[cat.themes[ti]] || new Set()).add(r);
+            themeLevels.memo = {cat, by};
+        }
+        return themeLevels.memo.by[name] || new Set();
+    }
+
     function whyNone(key, value) {
         const s = st();
         const on = ratingsOn(s);
@@ -296,11 +307,20 @@
         const futa = ['futa', 'futa_girl', 'futa_boy'];
         if (key === 'casts' && futa.includes(value) && !on.some((r) => r !== 'sfw')) return 'Futanari: NSFW only. Add a NSFW level.';
         if (key === 'ratings' && value === 'sfw' && s.casts.length && s.casts.every((c) => futa.includes(c))) return 'Futanari: NSFW only.';
-        if (key === 'themes' && value === 'Red light' && !on.some((r) => r !== 'sfw')) return 'Red light: NSFW only. Add a NSFW level.';
-        if (key === 'ratings' && value === 'sfw' && s.themes.length === 1 && s.themes[0] === 'Red light') return 'Red light: NSFW only.';
+        // themes with only some levels (Red light: NSFW only; School: SFW only)
+        const levelName = (r) => (M.snap.catalogue.ratings.find((x) => x[0] === r) || [r, r])[1];
+        const lv = themeLevels(value);
+        if (key === 'themes' && !on.some((r) => lv.has(r))) return `${value}: ${[...lv].map(levelName).join(', ')} only. Add it to Level.`;
+        const chosen = s.themes || [];
+        const noneAt = (test) => chosen.length && chosen.every((t) => !test(themeLevels(t)));
+        if (key === 'ratings' && noneAt((l) => l.has(value))) return `${chosen.join(', ')}: no ${levelName(value)} scenes.`;
+        const nsfwSide = (l) => [...l].some((r) => r !== 'sfw');
+        if ((key === 'kinks' || key === 'acts') && noneAt(nsfwSide)) return `${chosen.join(', ')}: SFW only.`;
+        if (key === 'casts' && futa.includes(value) && noneAt(nsfwSide)) return `${chosen.join(', ')}: SFW only, and futanari is NSFW only.`;
         const sfwCasts = (cs) => cs.length && cs.every((c) => c === 'animal' || c === 'none');
-        if (key === 'themes' && value === 'Red light' && sfwCasts(s.casts)) return 'Red light has no SFW side: no animals or empty scenes there.';
-        if (key === 'casts' && (value === 'animal' || value === 'none') && s.themes.length === 1 && s.themes[0] === 'Red light') return 'Red light has no SFW side: no animals or empty scenes there.';
+        if (key === 'themes' && sfwCasts(s.casts) && !lv.has('sfw')) return `${value} has no SFW side: no animals or empty scenes there.`;
+        if (key === 'themes' && s.casts.length && s.casts.every((c) => futa.includes(c)) && !nsfwSide(lv)) return `${value}: SFW only, and futanari is NSFW only.`;
+        if (key === 'casts' && (value === 'animal' || value === 'none') && noneAt((l) => l.has('sfw'))) return `${chosen.join(', ')} has no SFW side: no animals or empty scenes there.`;
         if (key === 'casts' && s.kinks.length) return `${s.kinks.map((k) => kinkThemes[k][0]).join(', ')}: nothing for this cast.`;
         if (key === 'kinks' && s.casts.length) return 'Nothing for the chosen cast: loosen Cast.';
         if (key === 'kinks' && kinkThemes[value] && kinkThemes[value][1]) return `${kinkThemes[value][0]}: ${kinkThemes[value][1].join(', ')} only.`;
@@ -366,13 +386,34 @@
         return false;
     }
 
+    // your own words, kept across ideas, go in front of Muse's tags
+    const ownPrompt = () => String(st().fixed_prompt || '').replace(/[\s,]+$/, '').replace(/^[\s,]+/, '');
+    function fullPrompt(it) {
+        const own = ownPrompt();
+        const tags = String(it.positive || '').replace(/^[\s,]+/, '');
+        return own && tags ? own + ', ' + tags : own || tags;
+    }
+
+    function ownBar() {
+        const box = el('textarea', {class: 'pv-muse-text pv-muse-own', rows: '1', spellcheck: 'false', 'aria-label': 'Your prompt',
+            placeholder: 'e.g. masterpiece, best quality, <lora:name:0.8>'});
+        box.value = st().fixed_prompt || '';
+        box.addEventListener('input', () => {
+            if (M.snap && M.snap.state) M.snap.state.fixed_prompt = box.value;
+            clearTimeout(ownBar.t);
+            ownBar.t = setTimeout(() => call('/muse/state', {fixed_prompt: box.value}).catch((e) => toast(e.message, true)), 500);
+        });
+        return el('div', {class: 'pv-muse-ownbar'},
+            el('div', {class: 'pv-muse-prompt-label', text: 'Your prompt: kept as ideas change, sent in front of the idea'}), box);
+    }
+
     function send(target) {
         const it = idea();
         if (!it) return;
         const s = st();
         const pos = area(TARGETS[target]);
         if (!pos) { toast('The ' + TARGET_NAMES[target] + ' prompt box is not on the page', true); return; }
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
+        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
         const go = window['switch_to_' + target];
         if (typeof go === 'function') { try { go(); } catch (e) { /* the tab switch is a nicety */ } }
         toast('Sent to ' + TARGET_NAMES[target]);
@@ -394,7 +435,7 @@
         if (!pos || !go) { toast(tab + ' is not on the page', true); return; }
         if (generating()) { toast('An image is being generated: wait for it', true); return; }
         const s = st();
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
+        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
         const before = new Set(galleryImages(tab));
         M.gen = {id: it.id, started: Date.now(), seen: false, tab};
         render();
@@ -502,7 +543,7 @@
         const it = idea();
         if (!it) return;
         const when = new Date().toLocaleString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
-        call('/prompts/save', {name: `${it.title} · ${when}`, positive: it.positive, negative: ''})
+        call('/prompts/save', {name: `${it.title} · ${when}`, positive: fullPrompt(it), negative: ''})
             .then(() => {
                 toast('Saved in the Vault tab');
                 if (window.promptVault && window.promptVault.reloadSaved) window.promptVault.reloadSaved();
@@ -641,7 +682,7 @@
         const it = idea();
         const s = st();
         if (!it) {
-            return el('div', {class: 'pv-muse-body'}, filterBar(),
+            return el('div', {class: 'pv-muse-body'}, filterBar(), ownBar(),
                 el('div', {class: 'pv-muse-empty'},
                     el('p', {text: M.busy ? 'Thinking…' : 'No idea yet.'}),
                     el('button', {type: 'button', class: 'pv-btn pv-primary', text: 'Give me one', disabled: !!M.busy, onclick: () => nextIdea(false)})));
@@ -671,14 +712,14 @@
             // the parts on the left, the whole prompt on the right, always open
             prompt.rows = 12;
             return el('div', {class: 'pv-muse-body'},
-                filterBar(),
+                filterBar(), ownBar(),
                 el('div', {class: 'pv-muse-cols'},
                     card,
                     el('div', {class: 'pv-muse-prompt pv-muse-prompt-wide'},
                         el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, note, imagesView(it))));
         }
         return el('div', {class: 'pv-muse-body'},
-            filterBar(),
+            filterBar(), ownBar(),
             card,
             el('details', {class: 'pv-muse-prompt', open: LS.get('prompt_open', true) ? true : null,
                 ontoggle: (e) => LS.set('prompt_open', e.target.open)},
@@ -703,7 +744,7 @@
                 s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? TOOL_NAMES.tipo : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: () => tool('tipo')}) : null,
                 iconButton('save', 'Save to the Vault\'s saved prompts', saveToVault),
                 iconButton('copy', 'Copy the prompt', () => {
-                    navigator.clipboard.writeText(it.positive).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
+                    navigator.clipboard.writeText(fullPrompt(it)).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
                 })),
             el('div', {class: 'pv-muse-send'},
                 el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-generate', disabled: !!M.gen,

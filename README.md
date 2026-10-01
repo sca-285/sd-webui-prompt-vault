@@ -37,20 +37,21 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
-  - **Three filters**: *Theme* (33: Portrait, Fashion, Film, Horror, Street, Home, Food,
+  - **Three filters**: *Theme* (39: Portrait, Fashion, Film, Horror, Street, Home, Food,
     Architecture, Nature, Creature, Myth, Sci-fi, Sports, Party, Bath & shower, Bedroom,
     Fantasy, Gym, Hotel, Office, Outdoors, Studio, Travel, Countryside, Historical,
     Post-apocalypse, Steampunk, Seafaring, Music & stage, World cities, Retro 80s-90s,
-    Holidays, Red light), *Cast*
+    Holidays, Red light, Kitchen, Living room, Balcony, Garden, Restroom, School), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
     (harem), 1girl + boys (reverse harem), mixed group, furry, kemono, human + furry, myth &
     fantasy beings, monsters, sci-fi beings, animals; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
-    choice shows how many scenes it leaves: about 3,500 scenes, nine places per theme with
+    choice shows how many scenes it leaves: about 4,100 scenes, nine places per theme with
     three spots each (a café's window seat, counter and terrace, each with its own Where and
     Detail), so every theme, cast, level and group size goes with every other 27 times. The
-    one thing that cannot be is greyed out with the reason: *No humans* and *Animals* are SFW only.
+    one thing that cannot be is greyed out with the reason: *No humans* and *Animals* are SFW only,
+    *Red light* is NSFW only and *School* is SFW only.
   - **Beings**: *Myth & fantasy* (vampire, elf, dark elf, demon, succubus, angel, fallen angel,
     kitsune, oni, mermaid, dryad, centaur, lamia, harpy, dragon girl, orc, minotaur, pixie,
     gorgon…), *Monsters* (werewolf, Frankenstein's monster and his bride, zombie, ghost, mummy,
@@ -94,7 +95,8 @@ Qwen-VL and the WD14 tagger) in one tab.
     furry, wolf, grey fur…` (`human on furry` or `furry on human` when explicit). A werewolf
     is a monster, not a furry: it is a non-human.
   - **Pose** comes from the library's pose groups, for a woman or a man, and fits what the
-    idea is doing: no "lying on back" for someone riding. **Style**, a fifth filter, swaps the
+    idea is doing and where: no "lying on back" for someone riding, no sprinting in a
+    restroom, no heroic stance in a kitchen. **Style**, a fifth filter, swaps the
     scene's styles for families of the library's Style & Medium category (pixel art,
     silhouette, vaporwave, stained glass, double exposure, anime eras…).
   - **Save** keeps the idea in the Vault tab's Saved prompts.
@@ -111,6 +113,8 @@ Qwen-VL and the WD14 tagger) in one tab.
     idea (same scene). **Settings → Parts** turns whole groups off (Looks, Animals, Job,
     Action, Light, Camera, Color & grade, Style): off, a group is gone from the card and the
     prompt, the scene's own light or camera too, and the idea on the card follows at once.
+    Small parts are drawn only where they add something: no "grin" when the Doing already
+    smiles, no gaze when it already says where the eyes are, no angle the shot already gives.
   - **Animal**: now and then a real animal with the people of an SFW idea, one that fits
     the theme (a cat on the lap at home, a dog on a leash in the street, a horse in the
     countryside, a raven in a horror scene).
@@ -126,6 +130,9 @@ Qwen-VL and the WD14 tagger) in one tab.
     there); the button says which tab it uses.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending. Muse writes the positive prompt only: your negative prompt stays yours.
+  - **Your prompt**, a box under the filters for what every idea should start with
+    (`masterpiece, best quality, <lora:name:0.8>`): new ideas never touch it, and Send,
+    Generate, Copy and Save put it in front of the idea, joined by a comma. Muse remembers it.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
     **Describe** (Qwen writes a paragraph from the tags, after them or instead of them) and
     **TIPO**. They use the models already set up for the Vault tab.
@@ -236,6 +243,15 @@ library's Pose and Style & Medium categories, so what you add there turns up on 
 library ships with everything Muse knows (furry kinds and features, kinks, anatomy, poses by
 sex, specialised styles, sex positions). Coming from an earlier version: **Edit the library →
 🧺 Add missing default tags** brings these into your library without touching your own tags.
+
+## Checks
+
+`python3 tests/run.py` runs every check of Muse in a WebUI data folder of its own (the WebUI
+is stubbed; it needs `fastapi` and `httpx`): tags never prose, the scene files match their
+sources in `tools/muse_scenes`, the API, group sizes, thousands of random ideas (adults only,
+bodies that fit the cast, skies, jobs in their themes), every act and kink for every cast,
+and every chip of every filter with 25 scenes or more. `--quick` skips the slowest. GitHub
+runs them on every push (`.github/workflows/tests.yml`).
 
 ## Muse scenes of your own
 

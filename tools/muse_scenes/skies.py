@@ -27,6 +27,15 @@ fashion|Cyclorama lookbook|White cyc=in,Color cyc=in
 fashion|Street style|Shop window=out
 fashion|Rooftop campaign|Glass railing=out
 film|Sci-fi bridge|Viewport=none,Engine room=none
+kitchen|Outdoor kitchen|Grill=out,Pizza oven=out,Bar counter=out
+kitchen|Morning kitchen|Counter=view
+livingroom|Sunroom|Wicker chairs=view
+livingroom|Japanese living room|Engawa=out
+balcony|Penthouse terrace|Glass railing=out,Infinity pool=out,Fire pit=out
+balcony|Hotel balcony|Room service=out
+restroom|Airplane lavatory|Galley=in
+restroom|Gas station restroom|Outside door=out
+school|Classroom|After class=view
 film|Road movie|Convertible=out,Diner=view
 film|Musical|Stage=in,Rain street set=in
 film|Kung fu film|Tea house=view

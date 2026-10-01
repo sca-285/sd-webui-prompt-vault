@@ -391,3 +391,6 @@ html body #pv_muse_panel .pv-muse-add:hover:not(:disabled) { opacity: 1; border-
 /* what Generate brought back */
 #pv_muse_panel .pv-muse-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; margin-top: 8px; }
 #pv_muse_panel .pv-muse-images img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; display: block; }
+/* your own prompt: stays put while ideas roll, goes in front of them */
+#pv_muse_panel .pv-muse-ownbar { margin-top: 8px; }
+#pv_muse_panel .pv-muse-ownbar .pv-muse-own { width: 100%; min-height: 34px; resize: vertical; box-sizing: border-box; }

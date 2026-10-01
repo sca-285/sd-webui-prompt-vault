@@ -310,7 +310,11 @@
     "staring",
     "looking over eyewear",
     "eye contact",
-    "looking at another"
+    "looking at another",
+    "looking ahead",
+    "upturned eyes",
+    "averting eyes",
+    "looking at each other"
    ],
    "Brows & Lashes": [
     "thick eyebrows",
@@ -374,7 +378,9 @@
     "whistling",
     "bubble blowing",
     "mouth hold",
-    "smile"
+    "smile",
+    "frown",
+    "wavy mouth"
    ],
    "Facial Marks": [
     "freckles",
@@ -1194,7 +1200,12 @@
     "chromatic aberration",
     "lens flare",
     "leading lines",
-    "silhouette framing"
+    "silhouette framing",
+    "diagonal composition",
+    "off-center",
+    "cinematic composition",
+    "shallow depth of field",
+    "deep focus"
    ],
    "Graphic Design": [
     "leading lines",
@@ -1482,7 +1493,13 @@
     "cinestill 800t",
     "fujifilm colors",
     "film grain",
-    "matte colors"
+    "matte colors",
+    "jewel tones",
+    "duotone",
+    "technicolor",
+    "autumn colors",
+    "candy colors",
+    "kodachrome"
    ]
   },
   "11. Time, Weather & Atmosphere": {
@@ -2309,7 +2326,14 @@
     "hat",
     "ranger uniform",
     "stethoscope",
-    "zookeeper uniform"
+    "zookeeper uniform",
+    "gardening gloves",
+    "janitor uniform",
+    "rubber gloves",
+    "sweater",
+    "track jacket",
+    "work overalls",
+    "work shirt"
    ],
    "Workwear": [
     "coveralls",
@@ -2760,7 +2784,12 @@
     "monk",
     "zookeeper",
     "veterinarian",
-    "wildlife ranger"
+    "wildlife ranger",
+    "janitor",
+    "plumber",
+    "coach",
+    "homemaker",
+    "landscaper"
    ],
    "Fantasy Roles": [
     "knight",
@@ -2867,7 +2896,9 @@
     "muzzle flash",
     "clouds",
     "steam, sparks",
-    "wind"
+    "wind",
+    "water droplets",
+    "grass clippings"
    ]
   },
   "17. NSFW — Clothing & Tease": {
