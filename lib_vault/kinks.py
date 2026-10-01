@@ -83,6 +83,7 @@ KINKS = {
             "mixed": ["breeding, creampies", "cross-section, cum inside"],
             "futa_girl": ["futanari creampie, cross-section", "x-ray, futanari cum inside, ovum", "breeding, impregnation"],
             "futa_boy": ["cross-section, cum inside her", "x-ray, creampie, sperm cell, ovum"],
+            "human_furry": ["cross-section, knot inside, cum inside", "x-ray, interspecies breeding, ovum", "breeding, cum inside"],
         },
     },
     "pregnancy": {
@@ -153,6 +154,26 @@ KINKS = {
         "nude": {"people": ["nude at the open window", "nude, risk of being seen", "naked in an empty corridor"]},
         "explicit": {"people": ["sex against the window, city below", "being watched, sex", "quickie, risk of being caught"]},
     },
+    "hypnosis": {
+        "label": "Hypnosis & mind control",
+        "suggestive": {"people": ["hypnosis, spiral eyes", "pendulum swinging, empty eyes", "glowing eyes, entranced"]},
+        "nude": {"people": ["mind control, empty eyes, standing still", "hypnotized, blank expression", "heart-shaped pupils, entranced"]},
+        "explicit": {"solo": ["hypnotized, empty eyes, masturbating", "mind control, heart-shaped pupils"],
+                     "pair": ["hypnosis, empty eyes, sex", "mind control, glowing eyes, obedient", "hypnotized, kneeling, fellatio"],
+                     "groups": ["hypnotized, everyone obedient", "mind control, glowing eyes, group sex"]},
+    },
+    "watersports": {
+        "label": "Watersports",
+        "suggestive": {"people": ["desperation, legs crossed", "need to pee, fidgeting", "wet spot on the panties"]},
+        "nude": {"people": ["peeing", "peeing in the shower", "squatting, peeing", "pee puddle"]},
+        "explicit": {"solo": ["peeing, spread legs", "peeing while masturbating"], "pair": ["golden shower", "peeing on partner", "peeing during sex"],
+                     "groups": ["golden shower, the others watching"]},
+    },
+    "scat": {
+        "label": "Scat",
+        "nude": {"people": ["defecation, squatting", "scat"]},
+        "explicit": {"solo": ["scat, masturbating"], "pair": ["scat play"], "groups": ["scat play"]},
+    },
     "latex": {
         "label": "Latex & fetish wear",
         "suggestive": {"people": ["black latex catsuit", "pvc corset, thigh-high boots", "leather harness", "fishnet bodystocking"]},
@@ -186,7 +207,7 @@ KINKS = {
         "suggestive": {"people": ["an orc's hand on the waist", "a demon whispering in the ear", "a werewolf's shadow behind"]},
         "nude": {"people": ["held by a huge orc", "in the arms of a demon", "a minotaur towering behind"]},
         "explicit": {"people": ["sex with an orc, size difference", "minotaur, huge penis, size difference", "demon lover, glowing eyes",
-                                "werewolf, knot", "alien, ribbed penis"]},
+                                "werewolf, monster, knot", "alien, ribbed penis"]},
     },
     "blood": {
         "label": "Blood & bites",
@@ -197,8 +218,11 @@ KINKS = {
     },
 }
 
-FEMALE = ("1girl", "1girl1boy", "2girls", "girls", "harem", "reverse", "mixed", "futa", "futa_girl", "futa_boy")
-MALE = ("1boy", "1girl1boy", "2boys", "boys", "harem", "reverse", "mixed", "futa_boy")
+FEMALE = ("1girl", "1girl1boy", "2girls", "girls", "harem", "reverse", "mixed", "futa", "futa_girl", "futa_boy", "human_furry")
+MALE = ("1boy", "1girl1boy", "2boys", "boys", "harem", "reverse", "mixed", "futa_boy", "human_furry")
+
+# a werewolf is a cursed human, a monster: never drawn as a furry
+SUBJECT_NEGATIVES = {"werewolf": ["anthro", "furry", "kemono", "cute", "chibi"]}
 FUTA = ("futa", "futa_girl", "futa_boy")
 EXTRA_ALIASES = {"female": FEMALE}
 
@@ -215,19 +239,35 @@ PROSTHETIC = ["prosthetic arm", "mechanical arm", "cybernetic leg", "robot joint
 
 # anthros: which kind, from the subject, and its anatomy
 KINDS = {
-    "canine": ("wolf", "fox", "husky", "dog", "jackal"),
-    "equine": ("horse", "zebra", "unicorn"),
-    "feline": ("cat", "tiger", "lion", "leopard", "lynx"),
-    "reptile": ("dragon", "lizard", "kobold", "snake"),
-    "cervine": ("deer", "reindeer"),
+    "canine": ("wolf", "fox", "husky", "dog", "jackal", "coyote"),
+    "equine": ("horse", "zebra", "unicorn", "donkey"),
+    "feline": ("cat", "tiger", "lion", "leopard", "lynx", "cheetah", "panther", "jaguar"),
+    "shark": ("shark",),
+    "cetacean": ("orca", "dolphin"),
+    "avian": ("eagle", "hawk", "owl", "raven", "parrot", "bird", "crow", "gryphon"),
+    "dragon": ("dragon", "wyvern"),
+    "reptile": ("lizard", "crocodile", "alligator", "gecko", "snake"),
+    "bovine": ("bull", "cow", "bison", "ox"),
+    "cervine": ("deer", "reindeer", "elk", "moose", "stag"),
+    "ursine": ("bear", "panda"),
+    "mustelid": ("otter", "ferret", "weasel"),
+    "rodent": ("mouse", "rat", "squirrel"),
     "lagomorph": ("rabbit", "bunny", "hare"),
 }
 ANTHRO_PENIS = {
-    "canine": ["canine penis, knot", "canine penis, sheath", "knotted penis, veiny", "red canine penis"],
+    "canine": ["canine penis, knot", "canine penis, sheath", "knotted penis, veiny", "red canine penis, knot"],
     "equine": ["equine penis, flared", "horsecock, mottled penis", "equine penis, medial ring", "flared penis, sheath"],
     "feline": ["feline penis, spiked", "barbed penis", "tapering penis, nubbed"],
-    "reptile": ["genital slit, ribbed penis", "hemipenes, diphallia", "scaled penis", "tapering penis, ribbed", "prehensile penis", "two penises"],
+    "shark": ["claspers, diphallia", "two penises, genital slit"],
+    "cetacean": ["genital slit, prehensile penis", "tapering penis, genital slit"],
+    "avian": ["genital slit", "tapering penis, cloaca", "corkscrew penis"],
+    "dragon": ["genital slit, ribbed penis", "scaled penis, knot", "hemipenes, diphallia", "tapering penis, ribbed"],
+    "reptile": ["hemipenes, diphallia", "genital slit, ribbed penis", "two penises", "scaled penis"],
+    "bovine": ["bovine penis, tapering", "sheath, tapering penis"],
     "cervine": ["tapering penis, sheath", "pointed penis"],
+    "ursine": ["humanoid penis, sheath", "thick penis, sheath"],
+    "mustelid": ["tapering penis, sheath", "humanoid penis"],
+    "rodent": ["humanoid penis, sheath", "pink penis"],
     "lagomorph": ["humanoid penis, sheath", "pink penis"],
     "other": ["humanoid penis", "animal penis, sheath", "knotted penis", "ribbed penis", "nubbed penis"],
 }
@@ -235,10 +275,15 @@ ANTHRO_PUSSY = {
     "canine": ["canine pussy", "animal pussy", "multiple breasts"],
     "equine": ["equine pussy", "puffy animal pussy"],
     "feline": ["animal pussy", "multiple breasts", "feline pussy"],
-    "reptile": ["genital slit", "cloaca"],
-    "cervine": ["animal pussy"], "lagomorph": ["animal pussy", "multiple breasts"],
+    "shark": ["genital slit", "cloaca"], "cetacean": ["genital slit"], "avian": ["cloaca"],
+    "dragon": ["genital slit", "cloaca"], "reptile": ["cloaca", "genital slit"],
+    "bovine": ["animal pussy", "udders"], "cervine": ["animal pussy"],
+    "ursine": ["animal pussy", "multiple breasts"], "mustelid": ["animal pussy", "multiple breasts"],
+    "rodent": ["animal pussy", "multiple breasts"], "lagomorph": ["animal pussy", "multiple breasts"],
     "other": ["animal pussy", "multiple breasts"],
 }
+# breasts make no sense on some kinds the way they do on mammals
+NO_BREASTS = ("avian", "reptile", "shark")
 
 
 def _kind(subject):
@@ -275,12 +320,20 @@ def body(level, cast, subject, theme, rng=None):
             if male or futa:
                 bits += [rng.choice(["pectorals", "abs", "chest hair"])] if male else []
                 bits += ["bulge"]
-        elif cast == "furry":
-            kind = _kind(subject)
+        elif cast == "furry" or (cast == "nonhuman" and "werewolf" in subject.lower()):
+            kind = _kind(subject) if cast == "furry" else "canine"
             if female:
-                bits += [rng.choice(BREASTS), rng.choice(ANTHRO_PUSSY[kind])]
+                bits += ([] if kind in NO_BREASTS else [rng.choice(BREASTS)]) + [rng.choice(ANTHRO_PUSSY[kind])]
             if male:
-                bits += [rng.choice(ANTHRO_PENIS[kind]), "balls"]
+                bits += [rng.choice(ANTHRO_PENIS[kind])] + ([] if kind in ("shark", "cetacean", "avian", "reptile", "dragon") else ["balls"])
+        elif cast == "human_furry":
+            # one human, one anthro of the other sex; the subject says which is which
+            kind = _kind(subject)
+            low = subject.lower()
+            if "with a male" in low:  # a woman, a male anthro
+                bits += [rng.choice(BREASTS), rng.choice(PUSSY), rng.choice(ANTHRO_PENIS[kind])]
+            else:                     # a man, a female anthro
+                bits += [rng.choice(PENIS)] + ([] if kind in NO_BREASTS else [rng.choice(BREASTS)]) + [rng.choice(ANTHRO_PUSSY[kind])]
         else:
             if female:
                 bits += [rng.choice(BREASTS), rng.choice(NIPPLES)]

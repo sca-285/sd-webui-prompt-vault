@@ -612,6 +612,7 @@
         };
         area.addEventListener('input', async () => {
             if (window.opts && opts.pv_autocomplete === false) return;
+            if (document.activeElement !== area) { close(); return; } // written by a button, not typed: no suggestions
             const f = fragment(area);
             const q = f.text.trim().toLowerCase().replace(/_/g, ' ');
             if (q.length < 2) { close(); return; }
@@ -646,6 +647,16 @@
         const out = el('div', {class: 'pv-check'});
         host.append(el('div', {class: 'pv-toolbar-row'},
             el('button', {class: 'pv-btn', type: 'button', text: '🔍 Check tags', title: 'Tags that are neither in your library nor known Danbooru tags', onclick: checkTags}),
+            el('button', {class: 'pv-btn', type: 'button', text: '💡 Muse idea', title: 'An idea from Muse, with the filters set on its card, into the editor', onclick: () => {
+                call('/muse/next', {}).then((d) => {
+                    setBox(box('positive'), d.idea.positive);
+                    const neg = box('negative');
+                    const have = new Set(split(neg.value).map(key));
+                    const extra = split(d.idea.negative || '').filter((p) => !have.has(key(p)));
+                    if (extra.length) setBox(neg, neg.value.replace(/[\s,]+$/, '') + (neg.value.trim() ? ', ' : '') + extra.join(', '));
+                    toast('Muse: ' + d.idea.title);
+                }).catch((e) => toast(e.message, true));
+            }}),
             el('button', {class: 'pv-btn', type: 'button', text: '🗂️ Arrange', title: 'Put the tags in order (quality, who, body, face, clothes, pose, place, light, camera, style) from what your library knows of them; duplicates go', onclick: () => {
                 const area = box('positive');
                 if (!area.value.trim()) return;
