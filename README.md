@@ -290,15 +290,6 @@ library ships with everything Muse knows (furry kinds and features, kinks, anato
 sex, specialised styles, sex positions). Coming from an earlier version: **Edit the library →
 🧺 Add missing default tags** brings these into your library without touching your own tags.
 
-## Checks
-
-`python3 tests/run.py` runs every check of Muse in a WebUI data folder of its own (the WebUI
-is stubbed; it needs `fastapi` and `httpx`): tags never prose, the scene files match their
-sources in `tools/muse_scenes`, the API, group sizes, thousands of random ideas (adults only,
-bodies that fit the cast, skies, jobs in their themes), every act and kink for every cast,
-and every chip of every filter with 25 scenes or more. `--quick` skips the slowest. GitHub
-runs them on every push (`.github/workflows/tests.yml`).
-
 ## Muse scenes of your own
 
 Put JSON files in `prompt_vault/muse/scenes/`; the shipped ones in `data/muse_scenes/` are
