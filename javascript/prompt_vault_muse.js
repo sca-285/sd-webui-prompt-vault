@@ -127,15 +127,8 @@
         ['Light', ['lighting', 'natural', 'light_quality', 'light_mood', 'light_support', 'light_volume']],
         ['Camera', ['camera', 'angle', 'view', 'framing']], ['Look', ['color', 'style']]];
     const GROUP_OF = Object.fromEntries(PART_GROUPS.flatMap(([g, slots]) => slots.map((x) => [x, g])));
-    // groups open by default; the card remembers the ones you open or close
-    const GROUPS_OPEN = new Set(LS.get('groups', ['Character', 'Action', 'Scene']));
-    function toggleGroup(g) {
-        if (GROUPS_OPEN.has(g)) GROUPS_OPEN.delete(g); else GROUPS_OPEN.add(g);
-        LS.set('groups', [...GROUPS_OPEN]);
-        render();
-    }
-
-    // the parts, a block per group: filled ones as rows, empty ones as small chips that draw them
+    // the parts, a block per group: filled ones as rows, empty ones as small chips that draw them.
+    // A group turned off in the settings is not there at all.
     function partRows(it) {
         const byGroup = new Map();
         for (const p of it.parts) {
@@ -145,19 +138,12 @@
         }
         return [...byGroup].map(([g, parts]) => {
             const filled = parts.filter((p) => p.value), empty = parts.filter((p) => !p.value);
-            const open = GROUPS_OPEN.has(g);
-            const locked = filled.filter((p) => it.locks && it.locks[p.slot]).length;
-            const head = el('button', {type: 'button', class: 'pv-muse-group-head', 'aria-expanded': open ? 'true' : 'false', onclick: () => toggleGroup(g),
-                title: open ? 'Fold' : 'Unfold'},
-                icon('down'), el('span', {class: 'pv-muse-group-name', text: g}),
-                open ? el('span', {class: 'pv-muse-group-count', text: locked ? `${filled.length} · ${locked} locked` : String(filled.length)})
-                    : el('span', {class: 'pv-muse-group-sum', text: filled.map((p) => p.value).join(' · ') || '—'}));
-            const body = open ? el('div', {class: 'pv-muse-group-body'},
+            return el('div', {class: 'pv-muse-group'},
+                el('div', {class: 'pv-muse-group-head'}, el('span', {class: 'pv-muse-group-name', text: g})),
                 filled.map((p) => partRow(it, p)),
                 empty.length ? el('div', {class: 'pv-muse-adds'}, empty.map((p) => el('button', {type: 'button', class: 'pv-muse-add',
                     disabled: !!M.busy, title: 'Draw ' + (PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot).toLowerCase(),
-                    onclick: () => rollPart(p.slot)}, '+ ' + (PART_NAMES[p.slot] || p.slot)))) : null) : null;
-            return el('div', {class: 'pv-muse-group' + (open ? ' pv-on' : '')}, head, body);
+                    onclick: () => rollPart(p.slot)}, '+ ' + (PART_NAMES[p.slot] || p.slot)))) : null);
         });
     }
     const RATING_NSFW = (r) => r !== 'sfw';
@@ -236,7 +222,7 @@
         const n = countMatching();
         // the scene first; then, once NSFW is on, a tier of its own for what happens in it
         return el('div', {class: 'pv-muse-filters'},
-            el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level'), pill('styles', 'Style')),
+            el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level'), st().hide.includes('style') ? null : pill('styles', 'Style')),
             st().allow_nsfw ? el('div', {class: 'pv-muse-filter-row pv-muse-filter-row2'}, pill('acts', 'Act'), pill('kinks', 'Kink')) : null,
             M.tray ? tray(M.tray) : null,
             M.tray ? el('div', {class: 'pv-muse-hint', text: n ? `${n} scene${n === 1 ? '' : 's'} match` : 'Nothing matches: loosen a filter'}) : null);
@@ -480,6 +466,17 @@
             render();
             paintFab();
         }
+    }
+
+    async function refreshIdea() {
+        const it = idea();
+        if (!it || M.busy) return;
+        try {
+            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true)});
+            M.ideas[M.at] = Object.assign(data.idea, {locks: it.locks, images: it.images});
+            saveIdeas();
+            render();
+        } catch (e) { /* the scene may be gone: the next idea will do */ }
     }
 
     async function rollPart(slot) {
@@ -743,6 +740,8 @@
         render();
         paintFab();
         // a filter changed and the idea on the card no longer fits it: a fitting one, once the clicks settle
+        // a group switched on or off: the idea on the card follows at once, same scene, the rest kept
+        if ('hide' in body) refreshIdea();
         if (['themes', 'casts', 'ratings', 'sizes', 'kinks', 'acts', 'styles', 'allow_nsfw'].some((k) => k in body)) {
             clearTimeout(patch.t);
             patch.t = setTimeout(() => {
@@ -790,14 +789,17 @@
                 toggleSwitch('Bring ideas by themselves', s.enabled, (v) => patch({enabled: v}), 'never while an image is generating; the clock on top does the same'),
                 el('div', {class: 'pv-muse-field' + (s.enabled ? '' : ' pv-muse-off')}, el('span', {class: 'pv-muse-field-label', text: 'Every'}), range, rangeText)),
             section('Parts',
-                el('div', {class: 'pv-muse-hint', text: 'Groups of parts every idea can carry; turn off what you do not want in your prompts.'}),
-                [['looks', 'Looks', 'build, skin, hair, eyes, features, makeup, accessories, mouth, gaze'],
-                    ['pet', 'Animals with people', 'a real animal now and then: a cat on the lap, a dog on a leash (SFW ideas only)'],
-                    ['job', 'Job', 'an occupation now and then, with its clothes, props and effects'],
-                    ['light', 'Light details', 'natural light, quality, mood, support light, volume'],
-                    ['camera', 'Camera details', 'angle, viewpoint, framing and lens'],
-                    ['color', 'Color & grade', 'palettes, grading, film looks']].map(([key, label, hint]) =>
-                    toggleSwitch(label, !s.hide.includes(key), (v) => patch({hide: v ? s.hide.filter((h) => h !== key) : [...s.hide, key]}), hint))),
+                el('div', {class: 'pv-muse-hint', text: 'What ideas carry. Off: gone from the card and the prompt.'}),
+                el('div', {class: 'pv-muse-switches'},
+                    [['looks', 'Looks', 'build, skin, hair, eyes, makeup, gaze…'],
+                        ['pet', 'Animals', 'a real animal with them (SFW only)'],
+                        ['job', 'Job', 'an occupation, its clothes and props'],
+                        ['action', 'Action', 'pose and what they do'],
+                        ['light', 'Light', 'source, natural, quality, mood…'],
+                        ['camera', 'Camera', 'shot, angle, viewpoint, framing'],
+                        ['color', 'Color & grade', 'palettes, grading, film looks'],
+                        ['style', 'Style', 'the medium: photo, anime, oil…']].map(([key, label, hint]) =>
+                        toggleSwitch(label, !s.hide.includes(key), (v) => patch({hide: v ? s.hide.filter((h) => h !== key) : [...s.hide, key]}), hint)))),
             s.allow_nsfw ? section('NSFW',
                 toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',
