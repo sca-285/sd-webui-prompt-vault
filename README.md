@@ -70,15 +70,15 @@ Qwen-VL and the WD14 tagger) in one tab.
     *Act* picks the family of the explicit act: vaginal, anal, oral, hands & body (handjob,
     fingering, paizuri, tribadism…) or solo. A position ("doggystyle", "mating press") is
     penetration without saying where: vaginal or anal, as the Act filter says.
-    *Kink*, 33 of them: BDSM, bondage, toys, fluids, breeding & x-ray, pregnancy & lactation,
+    *Kink*, 32 of them: BDSM, bondage, toys, fluids, breeding & x-ray, pregnancy & lactation,
     anal, oral, femdom, feet, pet play, costume play, exhibitionism & voyeurism, hypnosis &
     mind control, watersports, scat, latex & fetish wear, bites & marks, size difference,
     small dom big sub, big dom small sub, muscle growth, transformation, inflation & bulge,
-    belly inflation, male pregnancy, omegaverse, chastity; tentacles, slime, monsters, corruption and blood & bites only in the
+    belly inflation, male pregnancy, chastity; tentacles, slime, monsters, corruption and blood & bites only in the
     themes they belong to.
     A kink goes with the act: an x-ray shows the womb with vaginal sex, the rectum with anal,
     the throat with a blowjob, and never a womb with a blowjob. Breeding works for 2boys and
-    2girls too, through omegaverse (mpreg, an alpha female's knot). A kink that is an act of
+    2girls too (male pregnancy, knotting; a strap-on). A kink that is an act of
     its own (footjob, pegging, golden shower) takes the Doing's place. Casts and acts a kink has
     nothing for are greyed out with the reason.
   - **Body**, a part of every NSFW idea: breasts, nipples, pussy, pectorals, chest hair,
@@ -111,7 +111,9 @@ Qwen-VL and the WD14 tagger) in one tab.
   - **Job**: now and then an idea has an occupation that fits its theme, real (nurse, chef,
     barista, firefighter, detective, pilot, DJ, astronaut…) or not (knight, wizard, witch,
     necromancer, bounty hunter, netrunner, dragon rider…), and then the Wear, the accessories
-    and the effects are the job's: a wizard's robe, staff and glowing runes.
+    and the effects are the job's: a wizard's robe, staff and glowing runes. Fiction stays in
+    its own worlds: knights and witches only in Fantasy and Myth, netrunners and mecha pilots
+    only in Sci-fi, airship pilots only in Steampunk, samurai and geishas in Historical.
   - **Generate** writes the idea in txt2img and presses its Generate button: your model,
     sampler, size and negative prompt as they are. The image comes back on the card.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
@@ -280,6 +282,9 @@ lists *of the same scene*, and the ideas stay coherent.
   draws it first and leaves out the entries of the other lists it contradicts. Leave it out
   for a room with no window.
 - Packs made for the first versions of Muse still load, each as a theme of its own.
+- The shipped scenes are written by `tools/muse_scenes`: one file per theme or few (places,
+  their spots, what people do and wear there). `python3 tools/muse_scenes/build.py` writes
+  `data/muse_scenes` again, `lint.py` checks that every entry is tags, not prose.
 
 ## Credits
 

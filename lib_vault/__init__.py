@@ -9,7 +9,10 @@ tipo      TIPO: prompt expansion
 wd14      WD14 tagger: image -> booru tags
 vocab     what Muse takes from the library: poses and style families
 kinks     Muse's NSFW layers: kinks and anatomy tags
-muse      Muse: timed idea cards from packs, shown by a floating button
+acts      sex acts by family, and which kink goes with which act
+when      the hour and the sky, and what they allow of the other parts
+looks     looks, jobs, camera, light and colour: the parts Muse adds around a scene
+muse      Muse: prompt ideas from scenes, shown on a floating card
 api       the HTTP routes the tab's JavaScript talks to
 ui        the tab
 """

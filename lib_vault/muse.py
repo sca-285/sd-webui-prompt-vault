@@ -37,6 +37,7 @@ Entries are tags, the way a prompt is written: "sitting on bed, crossed legs", n
 from __future__ import annotations
 
 import base64
+import functools
 import glob
 import json
 import os
@@ -292,13 +293,17 @@ def _scene_files():
     return [(f, False) for f in shipped] + [(f, True) for f in mine]
 
 
+@functools.lru_cache(maxsize=None)
+def _minor(item):
+    return bool(MINOR.search(item))
+
+
 def _clean(items, nsfw):
-    out = []
-    for item in items if isinstance(items, list) else []:
-        item = str(item).strip()
-        if item and not (nsfw and MINOR.search(item)):
-            out.append(item)
-    return out
+    """The entries of a list, trimmed; NSFW ones without a minor-related word."""
+    if not isinstance(items, list):
+        return []
+    out = [item.strip() if isinstance(item, str) else str(item).strip() for item in items]
+    return [item for item in out if item and not (nsfw and _minor(item))]
 
 
 def _keyed(value, nsfw):
@@ -441,9 +446,21 @@ def catalogue():
         "acts": [[k, v] for k, v in actlib.FAMILIES.items()],
         **_act_tables(scenes),
         "styles": [[family, len(tags)] for family, tags in vocab.styles().items()],
-        # one row per scene: [theme index, [casts], rating, [group sizes]]
-        "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
+        **_index(scenes, themes),
     }
+
+
+def _index(scenes, themes):
+    """What the card counts with, small: scenes alike in theme, casts, level and group sizes share a row.
+    index: [theme index, cast set index, level, size set index, how many scenes]."""
+    castsets, sizesets, rows = {}, {}, {}
+    for s in scenes:
+        cs = castsets.setdefault(tuple(s["casts"]), len(castsets))
+        ss = sizesets.setdefault(tuple(s["sizes"]), len(sizesets))
+        key = (themes.index(s["theme"]), cs, s["rating"], ss)
+        rows[key] = rows.get(key, 0) + 1
+    return {"castsets": [list(c) for c in castsets], "sizesets": [list(z) for z in sizesets],
+            "index": [[*k, n] for k, n in rows.items()]}
 
 
 def _sizes(scene, cast, wanted=()):

@@ -18,7 +18,7 @@ from functools import lru_cache
 
 FAMILIES = {"vaginal": "Vaginal", "anal": "Anal", "oral": "Oral", "outer": "Hands & body", "solo": "Solo"}
 
-# casts with a pussy to penetrate and someone to do it (2girls: a strap-on, or an alpha in omegaverse)
+# casts with a pussy to penetrate and someone to do it (2girls: a strap-on)
 VAGINAL_CASTS = {"1girl1boy", "futa_girl", "futa_boy", "harem", "reverse", "mixed", "human_furry", "2girls", "girls"}
 MALE_CASTS = {"1boy", "2boys", "boys"}
 SOLO_CASTS = {"1girl", "1boy", "futa", "furry", "kemono", "mythic", "monster", "synth", "nonhuman"}

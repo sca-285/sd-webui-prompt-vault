@@ -163,12 +163,14 @@
         // a group cast counts only with a size the scene, the cast and the size filter all allow
         const usable = (c, scSizes) => !groups[c] || scSizes.some((n) => groups[c].includes(n) && (!sizes.size || sizes.has(n)));
         let n = 0;
-        for (const [ti, sc, r, scSizes] of cat.index) {
+        // a row stands for every scene alike in theme, casts, level and group sizes: [theme, cast set, level, size set, how many]
+        for (const [ti, ci, r, si, many] of cat.index) {
+            const sc = cat.castsets[ci], scSizes = cat.sizesets[si];
             if (!ratings.has(r) || (acts.size && r !== 'explicit')) continue;
             if (themes.size && !themes.has(cat.themes[ti])) continue;
             if (!kinky(cat.themes[ti], r)) continue;
             if (!sc.some((c) => (!casts.size || casts.has(c)) && usable(c, scSizes || []) && castKinky(c, cat.themes[ti], r))) continue;
-            n++;
+            n += many;
         }
         return n;
     }

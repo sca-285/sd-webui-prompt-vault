@@ -2304,7 +2304,12 @@
     "winged helmet",
     "witch hat",
     "wizard hat",
-    "yoga outfit"
+    "yoga outfit",
+    "cap",
+    "hat",
+    "ranger uniform",
+    "stethoscope",
+    "zookeeper uniform"
    ],
    "Workwear": [
     "coveralls",
@@ -2693,7 +2698,6 @@
     "detective",
     "soldier",
     "pilot",
-    "astronaut",
     "chef",
     "bartender",
     "journalist",
@@ -2747,7 +2751,16 @@
     "samurai",
     "ninja",
     "cowboy",
-    "pirate"
+    "pirate",
+    "blacksmith",
+    "merchant",
+    "princess",
+    "queen",
+    "gladiator",
+    "monk",
+    "zookeeper",
+    "veterinarian",
+    "wildlife ranger"
    ],
    "Fantasy Roles": [
     "knight",
@@ -2762,20 +2775,12 @@
     "cleric",
     "druid",
     "necromancer",
-    "samurai",
-    "ninja",
     "alchemist",
     "monarch",
     "sorceress",
     "assassin",
-    "blacksmith",
-    "merchant",
-    "princess",
-    "queen",
     "adventurer",
-    "gladiator",
     "valkyrie",
-    "monk",
     "vampire hunter",
     "exorcist",
     "bounty hunter",
@@ -2787,7 +2792,8 @@
     "airship pilot",
     "inventor",
     "monster tamer",
-    "dragon rider"
+    "dragon rider",
+    "astronaut"
    ],
    "Modern / Genre Roles": [
     "noir detective",
@@ -3927,14 +3933,14 @@
     "cross-section, knot, cum inside",
     "x-ray, interspecies, breeding, ovum",
     "breeding, cum inside",
-    "omegaverse, mpreg, anal, cum inside",
-    "omegaverse, knot, anal, breeding",
+    "mpreg, anal, cum inside",
+    "knotting, anal, breeding",
     "x-ray, anal, sperm cell",
-    "omegaverse, mating bite, anal, knotting",
-    "omegaverse, alpha female, knot, cum inside",
-    "omegaverse, impregnation, womb",
+    "male pregnancy, anal, cum inside",
+    "strap-on, cum inside, womb",
+    "impregnation, womb, strap-on",
     "cross-section, strap-on",
-    "omegaverse, breeding, womb, x-ray"
+    "x-ray, strap-on, womb"
    ],
    "Pregnancy & lactation": [
     "pregnant, hand on own stomach",
@@ -4277,18 +4283,6 @@
     "stomach bulge, gangbang",
     "cum inflation, group sex"
    ],
-   "Omegaverse": [
-    "omegaverse, alpha, omega",
-    "omegaverse, heat, flushed",
-    "omegaverse, scent, nuzzling",
-    "omegaverse, mating mark",
-    "omegaverse, heat, sweat",
-    "omegaverse, nape bite",
-    "omegaverse, knot, cum inside",
-    "omegaverse, mating bite, knotting",
-    "omegaverse, heat, breeding",
-    "omegaverse, knotting, group sex"
-   ],
    "Chastity": [
     "chastity cage",
     "chastity belt",
@@ -4333,10 +4327,10 @@
     "male pregnancy, lactation",
     "male pregnancy, erection",
     "male pregnancy, anal, sex",
-    "male pregnancy, omegaverse, knot",
+    "male pregnancy, knotting, anal",
     "male pregnancy, anal, from side",
     "male pregnancy, anal, group sex",
-    "male pregnancy, omegaverse",
+    "male pregnancy, anal, cum inside",
     "male pregnancy, pegging",
     "male pregnancy, femdom, cowgirl position",
     "male pregnancy, futa with male, anal",
