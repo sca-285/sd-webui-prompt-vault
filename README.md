@@ -106,8 +106,13 @@ Qwen-VL and the WD14 tagger) in one tab.
     mouth; gaze), *Action* (pose, doing, kink, effects), *Scene* (detail, where, when),
     *Light* (the scene's source, natural light, quality, mood, support light, volume),
     *Camera* (shot size, angle and tilt, viewpoint, framing and lens) and *Look* (colour &
-    grading, style). **↻** draws one part again, **🔒** keeps it for the next idea (same
-    scene). The settings turn whole groups off.
+    grading, style). Each group folds: folded, it shows its parts on one line; open, a row
+    per part, and the parts this idea left out as small **+** chips that draw them. **↻** draws
+    one part again, **🔒** keeps it for the next idea (same scene). The settings turn whole
+    groups off.
+  - **Animal**: now and then a real animal with the people of an SFW idea, one that fits
+    the theme (a cat on the lap at home, a dog on a leash in the street, a horse in the
+    countryside, a raven in a horror scene).
   - **Job**: now and then an idea has an occupation that fits its theme, real (nurse, chef,
     barista, firefighter, detective, pilot, DJ, astronaut…) or not (knight, wizard, witch,
     necromancer, bounty hunter, netrunner, dragon rider…), and then the Wear, the accessories

@@ -70,6 +70,33 @@ GAZE = {"solo": ["looking at viewer", "looking away", "looking to the side", "lo
 MOUTH = ["closed mouth", "open mouth", "parted lips", "biting lip", "tongue out", "licking lips", "pout", "puckered lips", "puffy cheeks",
          "clenched teeth", "fang", "teeth", "grin", "chewing", "whistling", "bubble blowing", "mouth hold", "smile"]
 
+# ------------------------------------------------------------------ a real animal with them (SFW ideas only)
+PETS = {
+    "home": ["cat", "black cat", "orange cat", "calico cat", "kitten", "dog", "shiba inu", "golden retriever", "corgi", "pug",
+             "dachshund", "husky", "poodle", "rabbit", "hamster", "parrot", "budgerigar", "goldfish bowl", "ferret"],
+    "wild": ["fox", "deer", "fawn", "owl", "rabbit", "squirrel", "hedgehog", "songbird", "horse", "pony", "goat", "sheep",
+             "chicken", "duck", "wolf", "crow"],
+    "sea": ["seagull", "parrot", "dolphin", "sea turtle", "crab", "cat", "dog", "pelican"],
+    "dark": ["black cat", "raven", "crow", "owl", "bat", "snake", "wolf", "spider"],
+    "fantasy": ["owl", "raven", "black cat", "horse", "white horse", "hawk", "wolf", "fox", "stag"],
+    "city": ["cat", "dog", "shiba inu", "pigeon", "crow", "corgi", "french bulldog", "small dog"],
+}
+PETS_BY_THEME = {"Home": "home", "Bedroom": "home", "Portrait": "home", "Studio": "home", "Office": "home", "Food": "city",
+                 "Street": "city", "World cities": "city", "Retro 80s-90s": "city", "Travel": "city", "Party": "city", "Fashion": "city",
+                 "Nature": "wild", "Outdoors": "wild", "Countryside": "wild", "Sports": "wild", "Holidays": "home", "Architecture": "city",
+                 "Seafaring": "sea", "Horror": "dark", "Historical": "fantasy", "Myth": "fantasy", "Fantasy": "fantasy", "Creature": "fantasy",
+                 "Steampunk": "city", "Post-apocalypse": "wild", "Film": "city", "Music & stage": "city", "Hotel": "home", "Gym": "city",
+                 "Bath & shower": "home", "Sci-fi": "city"}
+WITH_PET = ["holding animal", "animal on shoulder", "animal on lap", "petting", "animal hug", "carrying animal", "walking animal",
+            "looking at animal", "animal at feet", "feeding animal"]
+
+
+def pets_for(theme, rng):
+    """A few real animals for the theme, each with what the people do with it now and then."""
+    kinds = PETS[PETS_BY_THEME.get(theme, "home")]
+    return [k if rng.random() < 0.4 else f"{k}, {rng.choice(WITH_PET)}" for k in kinds]
+
+
 # ------------------------------------------------------------------ camera
 SHOT = ["extreme close-up", "close-up", "portrait", "upper body", "cowboy shot", "full body", "medium shot", "wide shot", "very wide shot",
         "establishing shot", "head out of frame", "feet out of frame"]

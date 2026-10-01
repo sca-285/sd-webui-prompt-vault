@@ -112,27 +112,53 @@
     }
 
     const PART_NAMES = {subject: 'Who', job: 'Job', outfit: 'Wear', build: 'Build', skin: 'Skin', body: 'Body', hair: 'Hair', eyes: 'Eyes',
-        face: 'Features', makeup: 'Makeup', accessory: 'Accessory', expression: 'Expression', mouth: 'Mouth', gaze: 'Gaze', gesture: 'Pose',
-        action: 'Doing', kink: 'Kink', fx: 'FX', detail: 'Detail', setting: 'Where', time: 'When', lighting: 'Light', natural: 'Natural light',
-        light_quality: 'Quality', light_mood: 'Mood light', light_support: 'Support light', light_volume: 'Volume', camera: 'Shot',
-        angle: 'Angle', view: 'Viewpoint', framing: 'Framing', color: 'Color & grade', style: 'Style'};
+        face: 'Features', makeup: 'Makeup', accessory: 'Accessory', pet: 'Animal', expression: 'Expression', mouth: 'Mouth', gaze: 'Gaze',
+        gesture: 'Pose', action: 'Doing', kink: 'Kink', fx: 'FX', detail: 'Detail', setting: 'Where', time: 'When', lighting: 'Source',
+        natural: 'Natural', light_quality: 'Quality', light_mood: 'Mood', light_support: 'Support', light_volume: 'Volume', camera: 'Shot',
+        angle: 'Angle', view: 'View', framing: 'Framing', color: 'Color', style: 'Style'};
+    // the long names, for tooltips
+    const PART_TITLES = {face: 'Eyebrows, nose, lips', natural: 'Natural light', light_quality: 'Light quality', light_mood: 'Mood lighting',
+        light_support: 'Support light', light_volume: 'Volume light', lighting: 'Light source', camera: 'Shot size', view: 'Viewpoint',
+        color: 'Color & grading', pet: 'An animal with them', fx: 'Effects'};
     // the parts in groups on the card
-    const PART_GROUPS = [['Character', ['subject', 'job', 'outfit', 'build', 'skin', 'body']],
+    const PART_GROUPS = [['Character', ['subject', 'job', 'outfit', 'pet', 'build', 'skin', 'body']],
         ['Face', ['hair', 'eyes', 'face', 'makeup', 'accessory', 'expression', 'mouth', 'gaze']],
         ['Action', ['gesture', 'action', 'kink', 'fx']], ['Scene', ['detail', 'setting', 'time']],
         ['Light', ['lighting', 'natural', 'light_quality', 'light_mood', 'light_support', 'light_volume']],
         ['Camera', ['camera', 'angle', 'view', 'framing']], ['Look', ['color', 'style']]];
     const GROUP_OF = Object.fromEntries(PART_GROUPS.flatMap(([g, slots]) => slots.map((x) => [x, g])));
+    // groups open by default; the card remembers the ones you open or close
+    const GROUPS_OPEN = new Set(LS.get('groups', ['Character', 'Action', 'Scene']));
+    function toggleGroup(g) {
+        if (GROUPS_OPEN.has(g)) GROUPS_OPEN.delete(g); else GROUPS_OPEN.add(g);
+        LS.set('groups', [...GROUPS_OPEN]);
+        render();
+    }
+
+    // the parts, a block per group: filled ones as rows, empty ones as small chips that draw them
     function partRows(it) {
-        const out = [];
-        let last = '';
+        const byGroup = new Map();
         for (const p of it.parts) {
-            const g = GROUP_OF[p.slot] || '';
-            if (g && g !== last) out.push(el('div', {class: 'pv-muse-part-group', text: g}));
-            last = g;
-            out.push(partRow(it, p));
+            const g = GROUP_OF[p.slot] || 'Other';
+            if (!byGroup.has(g)) byGroup.set(g, []);
+            byGroup.get(g).push(p);
         }
-        return out;
+        return [...byGroup].map(([g, parts]) => {
+            const filled = parts.filter((p) => p.value), empty = parts.filter((p) => !p.value);
+            const open = GROUPS_OPEN.has(g);
+            const locked = filled.filter((p) => it.locks && it.locks[p.slot]).length;
+            const head = el('button', {type: 'button', class: 'pv-muse-group-head', 'aria-expanded': open ? 'true' : 'false', onclick: () => toggleGroup(g),
+                title: open ? 'Fold' : 'Unfold'},
+                icon('down'), el('span', {class: 'pv-muse-group-name', text: g}),
+                open ? el('span', {class: 'pv-muse-group-count', text: locked ? `${filled.length} · ${locked} locked` : String(filled.length)})
+                    : el('span', {class: 'pv-muse-group-sum', text: filled.map((p) => p.value).join(' · ') || '—'}));
+            const body = open ? el('div', {class: 'pv-muse-group-body'},
+                filled.map((p) => partRow(it, p)),
+                empty.length ? el('div', {class: 'pv-muse-adds'}, empty.map((p) => el('button', {type: 'button', class: 'pv-muse-add',
+                    disabled: !!M.busy, title: 'Draw ' + (PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot).toLowerCase(),
+                    onclick: () => rollPart(p.slot)}, '+ ' + (PART_NAMES[p.slot] || p.slot)))) : null) : null;
+            return el('div', {class: 'pv-muse-group' + (open ? ' pv-on' : '')}, head, body);
+        });
     }
     const RATING_NSFW = (r) => r !== 'sfw';
 
@@ -602,7 +628,7 @@
         const locked = !!(it.locks && it.locks[p.slot]);
         const rolling = M.busy === p.slot;
         return el('div', {class: 'pv-muse-part' + (locked ? ' pv-muse-locked' : '') + (p.value ? '' : ' pv-muse-empty-part')},
-            el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot}),
+            el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot, title: PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot}),
             el('span', {class: 'pv-muse-part-value', text: p.value || '—', title: p.value}),
             iconButton('roll', 'Another ' + (PART_NAMES[p.slot] || p.slot).toLowerCase(), () => rollPart(p.slot),
                 {disabled: !!M.busy || locked || (p.choices < 2 && !!p.value), class: 'pv-muse-icon-btn' + (rolling ? ' pv-muse-spin' : '')}),
@@ -682,8 +708,10 @@
                 el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-generate', disabled: !!M.gen,
                     title: 'Writes the idea in txt2img and generates there, with your model and settings; the image comes back here',
                     text: M.gen ? 'Generating…' : 'Generate', onclick: generateImage}),
-                el('span', {class: 'pv-muse-send-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
-                ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)}))));
+                el('div', {class: 'pv-muse-seg', role: 'group', 'aria-label': s.send_mode === 'append' ? 'Append to' : 'Send to',
+                    title: s.send_mode === 'append' ? 'Append the idea to…' : 'Send the idea to…'},
+                    el('span', {class: 'pv-muse-seg-label', text: s.send_mode === 'append' ? 'Append' : 'Send'}),
+                    ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)})))));
     }
 
     // ------------------------------------------------------------------ settings
@@ -759,6 +787,7 @@
             section('Parts',
                 el('div', {class: 'pv-muse-hint', text: 'Groups of parts every idea can carry; turn off what you do not want in your prompts.'}),
                 [['looks', 'Looks', 'build, skin, hair, eyes, features, makeup, accessories, mouth, gaze'],
+                    ['pet', 'Animals with people', 'a real animal now and then: a cat on the lap, a dog on a leash (SFW ideas only)'],
                     ['job', 'Job', 'an occupation now and then, with its clothes, props and effects'],
                     ['light', 'Light details', 'natural light, quality, mood, support light, volume'],
                     ['camera', 'Camera details', 'angle, viewpoint, framing and lens'],

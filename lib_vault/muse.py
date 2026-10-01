@@ -128,27 +128,27 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "job", "outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory",
+SLOTS = ("subject", "job", "outfit", "pet", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory",
          "expression", "mouth", "gaze", "gesture", "action", "kink", "fx", "detail", "setting", "time",
          "lighting", "natural", "light_quality", "light_mood", "light_support", "light_volume",
          "camera", "angle", "view", "framing", "color", "style")
 NSFW_ONLY = ("futa", "futa_girl", "futa_boy")
 SFW_ONLY = ("none", "animal")
-LISTS = {"subject": "subjects", "job": "jobs", "build": "builds", "skin": "skins", "body": "bodies", "hair": "hair", "eyes": "eyes",
+LISTS = {"subject": "subjects", "job": "jobs", "pet": "pets", "build": "builds", "skin": "skins", "body": "bodies", "hair": "hair", "eyes": "eyes",
          "face": "faces", "makeup": "makeup", "accessory": "accessories", "expression": "expressions", "mouth": "mouths", "gaze": "gazes",
          "gesture": "gestures", "action": "actions", "kink": "kinks", "fx": "fx", "detail": "details", "setting": "settings",
          "time": "times", "lighting": "lighting", "natural": "natural_light", "light_quality": "light_quality", "light_mood": "light_mood",
          "light_support": "light_support", "light_volume": "light_volume", "camera": "camera", "angle": "angles", "view": "views",
          "framing": "framing", "color": "colors", "style": "styles"}
 # on every idea they would become a tic: some parts come now and then
-CHANCE = {"gesture": 0.7, "detail": 0.6, "job": 0.4, "build": 0.8, "skin": 0.6, "hair": 0.9, "eyes": 0.8, "face": 0.3, "makeup": 0.3,
+CHANCE = {"gesture": 0.7, "detail": 0.6, "job": 0.4, "pet": 0.25, "build": 0.8, "skin": 0.6, "hair": 0.9, "eyes": 0.8, "face": 0.3, "makeup": 0.3,
           "accessory": 0.45, "mouth": 0.35, "gaze": 0.7, "natural": 0.6, "light_quality": 0.5, "light_mood": 0.5, "light_support": 0.4,
           "light_volume": 0.3, "angle": 0.6, "view": 0.5, "framing": 0.4, "color": 0.5}
 # the parts by group, for the card and for the switches that turn a group off
-GROUPS = {"looks": ("build", "skin", "hair", "eyes", "face", "makeup", "accessory", "mouth", "gaze"), "job": ("job", "fx"),
+GROUPS = {"pet": ("pet",), "looks": ("build", "skin", "hair", "eyes", "face", "makeup", "accessory", "mouth", "gaze"), "job": ("job", "fx"),
           "light": ("natural", "light_quality", "light_mood", "light_support", "light_volume"), "camera": ("angle", "view", "framing"),
           "color": ("color",)}
-PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit")
+PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit", "pet")
 SUBJECT_CASTS = ("furry", "kemono", "mythic", "monster", "synth", "nonhuman")  # their subject says if they are a woman or a man
 
 MOODS = {
@@ -588,7 +588,7 @@ def _pools(scene, cast, st=None):
     return pools
 
 
-ORDER_DRAWN = ("subject", "time", "job", "outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory", "fx", "kink",
+ORDER_DRAWN = ("subject", "time", "job", "outfit", "pet", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory", "fx", "kink",
                "action", "gesture", "expression", "mouth", "gaze", "detail", "setting", "lighting", "natural", "light_quality", "light_mood",
                "light_support", "light_volume", "camera", "angle", "view", "framing", "color", "style")
 # rolling a part draws again what follows from it
@@ -598,7 +598,7 @@ DEPENDS = {"job": ("outfit", "accessory", "fx"), "time": ("natural",),
 UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting", "light_volume", "light_mood", "accessory", "outfit")
 
 
-LOOK_FILLED = ("job", "outfit", "build", "skin", "hair", "eyes", "face", "makeup", "accessory", "fx", "mouth", "gaze", "natural",
+LOOK_FILLED = ("job", "outfit", "pet", "build", "skin", "hair", "eyes", "face", "makeup", "accessory", "fx", "mouth", "gaze", "natural",
                "light_quality", "light_mood", "light_support", "light_volume", "camera", "angle", "view", "framing", "color")
 
 
@@ -712,6 +712,10 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 return own or (looks.jobs_for(scene["theme"]) if level in ("sfw", "suggestive") else [])
             if slot == "outfit":
                 return _outfits(scene, who, f, m, parts.get("job", ""), rng)
+            if slot == "pet":  # a real animal with people: SFW ideas only, never with anthros
+                if level != "sfw" or who in kinklib.ANTHROS or who == "human_furry":
+                    return []
+                return own or looks.pets_for(scene["theme"], rng)
             if slot in GROUPS["looks"]:
                 if own:
                     return own
