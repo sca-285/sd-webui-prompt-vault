@@ -2,7 +2,7 @@
 
 # Stable Diffusion WebUI Prompt Vault
 
-**Version 1.0.0** · [v.1.0.0](CHANGELOG.md)
+**Version 1.0.0** · [CHANGELOG](CHANGELOG.md)
 
 A prompt workbench for **Stable Diffusion WebUI Forge**, **reForge** and **Forge Classic (Neo)**:
 a searchable tag library, saved prompts and history, and three local AI helpers (TIPO,
