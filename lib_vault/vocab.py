@@ -27,6 +27,17 @@ MALE_WORDS = r"penis|shaft|erect|balls|waistband|flexing"
 SKIP = r"object use|mouth|pacing|afterglow|camera|framing|kiss|oral|manual|family|toys|fantasy adult|body notes"
 # a pose with furniture in it would fight the scene's own place ("sitting backwards, chair" on a beach)
 PROPS = r"\b(chair|bed|bar|shelf|windowsill|desk|counter|door|wall|stairs|table|sofa|couch|pillow|sheets?)\b"
+# poses that need a place of their own: no sprinting in a restroom, no heroic stance in a kitchen
+OUTSIDE = ("Sports", "Gym", "Outdoors", "Nature", "Party", "Music & stage", "Fantasy", "Myth", "Film", "Creature", "Post-apocalypse",
+           "Sci-fi", "Steampunk", "Street", "Studio", "Fashion", "Portrait", "Garden", "Holidays", "Travel", "World cities", "Countryside",
+           "Seafaring", "Historical")
+STAGED = ("Fantasy", "Myth", "Film", "Sci-fi", "Steampunk", "Historical", "Post-apocalypse", "Sports", "Gym", "Studio", "Fashion",
+          "Portrait", "Creature")
+PLACED = (
+    (re.compile(r"\b(running|sprinting|jogging|skidding|leaping|mid-air|landing|floating|falling slowly|coat flaring|yoga lunge|"
+                r"backbend|touching toes|warming up|jumping)\b"), OUTSIDE),
+    (re.compile(r"\b(heroic stance|power stance|parade rest|at ease|salute|aiming|drawing bow|ready crouch|sitting on throne)\b"), STAGED),
+)
 # what belongs to explicit ideas, not nude ones
 ACTS = r"pussy|penis|erection|masturbat|fingering|labia|dildo|vibrator|grab|stroking|spread"
 
@@ -100,7 +111,12 @@ def action_posture(action):
     return next((p for p, rx in ACTION_POSTURE if re.search(rx, low)), ""), bool(re.search(BUSY_HANDS, low))
 
 
-def poses_for(level, who, gender, action):
+def placed(tag, theme):
+    """A pose fits the theme's places (no theme: anywhere)."""
+    return not theme or all(theme in themes for rx, themes in PLACED if rx.search(tag))
+
+
+def poses_for(level, who, gender, action, theme=None):
     """Poses of the library that go with an idea: its level, one or two people, a woman or a man,
     and the body its action already gives (no 'lying on back' for someone riding)."""
     posture, busy = action_posture(action)
@@ -124,6 +140,8 @@ def poses_for(level, who, gender, action):
         if p["posture"] != "any" and posture and p["posture"] != posture:
             continue
         if p["posture"] != "any" and not posture and p["posture"] != "standing":
+            continue
+        if not placed(p["tag"], theme):
             continue
         out.append(p["tag"])
     return out

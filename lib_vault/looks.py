@@ -65,10 +65,10 @@ ACCESSORIES = {
     "u": ["glasses", "sunglasses", "wristwatch", "necklace", "bracelet", "ring", "scarf", "headphones", "ear piercing", "beanie", "cap"],
 }
 GAZE = {"solo": ["looking at viewer", "looking away", "looking to the side", "looking down", "looking up", "looking back", "looking afar",
-                 "closed eyes", "half-closed eyes", "sideways glance", "staring", "looking over eyewear"],
-        "people": ["eye contact", "looking at another", "looking at viewer", "looking away", "closed eyes", "looking down", "looking back"]}
+                 "closed eyes", "half-closed eyes", "sideways glance", "staring", "looking ahead", "upturned eyes", "averting eyes"],
+        "people": ["eye contact", "looking at another", "looking at viewer", "looking away", "closed eyes", "looking down", "looking back", "looking at each other"]}
 MOUTH = ["closed mouth", "open mouth", "parted lips", "biting lip", "tongue out", "licking lips", "pout", "puckered lips", "puffy cheeks",
-         "clenched teeth", "fang", "teeth", "grin", "chewing", "whistling", "bubble blowing", "mouth hold", "smile"]
+         "clenched teeth", "fang", "teeth", "grin", "chewing", "whistling", "bubble blowing", "mouth hold", "smile", "frown", "wavy mouth"]
 
 # ------------------------------------------------------------------ a real animal with them (SFW ideas only)
 PETS = {
@@ -86,7 +86,8 @@ PETS_BY_THEME = {"Home": "home", "Bedroom": "home", "Portrait": "home", "Studio"
                  "Nature": "wild", "Outdoors": "wild", "Countryside": "wild", "Sports": "wild", "Holidays": "home", "Architecture": "city",
                  "Seafaring": "sea", "Horror": "dark", "Historical": "fantasy", "Myth": "fantasy", "Fantasy": "fantasy", "Creature": "fantasy",
                  "Steampunk": "city", "Post-apocalypse": "wild", "Film": "city", "Music & stage": "city", "Hotel": "home", "Gym": "city",
-                 "Bath & shower": "home", "Sci-fi": "city"}
+                 "Bath & shower": "home", "Sci-fi": "city", "Kitchen": "home", "Living room": "home",
+                 "Balcony": "home", "Garden": "home", "Restroom": "city", "School": "city"}
 WITH_PET = ["holding animal", "animal on shoulder", "animal on lap", "petting", "animal hug", "carrying animal", "walking animal",
             "looking at animal", "animal at feet", "feeding animal"]
 
@@ -106,7 +107,7 @@ VIEW = ["front view", "from side", "from behind", "three-quarter view", "profile
         "back view", "selfie"]
 FRAMING = ["centered", "rule of thirds", "symmetry", "negative space", "frame within frame", "foreground blur", "depth of field", "bokeh",
            "wide-angle lens", "fisheye", "telephoto lens", "35mm lens", "85mm lens", "macro", "tilt-shift", "motion blur",
-           "chromatic aberration", "lens flare", "leading lines", "silhouette framing"]
+           "chromatic aberration", "lens flare", "leading lines", "silhouette framing", "diagonal composition", "off-center", "cinematic composition", "shallow depth of field", "deep focus"]
 
 # ------------------------------------------------------------------ light, beside the scene's own source
 LIGHT_QUALITY = ["soft lighting", "hard lighting", "diffused light", "high contrast", "low contrast", "harsh shadows", "soft shadows",
@@ -127,53 +128,58 @@ NATURAL_SKY = {"overcast": ["overcast light", "diffused daylight"], "rain": ["ra
 COLOR = ["color grading", "warm color grading", "cool color grading", "teal and orange", "muted colors", "pastel colors", "vibrant colors",
          "high saturation", "desaturated", "monochrome", "sepia", "limited palette", "earth tones", "neon colors", "split toning",
          "cross processing", "bleach bypass", "faded colors", "golden tones", "blue tones", "red tones", "complementary colors",
-         "color contrast", "kodak portra 400", "cinestill 800t", "fujifilm colors", "film grain", "matte colors"]
+         "color contrast", "kodak portra 400", "cinestill 800t", "fujifilm colors", "film grain", "matte colors", "jewel tones", "duotone", "technicolor", "autumn colors", "candy colors", "kodachrome"]
 
 # ------------------------------------------------------------------ jobs: what they wear, carry, and what goes on around them
 # name: (themes, women's wear, men's wear, props, effects). Fiction stays in its own worlds: a knight or a
 # witch only in Fantasy or Myth, a netrunner only in Sci-fi, an airship pilot only in Steampunk.
 JOBS = {
-    "nurse": (["Office", "Home", "Horror", "Film", "Red light", "Bath & shower"], "nurse uniform, nurse cap", "scrubs", "stethoscope, clipboard", ""),
+    "nurse": (["Office", "Home", "Horror", "Film", "Red light", "Bath & shower", "School"], "nurse uniform, nurse cap", "scrubs", "stethoscope, clipboard", ""),
     "doctor": (["Office", "Horror", "Film", "Sci-fi"], "lab coat, blouse", "lab coat, shirt, necktie", "stethoscope, id card", ""),
     "surgeon": (["Horror", "Film", "Sci-fi"], "surgical gown, surgical mask", "surgical gown, surgical mask", "scalpel, surgical gloves", ""),
     "police officer": (["Street", "Film", "Office", "World cities", "Retro 80s-90s"], "police uniform, police hat", "police uniform, police hat",
                        "handcuffs, badge, radio", ""),
     "firefighter": (["Street", "Film", "World cities"], "firefighter jacket, helmet", "firefighter jacket, helmet", "fire hose, axe", "smoke, embers"),
-    "chef": (["Food", "Home", "Hotel", "Party"], "chef uniform, chef hat", "chef uniform, chef hat", "kitchen knife, ladle", "steam, flames"),
-    "baker": (["Food", "Countryside", "Holidays"], "apron, headscarf", "apron, baker hat", "rolling pin, flour", "flour dust"),
-    "barista": (["Food", "Street", "World cities"], "apron, rolled sleeves", "apron, rolled sleeves", "coffee cup, milk pitcher", "steam"),
-    "waitress": (["Food", "Retro 80s-90s", "Party", "Hotel"], "waitress uniform, apron", "waiter uniform, bow tie", "serving tray, notepad", ""),
-    "bartender": (["Party", "Hotel", "Food", "Historical", "Music & stage"], "vest, bow tie", "vest, bow tie", "cocktail shaker, bottles", ""),
-    "sommelier": (["Food", "Hotel", "Countryside"], "black vest, apron", "black vest, apron", "wine glass, wine bottle", ""),
-    "maid": (["Home", "Hotel", "Historical", "Steampunk", "Fantasy", "Red light"], "maid, maid headdress, apron", "butler, tailcoat", "feather duster, tea set", ""),
+    "chef": (["Food", "Home", "Hotel", "Party", "Kitchen"], "chef uniform, chef hat", "chef uniform, chef hat", "kitchen knife, ladle", "steam, flames"),
+    "baker": (["Food", "Countryside", "Holidays", "Kitchen"], "apron, headscarf", "apron, baker hat", "rolling pin, flour", "flour dust"),
+    "barista": (["Food", "Street", "World cities", "Kitchen"], "apron, rolled sleeves", "apron, rolled sleeves", "coffee cup, milk pitcher", "steam"),
+    "waitress": (["Food", "Retro 80s-90s", "Party", "Hotel", "Kitchen"], "waitress uniform, apron", "waiter uniform, bow tie", "serving tray, notepad", ""),
+    "bartender": (["Party", "Hotel", "Food", "Historical", "Music & stage", "Living room", "Balcony"], "vest, bow tie", "vest, bow tie", "cocktail shaker, bottles", ""),
+    "sommelier": (["Food", "Hotel", "Countryside", "Kitchen"], "black vest, apron", "black vest, apron", "wine glass, wine bottle", ""),
+    "maid": (["Home", "Hotel", "Historical", "Steampunk", "Fantasy", "Red light", "Kitchen", "Living room"], "maid, maid headdress, apron", "butler, tailcoat", "feather duster, tea set", ""),
     "receptionist": (["Hotel", "Office"], "blazer, pencil skirt, name tag", "suit, name tag", "phone, keys", ""),
-    "office worker": (["Office", "Street", "World cities"], "office lady, pencil skirt, blouse", "salaryman, suit, necktie", "laptop, id card", ""),
+    "office worker": (["Office", "Street", "World cities", "Restroom"], "office lady, pencil skirt, blouse", "salaryman, suit, necktie", "laptop, id card", ""),
     "secretary": (["Office"], "blouse, pencil skirt, glasses", "suit, glasses", "clipboard, pen", ""),
     "ceo": (["Office", "Hotel", "Architecture"], "power suit", "three-piece suit", "smartphone, briefcase", ""),
     "lawyer": (["Office", "Film"], "skirt suit", "suit, necktie", "briefcase, documents", ""),
-    "teacher": (["Office", "Countryside", "Historical"], "cardigan, long skirt, glasses", "shirt, sweater vest, glasses", "book, chalk", ""),
-    "librarian": (["Portrait", "Office", "Architecture", "Fantasy", "Historical"], "cardigan, glasses, long skirt", "cardigan, glasses", "stack of books", "dust particles"),
-    "scientist": (["Sci-fi", "Steampunk", "Office", "Creature"], "lab coat, safety goggles", "lab coat, safety goggles", "test tube, tablet", "glowing liquid"),
+    "teacher": (["Office", "Countryside", "Historical", "School"], "cardigan, long skirt, glasses", "shirt, sweater vest, glasses", "book, chalk", ""),
+    "librarian": (["Portrait", "Office", "Architecture", "Fantasy", "Historical", "School"], "cardigan, glasses, long skirt", "cardigan, glasses", "stack of books", "dust particles"),
+    "scientist": (["Sci-fi", "Steampunk", "Office", "Creature", "School"], "lab coat, safety goggles", "lab coat, safety goggles", "test tube, tablet", "glowing liquid"),
     "engineer": (["Sci-fi", "Steampunk", "Architecture"], "coveralls, hard hat", "coveralls, hard hat", "wrench, blueprint", "sparks"),
     "mechanic": (["Street", "Retro 80s-90s", "Sci-fi", "Post-apocalypse"], "mechanic overalls, tank top", "mechanic overalls", "wrench, oil stains", "sparks"),
     "construction worker": (["Street", "Architecture"], "high-visibility vest, hard hat", "high-visibility vest, hard hat", "toolbelt, shovel", "dust"),
-    "farmer": (["Countryside", "Nature"], "overalls, straw hat", "overalls, straw hat", "pitchfork, basket", ""),
+    "farmer": (["Countryside", "Nature", "Garden"], "overalls, straw hat", "overalls, straw hat", "pitchfork, basket", ""),
     "fisherman": (["Seafaring", "Countryside", "Nature"], "raincoat, rubber boots", "raincoat, rubber boots", "fishing rod, net", "sea spray"),
-    "gardener": (["Home", "Nature", "Outdoors", "Portrait"], "gardening apron, gloves", "gardening apron, gloves", "watering can, trowel", ""),
-    "florist": (["Street", "Food", "Holidays"], "apron, sundress", "apron, shirt", "bouquet, flower scissors", "petals"),
-    "photographer": (["Fashion", "Portrait", "Studio", "Travel"], "casual clothes, camera strap", "casual clothes, camera strap", "camera", "camera flash"),
-    "painter": (["Studio", "Portrait", "Historical"], "smock, paint-stained apron", "smock, paint-stained apron", "paintbrush, palette", "paint splatter"),
-    "musician": (["Music & stage", "Party", "Street"], "stage outfit", "stage outfit", "guitar", "stage lights"),
+    "gardener": (["Home", "Nature", "Outdoors", "Portrait", "Garden", "Balcony"], "gardening apron, gloves", "gardening apron, gloves", "watering can, trowel", ""),
+    "janitor": (["Restroom", "Office", "School"], "janitor uniform, rubber gloves", "janitor uniform, rubber gloves", "mop, bucket", ""),
+    "plumber": (["Restroom", "Kitchen"], "work overalls, tool belt", "work overalls, tool belt", "wrench, toolbox", "water droplets"),
+    "coach": (["School", "Sports", "Gym"], "track jacket, whistle", "track jacket, whistle", "clipboard, stopwatch", ""),
+    "homemaker": (["Kitchen", "Living room", "Home"], "apron, cardigan", "apron, sweater", "laundry basket, ladle", ""),
+    "landscaper": (["Garden"], "work shirt, gardening gloves", "work shirt, gardening gloves", "hedge trimmer, rake", "grass clippings"),
+    "florist": (["Street", "Food", "Holidays", "Garden"], "apron, sundress", "apron, shirt", "bouquet, flower scissors", "petals"),
+    "photographer": (["Fashion", "Portrait", "Studio", "Travel", "Garden"], "casual clothes, camera strap", "casual clothes, camera strap", "camera", "camera flash"),
+    "painter": (["Studio", "Portrait", "Historical", "School", "Garden"], "smock, paint-stained apron", "smock, paint-stained apron", "paintbrush, palette", "paint splatter"),
+    "musician": (["Music & stage", "Party", "Street", "School", "Living room"], "stage outfit", "stage outfit", "guitar", "stage lights"),
     "singer": (["Music & stage", "Party", "Historical"], "evening gown", "suit", "microphone", "spotlight"),
     "dancer": (["Music & stage", "Party", "Gym", "Historical"], "dance costume", "dance costume", "", "motion blur"),
     "idol": (["Music & stage"], "idol clothes, frills", "idol clothes", "microphone, glowsticks", "sparkles, confetti"),
     "model": (["Fashion", "Studio", "Portrait"], "haute couture", "designer suit", "", "camera flash"),
     "dj": (["Party", "Music & stage", "Retro 80s-90s"], "crop top, headphones", "tank top, headphones", "turntable, headphones", "laser lights"),
-    "athlete": (["Sports", "Gym"], "sportswear, number bib", "sportswear, number bib", "medal", "sweat, motion blur"),
+    "athlete": (["Sports", "Gym", "School"], "sportswear, number bib", "sportswear, number bib", "medal", "sweat, motion blur"),
     "boxer": (["Sports", "Gym"], "boxing shorts, sports bra", "boxing shorts, boxing gloves", "boxing gloves, mouthguard", "sweat"),
     "lifeguard": (["Nature", "Outdoors", "Bath & shower", "Travel"], "red swimsuit, whistle", "red swim trunks, whistle", "rescue buoy", ""),
     "personal trainer": (["Gym", "Sports"], "sports bra, leggings, whistle", "tank top, whistle", "stopwatch, clipboard", ""),
-    "yoga instructor": (["Gym", "Sports", "Outdoors"], "yoga outfit", "yoga outfit", "yoga mat", ""),
+    "yoga instructor": (["Gym", "Sports", "Outdoors", "Garden"], "yoga outfit", "yoga outfit", "yoga mat", ""),
     "massage therapist": (["Bath & shower", "Hotel", "Red light"], "spa uniform", "spa uniform", "massage oil, towel", "steam"),
     "pilot": (["Travel", "Sci-fi", "Retro 80s-90s"], "pilot uniform, pilot cap", "pilot uniform, pilot cap", "aviator sunglasses", ""),
     "flight attendant": (["Travel"], "flight attendant uniform, scarf", "flight attendant uniform", "trolley, tray", ""),
@@ -182,7 +188,7 @@ JOBS = {
     "soldier": (["Post-apocalypse", "Film", "Seafaring"], "military uniform, combat boots", "military uniform, combat boots", "rifle, dog tags", "smoke"),
     "detective": (["Film", "Street", "Historical", "Steampunk"], "trench coat, fedora", "trench coat, fedora", "magnifying glass, notebook", "cigarette smoke"),
     "astronaut": (["Sci-fi"], "spacesuit", "spacesuit", "space helmet", "floating"),
-    "streamer": (["Home", "Bedroom", "Retro 80s-90s"], "hoodie, cat ear headphones", "hoodie, headset", "microphone, monitor", "rgb lighting"),
+    "streamer": (["Home", "Bedroom", "Retro 80s-90s", "Living room"], "hoodie, cat ear headphones", "hoodie, headset", "microphone, monitor", "rgb lighting"),
     "hacker": (["Sci-fi", "Office", "Street"], "hoodie, techwear", "hoodie, techwear", "laptop, cables", "holographic interface"),
     "tattoo artist": (["Studio", "Street"], "tank top, tattoos", "tank top, tattoos", "tattoo machine, gloves", ""),
     "hairdresser": (["Fashion", "Studio", "Street"], "apron, scissors", "apron, scissors", "comb, hair dryer", ""),
