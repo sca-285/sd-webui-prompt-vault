@@ -23,7 +23,15 @@ Muse. rating is one of RATINGS. mood picks the expressions (see MOODS); a scene 
 its own "expressions" instead. A list a scene leaves out comes from its file.
 
 Any list may also be given by cast, like subjects, so one place serves every cast with what
-suits it: {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}. See ALIASES.
+suits it: {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}. A cast gets the
+entries under its own name and under the names it is part of (see ALIASES); "*" serves the
+casts nothing names.
+
+"templates": {"name": {...}} holds what several scenes share; a scene with "use": "name"
+(or a list of names) starts from it, and its own lists add to the template's.
+
+Entries are tags, the way a prompt is written: "sitting on bed, crossed legs", never
+"she sits on the edge of the bed".
 """
 
 from __future__ import annotations
@@ -37,7 +45,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, kinks as kinklib, settings, store, text, vocab
+from . import TAG, kinks as kinklib, settings, store, text, vocab, when
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -61,16 +69,16 @@ CASTS = {
     "futa_girl": ("Futa + girl", "2girls, futanari", "yuri"),
     "futa_boy": ("Futa + boy", "1girl, 1boy, futanari", "hetero"),
     # a human and an anthro together in the frame
-    "human_furry": ("Human + furry", "furry with non-furry, interspecies", "hetero"),
+    "human_furry": ("Human + furry", "1furry, interspecies", "hetero"),
     "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
-    "furry": ("Furry", "anthro, furry", ""),
+    "furry": ("Furry", "1furry, solo", ""),
     "nonhuman": ("Non-human", "", ""),
     "any": ("Other", "", ""),
 }
 RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit": "Explicit"}
 
 # names that stand for several casts in a scene's lists: {"pair": [...]} serves 1girl 1boy,
-# 2girls and 2boys alike; a cast named on its own wins over the names it is part of
+# 2girls and 2boys alike; a cast gets its own entries and those of the names it is part of
 ALIASES = {
     "solo": ("1girl", "1boy", "furry", "nonhuman", "futa"),
     "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy", "human_furry"),
@@ -113,10 +121,10 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "lighting", "camera", "style")
+SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "time", "lighting", "camera", "style")
 NSFW_ONLY = ("futa", "futa_girl", "futa_boy")
 LISTS = {"subject": "subjects", "body": "bodies", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
-         "detail": "details", "setting": "settings", "lighting": "lighting", "camera": "camera", "style": "styles"}
+         "detail": "details", "setting": "settings", "time": "times", "lighting": "lighting", "camera": "camera", "style": "styles"}
 CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
 
 MOODS = {
@@ -278,13 +286,29 @@ def _keyed(value, nsfw):
 
 
 def _for_cast(lists, cast):
-    """The entries a cast gets: its own, else those of an alias it is part of, else everyone's."""
-    if cast in lists:
-        return lists[cast]
+    """The entries a cast gets: its own and those of the aliases it is part of; everyone's when
+    nothing names it."""
+    out = list(lists.get(cast, []))
     for alias in ("pair", "groups", "solo", "people"):
         if alias in lists and cast in ALIASES[alias]:
-            return lists[alias]
-    return lists.get("*", [])
+            out += lists[alias]
+    return list(dict.fromkeys(out)) if out else lists.get("*", [])
+
+
+def _with_template(template, raw):
+    """A scene on top of its template: the scene's lists add to the template's."""
+    out = dict(template)
+    for key, value in raw.items():
+        shared = out.get(key)
+        if key in LISTS.values() or key == "subjects":
+            if isinstance(shared, list) and isinstance(value, list):
+                value = shared + value
+            elif isinstance(shared, dict) or isinstance(value, dict):
+                a = shared if isinstance(shared, dict) else ({"*": shared} if shared else {})
+                b = value if isinstance(value, dict) else {"*": value}
+                value = {k: list(a.get(k, [])) + list(b.get(k, [])) for k in dict.fromkeys([*a, *b])}
+        out[key] = value
+    return out
 
 
 def _read_file(path, custom):
@@ -300,10 +324,17 @@ def _read_file(path, custom):
         raw_scenes = data.get("scenes") or [{}]
     else:
         raw_scenes = data.get("scenes") or []
+    templates = data.get("templates") if isinstance(data.get("templates"), dict) else {}
     out = []
     for i, raw in enumerate(raw_scenes):
         if not isinstance(raw, dict):
             continue
+        uses = raw.get("use") if isinstance(raw.get("use"), list) else [raw.get("use")]
+        shared = {}
+        for name in uses:  # what several scenes share, written once
+            if isinstance(name, str) and isinstance(templates.get(name), dict):
+                shared = _with_template(shared, templates[name])
+        raw = _with_template(shared, raw) if shared else raw
         rating = raw.get("rating") or data.get("rating") or "sfw"
         if rating not in RATINGS:
             continue
@@ -440,7 +471,9 @@ def _pools(scene, cast, st=None):
     return pools
 
 
-ORDER_DRAWN = ("subject", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+ORDER_DRAWN = ("subject", "time", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+# what the hour and the sky can contradict (see when.py)
+UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting")
 
 
 def _library_poses(scene, who, parts):
@@ -493,7 +526,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             pools["style"] = list(dict.fromkeys(t for f in st["styles"] for t in fams.get(f, [])))
         if scene["rating"] != "sfw":
             pools["style"] = [x for x in pools["style"] if not MINOR.search(x)]
-        parts = {}
+        parts, sky = {}, (None, None)
         # drawn in this order: the body follows the subject (a male wolf, a female android), the pose
         # follows the action (no "lying on back" for someone riding); the prompt keeps the order of SLOTS
         for slot in ORDER_DRAWN:
@@ -503,13 +536,23 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 pools["gesture"] = list(dict.fromkeys(pools["gesture"] + _library_poses(scene, who, parts)))
             if slot in keep:
                 parts[slot] = keep[slot]
+                if slot == "time":
+                    sky = when.parse(keep[slot])
                 continue
             pool = [x for x in pools[slot] if not blocked(x)]
+            if slot == "time":  # an hour and a sky the locked parts can live with
+                fit = [x for x in pool if all(when.fits(v, *when.parse(x)) for k, v in keep.items() if k in UNDER_SKY)]
+                pool = fit or pool
+            elif slot in UNDER_SKY and sky != (None, None):
+                fit = [x for x in pool if when.fits(x, *sky)]
+                pool = fit if fit or slot != "setting" else pool
             if slot == roll and len(pool) > 1:
                 pool = [x for x in pool if x != current]
             if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:
                 pool = []
             parts[slot] = rng.choice(pool) if pool else ""
+            if slot == "time":
+                sky = when.parse(parts["time"])
         if pools["subject"] != [""] and not parts["subject"]:
             continue  # the blacklist took every subject of this scene
 

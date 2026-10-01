@@ -37,16 +37,26 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
-  - **Three filters**: *Theme* (22: Portrait, Fashion, Film, Horror, Street, Home, Food,
+  - **Three filters**: *Theme* (33: Portrait, Fashion, Film, Horror, Street, Home, Food,
     Architecture, Nature, Creature, Myth, Sci-fi, Sports, Party, Bath & shower, Bedroom,
-    Fantasy, Gym, Hotel, Office, Outdoors, Studio, Red light), *Cast*
+    Fantasy, Gym, Hotel, Office, Outdoors, Studio, Travel, Countryside, Historical,
+    Post-apocalypse, Steampunk, Seafaring, Music & stage, World cities, Retro 80s-90s,
+    Holidays, Red light), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
-    (harem), 1girl + boys (reverse harem), mixed group, furry, non-human; groups of 3, 4, 5
+    (harem), 1girl + boys (reverse harem), mixed group, furry, human + furry, non-human; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
-    choice shows how many scenes it leaves: over 1,000 scenes, ten places per theme, and
-    every theme, cast, level and group size goes with every other at least ten times. The one thing that cannot
-    be is greyed out with the reason: *No humans* is SFW only.
+    choice shows how many scenes it leaves: about 3,500 scenes, nine places per theme with
+    three spots each (a café's window seat, counter and terrace, each with its own Where and
+    Detail), so every theme, cast, level and group size goes with every other 27 times. The
+    one thing that cannot be is greyed out with the reason: *No humans* is SFW only.
+  - **When**: the hour and the sky, for every spot that has one (outdoors, or a room with a
+    window, a balcony, a skylight): `morning, clear sky`, `night, rain`, `evening, snowing`.
+    Every Where says `outdoors` or `indoors`. The other parts follow the sky: no golden hour
+    at night, no sunbathing in the rain, no starry sky at noon; a desert gets no rain, a
+    night market no morning. Lock the When part and roll the rest, or the other way round.
+  - **Tags, never sentences.** Every part is written the way a prompt is: `sitting by window,
+    holding cup`, not "she sits by the window holding her cup"; no "she in…, he in…".
   - **Kink** (a fourth filter, there once NSFW is on), 19 of them: BDSM, toys, fluids,
     breeding & x-ray (cross-section, cum inside, insemination, ovum, sperm cell), pregnancy &
     lactation, anal, oral, femdom, feet, pet play, costume play, exhibitionism, latex & fetish
@@ -60,20 +70,23 @@ Qwen-VL and the WD14 tagger) in one tab.
     kind (canine knot and sheath, flared equine, spiked feline, ribbed or scaled reptile,
     hemipenes, multiple breasts…). A switch in the settings turns it off.
   - **Futanari**: Futa, Futa + girl and Futa + boy casts, NSFW only.
-  - **Furry**: 24 kinds of anthro (canines, felines, hooved, small mammals, birds, sharks and
-    orcas, reptiles, dragons), each with its own body (stripes, spots, mane, horns, antlers,
-    scales, feathers, wings, fins…) and anatomy. **Human + furry** puts a human and an anthro
-    in one frame. A werewolf is a monster, not a furry: it is a non-human, and its ideas send
-    `anthro, furry, kemono` as negatives.
+  - **Furry**: 34 kinds of anthro (canines, felines, hooved, rodents, bears, birds, sharks,
+    orcas and dolphins, reptiles, dragons), each with its own body (stripes, spots, mane,
+    horns, antlers, scales, feathers, wings, fins…) and anatomy, written as tags:
+    `1furry, solo, anthro female, fox, orange fur, fluffy tail`. **Human + furry** puts a
+    human and an anthro in one frame: `1furry, interspecies, 1girl, anthro male, human with
+    furry, wolf, grey fur…` (`human on furry` or `furry on human` when explicit). A werewolf
+    is a monster, not a furry: it is a non-human, and its ideas send `anthro, furry, kemono`
+    as negatives.
   - **Pose** comes from the library's pose groups, for a woman or a man, and fits what the
     idea is doing: no "lying on back" for someone riding. **Style**, a fifth filter, swaps the
     scene's styles for families of the library's Style & Medium category (pixel art,
     silhouette, vaporwave, stained glass, double exposure, anime eras…).
   - **Save** keeps the idea in the Vault tab's Saved prompts.
-  - **Red light**, a theme with no SFW side: dungeon, BDSM playroom, bordello, strip club,
-    swingers' lounge, porn set, glory hole booth, massage parlor, sauna club, fetish club.
+  - **Red light**, a theme with no SFW side: brothel parlor, strip club, love hotel, BDSM
+    dungeon, red-light windows, massage parlor, private club, peep show, adult film set.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
-    do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
+    do, a detail, where, when, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending, with the idea's negatives added where they are missing.
@@ -201,13 +214,13 @@ lists *of the same scene*, and the ideas stay coherent.
   "scenes": [
     {"title": "Night market", "mood": ["happy", "calm"],
      "subjects": {"1girl": ["yukata, hair ornament"], "1boy": ["jinbei"],
-                  "1girl1boy": ["couple in yukata"]},
+                  "1girl1boy": ["yukata, jinbei"]},
      "gestures": ["looking up"],
-     "actions": ["holding a candy apple", "watching the fireworks"],
-     "settings": ["summer festival at night, food stalls"],
+     "actions": ["holding candy apple", "looking up, fireworks"],
+     "settings": ["summer festival, night, food stalls"],
      "lighting": ["paper lantern light"],
      "camera": ["cowboy shot"],
-     "details": ["fireworks in the sky"]}
+     "details": ["fireworks, night sky"]}
   ]
 }
 ```
@@ -224,8 +237,17 @@ lists *of the same scene*, and the ideas stay coherent.
 - A list a scene leaves out comes from the file (here `styles`, `negatives`).
 - Any list can be given by cast too, so one place serves every cast with what suits it:
   `"actions": {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}`. `solo` is
-  1girl, 1boy, furry and non-human; `pair` the three pairs; `groups` the five groups;
-  `people` all of them. A cast named on its own wins over these.
+  1girl, 1boy, furry and non-human; `pair` the pairs; `groups` the five groups;
+  `people` all of them. A cast gets its own entries and those of these names; `*` serves
+  the casts nothing names.
+- `"templates": {"name": {...}}` holds what several scenes share; a scene with
+  `"use": "name"` (or a list of names) starts from it and adds its own entries. The shipped
+  files use it: one template per level, one per place, then a scene per spot.
+- Write tags, not sentences: short pieces, no "the", "she", "he", "their".
+- `times` lists the hours and skies a scene can have (`"night, rain"`, `"morning, clear sky"`:
+  morning, day, afternoon, evening, night; clear, cloudy, overcast, rain, fog, snow). Muse
+  draws it first and leaves out the entries of the other lists it contradicts. Leave it out
+  for a room with no window.
 - Packs made for the first versions of Muse still load, each as a theme of its own.
 
 ## Credits
