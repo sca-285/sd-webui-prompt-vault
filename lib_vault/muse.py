@@ -23,7 +23,15 @@ Muse. rating is one of RATINGS. mood picks the expressions (see MOODS); a scene 
 its own "expressions" instead. A list a scene leaves out comes from its file.
 
 Any list may also be given by cast, like subjects, so one place serves every cast with what
-suits it: {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}. See ALIASES.
+suits it: {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}. A cast gets the
+entries under its own name and under the names it is part of (see ALIASES); "*" serves the
+casts nothing names.
+
+"templates": {"name": {...}} holds what several scenes share; a scene with "use": "name"
+(or a list of names) starts from it, and its own lists add to the template's.
+
+Entries are tags, the way a prompt is written: "sitting on bed, crossed legs", never
+"she sits on the edge of the bed".
 """
 
 from __future__ import annotations
@@ -61,16 +69,16 @@ CASTS = {
     "futa_girl": ("Futa + girl", "2girls, futanari", "yuri"),
     "futa_boy": ("Futa + boy", "1girl, 1boy, futanari", "hetero"),
     # a human and an anthro together in the frame
-    "human_furry": ("Human + furry", "furry with non-furry, interspecies", "hetero"),
+    "human_furry": ("Human + furry", "1furry, interspecies", "hetero"),
     "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
-    "furry": ("Furry", "anthro, furry", ""),
+    "furry": ("Furry", "1furry, solo", ""),
     "nonhuman": ("Non-human", "", ""),
     "any": ("Other", "", ""),
 }
 RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit": "Explicit"}
 
 # names that stand for several casts in a scene's lists: {"pair": [...]} serves 1girl 1boy,
-# 2girls and 2boys alike; a cast named on its own wins over the names it is part of
+# 2girls and 2boys alike; a cast gets its own entries and those of the names it is part of
 ALIASES = {
     "solo": ("1girl", "1boy", "furry", "nonhuman", "futa"),
     "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy", "human_furry"),
@@ -278,13 +286,29 @@ def _keyed(value, nsfw):
 
 
 def _for_cast(lists, cast):
-    """The entries a cast gets: its own, else those of an alias it is part of, else everyone's."""
-    if cast in lists:
-        return lists[cast]
+    """The entries a cast gets: its own and those of the aliases it is part of; everyone's when
+    nothing names it."""
+    out = list(lists.get(cast, []))
     for alias in ("pair", "groups", "solo", "people"):
         if alias in lists and cast in ALIASES[alias]:
-            return lists[alias]
-    return lists.get("*", [])
+            out += lists[alias]
+    return list(dict.fromkeys(out)) if out else lists.get("*", [])
+
+
+def _with_template(template, raw):
+    """A scene on top of its template: the scene's lists add to the template's."""
+    out = dict(template)
+    for key, value in raw.items():
+        shared = out.get(key)
+        if key in LISTS.values() or key == "subjects":
+            if isinstance(shared, list) and isinstance(value, list):
+                value = shared + value
+            elif isinstance(shared, dict) or isinstance(value, dict):
+                a = shared if isinstance(shared, dict) else ({"*": shared} if shared else {})
+                b = value if isinstance(value, dict) else {"*": value}
+                value = {k: list(a.get(k, [])) + list(b.get(k, [])) for k in dict.fromkeys([*a, *b])}
+        out[key] = value
+    return out
 
 
 def _read_file(path, custom):
@@ -300,10 +324,17 @@ def _read_file(path, custom):
         raw_scenes = data.get("scenes") or [{}]
     else:
         raw_scenes = data.get("scenes") or []
+    templates = data.get("templates") if isinstance(data.get("templates"), dict) else {}
     out = []
     for i, raw in enumerate(raw_scenes):
         if not isinstance(raw, dict):
             continue
+        uses = raw.get("use") if isinstance(raw.get("use"), list) else [raw.get("use")]
+        shared = {}
+        for name in uses:  # what several scenes share, written once
+            if isinstance(name, str) and isinstance(templates.get(name), dict):
+                shared = _with_template(shared, templates[name])
+        raw = _with_template(shared, raw) if shared else raw
         rating = raw.get("rating") or data.get("rating") or "sfw"
         if rating not in RATINGS:
             continue

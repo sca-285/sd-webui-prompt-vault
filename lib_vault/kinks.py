@@ -14,6 +14,7 @@ minor-related words and sends its guard negatives.
 from __future__ import annotations
 
 import random
+import re
 
 FANTASY = ["Fantasy", "Creature", "Horror", "Myth"]
 
@@ -21,200 +22,204 @@ KINKS = {
     "bdsm": {
         "label": "BDSM",
         "suggestive": {
-            "solo": ["leather collar", "holding a riding crop", "blindfold pushed up on the forehead", "handcuffs dangling from a finger"],
-            "pair": ["one blindfolded, the other teasing", "wrists loosely tied with a silk scarf", "holding the other by a leash"],
-            "groups": ["one blindfolded, the others teasing", "everyone in leather collars"],
+            "solo": ["leather collar", "holding riding crop", "blindfold, collar", "handcuffs", "o-ring choker, leather cuffs"],
+            "pair": ["blindfold, teasing", "wrists tied, silk scarf", "leash, collar", "riding crop, dominant pose"],
+            "groups": ["blindfold, teasing", "matching collars", "leash, collar, kneeling"],
         },
         "nude": {
-            "solo": ["shibari, red rope harness", "leather collar and cuffs", "blindfolded, wrists tied behind the back", "nipple clamps"],
-            "pair": ["one tied in red rope, the other admiring the knots", "collar and leash", "blindfold and silk ties"],
-            "groups": ["one tied in rope, the others watching", "matching leather collars"],
+            "solo": ["shibari, red rope", "leather collar, leather cuffs", "blindfold, arms behind back, bound wrists", "nipple clamps",
+                     "rope harness, kneeling", "spreader bar"],
+            "pair": ["shibari, red rope", "collar, leash", "blindfold, silk ties", "bound wrists, kneeling", "nipple clamps, collar"],
+            "groups": ["shibari, rope, kneeling", "matching collars", "leash, collar, kneeling"],
         },
         "explicit": {
-            "solo": ["bound with rope, spread legs", "spreader bar, blindfolded", "ball gag, wrists cuffed", "suspended in rope bondage"],
-            "pair": ["bondage, tied to the bed, sex", "spanking, red handprint", "blindfolded, wrists tied, sex", "collar and leash, from behind",
-                     "hot wax dripping on the skin", "dominant and submissive, kneeling", "flogging", "orgasm denial, tied up"],
-            "groups": ["one tied up, the others taking turns", "dominatrix with a riding crop, the others kneeling", "rope bondage, group sex"],
+            "solo": ["bound, rope, spread legs", "spreader bar, blindfold", "ball gag, cuffs", "suspension bondage", "shibari, vibrator",
+                     "bound wrists, arms up"],
+            "pair": ["bondage, tied to bed, sex", "spanking, handprint", "blindfold, bound wrists, sex", "collar, leash, sex from behind",
+                     "wax play", "dominant, submissive, kneeling", "flogging", "orgasm denial, bound", "ball gag, doggystyle", "choker, leash pull"],
+            "groups": ["bondage, gangbang", "dominatrix, riding crop, kneeling", "rope bondage, group sex", "bound wrists, spitroast",
+                       "collar, leash, group sex"],
         },
     },
     "toys": {
         "label": "Toys",
-        "suggestive": {"people": ["holding a vibrator, teasing", "sex toy on the bed", "handcuffs and a feather on the sheets"]},
-        "nude": {"people": ["holding a dildo, smiling", "vibrator in hand", "toys laid out on the bed"]},
+        "suggestive": {"people": ["holding vibrator", "sex toy, on bed", "handcuffs, feather", "dildo, holding"]},
+        "nude": {"people": ["holding dildo, smile", "vibrator", "sex toys, on bed", "magic wand"]},
         "explicit": {
-            "1girl": ["dildo", "magic wand vibrator", "anal beads", "remote egg vibrator", "suction cup dildo on the floor"],
+            "1girl": ["dildo", "magic wand", "anal beads", "egg vibrator, remote control vibrator", "dildo riding, suction cup dildo",
+                      "vibrator on clitoris", "double dildo"],
             "1boy": ["onahole", "prostate massager", "cock ring", "fleshlight"],
-            "futa": ["onahole on her penis, dildo in her pussy", "vibrator and onahole", "cock ring"],
-            "1girl1boy": ["vibrator on her clit during sex", "remote vibrator, he holds the remote", "cock ring", "double penetration with a dildo"],
-            "2girls": ["strap-on sex", "double-ended dildo", "magic wand vibrator"],
-            "2boys": ["dildo", "anal beads", "cock ring"],
-            "groups": ["strap-on", "toys everywhere", "vibrators"],
+            "futa": ["onahole, dildo", "vibrator, onahole", "cock ring", "futanari masturbation, onahole"],
+            "1girl1boy": ["vibrator on clitoris, sex", "remote control vibrator", "cock ring", "dildo, double penetration", "anal beads, sex"],
+            "2girls": ["strap-on, sex", "double dildo", "magic wand", "vibrator, fingering"],
+            "2boys": ["dildo", "anal beads", "cock ring", "prostate massager"],
+            "groups": ["strap-on", "sex toys", "vibrators", "magic wand, group sex"],
             "pair": ["vibrator", "dildo", "anal beads"],
             "solo": ["dildo", "vibrator"],
         },
     },
     "fluids": {
         "label": "Fluids",
-        "suggestive": {"people": ["wet lips, saliva", "sweat glistening", "drool"]},
-        "nude": {"people": ["sweat", "body oil glistening", "wet skin, oiled"]},
+        "suggestive": {"people": ["wet lips, saliva", "sweat, shiny skin", "drooling"]},
+        "nude": {"people": ["sweat", "body oil, shiny skin", "wet skin, oiled"]},
         "explicit": {
-            "1girl": ["pussy juice", "squirting", "dripping wet"],
+            "1girl": ["pussy juice", "squirting", "female ejaculation", "pussy juice trail"],
             "1boy": ["ejaculation", "cum on stomach", "precum"],
-            "futa": ["futanari ejaculation", "cum on her own breasts", "precum, pussy juice"],
-            "1girl1boy": ["cum on body", "creampie", "cum on face", "cum string", "squirting"],
+            "futa": ["futanari ejaculation", "cum on breasts", "precum, pussy juice"],
+            "1girl1boy": ["cum on body", "creampie", "facial", "cum string", "squirting", "cum in mouth"],
             "2girls": ["squirting", "pussy juice", "saliva trail"],
             "2boys": ["cum on body", "cum on stomach", "cum in mouth"],
-            "girls": ["squirting", "pussy juice everywhere"],
+            "girls": ["squirting", "pussy juice"],
             "boys": ["cum on body", "bukkake"],
-            "harem": ["cum on the girls", "creampie, cum dripping"],
-            "reverse": ["bukkake", "cum on body", "creampie"],
-            "mixed": ["cum everywhere", "sweat and cum"],
+            "harem": ["cum on body, multiple girls", "creampie, cum drip"],
+            "reverse": ["bukkake", "cum on body", "creampie", "cum on face"],
+            "mixed": ["cum on body", "sweat, cum"],
             "pair": ["cum on body", "creampie", "cum string"],
-            "solo": ["sweat", "dripping wet"],
+            "solo": ["sweat", "pussy juice"],
         },
     },
     "breeding": {
         "label": "Breeding & x-ray",
         "explicit": {
-            "1girl1boy": ["cross-section, penis inside, cum inside", "x-ray, creampie, sperm cell reaching the ovum", "breeding, cum inside, impregnation",
-                          "internal cumshot, cross-section, womb", "insemination, x-ray view of the womb", "mating press, breeding"],
-            "harem": ["cross-section, cum inside", "breeding the girls one after another", "x-ray, creampie, ovum"],
-            "reverse": ["cross-section, cum inside", "breeding, cum overflowing", "x-ray, sperm cells, ovum"],
-            "mixed": ["breeding, creampies", "cross-section, cum inside"],
-            "futa_girl": ["futanari creampie, cross-section", "x-ray, futanari cum inside, ovum", "breeding, impregnation"],
-            "futa_boy": ["cross-section, cum inside her", "x-ray, creampie, sperm cell, ovum"],
-            "human_furry": ["cross-section, knot inside, cum inside", "x-ray, interspecies breeding, ovum", "breeding, cum inside"],
+            "1girl1boy": ["cross-section, penis inside, cum inside", "x-ray, creampie, sperm cell, ovum", "breeding, cum inside, impregnation",
+                          "internal cumshot, cross-section, womb", "insemination, x-ray, womb", "mating press, breeding"],
+            "harem": ["cross-section, cum inside", "breeding, multiple girls", "x-ray, creampie, ovum"],
+            "reverse": ["cross-section, cum inside", "breeding, cum overflow", "x-ray, sperm cell, ovum"],
+            "mixed": ["breeding, creampie", "cross-section, cum inside"],
+            "futa_girl": ["futanari, creampie, cross-section", "x-ray, cum inside, ovum", "breeding, impregnation"],
+            "futa_boy": ["cross-section, cum inside", "x-ray, creampie, sperm cell, ovum"],
+            "human_furry": ["cross-section, knot, cum inside", "x-ray, interspecies, breeding, ovum", "breeding, cum inside"],
         },
     },
     "pregnancy": {
         "label": "Pregnancy & lactation",
-        "suggestive": {"female": ["pregnant, hand on the belly", "pregnant belly, tight dress", "milk stains on the shirt"]},
-        "nude": {"female": ["pregnant", "lactation, milk dripping", "pregnant belly, linea nigra"]},
-        "explicit": {"female": ["pregnant, sex", "lactation, breast milk spraying", "pregnant, from the side", "breast sucking, lactation"]},
+        "suggestive": {"female": ["pregnant, hand on own stomach", "pregnant, tight dress", "lactation, wet shirt"]},
+        "nude": {"female": ["pregnant", "lactation, milk drip", "pregnant, linea nigra"]},
+        "explicit": {"female": ["pregnant, sex", "lactation, breast milk, milk spray", "pregnant, from side", "breast sucking, lactation"]},
     },
     "anal": {
         "label": "Anal",
         "nude": {"people": ["presenting, spread ass", "butt plug"]},
         "explicit": {
-            "1girl": ["anal masturbation, dildo", "butt plug, fingering"],
-            "1boy": ["prostate massager, anal", "anal fingering"],
-            "futa": ["anal dildo while stroking"],
-            "1girl1boy": ["anal sex", "anal sex, from behind", "rimjob", "anal fingering"],
-            "2girls": ["strap-on anal", "rimjob", "anal fingering"],
-            "2boys": ["anal sex", "rimjob", "anal fingering, kissing"],
-            "futa_girl": ["futanari anal sex", "rimjob"], "futa_boy": ["futanari on male, anal sex", "rimjob"],
-            "groups": ["anal sex, the others watching", "anal train"],
-            "furry": ["anal, presenting", "tail lifted, anal"], "nonhuman": ["anal, presenting"],
+            "1girl": ["anal masturbation, dildo", "butt plug, fingering", "anal beads"],
+            "1boy": ["prostate massager", "anal fingering"],
+            "futa": ["anal dildo, futanari masturbation"],
+            "1girl1boy": ["anal", "anal, from behind", "anilingus", "anal fingering", "anal, legs up"],
+            "2girls": ["strap-on, anal", "anilingus", "anal fingering"],
+            "2boys": ["anal", "anilingus", "anal fingering, kiss"],
+            "futa_girl": ["futa with female, anal", "anilingus"], "futa_boy": ["futa with male, anal", "anilingus"],
+            "groups": ["anal, group sex", "anal, gangbang"],
+            "furry": ["anal, presenting", "raised tail, anal"], "nonhuman": ["anal, presenting"],
         },
     },
     "oral": {
         "label": "Oral",
-        "suggestive": {"people": ["licking lips", "finger in the mouth", "licking a popsicle suggestively"]},
+        "suggestive": {"people": ["licking lips", "finger in mouth", "popsicle, licking"]},
         "explicit": {
-            "1girl1boy": ["deepthroat", "fellatio, looking up", "cunnilingus", "69", "face sitting"],
+            "1girl1boy": ["deepthroat", "fellatio, looking up", "cunnilingus", "69", "face sitting", "irrumatio"],
             "2girls": ["cunnilingus", "face sitting", "69"], "2boys": ["fellatio", "deepthroat", "69"],
-            "futa_girl": ["fellatio on the futanari", "cunnilingus", "69"], "futa_boy": ["fellatio", "he sucks the futanari"],
-            "harem": ["cooperative fellatio", "the girls taking turns on him"], "reverse": ["double fellatio", "spitroast"],
-            "girls": ["daisy chain cunnilingus"], "boys": ["fellatio in a circle"], "mixed": ["oral everywhere"],
-            "solo": ["licking own fingers", "tongue out, drooling"],
+            "futa_girl": ["fellatio, futanari", "cunnilingus", "69"], "futa_boy": ["fellatio", "futa with male, fellatio"],
+            "harem": ["cooperative fellatio", "double fellatio, multiple girls"], "reverse": ["double fellatio", "spitroast"],
+            "girls": ["daisy chain, cunnilingus"], "boys": ["fellatio, group sex"], "mixed": ["fellatio, cunnilingus, orgy"],
+            "solo": ["licking finger", "tongue out, drooling"],
         },
     },
     "femdom": {
         "label": "Femdom",
-        "suggestive": {"1girl1boy": ["she holds his tie like a leash", "her heel on his chest"], "reverse": ["she sits on a throne, the boys kneeling"],
-                       "harem": ["the girls pin him down"], "mixed": ["the women in charge"], "futa_boy": ["she holds his leash"]},
-        "nude": {"1girl1boy": ["he kneels at her feet", "collared man, standing woman"], "reverse": ["the boys kneeling around her"],
-                 "harem": ["him tied up, the girls around him"], "futa_boy": ["he kneels before the futanari"]},
-        "explicit": {"1girl1boy": ["pegging", "face sitting", "cowgirl, pinning his wrists", "foot worship, she looks down"],
-                     "reverse": ["she rides one, the others kneel", "pegging"], "harem": ["the girls take turns riding him, wrists tied"],
-                     "mixed": ["women on top"], "futa_boy": ["futanari on male, pinning him down"]},
+        "suggestive": {"1girl1boy": ["femdom, necktie grab", "femdom, foot on chest"], "reverse": ["femdom, throne, kneeling"],
+                       "harem": ["femdom, pinned down"], "mixed": ["femdom"], "futa_boy": ["femdom, leash"]},
+        "nude": {"1girl1boy": ["femdom, kneeling", "femdom, collar, leash"], "reverse": ["femdom, kneeling"],
+                 "harem": ["femdom, bound, multiple girls"], "futa_boy": ["femdom, kneeling"]},
+        "explicit": {"1girl1boy": ["pegging", "femdom, face sitting", "femdom, cowgirl position, pinned down", "femdom, foot worship"],
+                     "reverse": ["femdom, cowgirl position, kneeling", "pegging"], "harem": ["femdom, cowgirl position, bound wrists"],
+                     "mixed": ["femdom, girl on top"], "futa_boy": ["futa with male, femdom, pinned down"]},
     },
     "feet": {
         "label": "Feet",
-        "suggestive": {"people": ["bare feet, soles", "toes curled, stockings", "foot focus"]},
-        "nude": {"people": ["soles, foot focus", "feet up", "toes spread"]},
+        "suggestive": {"people": ["barefoot, soles", "curled toes, stockings", "foot focus"]},
+        "nude": {"people": ["soles, foot focus", "feet up", "spread toes"]},
         "explicit": {"pair": ["footjob", "foot licking", "toe sucking"], "groups": ["footjob", "foot worship"],
                      "solo": ["soles, spread legs", "foot focus"]},
     },
     "petplay": {
         "label": "Pet play",
-        "suggestive": {"people": ["cat ears headband, collar with a bell", "dog ears, leash", "kneeling, paw gloves"]},
-        "nude": {"people": ["tail plug, collar", "crawling on all fours, leash", "pet bowl, kneeling"]},
-        "explicit": {"people": ["tail plug, doggystyle", "leash pulled, from behind", "collar and leash, on all fours"]},
+        "suggestive": {"people": ["fake animal ears, bell collar", "dog ears, leash", "kneeling, paw gloves"]},
+        "nude": {"people": ["tail plug, collar", "all fours, leash", "pet bowl, kneeling"]},
+        "explicit": {"people": ["tail plug, doggystyle", "leash pull, from behind", "collar, leash, all fours"]},
     },
     "costume": {
         "label": "Costume play",
-        "suggestive": {"people": ["maid outfit", "nurse outfit", "playboy bunny suit", "police costume", "bunny ears, fishnets"]},
-        "nude": {"people": ["only a maid headband and apron", "only bunny ears and cuffs", "only a nurse cap"]},
-        "explicit": {"people": ["maid outfit pulled aside", "bunny suit pulled down", "nurse outfit, unbuttoned", "cheerleader uniform, skirt lifted"]},
+        "suggestive": {"people": ["maid", "nurse", "playboy bunny", "police uniform", "fake animal ears, fishnets"]},
+        "nude": {"people": ["maid headdress, apron, naked apron", "rabbit ears, wrist cuffs", "nurse cap"]},
+        "explicit": {"people": ["maid, clothes aside", "playboy bunny, leotard pull", "nurse, open clothes", "cheerleader, skirt lift"]},
     },
     "exhibitionism": {
         "label": "Exhibitionism",
-        "suggestive": {"people": ["flashing at the window", "skirt lifted, nobody looking", "see-through clothes in public"]},
-        "nude": {"people": ["nude at the open window", "nude, risk of being seen", "naked in an empty corridor"]},
-        "explicit": {"people": ["sex against the window, city below", "being watched, sex", "quickie, risk of being caught"]},
+        "suggestive": {"people": ["flashing, window", "skirt lift, public", "see-through, public"]},
+        "nude": {"people": ["nude, open window", "public nudity", "nude, empty corridor"]},
+        "explicit": {"people": ["against glass, sex, cityscape", "public sex, audience", "public sex, quickie"]},
     },
     "hypnosis": {
         "label": "Hypnosis & mind control",
-        "suggestive": {"people": ["hypnosis, spiral eyes", "pendulum swinging, empty eyes", "glowing eyes, entranced"]},
-        "nude": {"people": ["mind control, empty eyes, standing still", "hypnotized, blank expression", "heart-shaped pupils, entranced"]},
-        "explicit": {"solo": ["hypnotized, empty eyes, masturbating", "mind control, heart-shaped pupils"],
-                     "pair": ["hypnosis, empty eyes, sex", "mind control, glowing eyes, obedient", "hypnotized, kneeling, fellatio"],
-                     "groups": ["hypnotized, everyone obedient", "mind control, glowing eyes, group sex"]},
+        "suggestive": {"people": ["hypnosis, spiral eyes", "pendulum, empty eyes", "glowing eyes, entranced"]},
+        "nude": {"people": ["mind control, empty eyes, standing", "hypnosis, expressionless", "heart-shaped pupils, entranced"]},
+        "explicit": {"solo": ["hypnosis, empty eyes, masturbation", "mind control, heart-shaped pupils"],
+                     "pair": ["hypnosis, empty eyes, sex", "mind control, glowing eyes", "hypnosis, kneeling, fellatio"],
+                     "groups": ["hypnosis, group sex", "mind control, glowing eyes, group sex"]},
     },
     "watersports": {
         "label": "Watersports",
-        "suggestive": {"people": ["desperation, legs crossed", "need to pee, fidgeting", "wet spot on the panties"]},
-        "nude": {"people": ["peeing", "peeing in the shower", "squatting, peeing", "pee puddle"]},
-        "explicit": {"solo": ["peeing, spread legs", "peeing while masturbating"], "pair": ["golden shower", "peeing on partner", "peeing during sex"],
-                     "groups": ["golden shower, the others watching"]},
+        "suggestive": {"people": ["have to pee, crossed legs", "have to pee, trembling", "wet panties"]},
+        "nude": {"people": ["peeing", "peeing, shower", "squatting, peeing", "puddle, peeing"]},
+        "explicit": {"solo": ["peeing, spread legs", "peeing, masturbation"], "pair": ["golden shower", "peeing on another", "peeing, sex"],
+                     "groups": ["golden shower, group sex"]},
     },
     "scat": {
         "label": "Scat",
-        "nude": {"people": ["defecation, squatting", "scat"]},
-        "explicit": {"solo": ["scat, masturbating"], "pair": ["scat play"], "groups": ["scat play"]},
+        "nude": {"people": ["defecating, squatting", "scat"]},
+        "explicit": {"solo": ["scat, masturbation"], "pair": ["scat"], "groups": ["scat"]},
     },
     "latex": {
         "label": "Latex & fetish wear",
-        "suggestive": {"people": ["black latex catsuit", "pvc corset, thigh-high boots", "leather harness", "fishnet bodystocking"]},
-        "nude": {"people": ["leather harness only", "latex gloves and stockings only", "fishnet bodystocking"]},
-        "explicit": {"people": ["latex catsuit, crotch zipper open", "leather harness", "latex gloves and stockings", "pvc boots"]},
+        "suggestive": {"people": ["black latex bodysuit", "pvc corset, thigh boots", "leather harness", "fishnet bodystocking"]},
+        "nude": {"people": ["leather harness", "latex gloves, latex thighhighs", "fishnet bodystocking"]},
+        "explicit": {"people": ["latex bodysuit, crotch zipper", "leather harness", "latex gloves, latex thighhighs", "pvc boots"]},
     },
     "marks": {
         "label": "Bites & marks",
-        "suggestive": {"people": ["hickeys on the neck", "lipstick marks on the skin"]},
-        "nude": {"people": ["hickeys", "bite marks on the shoulder", "scratch marks on the back", "womb tattoo"]},
-        "explicit": {"people": ["bite marks", "scratch marks on the back", "red handprint on the hip", "hickeys everywhere", "glowing womb tattoo"]},
+        "suggestive": {"people": ["hickey, neck", "lipstick mark"]},
+        "nude": {"people": ["hickey", "bite mark, shoulder", "scratches, back", "womb tattoo"]},
+        "explicit": {"people": ["bite mark", "scratches, back", "handprint, hip", "hickey, multiple hickeys", "glowing womb tattoo"]},
     },
     "tentacles": {
         "label": "Tentacles",
         "themes": FANTASY + ["Sci-fi"],
-        "suggestive": {"people": ["tentacles curling around the ankles", "tentacles tugging at the clothes", "tentacles rising from the floor"]},
-        "nude": {"people": ["tentacles wrapped around the body", "tentacles coiling around the thighs", "suspended by tentacles"]},
-        "explicit": {"people": ["tentacle sex", "tentacles wrapped around the limbs, tentacle penetration", "suspended in the air by tentacles",
-                                "tentacles in every hole", "tentacle with ribbed texture, penetration"]},
+        "suggestive": {"people": ["tentacles, ankle grab", "tentacles, clothes pull", "tentacles, floor"]},
+        "nude": {"people": ["tentacles, wrapped", "tentacles, thigh wrap", "tentacles, suspended"]},
+        "explicit": {"people": ["tentacle sex", "tentacles, restrained, tentacle penetration", "tentacles, suspended, sex",
+                                "tentacles, multiple insertions", "ribbed tentacle, penetration"]},
     },
     "slime": {
         "label": "Slime",
         "themes": ["Fantasy", "Creature", "Horror", "Sci-fi"],
-        "suggestive": {"people": ["translucent slime dripping on the clothes", "slime melting the clothes"]},
-        "nude": {"people": ["covered in translucent slime", "slime pooling on the skin"]},
-        "explicit": {"people": ["slime sex, engulfed in slime", "slime creature wrapped around the body", "dripping with slime"]},
+        "suggestive": {"people": ["slime, dripping, clothes", "slime, melting clothes"]},
+        "nude": {"people": ["covered in slime", "slime, wet skin"]},
+        "explicit": {"people": ["slime sex, engulfed", "slime monster, restrained", "slime, dripping, sex"]},
     },
     "monsters": {
         "label": "Monsters",
         "themes": FANTASY + ["Sci-fi", "Red light"],
-        "suggestive": {"people": ["an orc's hand on the waist", "a demon whispering in the ear", "a werewolf's shadow behind"]},
-        "nude": {"people": ["held by a huge orc", "in the arms of a demon", "a minotaur towering behind"]},
-        "explicit": {"people": ["sex with an orc, size difference", "minotaur, huge penis, size difference", "demon lover, glowing eyes",
+        "suggestive": {"people": ["orc, hand on waist", "demon, whispering", "werewolf, shadow"]},
+        "nude": {"people": ["orc, size difference, carrying", "demon, embrace", "minotaur, size difference"]},
+        "explicit": {"people": ["orc, sex, size difference", "minotaur, huge penis, size difference", "demon, glowing eyes, sex",
                                 "werewolf, monster, knot", "alien, ribbed penis"]},
     },
     "blood": {
         "label": "Blood & bites",
         "themes": ["Horror", "Fantasy", "Myth"],
-        "suggestive": {"people": ["vampire bite on the neck, a drop of blood", "blood on the lips"]},
-        "nude": {"people": ["vampire bite marks, a trickle of blood", "blood on the lips, pale skin"]},
-        "explicit": {"people": ["vampire biting the neck during sex", "blood on the lips, kissing", "bite marks, a trickle of blood"]},
+        "suggestive": {"people": ["vampire bite, neck, blood drop", "blood on lips"]},
+        "nude": {"people": ["bite mark, blood trickle", "blood on lips, pale skin"]},
+        "explicit": {"people": ["vampire, neck biting, sex", "blood on lips, kiss", "bite mark, blood trickle"]},
     },
 }
 
@@ -234,12 +239,12 @@ PUSSY = ["pussy", "shaved pussy", "pubic hair", "hairy pussy", "trimmed pubic ha
 CHEST = ["pectorals", "muscular pectorals", "chest hair", "hairy chest", "abs", "smooth chest"]
 PENIS = ["penis", "large penis", "veiny penis", "uncut penis, foreskin", "circumcised penis", "thick penis", "huge penis"]
 BODY_HAIR = ["armpit hair", "pubic hair", "happy trail"]
-PROSTHETIC = ["prosthetic arm", "mechanical arm", "cybernetic leg", "robot joints", "mechanical parts showing through the skin",
+PROSTHETIC = ["prosthetic arm", "mechanical arm", "cybernetic leg", "robot joints", "exposed mechanical parts",
               "glowing cybernetic implants"]
 
 # anthros: which kind, from the subject, and its anatomy
 KINDS = {
-    "canine": ("wolf", "fox", "husky", "dog", "jackal", "coyote"),
+    "canine": ("wolf", "fox", "husky", "dog", "jackal", "coyote", "hyena", "german shepherd"),
     "equine": ("horse", "zebra", "unicorn", "donkey"),
     "feline": ("cat", "tiger", "lion", "leopard", "lynx", "cheetah", "panther", "jaguar"),
     "shark": ("shark",),
@@ -253,6 +258,7 @@ KINDS = {
     "mustelid": ("otter", "ferret", "weasel"),
     "rodent": ("mouse", "rat", "squirrel"),
     "lagomorph": ("rabbit", "bunny", "hare"),
+    "caprine": ("goat", "sheep", "ram"),
 }
 ANTHRO_PENIS = {
     "canine": ["canine penis, knot", "canine penis, sheath", "knotted penis, veiny", "red canine penis, knot"],
@@ -269,6 +275,7 @@ ANTHRO_PENIS = {
     "mustelid": ["tapering penis, sheath", "humanoid penis"],
     "rodent": ["humanoid penis, sheath", "pink penis"],
     "lagomorph": ["humanoid penis, sheath", "pink penis"],
+    "caprine": ["tapering penis, sheath", "humanoid penis"],
     "other": ["humanoid penis", "animal penis, sheath", "knotted penis", "ribbed penis", "nubbed penis"],
 }
 ANTHRO_PUSSY = {
@@ -280,6 +287,7 @@ ANTHRO_PUSSY = {
     "bovine": ["animal pussy", "udders"], "cervine": ["animal pussy"],
     "ursine": ["animal pussy", "multiple breasts"], "mustelid": ["animal pussy", "multiple breasts"],
     "rodent": ["animal pussy", "multiple breasts"], "lagomorph": ["animal pussy", "multiple breasts"],
+    "caprine": ["animal pussy", "udders"],
     "other": ["animal pussy", "multiple breasts"],
 }
 # breasts make no sense on some kinds the way they do on mammals
@@ -289,7 +297,7 @@ NO_BREASTS = ("avian", "reptile", "shark")
 def _kind(subject):
     low = subject.lower()
     for kind, words in KINDS.items():
-        if any(w in low for w in words):
+        if any(re.search(rf"\b{w}\b", low) for w in words):
             return kind
     return "other"
 
@@ -330,7 +338,7 @@ def body(level, cast, subject, theme, rng=None):
             # one human, one anthro of the other sex; the subject says which is which
             kind = _kind(subject)
             low = subject.lower()
-            if "with a male" in low:  # a woman, a male anthro
+            if "anthro male" in low:  # a woman, a male anthro
                 bits += [rng.choice(BREASTS), rng.choice(PUSSY), rng.choice(ANTHRO_PENIS[kind])]
             else:                     # a man, a female anthro
                 bits += [rng.choice(PENIS)] + ([] if kind in NO_BREASTS else [rng.choice(BREASTS)]) + [rng.choice(ANTHRO_PUSSY[kind])]

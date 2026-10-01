@@ -24,7 +24,11 @@ POSTURES = (  # first match wins
 HANDS = r"hands|arms|point|signal|touch|toys|face & hair"
 FEMALE_WORDS = r"breast|pussy|clit|labia|panties|skirt|bra\b|nipple|curtsy"
 MALE_WORDS = r"penis|shaft|erect|balls|waistband|flexing"
-SKIP = r"object use|mouth|pacing|afterglow|camera|framing|kiss|oral|manual|family|toys pair|fantasy adult|body notes"
+SKIP = r"object use|mouth|pacing|afterglow|camera|framing|kiss|oral|manual|family|toys|fantasy adult|body notes"
+# a pose with furniture in it would fight the scene's own place ("sitting backwards, chair" on a beach)
+PROPS = r"\b(chair|bed|bar|shelf|windowsill|desk|counter|door|wall|stairs|table|sofa|couch|pillow|sheets?)\b"
+# what belongs to explicit ideas, not nude ones
+ACTS = r"pussy|penis|erection|masturbat|fingering|labia|dildo|vibrator|grab|stroking|spread"
 
 
 def _merged():
@@ -57,10 +61,12 @@ def _build():
             gender = "f" if re.search(r"\bfemale|\bwoman|\bwomen|\bher\b", g) else "m" if re.search(r"\bmale|\bman\b|\bmen\b", g) else ""
             who = "pair" if re.search(r"pair|partner|couple|with another", g) else "solo"
             for tag in tags:
+                if re.search(PROPS, tag):
+                    continue
                 # a tag can say whose body it is even in a group that does not
                 own = "f" if re.search(FEMALE_WORDS, tag) else "m" if re.search(MALE_WORDS, tag) else gender
                 poses.append({"tag": tag, "posture": posture, "hands": bool(re.search(HANDS, g)), "gender": own,
-                              "nsfw": nsfw, "who": who})
+                              "nsfw": nsfw, "who": who, "act": bool(re.search(ACTS, tag))})
     return {"poses": poses, "styles": styles}
 
 
@@ -76,11 +82,13 @@ def styles():
 
 
 # what an action says about the body: sitting, lying, kneeling, standing; and busy hands
-ACTION_POSTURE = (
-    ("lying", r"\blying\b|\blie\b|propped on|reclin|sprawl|asleep|napping|on (?:her|his|their) back|on the bed\b|floating"),
-    ("kneeling", r"kneel|on all fours|crouch|squat|crawl"),
-    ("sitting", r"\bsit|seated|on (?:a|the) (?:chair|bench|stool|ledge|sofa|couch|swing|lap)|in the (?:chair|booth)|straddl|riding"),
-    ("standing", r"stand|walk|run|lean|danc|crossing|waiting|stretch|posing|jump"),
+ACTION_POSTURE = (  # first match wins: "kneeling on bed" kneels, "sitting on bed" sits, "lying on sofa" lies
+    ("lying", r"\blying\b|\bon (?:back|side|stomach)\b|sleeping|napping"),
+    ("kneeling", r"kneel|all fours|crouch|squat|crawl|doggystyle|presenting|seiza"),
+    ("sitting", r"\bsit|seated|straddl|riding|cowgirl|\blap\b|lotus|on (?:chair|bench|stool|ledge|sofa|couch|swing|armchair|throne|steps)\b"),
+    ("lying", r"propped|reclin|sprawl|sleeping|napping|floating|missionary|mating press|"
+              r"prone bone|spooning|piledriver|\b69\b|legs up|on (?:bed|mattress|futon|sheets|rug|grass|sand|blanket)\b"),
+    ("standing", r"stand|walk|run|lean|danc|crossing|waiting|stretch|posing|jump|against\b"),
 )
 BUSY_HANDS = r"holding|reading|writing|playing|carrying|cooking|pouring|drinking|eating|using|painting|typing|brushing|fixing|" \
              r"repairing|kneading|picking|sketching|stirring|hands on|gripping|fingering|stroking|masturbat|with both hands|sharpening|" \
@@ -105,6 +113,8 @@ def poses_for(level, who, gender, action):
             continue  # the NSFW pose groups are for nude and explicit ideas
         if level in ("nude", "explicit") and not p["nsfw"]:
             continue  # and those get nothing else: no parade rest on a nude
+        if level == "nude" and p["act"]:
+            continue
         if p["gender"] and gender and p["gender"] != gender:
             continue
         if p["gender"] and not gender:
