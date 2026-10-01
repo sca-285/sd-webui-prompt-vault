@@ -26,6 +26,7 @@ Qwen-VL and the WD14 tagger) in one tab.
   what each tag is from your library's categories and the Danbooru vocabulary, so it is
   instant; **✍️ Qwen → Arrange tags** does the same with the model, and also merges
   near-duplicates, drops contradictions and fixes misspelt tags.
+- **💡 Muse idea** puts an idea from Muse (with the filters set on its card) in the editor.
 - **Saved prompts**: the positive and negative prompt under a name, with a thumbnail.
 - **History**: the prompts of your last generations, one click from coming back.
 - **🌱 TIPO** turns a few tags or a short idea into a full prompt.
@@ -52,12 +53,23 @@ Qwen-VL and the WD14 tagger) in one tab.
     wear, bites & marks; tentacles, slime, monsters and blood & bites only in the themes they
     belong to. A kink only joins the casts it makes sense for (breeding needs a penis and a
     pussy); the others are greyed out with the reason. The chosen kink is a part of the idea
-    of its own, rolled and locked like the others.
+    of its own, rolled and locked like the others. Also: hypnosis & mind control,
+    watersports, scat.
   - **Body**, a part of every NSFW idea: breasts, nipples, pussy, pectorals, chest hair,
     penis, body hair, prosthetics on androids and in Sci-fi; for anthros the anatomy of their
     kind (canine knot and sheath, flared equine, spiked feline, ribbed or scaled reptile,
     hemipenes, multiple breasts…). A switch in the settings turns it off.
   - **Futanari**: Futa, Futa + girl and Futa + boy casts, NSFW only.
+  - **Furry**: 24 kinds of anthro (canines, felines, hooved, small mammals, birds, sharks and
+    orcas, reptiles, dragons), each with its own body (stripes, spots, mane, horns, antlers,
+    scales, feathers, wings, fins…) and anatomy. **Human + furry** puts a human and an anthro
+    in one frame. A werewolf is a monster, not a furry: it is a non-human, and its ideas send
+    `anthro, furry, kemono` as negatives.
+  - **Pose** comes from the library's pose groups, for a woman or a man, and fits what the
+    idea is doing: no "lying on back" for someone riding. **Style**, a fifth filter, swaps the
+    scene's styles for families of the library's Style & Medium category (pixel art,
+    silhouette, vaporwave, stained glass, double exposure, anime eras…).
+  - **Save** keeps the idea in the Vault tab's Saved prompts.
   - **Red light**, a theme with no SFW side: dungeon, BDSM playroom, bordello, strip club,
     swingers' lounge, porn set, glory hole booth, massage parlor, sauna club, fetish club.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
@@ -167,6 +179,14 @@ models/prompt_vault/
       ├─ model.onnx
       └─ selected_tags.csv
 ```
+
+## One vocabulary
+
+Muse and the Vault tab share the library. Muse takes its poses and style families from the
+library's Pose and Style & Medium categories, so what you add there turns up on its card; the
+library ships with everything Muse knows (furry kinds and features, kinks, anatomy, poses by
+sex, specialised styles, sex positions). Coming from an earlier version: **Edit the library →
+🧺 Add missing default tags** brings these into your library without touching your own tags.
 
 ## Muse scenes of your own
 

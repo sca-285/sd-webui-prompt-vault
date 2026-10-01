@@ -84,6 +84,11 @@ def register(app):
     def get_prompts():
         return run(lambda: {"prompts": store.prompts()})
 
+    @app.post(f"{BASE}/prompts/save")
+    def save_prompt(body: dict = Body(...)):
+        return run(lambda: {"entry": store.save_prompt(str(body.get("name") or ""), str(body.get("positive") or ""),
+                                                       str(body.get("negative") or ""))})
+
     @app.post(f"{BASE}/prompts/edit")
     def edit_prompts(body: dict = Body(...)):
         return run(lambda: {"prompts": store.prompt_edit(str(body.get("op", "")), body)})

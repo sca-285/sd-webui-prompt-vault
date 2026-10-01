@@ -39,6 +39,7 @@
         next: 'M9 5l7 7-7 7',
         back: 'M19 12H5M11 5l-7 7 7 7',
         copy: 'M9 9h11v11H9zM5 15V4h11',
+        save: 'M6 3h10l4 4v14H6zM9 3v5h6V3M9 21v-7h8v7',
         trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
         widen: 'M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7',
         narrow: 'M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7',
@@ -155,6 +156,10 @@
             const names = Object.fromEntries(cat.casts);
             return s.casts.length <= 2 ? s.casts.map((c) => names[c] || c).join(', ') : s.casts.length + ' casts';
         }
+        if (key === 'styles') {
+            if (!s.styles.length) return "Scene's own";
+            return s.styles.length <= 2 ? s.styles.join(', ') : s.styles.length + ' families';
+        }
         if (key === 'kinks') {
             if (!s.kinks.length) return 'None';
             const names = Object.fromEntries(cat.kinks.map(([k, l]) => [k, l]));
@@ -173,7 +178,7 @@
         const n = countMatching();
         return el('div', {class: 'pv-muse-filters'},
             el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level'),
-                st().allow_nsfw ? pill('kinks', 'Kink') : null),
+                st().allow_nsfw ? pill('kinks', 'Kink') : null, pill('styles', 'Style')),
             M.tray ? tray(M.tray) : null,
             M.tray ? el('div', {class: 'pv-muse-hint', text: n ? `${n} scene${n === 1 ? '' : 's'} match` : 'Nothing matches: loosen a filter'}) : null);
     }
@@ -181,6 +186,7 @@
     function tray(key) {
         const s = st(), cat = M.snap.catalogue;
         const chosen = new Set(key === 'ratings' ? s.ratings : s[key]);
+        if (key === 'styles') return styleTray();
         const options = key === 'themes' ? cat.themes.map((t) => [t, t]) : key === 'kinks' ? cat.kinks.map(([k, l]) => [k, l]) : cat[key];
         const toggle = (value) => {
             const next = new Set(chosen);
@@ -206,6 +212,25 @@
             key === 'ratings' ? toggleSwitch('NSFW', s.allow_nsfw, (v) => patch({allow_nsfw: v})) : null,
             el('div', {class: 'pv-muse-chips'}, all, chips),
             key === 'casts' ? sizeRow() : null);
+    }
+
+    // style families: the groups of the library's Style & Medium category; they replace the scene's styles
+    function styleTray() {
+        const s = st(), cat = M.snap.catalogue;
+        const chosen = new Set(s.styles);
+        return el('div', {class: 'pv-muse-tray'},
+            el('div', {class: 'pv-muse-chips'},
+                el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'), text: "Scene's own",
+                    title: 'Each scene keeps the styles written for it', onclick: () => patch({styles: []})}),
+                (cat.styles || []).map(([family, n]) => {
+                    const on = chosen.has(family);
+                    return el('button', {type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : ''), 'aria-pressed': on ? 'true' : 'false',
+                        title: `${n} styles from your library`, onclick: () => {
+                            const next = new Set(chosen); if (on) next.delete(family); else next.add(family);
+                            patch({styles: [...next]});
+                        }}, family, el('small', {text: String(n)}));
+                })),
+            el('div', {class: 'pv-muse-hint', text: 'From the Style & Medium category of your library: edit it in the Vault tab.'}));
     }
 
     // why a chip leads nowhere, in words
@@ -329,6 +354,7 @@
                 data = await call('/muse/next', {}); // the scene is gone: a fresh idea, locks dropped
             }
             const it = data.idea;
+            it.styles_from = st().styles.join('|');
             if (locked && it.scene === cur.scene) it.locks = Object.assign({}, cur.locks);
             M.ideas.push(it);
             if (M.ideas.length > KEEP) M.ideas.splice(0, M.ideas.length - KEEP);
@@ -361,6 +387,19 @@
             M.busy = '';
             render();
         }
+    }
+
+    // into the Vault tab's Saved prompts, under the scene's name and the time
+    function saveToVault() {
+        const it = idea();
+        if (!it) return;
+        const when = new Date().toLocaleString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+        call('/prompts/save', {name: `${it.title} · ${when}`, positive: it.positive, negative: it.negative})
+            .then(() => {
+                toast('Saved in the Vault tab');
+                if (window.promptVault && window.promptVault.reloadSaved) window.promptVault.reloadSaved();
+            })
+            .catch((e) => toast(e.message, true));
     }
 
     // every idea goes but the one on the card
@@ -555,6 +594,7 @@
                 el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'describe' ? TOOL_NAMES.describe : 'Describe', disabled: !!M.busy, onclick: () => tool('describe'),
                     title: s.describe_as === 'both' ? 'Qwen writes a paragraph from the tags and adds it after them' : 'Qwen turns the tags into a paragraph'}),
                 s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? TOOL_NAMES.tipo : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: () => tool('tipo')}) : null,
+                iconButton('save', 'Save to the Vault\'s saved prompts', saveToVault),
                 iconButton('copy', 'Copy the prompt', () => {
                     navigator.clipboard.writeText(it.positive).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
                 })),
@@ -569,7 +609,8 @@
         const s = st();
         return (!s.themes.length || s.themes.includes(it.theme)) && (!s.casts.length || s.casts.includes(it.cast))
             && ratingsOn(s).includes(it.rating) && (!it.size || !s.sizes.length || s.sizes.includes(it.size))
-            && (!s.kinks.length || it.parts.some((p) => p.slot === 'kink' && p.value));
+            && (!s.kinks.length || it.parts.some((p) => p.slot === 'kink' && p.value))
+            && (!s.styles.length || it.styles_from === s.styles.join('|'));
     }
 
     async function patch(body) {
@@ -585,7 +626,7 @@
         render();
         paintFab();
         // a filter changed and the idea on the card no longer fits it: a fitting one, once the clicks settle
-        if (['themes', 'casts', 'ratings', 'sizes', 'kinks', 'allow_nsfw'].some((k) => k in body)) {
+        if (['themes', 'casts', 'ratings', 'sizes', 'kinks', 'styles', 'allow_nsfw'].some((k) => k in body)) {
             clearTimeout(patch.t);
             patch.t = setTimeout(() => {
                 const it = idea();

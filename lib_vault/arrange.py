@@ -23,6 +23,9 @@ RANK = {name: i for i, name in enumerate(ORDER)}
 # a library category's name -> where its tags go; the first rule that matches wins
 CATEGORY_RULES = [
     (r"negative", None),
+    (r"anatomy", "body"),
+    (r"furry|anthro", "who"),
+    (r"kink|fetish", "pose"),
     (r"\bpositions?\b|\bsex\b|\bact\b", "pose"),
     (r"tease|lingerie|cloth|attire|outfit|wear", "attire"),
     (r"pose|gesture|interaction|staging", "pose"),

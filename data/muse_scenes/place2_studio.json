@@ -73,30 +73,14 @@
      "the women in crop top, the men in headphones, t-shirt"
     ],
     "furry": [
-     "wolf, female, oversized hoodie, headphones",
-     "wolf, male, headphones, t-shirt",
-     "fox, female, crop top",
-     "fox, male, leather jacket",
-     "cat, female, oversized hoodie, headphones",
-     "cat, male, headphones, t-shirt",
-     "rabbit, female, crop top",
-     "rabbit, male, leather jacket",
-     "tiger, female, oversized hoodie, headphones",
-     "tiger, male, headphones, t-shirt",
-     "deer, female, crop top",
-     "deer, male, leather jacket",
-     "dragon, female, oversized hoodie, headphones",
-     "dragon, male, headphones, t-shirt",
-     "lion, female, crop top",
-     "lion, male, leather jacket",
-     "horse, female, oversized hoodie, headphones",
-     "horse, male, headphones, t-shirt",
-     "husky, female, crop top",
-     "husky, male, leather jacket",
-     "lizard, female, oversized hoodie, headphones",
-     "lizard, male, headphones, t-shirt",
-     "leopard, female, crop top",
-     "leopard, male, leather jacket"
+     "crocodile, male, armored scales, long snout, thick tail, leather jacket",
+     "dragon, female, eastern dragon, scales, whiskers, horns, crop top",
+     "lion, male, thick mane, tawny fur, leather jacket",
+     "husky, female, husky markings, blue eyes, curled tail, oversized hoodie, headphones",
+     "deer, female, spotted back, white tail, large ears, oversized hoodie, headphones",
+     "leopard, female, spotted fur, long tail, oversized hoodie, headphones",
+     "cat, female, tabby fur, long tail, whiskers, oversized hoodie, headphones",
+     "dragon, male, eastern dragon, scales, whiskers, horns, leather jacket"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, oversized hoodie, headphones",
@@ -106,6 +90,14 @@
      "1girl, solo, demon girl, horns, tail, oversized hoodie, headphones",
      "1boy, solo, oni, horns, leather jacket",
      "1girl, solo, kitsune, fox ears, fox tail, oversized hoodie, headphones"
+    ],
+    "human_furry": [
+     "man in headphones, t-shirt, with a female horse anthro, mane, hooves, long tail",
+     "woman in oversized hoodie, headphones, with a male wolf anthro, grey fur, bushy tail, pointed ears",
+     "woman in crop top, with a male cat anthro, black cat, green eyes",
+     "woman in crop top, with a male rabbit anthro, long ears, fluffy tail, white fur",
+     "woman in crop top, with a male horse anthro, black horse, flowing mane",
+     "woman in crop top, with a male mouse anthro, round ears, long thin tail, grey fur"
     ],
     "none": []
    },
@@ -217,30 +209,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "cat, female, black cat, green eyes, unbuttoned blouse, bra visible",
+     "orca, female, black and white skin, dorsal fin, tail fin, oversized shirt, bare legs",
+     "bull, female, cow, horns, cow print, hooves, lace lingerie",
+     "horse, female, black horse, flowing mane, unbuttoned blouse, bra visible",
+     "dragon, male, scales, horns, wings, long tail, boxer briefs",
+     "lion, female, tawny fur, tufted tail, lace lingerie",
+     "horse, male, mane, hooves, long tail, shirt open, bare chest",
+     "cat, male, black cat, green eyes, towel around the waist"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -250,6 +226,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "woman in silk robe, loosely tied, with a male leopard anthro, snow leopard, thick spotted fur",
+     "man in boxer briefs, with a female raven anthro, black feathers, wings, beak",
+     "man in unbuttoned jeans, shirtless, with a female leopard anthro, snow leopard, thick spotted fur",
+     "woman in silk robe, loosely tied, with a male owl anthro, feathers, wings, large eyes, beak",
+     "man in boxer briefs, with a female leopard anthro, spotted fur, long tail",
+     "man in boxer briefs, with a female otter anthro, sleek brown fur, webbed paws, thick tail"
     ]
    },
    "actions": {
@@ -407,30 +391,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "dragon, male, eastern dragon, scales, whiskers, horns, nude",
+     "cheetah, female, spotted fur, tear marks, nude",
+     "fox, male, arctic fox, white fur, nude",
+     "bear, female, brown fur, round ears, burly, nude",
+     "leopard, male, spotted fur, long tail, nude",
+     "husky, female, husky markings, blue eyes, curled tail, nude",
+     "cat, male, black cat, green eyes, nude",
+     "crocodile, male, armored scales, long snout, thick tail, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -440,6 +408,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude man, with a female fox anthro, arctic fox, white fur",
+     "nude man, with a female lion anthro, tawny fur, tufted tail",
+     "nude woman, with a male rabbit anthro, long ears, fluffy tail, white fur",
+     "nude man, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "nude woman, with a male lizard anthro, green scales, long tail, slit pupils",
+     "nude woman, with a male wolf anthro, black fur, amber eyes"
     ]
    },
    "actions": {
@@ -591,30 +567,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "wolf, male, grey fur, bushy tail, pointed ears, nude",
+     "eagle, female, feathers, wings, beak, talons, white head, nude",
+     "tiger, female, orange fur, black stripes, white muzzle, nude",
+     "fox, female, orange fur, white chest fur, fluffy tail, nude",
+     "lion, female, tawny fur, tufted tail, nude",
+     "horse, female, mane, hooves, long tail, nude",
+     "lizard, female, green scales, long tail, slit pupils, nude",
+     "horse, female, black horse, flowing mane, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -624,6 +584,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude man, with a female orca anthro, black and white skin, dorsal fin, tail fin",
+     "nude man, with a female lion anthro, tawny fur, tufted tail",
+     "nude woman, with a male bull anthro, bull, horns, nose ring, hooves, muscular",
+     "nude woman, with a male leopard anthro, spotted fur, long tail",
+     "nude man, with a female wolf anthro, black fur, amber eyes",
+     "nude man, with a female raven anthro, black feathers, wings, beak"
     ]
    },
    "actions": {
@@ -643,6 +611,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the studio chair, she sits on his lap",
      "reverse cowgirl on the studio chair",
      "sex on the mixing desk",
@@ -653,6 +626,8 @@
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "straddling on the studio chair, fingering",
      "cunnilingus on the mixing desk",
      "fingering, pressed against the vocal booth glass"
@@ -660,6 +635,9 @@
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "riding him on the studio chair",
      "bent over the mixing desk, anal sex",
      "anal sex, standing against the vocal booth glass"
@@ -714,6 +692,16 @@
      "fellatio, both ways",
      "futanari on male, bent over the mixing desk",
      "futanari on male, against the vocal booth glass"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex on the mixing desk",
+     "standing sex against the vocal booth glass",
+     "lifted against the vocal booth glass"
     ]
    },
    "settings": [
@@ -821,30 +809,14 @@
      "the women in rolled sleeves, the men in clay-stained apron"
     ],
     "furry": [
-     "wolf, female, clay-stained apron",
-     "wolf, male, clay-stained apron",
-     "fox, female, rolled sleeves",
-     "fox, male, rolled sleeves",
-     "cat, female, clay-stained apron",
-     "cat, male, clay-stained apron",
-     "rabbit, female, rolled sleeves",
-     "rabbit, male, rolled sleeves",
-     "tiger, female, clay-stained apron",
-     "tiger, male, clay-stained apron",
-     "deer, female, rolled sleeves",
-     "deer, male, rolled sleeves",
-     "dragon, female, clay-stained apron",
-     "dragon, male, clay-stained apron",
-     "lion, female, rolled sleeves",
-     "lion, male, rolled sleeves",
-     "horse, female, clay-stained apron",
-     "horse, male, clay-stained apron",
-     "husky, female, rolled sleeves",
-     "husky, male, rolled sleeves",
-     "lizard, female, clay-stained apron",
-     "lizard, male, clay-stained apron",
-     "leopard, female, rolled sleeves",
-     "leopard, male, rolled sleeves"
+     "cat, female, black cat, green eyes, rolled sleeves",
+     "leopard, male, snow leopard, thick spotted fur, rolled sleeves",
+     "lizard, male, green scales, long tail, slit pupils, rolled sleeves",
+     "orca, male, black and white skin, dorsal fin, tail fin, rolled sleeves",
+     "cat, male, tabby fur, long tail, whiskers, clay-stained apron",
+     "cheetah, female, spotted fur, tear marks, clay-stained apron",
+     "dragon, female, eastern dragon, scales, whiskers, horns, rolled sleeves",
+     "fox, male, arctic fox, white fur, rolled sleeves"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, clay-stained apron",
@@ -854,6 +826,14 @@
      "1girl, solo, demon girl, horns, tail, clay-stained apron",
      "1boy, solo, oni, horns, rolled sleeves",
      "1girl, solo, kitsune, fox ears, fox tail, clay-stained apron"
+    ],
+    "human_furry": [
+     "woman in rolled sleeves, with a male wolf anthro, black fur, amber eyes",
+     "woman in rolled sleeves, with a male raven anthro, black feathers, wings, beak",
+     "woman in rolled sleeves, with a male zebra anthro, black and white stripes, mane, hooves",
+     "man in rolled sleeves, with a female wolf anthro, black fur, amber eyes",
+     "woman in clay-stained apron, with a male wolf anthro, grey fur, bushy tail, pointed ears",
+     "woman in rolled sleeves, with a male lizard anthro, green scales, long tail, slit pupils"
     ],
     "none": []
    },
@@ -965,30 +945,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "deer, female, spotted back, white tail, large ears, lace lingerie",
+     "lion, female, tawny fur, tufted tail, lace lingerie",
+     "horse, male, black horse, flowing mane, towel around the waist",
+     "cheetah, male, spotted fur, tear marks, unbuttoned jeans, shirtless",
+     "horse, female, black horse, flowing mane, unbuttoned blouse, bra visible",
+     "owl, female, feathers, wings, large eyes, beak, lace lingerie",
+     "tiger, female, orange fur, black stripes, white muzzle, oversized shirt, bare legs",
+     "orca, male, black and white skin, dorsal fin, tail fin, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -998,6 +962,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "man in boxer briefs, with a female otter anthro, sleek brown fur, webbed paws, thick tail",
+     "man in shirt open, bare chest, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "man in boxer briefs, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "man in unbuttoned jeans, shirtless, with a female horse anthro, black horse, flowing mane",
+     "woman in unbuttoned blouse, bra visible, with a male tiger anthro, orange fur, black stripes, white muzzle",
+     "woman in oversized shirt, bare legs, with a male fox anthro, orange fur, white chest fur, fluffy tail"
     ]
    },
    "actions": {
@@ -1154,30 +1126,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "raven, male, black feathers, wings, beak, nude",
+     "dragon, male, eastern dragon, scales, whiskers, horns, nude",
+     "bear, female, brown fur, round ears, burly, nude",
+     "leopard, male, snow leopard, thick spotted fur, nude",
+     "cat, female, tabby fur, long tail, whiskers, nude",
+     "wolf, male, grey fur, bushy tail, pointed ears, nude",
+     "bull, male, bull, horns, nose ring, hooves, muscular, nude",
+     "cat, female, black cat, green eyes, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1187,6 +1143,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude man, with a female eagle anthro, feathers, wings, beak, talons, white head",
+     "nude man, with a female raven anthro, black feathers, wings, beak",
+     "nude woman, with a male wolf anthro, grey fur, bushy tail, pointed ears",
+     "nude man, with a female dragon anthro, eastern dragon, scales, whiskers, horns",
+     "nude woman, with a male leopard anthro, snow leopard, thick spotted fur",
+     "nude woman, with a male cheetah anthro, spotted fur, tear marks"
     ]
    },
    "actions": {
@@ -1341,30 +1305,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "fox, female, orange fur, white chest fur, fluffy tail, nude",
+     "owl, male, feathers, wings, large eyes, beak, nude",
+     "raven, female, black feathers, wings, beak, nude",
+     "leopard, male, snow leopard, thick spotted fur, nude",
+     "rabbit, female, long ears, fluffy tail, white fur, nude",
+     "wolf, female, grey fur, bushy tail, pointed ears, nude",
+     "dragon, female, scales, horns, wings, long tail, nude",
+     "deer, male, antlers, brown fur, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1374,6 +1322,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude man, with a female fox anthro, orange fur, white chest fur, fluffy tail",
+     "nude man, with a female cheetah anthro, spotted fur, tear marks",
+     "nude man, with a female bull anthro, cow, horns, cow print, hooves",
+     "nude woman, with a male wolf anthro, black fur, amber eyes",
+     "nude woman, with a male eagle anthro, feathers, wings, beak, talons, white head",
+     "nude man, with a female wolf anthro, black fur, amber eyes"
     ]
    },
    "actions": {
@@ -1392,6 +1348,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the pottery stool, she sits on his lap",
      "reverse cowgirl on the pottery stool",
      "sex on the clay table",
@@ -1402,36 +1363,66 @@
      "doggystyle",
      "spooning sex",
      "69",
-     "mating press"
+     "mating press",
+     "amazon position",
+     "piledriver",
+     "prone bone",
+     "lotus position",
+     "legs over head",
+     "face sitting",
+     "paizuri",
+     "breast sucking during sex",
+     "fingering, kissing",
+     "cunnilingus, legs spread",
+     "thigh sex"
     ],
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "straddling on the pottery stool, fingering",
      "cunnilingus on the clay table",
      "tribadism",
      "69",
-     "face sitting"
+     "face sitting",
+     "scissoring",
+     "fingering each other",
+     "strap-on sex",
+     "cunnilingus, legs spread",
+     "rimming"
     ],
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "riding him on the pottery stool",
      "bent over the clay table, anal sex",
      "anal sex, missionary",
      "anal sex from behind",
      "anal sex, riding",
-     "prone bone"
+     "prone bone",
+     "69",
+     "rimming",
+     "spooning, anal sex",
+     "legs over shoulders, anal sex",
+     "mutual handjob"
     ],
     "girls": [
      "group sex, kissing and fingering",
      "daisy chain cunnilingus",
-     "one on her back, the others kissing her body"
+     "one on her back, the others kissing her body",
+     "breast sucking, fingering",
+     "strap-on, the others watching"
     ],
     "boys": [
      "group sex, fellatio",
      "anal sex, the others watching",
-     "group sex, a tangle of men"
+     "group sex, a tangle of men",
+     "rimming",
+     "fellatio, anal sex at once"
     ],
     "harem": [
      "cooperative fellatio",
@@ -1439,7 +1430,10 @@
      "one bent over the clay table, the others kissing her",
      "one riding him, the others kissing him",
      "the girls taking turns",
-     "group sex, him in the middle"
+     "group sex, him in the middle",
+     "he licks one while another rides",
+     "cooperative paizuri",
+     "the girls lined up, doggystyle"
     ],
     "reverse": [
      "fellatio, the others waiting",
@@ -1447,14 +1441,19 @@
      "spitroast on the clay table",
      "double penetration",
      "spitroast",
-     "taking turns with her"
+     "taking turns with her",
+     "eiffel tower",
+     "breast sucking on both sides",
+     "she rides one, fellatio on another"
     ],
     "mixed": [
      "group sex",
      "couples side by side",
      "group sex around the clay table",
      "orgy",
-     "partner swap"
+     "partner swap",
+     "daisy chain",
+     "couples side by side, 69"
     ],
     "furry": [
      "masturbating",
@@ -1490,6 +1489,21 @@
      "futanari on male, anal sex",
      "he rides the futanari",
      "sex, he penetrates her pussy, her penis erect"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex on the clay table",
+     "sex, missionary",
+     "cowgirl position",
+     "doggystyle",
+     "mating press",
+     "interspecies sex, from behind",
+     "69",
+     "breast sucking"
     ]
    },
    "settings": [
@@ -1597,30 +1611,14 @@
      "the women in punk outfit, the men in tattooed, tank top"
     ],
     "furry": [
-     "wolf, female, tattooed, tank top",
-     "wolf, male, tattooed, tank top",
-     "fox, female, punk outfit",
-     "fox, male, leather vest",
-     "cat, female, tattooed, tank top",
-     "cat, male, tattooed, tank top",
-     "rabbit, female, punk outfit",
-     "rabbit, male, leather vest",
-     "tiger, female, tattooed, tank top",
-     "tiger, male, tattooed, tank top",
-     "deer, female, punk outfit",
-     "deer, male, leather vest",
-     "dragon, female, tattooed, tank top",
-     "dragon, male, tattooed, tank top",
-     "lion, female, punk outfit",
-     "lion, male, leather vest",
-     "horse, female, tattooed, tank top",
-     "horse, male, tattooed, tank top",
-     "husky, female, punk outfit",
-     "husky, male, leather vest",
-     "lizard, female, tattooed, tank top",
-     "lizard, male, tattooed, tank top",
-     "leopard, female, punk outfit",
-     "leopard, male, leather vest"
+     "dragon, female, eastern dragon, scales, whiskers, horns, punk outfit",
+     "tiger, male, orange fur, black stripes, white muzzle, leather vest",
+     "fox, male, arctic fox, white fur, leather vest",
+     "cat, male, tabby fur, long tail, whiskers, tattooed, tank top",
+     "bull, female, cow, horns, cow print, hooves, tattooed, tank top",
+     "lizard, female, green scales, long tail, slit pupils, tattooed, tank top",
+     "shark, male, grey skin, dorsal fin, gills, sharp teeth, tail fin, leather vest",
+     "wolf, female, black fur, amber eyes, punk outfit"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, tattooed, tank top",
@@ -1630,6 +1628,14 @@
      "1girl, solo, demon girl, horns, tail, tattooed, tank top",
      "1boy, solo, oni, horns, leather vest",
      "1girl, solo, kitsune, fox ears, fox tail, tattooed, tank top"
+    ],
+    "human_furry": [
+     "woman in punk outfit, with a male leopard anthro, snow leopard, thick spotted fur",
+     "man in tattooed, tank top, with a female fox anthro, orange fur, white chest fur, fluffy tail",
+     "man in leather vest, with a female cat anthro, black cat, green eyes",
+     "man in tattooed, tank top, with a female cat anthro, tabby fur, long tail, whiskers",
+     "woman in punk outfit, with a male owl anthro, feathers, wings, large eyes, beak",
+     "woman in punk outfit, with a male tiger anthro, orange fur, black stripes, white muzzle"
     ],
     "none": []
    },
@@ -1741,30 +1747,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "crocodile, male, armored scales, long snout, thick tail, unbuttoned jeans, shirtless",
+     "wolf, male, grey fur, bushy tail, pointed ears, boxer briefs",
+     "mouse, male, round ears, long thin tail, grey fur, towel around the waist",
+     "deer, male, antlers, brown fur, towel around the waist",
+     "bear, female, brown fur, round ears, burly, lace lingerie",
+     "cheetah, female, spotted fur, tear marks, oversized shirt, bare legs",
+     "horse, male, black horse, flowing mane, towel around the waist",
+     "horse, female, mane, hooves, long tail, oversized shirt, bare legs"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -1774,6 +1764,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "man in boxer briefs, with a female rabbit anthro, long ears, fluffy tail, white fur",
+     "man in boxer briefs, with a female orca anthro, black and white skin, dorsal fin, tail fin",
+     "man in shirt open, bare chest, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "man in boxer briefs, with a female cheetah anthro, spotted fur, tear marks",
+     "woman in silk robe, loosely tied, with a male mouse anthro, round ears, long thin tail, grey fur",
+     "woman in silk robe, loosely tied, with a male shark anthro, grey skin, dorsal fin, gills, sharp teeth, tail fin"
     ]
    },
    "actions": {
@@ -1933,30 +1931,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "fox, female, arctic fox, white fur, nude",
+     "wolf, male, grey fur, bushy tail, pointed ears, nude",
+     "horse, male, black horse, flowing mane, nude",
+     "owl, female, feathers, wings, large eyes, beak, nude",
+     "tiger, female, orange fur, black stripes, white muzzle, nude",
+     "crocodile, male, armored scales, long snout, thick tail, nude",
+     "bear, female, brown fur, round ears, burly, nude",
+     "fox, male, arctic fox, white fur, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -1966,6 +1948,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male fox anthro, arctic fox, white fur",
+     "nude woman, with a male dragon anthro, scales, horns, wings, long tail",
+     "nude man, with a female zebra anthro, black and white stripes, mane, hooves",
+     "nude woman, with a male otter anthro, sleek brown fur, webbed paws, thick tail",
+     "nude man, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "nude man, with a female bear anthro, brown fur, round ears, burly"
     ]
    },
    "actions": {
@@ -2119,30 +2109,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "wolf, male, grey fur, bushy tail, pointed ears, nude",
+     "otter, male, sleek brown fur, webbed paws, thick tail, nude",
+     "cat, female, tabby fur, long tail, whiskers, nude",
+     "deer, female, spotted back, white tail, large ears, nude",
+     "deer, male, antlers, brown fur, nude",
+     "bull, female, cow, horns, cow print, hooves, nude",
+     "leopard, female, spotted fur, long tail, nude",
+     "cheetah, male, spotted fur, tear marks, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -2152,6 +2126,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude man, with a female raven anthro, black feathers, wings, beak",
+     "nude woman, with a male leopard anthro, snow leopard, thick spotted fur",
+     "nude woman, with a male leopard anthro, spotted fur, long tail",
+     "nude woman, with a male cheetah anthro, spotted fur, tear marks",
+     "nude woman, with a male lion anthro, thick mane, tawny fur",
+     "nude woman, with a male wolf anthro, black fur, amber eyes"
     ]
    },
    "actions": {
@@ -2171,6 +2153,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "standing sex, lifted against the flash wall",
      "sex from behind, standing, hands on the flash wall",
      "sex, missionary",
@@ -2179,34 +2166,64 @@
      "doggystyle",
      "spooning sex",
      "69",
-     "mating press"
+     "mating press",
+     "amazon position",
+     "piledriver",
+     "prone bone",
+     "lotus position",
+     "legs over head",
+     "face sitting",
+     "paizuri",
+     "breast sucking during sex",
+     "fingering, kissing",
+     "cunnilingus, legs spread",
+     "thigh sex"
     ],
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "fingering, pressed against the flash wall",
      "tribadism",
      "69",
-     "face sitting"
+     "face sitting",
+     "scissoring",
+     "fingering each other",
+     "strap-on sex",
+     "cunnilingus, legs spread",
+     "rimming"
     ],
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "anal sex, standing against the flash wall",
      "anal sex, missionary",
      "anal sex from behind",
      "anal sex, riding",
-     "prone bone"
+     "prone bone",
+     "69",
+     "rimming",
+     "spooning, anal sex",
+     "legs over shoulders, anal sex",
+     "mutual handjob"
     ],
     "girls": [
      "group sex, kissing and fingering",
      "daisy chain cunnilingus",
-     "one on her back, the others kissing her body"
+     "one on her back, the others kissing her body",
+     "breast sucking, fingering",
+     "strap-on, the others watching"
     ],
     "boys": [
      "group sex, fellatio",
      "anal sex, the others watching",
-     "group sex, a tangle of men"
+     "group sex, a tangle of men",
+     "rimming",
+     "fellatio, anal sex at once"
     ],
     "harem": [
      "cooperative fellatio",
@@ -2214,7 +2231,10 @@
      "standing sex against the flash wall, the others kissing his neck",
      "one riding him, the others kissing him",
      "the girls taking turns",
-     "group sex, him in the middle"
+     "group sex, him in the middle",
+     "he licks one while another rides",
+     "cooperative paizuri",
+     "the girls lined up, doggystyle"
     ],
     "reverse": [
      "fellatio, the others waiting",
@@ -2222,13 +2242,18 @@
      "standing sex against the flash wall, the others watching",
      "double penetration",
      "spitroast",
-     "taking turns with her"
+     "taking turns with her",
+     "eiffel tower",
+     "breast sucking on both sides",
+     "she rides one, fellatio on another"
     ],
     "mixed": [
      "group sex",
      "couples side by side",
      "orgy",
-     "partner swap"
+     "partner swap",
+     "daisy chain",
+     "couples side by side, 69"
     ],
     "furry": [
      "masturbating",
@@ -2264,6 +2289,22 @@
      "futanari on male, anal sex",
      "he rides the futanari",
      "sex, he penetrates her pussy, her penis erect"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "standing sex against the flash wall",
+     "lifted against the flash wall",
+     "sex, missionary",
+     "cowgirl position",
+     "doggystyle",
+     "mating press",
+     "interspecies sex, from behind",
+     "69",
+     "breast sucking"
     ]
    },
    "settings": [
@@ -2372,30 +2413,14 @@
      "the women in oversized knit sweater, the men in open silk shirt"
     ],
     "furry": [
-     "wolf, female, silk robe",
-     "wolf, male, open silk shirt",
-     "fox, female, oversized knit sweater",
-     "fox, male, unbuttoned jeans",
-     "cat, female, silk robe",
-     "cat, male, open silk shirt",
-     "rabbit, female, oversized knit sweater",
-     "rabbit, male, unbuttoned jeans",
-     "tiger, female, silk robe",
-     "tiger, male, open silk shirt",
-     "deer, female, oversized knit sweater",
-     "deer, male, unbuttoned jeans",
-     "dragon, female, silk robe",
-     "dragon, male, open silk shirt",
-     "lion, female, oversized knit sweater",
-     "lion, male, unbuttoned jeans",
-     "horse, female, silk robe",
-     "horse, male, open silk shirt",
-     "husky, female, oversized knit sweater",
-     "husky, male, unbuttoned jeans",
-     "lizard, female, silk robe",
-     "lizard, male, open silk shirt",
-     "leopard, female, oversized knit sweater",
-     "leopard, male, unbuttoned jeans"
+     "dragon, male, eastern dragon, scales, whiskers, horns, unbuttoned jeans",
+     "bull, male, bull, horns, nose ring, hooves, muscular, unbuttoned jeans",
+     "bull, female, cow, horns, cow print, hooves, silk robe",
+     "husky, male, husky markings, blue eyes, curled tail, unbuttoned jeans",
+     "dragon, female, eastern dragon, scales, whiskers, horns, oversized knit sweater",
+     "husky, female, husky markings, blue eyes, curled tail, silk robe",
+     "crocodile, male, armored scales, long snout, thick tail, unbuttoned jeans",
+     "bear, female, brown fur, round ears, burly, silk robe"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, silk robe",
@@ -2405,6 +2430,14 @@
      "1girl, solo, demon girl, horns, tail, silk robe",
      "1boy, solo, oni, horns, unbuttoned jeans",
      "1girl, solo, kitsune, fox ears, fox tail, silk robe"
+    ],
+    "human_furry": [
+     "man in unbuttoned jeans, with a female horse anthro, black horse, flowing mane",
+     "woman in oversized knit sweater, with a male bear anthro, brown fur, round ears, burly",
+     "woman in silk robe, with a male horse anthro, mane, hooves, long tail",
+     "woman in oversized knit sweater, with a male lizard anthro, green scales, long tail, slit pupils",
+     "man in open silk shirt, with a female cheetah anthro, spotted fur, tear marks",
+     "man in unbuttoned jeans, with a female fox anthro, arctic fox, white fur"
     ],
     "none": []
    },
@@ -2516,30 +2549,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "dragon, female, scales, horns, wings, long tail, lace lingerie",
+     "bull, female, cow, horns, cow print, hooves, lace lingerie",
+     "leopard, female, snow leopard, thick spotted fur, unbuttoned blouse, bra visible",
+     "dragon, female, eastern dragon, scales, whiskers, horns, silk robe, loosely tied",
+     "lizard, male, green scales, long tail, slit pupils, towel around the waist",
+     "tiger, male, orange fur, black stripes, white muzzle, unbuttoned jeans, shirtless",
+     "cat, male, black cat, green eyes, towel around the waist",
+     "deer, female, spotted back, white tail, large ears, lace lingerie"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -2549,6 +2566,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "man in towel around the waist, with a female fox anthro, arctic fox, white fur",
+     "woman in unbuttoned blouse, bra visible, with a male orca anthro, black and white skin, dorsal fin, tail fin",
+     "man in towel around the waist, with a female wolf anthro, black fur, amber eyes",
+     "man in unbuttoned jeans, shirtless, with a female leopard anthro, snow leopard, thick spotted fur",
+     "man in boxer briefs, with a female cat anthro, tabby fur, long tail, whiskers",
+     "man in boxer briefs, with a female rabbit anthro, long ears, fluffy tail, white fur"
     ]
    },
    "actions": {
@@ -2708,30 +2733,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "horse, female, black horse, flowing mane, nude",
+     "tiger, female, orange fur, black stripes, white muzzle, nude",
+     "leopard, female, spotted fur, long tail, nude",
+     "husky, female, husky markings, blue eyes, curled tail, nude",
+     "bull, female, cow, horns, cow print, hooves, nude",
+     "rabbit, male, long ears, fluffy tail, white fur, nude",
+     "wolf, female, grey fur, bushy tail, pointed ears, nude",
+     "horse, male, black horse, flowing mane, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -2741,6 +2750,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male cat anthro, tabby fur, long tail, whiskers",
+     "nude man, with a female otter anthro, sleek brown fur, webbed paws, thick tail",
+     "nude woman, with a male dragon anthro, scales, horns, wings, long tail",
+     "nude man, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "nude woman, with a male lizard anthro, green scales, long tail, slit pupils",
+     "nude man, with a female owl anthro, feathers, wings, large eyes, beak"
     ]
    },
    "actions": {
@@ -2898,30 +2915,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "orca, male, black and white skin, dorsal fin, tail fin, nude",
+     "cat, female, tabby fur, long tail, whiskers, nude",
+     "dragon, male, eastern dragon, scales, whiskers, horns, nude",
+     "cat, female, black cat, green eyes, nude",
+     "cat, male, black cat, green eyes, nude",
+     "horse, female, mane, hooves, long tail, nude",
+     "deer, male, antlers, brown fur, nude",
+     "dragon, female, eastern dragon, scales, whiskers, horns, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -2931,6 +2932,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male orca anthro, black and white skin, dorsal fin, tail fin",
+     "nude man, with a female shark anthro, grey skin, dorsal fin, gills, sharp teeth, tail fin",
+     "nude man, with a female crocodile anthro, armored scales, long snout, thick tail",
+     "nude man, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "nude woman, with a male eagle anthro, feathers, wings, beak, talons, white head",
+     "nude man, with a female lizard anthro, green scales, long tail, slit pupils"
     ]
    },
    "actions": {
@@ -2951,6 +2960,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the velvet chair, she sits on his lap",
      "reverse cowgirl on the velvet chair",
      "sex, missionary",
@@ -2959,54 +2973,92 @@
      "doggystyle",
      "spooning sex",
      "69",
-     "mating press"
+     "mating press",
+     "amazon position",
+     "piledriver",
+     "prone bone",
+     "lotus position",
+     "legs over head",
+     "face sitting",
+     "paizuri",
+     "breast sucking during sex",
+     "fingering, kissing",
+     "cunnilingus, legs spread",
+     "thigh sex"
     ],
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "straddling on the velvet chair, fingering",
      "tribadism",
      "69",
-     "face sitting"
+     "face sitting",
+     "scissoring",
+     "fingering each other",
+     "strap-on sex",
+     "cunnilingus, legs spread",
+     "rimming"
     ],
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "riding him on the velvet chair",
      "anal sex, missionary",
      "anal sex from behind",
      "anal sex, riding",
-     "prone bone"
+     "prone bone",
+     "69",
+     "rimming",
+     "spooning, anal sex",
+     "legs over shoulders, anal sex",
+     "mutual handjob"
     ],
     "girls": [
      "group sex, kissing and fingering",
      "daisy chain cunnilingus",
-     "one on her back, the others kissing her body"
+     "one on her back, the others kissing her body",
+     "breast sucking, fingering",
+     "strap-on, the others watching"
     ],
     "boys": [
      "group sex, fellatio",
      "anal sex, the others watching",
-     "group sex, a tangle of men"
+     "group sex, a tangle of men",
+     "rimming",
+     "fellatio, anal sex at once"
     ],
     "harem": [
      "cooperative fellatio",
      "the girls kissing him all over",
      "one riding him, the others kissing him",
      "the girls taking turns",
-     "group sex, him in the middle"
+     "group sex, him in the middle",
+     "he licks one while another rides",
+     "cooperative paizuri",
+     "the girls lined up, doggystyle"
     ],
     "reverse": [
      "fellatio, the others waiting",
      "group sex, her in the middle",
      "double penetration",
      "spitroast",
-     "taking turns with her"
+     "taking turns with her",
+     "eiffel tower",
+     "breast sucking on both sides",
+     "she rides one, fellatio on another"
     ],
     "mixed": [
      "group sex",
      "couples side by side",
      "orgy",
-     "partner swap"
+     "partner swap",
+     "daisy chain",
+     "couples side by side, 69"
     ],
     "furry": [
      "masturbating",
@@ -3041,6 +3093,20 @@
      "futanari on male, anal sex",
      "he rides the futanari",
      "sex, he penetrates her pussy, her penis erect"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex, missionary",
+     "cowgirl position",
+     "doggystyle",
+     "mating press",
+     "interspecies sex, from behind",
+     "69",
+     "breast sucking"
     ]
    },
    "settings": [
@@ -3148,30 +3214,14 @@
      "the women in black turtleneck, the men in apron, rolled sleeves"
     ],
     "furry": [
-     "wolf, female, apron, rolled sleeves",
-     "wolf, male, apron, rolled sleeves",
-     "fox, female, black turtleneck",
-     "fox, male, black t-shirt",
-     "cat, female, apron, rolled sleeves",
-     "cat, male, apron, rolled sleeves",
-     "rabbit, female, black turtleneck",
-     "rabbit, male, black t-shirt",
-     "tiger, female, apron, rolled sleeves",
-     "tiger, male, apron, rolled sleeves",
-     "deer, female, black turtleneck",
-     "deer, male, black t-shirt",
-     "dragon, female, apron, rolled sleeves",
-     "dragon, male, apron, rolled sleeves",
-     "lion, female, black turtleneck",
-     "lion, male, black t-shirt",
-     "horse, female, apron, rolled sleeves",
-     "horse, male, apron, rolled sleeves",
-     "husky, female, black turtleneck",
-     "husky, male, black t-shirt",
-     "lizard, female, apron, rolled sleeves",
-     "lizard, male, apron, rolled sleeves",
-     "leopard, female, black turtleneck",
-     "leopard, male, black t-shirt"
+     "bull, female, cow, horns, cow print, hooves, apron, rolled sleeves",
+     "fox, male, arctic fox, white fur, black t-shirt",
+     "otter, male, sleek brown fur, webbed paws, thick tail, black t-shirt",
+     "dragon, female, eastern dragon, scales, whiskers, horns, black turtleneck",
+     "wolf, male, black fur, amber eyes, black t-shirt",
+     "horse, female, mane, hooves, long tail, apron, rolled sleeves",
+     "lizard, female, green scales, long tail, slit pupils, apron, rolled sleeves",
+     "wolf, female, grey fur, bushy tail, pointed ears, apron, rolled sleeves"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, apron, rolled sleeves",
@@ -3181,6 +3231,14 @@
      "1girl, solo, demon girl, horns, tail, apron, rolled sleeves",
      "1boy, solo, oni, horns, black t-shirt",
      "1girl, solo, kitsune, fox ears, fox tail, apron, rolled sleeves"
+    ],
+    "human_furry": [
+     "man in apron, rolled sleeves, with a female lizard anthro, green scales, long tail, slit pupils",
+     "man in apron, rolled sleeves, with a female otter anthro, sleek brown fur, webbed paws, thick tail",
+     "woman in black turtleneck, with a male shark anthro, grey skin, dorsal fin, gills, sharp teeth, tail fin",
+     "man in apron, rolled sleeves, with a female cat anthro, tabby fur, long tail, whiskers",
+     "woman in black turtleneck, with a male cat anthro, black cat, green eyes",
+     "man in apron, rolled sleeves, with a female owl anthro, feathers, wings, large eyes, beak"
     ],
     "none": []
    },
@@ -3291,30 +3349,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "husky, male, husky markings, blue eyes, curled tail, towel around the waist",
+     "cat, male, black cat, green eyes, towel around the waist",
+     "eagle, female, feathers, wings, beak, talons, white head, oversized shirt, bare legs",
+     "bull, male, bull, horns, nose ring, hooves, muscular, towel around the waist",
+     "horse, female, mane, hooves, long tail, oversized shirt, bare legs",
+     "bear, female, brown fur, round ears, burly, lace lingerie",
+     "lion, male, thick mane, tawny fur, towel around the waist",
+     "crocodile, male, armored scales, long snout, thick tail, unbuttoned jeans, shirtless"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -3324,6 +3366,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "man in unbuttoned jeans, shirtless, with a female cat anthro, black cat, green eyes",
+     "man in boxer briefs, with a female cheetah anthro, spotted fur, tear marks",
+     "woman in silk robe, loosely tied, with a male husky anthro, husky markings, blue eyes, curled tail",
+     "man in shirt open, bare chest, with a female bull anthro, cow, horns, cow print, hooves",
+     "man in towel around the waist, with a female wolf anthro, black fur, amber eyes",
+     "woman in silk robe, loosely tied, with a male lion anthro, thick mane, tawny fur"
     ]
    },
    "actions": {
@@ -3479,30 +3529,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "tiger, female, orange fur, black stripes, white muzzle, nude",
+     "fox, female, arctic fox, white fur, nude",
+     "cat, female, black cat, green eyes, nude",
+     "husky, male, husky markings, blue eyes, curled tail, nude",
+     "deer, male, antlers, brown fur, nude",
+     "horse, male, mane, hooves, long tail, nude",
+     "dragon, male, scales, horns, wings, long tail, nude",
+     "rabbit, female, long ears, fluffy tail, white fur, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -3512,6 +3546,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male dragon anthro, eastern dragon, scales, whiskers, horns",
+     "nude man, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "nude woman, with a male fox anthro, orange fur, white chest fur, fluffy tail",
+     "nude woman, with a male horse anthro, mane, hooves, long tail",
+     "nude woman, with a male owl anthro, feathers, wings, large eyes, beak",
+     "nude man, with a female wolf anthro, black fur, amber eyes"
     ]
    },
    "actions": {
@@ -3661,30 +3703,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "bull, female, cow, horns, cow print, hooves, nude",
+     "cheetah, male, spotted fur, tear marks, nude",
+     "raven, female, black feathers, wings, beak, nude",
+     "bull, male, bull, horns, nose ring, hooves, muscular, nude",
+     "horse, female, black horse, flowing mane, nude",
+     "dragon, male, eastern dragon, scales, whiskers, horns, nude",
+     "raven, male, black feathers, wings, beak, nude",
+     "lion, male, thick mane, tawny fur, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -3694,6 +3720,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male bull anthro, bull, horns, nose ring, hooves, muscular",
+     "nude woman, with a male wolf anthro, black fur, amber eyes",
+     "nude man, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "nude man, with a female bull anthro, cow, horns, cow print, hooves",
+     "nude woman, with a male zebra anthro, black and white stripes, mane, hooves",
+     "nude man, with a female zebra anthro, black and white stripes, mane, hooves"
     ]
    },
    "actions": {
@@ -3711,6 +3745,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the developing table",
      "bent over the developing table, sex from behind",
      "standing sex, lifted against the drying line",
@@ -3719,12 +3758,17 @@
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "cunnilingus on the developing table",
      "fingering, pressed against the drying line"
     ],
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "bent over the developing table, anal sex",
      "anal sex, standing against the drying line"
     ],
@@ -3777,6 +3821,16 @@
      "fellatio, both ways",
      "futanari on male, bent over the developing table",
      "futanari on male, against the drying line"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex on the developing table",
+     "standing sex against the drying line",
+     "lifted against the drying line"
     ]
    },
    "settings": [
@@ -3883,30 +3937,14 @@
      "the women in sweater, the men in shirt, vest"
     ],
     "furry": [
-     "wolf, female, blouse, skirt",
-     "wolf, male, shirt, vest",
-     "fox, female, sweater",
-     "fox, male, sweater",
-     "cat, female, blouse, skirt",
-     "cat, male, shirt, vest",
-     "rabbit, female, sweater",
-     "rabbit, male, sweater",
-     "tiger, female, blouse, skirt",
-     "tiger, male, shirt, vest",
-     "deer, female, sweater",
-     "deer, male, sweater",
-     "dragon, female, blouse, skirt",
-     "dragon, male, shirt, vest",
-     "lion, female, sweater",
-     "lion, male, sweater",
-     "horse, female, blouse, skirt",
-     "horse, male, shirt, vest",
-     "husky, female, sweater",
-     "husky, male, sweater",
-     "lizard, female, blouse, skirt",
-     "lizard, male, shirt, vest",
-     "leopard, female, sweater",
-     "leopard, male, sweater"
+     "orca, male, black and white skin, dorsal fin, tail fin, sweater",
+     "orca, female, black and white skin, dorsal fin, tail fin, blouse, skirt",
+     "raven, female, black feathers, wings, beak, blouse, skirt",
+     "bull, female, cow, horns, cow print, hooves, blouse, skirt",
+     "tiger, female, orange fur, black stripes, white muzzle, blouse, skirt",
+     "shark, male, grey skin, dorsal fin, gills, sharp teeth, tail fin, sweater",
+     "crocodile, male, armored scales, long snout, thick tail, sweater",
+     "mouse, female, round ears, long thin tail, grey fur, blouse, skirt"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, blouse, skirt",
@@ -3916,6 +3954,14 @@
      "1girl, solo, demon girl, horns, tail, blouse, skirt",
      "1boy, solo, oni, horns, sweater",
      "1girl, solo, kitsune, fox ears, fox tail, blouse, skirt"
+    ],
+    "human_furry": [
+     "woman in sweater, with a male crocodile anthro, armored scales, long snout, thick tail",
+     "woman in sweater, with a male lizard anthro, green scales, long tail, slit pupils",
+     "woman in sweater, with a male owl anthro, feathers, wings, large eyes, beak",
+     "man in shirt, vest, with a female rabbit anthro, long ears, fluffy tail, white fur",
+     "man in shirt, vest, with a female raven anthro, black feathers, wings, beak",
+     "man in shirt, vest, with a female orca anthro, black and white skin, dorsal fin, tail fin"
     ],
     "none": []
    },
@@ -4027,30 +4073,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "dragon, male, scales, horns, wings, long tail, boxer briefs",
+     "eagle, male, feathers, wings, beak, talons, white head, unbuttoned jeans, shirtless",
+     "bull, female, cow, horns, cow print, hooves, lace lingerie",
+     "husky, male, husky markings, blue eyes, curled tail, towel around the waist",
+     "mouse, female, round ears, long thin tail, grey fur, lace lingerie",
+     "otter, female, sleek brown fur, webbed paws, thick tail, oversized shirt, bare legs",
+     "leopard, female, snow leopard, thick spotted fur, unbuttoned blouse, bra visible",
+     "wolf, female, grey fur, bushy tail, pointed ears, lace lingerie"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -4060,6 +4090,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "man in boxer briefs, with a female rabbit anthro, long ears, fluffy tail, white fur",
+     "man in boxer briefs, with a female raven anthro, black feathers, wings, beak",
+     "man in shirt open, bare chest, with a female fox anthro, orange fur, white chest fur, fluffy tail",
+     "man in boxer briefs, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "woman in unbuttoned blouse, bra visible, with a male eagle anthro, feathers, wings, beak, talons, white head",
+     "woman in unbuttoned blouse, bra visible, with a male crocodile anthro, armored scales, long snout, thick tail"
     ]
    },
    "actions": {
@@ -4217,30 +4255,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "husky, male, husky markings, blue eyes, curled tail, nude",
+     "deer, male, antlers, brown fur, nude",
+     "eagle, female, feathers, wings, beak, talons, white head, nude",
+     "dragon, female, scales, horns, wings, long tail, nude",
+     "leopard, female, snow leopard, thick spotted fur, nude",
+     "otter, male, sleek brown fur, webbed paws, thick tail, nude",
+     "shark, male, grey skin, dorsal fin, gills, sharp teeth, tail fin, nude",
+     "rabbit, female, long ears, fluffy tail, white fur, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -4250,6 +4272,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male lizard anthro, green scales, long tail, slit pupils",
+     "nude woman, with a male dragon anthro, eastern dragon, scales, whiskers, horns",
+     "nude man, with a female tiger anthro, orange fur, black stripes, white muzzle",
+     "nude man, with a female orca anthro, black and white skin, dorsal fin, tail fin",
+     "nude man, with a female fox anthro, arctic fox, white fur",
+     "nude woman, with a male zebra anthro, black and white stripes, mane, hooves"
     ]
    },
    "actions": {
@@ -4401,30 +4431,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "dragon, female, scales, horns, wings, long tail, nude",
+     "fox, female, arctic fox, white fur, nude",
+     "lion, male, thick mane, tawny fur, nude",
+     "owl, male, feathers, wings, large eyes, beak, nude",
+     "raven, female, black feathers, wings, beak, nude",
+     "mouse, female, round ears, long thin tail, grey fur, nude",
+     "leopard, male, spotted fur, long tail, nude",
+     "bull, male, bull, horns, nose ring, hooves, muscular, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -4434,6 +4448,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male fox anthro, arctic fox, white fur",
+     "nude woman, with a male mouse anthro, round ears, long thin tail, grey fur",
+     "nude woman, with a male wolf anthro, grey fur, bushy tail, pointed ears",
+     "nude man, with a female wolf anthro, grey fur, bushy tail, pointed ears",
+     "nude woman, with a male orca anthro, black and white skin, dorsal fin, tail fin",
+     "nude man, with a female bear anthro, brown fur, round ears, burly"
     ]
    },
    "actions": {
@@ -4453,6 +4475,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the piano bench, she sits on his lap",
      "reverse cowgirl on the piano bench",
      "sex on the piano",
@@ -4463,6 +4490,8 @@
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "straddling on the piano bench, fingering",
      "cunnilingus on the piano",
      "fingering, pressed against the wall"
@@ -4470,6 +4499,9 @@
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "riding him on the piano bench",
      "bent over the piano, anal sex",
      "anal sex, standing against the wall"
@@ -4524,6 +4556,16 @@
      "fellatio, both ways",
      "futanari on male, bent over the piano",
      "futanari on male, against the wall"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex on the piano",
+     "standing sex against the wall",
+     "lifted against the wall"
     ]
    },
    "settings": [
@@ -4632,30 +4674,14 @@
      "the women in linen dress, the men in sculptor's apron, dust"
     ],
     "furry": [
-     "wolf, female, sculptor's apron, dust",
-     "wolf, male, sculptor's apron, dust",
-     "fox, female, linen dress",
-     "fox, male, shirtless, dusty",
-     "cat, female, sculptor's apron, dust",
-     "cat, male, sculptor's apron, dust",
-     "rabbit, female, linen dress",
-     "rabbit, male, shirtless, dusty",
-     "tiger, female, sculptor's apron, dust",
-     "tiger, male, sculptor's apron, dust",
-     "deer, female, linen dress",
-     "deer, male, shirtless, dusty",
-     "dragon, female, sculptor's apron, dust",
-     "dragon, male, sculptor's apron, dust",
-     "lion, female, linen dress",
-     "lion, male, shirtless, dusty",
-     "horse, female, sculptor's apron, dust",
-     "horse, male, sculptor's apron, dust",
-     "husky, female, linen dress",
-     "husky, male, shirtless, dusty",
-     "lizard, female, sculptor's apron, dust",
-     "lizard, male, sculptor's apron, dust",
-     "leopard, female, linen dress",
-     "leopard, male, shirtless, dusty"
+     "crocodile, female, armored scales, long snout, thick tail, sculptor's apron, dust",
+     "horse, male, black horse, flowing mane, shirtless, dusty",
+     "mouse, female, round ears, long thin tail, grey fur, sculptor's apron, dust",
+     "lizard, female, green scales, long tail, slit pupils, sculptor's apron, dust",
+     "horse, female, mane, hooves, long tail, sculptor's apron, dust",
+     "rabbit, male, long ears, fluffy tail, white fur, shirtless, dusty",
+     "shark, female, grey skin, dorsal fin, gills, sharp teeth, tail fin, sculptor's apron, dust",
+     "cat, female, black cat, green eyes, linen dress"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, sculptor's apron, dust",
@@ -4665,6 +4691,14 @@
      "1girl, solo, demon girl, horns, tail, sculptor's apron, dust",
      "1boy, solo, oni, horns, shirtless, dusty",
      "1girl, solo, kitsune, fox ears, fox tail, sculptor's apron, dust"
+    ],
+    "human_furry": [
+     "woman in linen dress, with a male orca anthro, black and white skin, dorsal fin, tail fin",
+     "woman in sculptor's apron, dust, with a male leopard anthro, spotted fur, long tail",
+     "man in sculptor's apron, dust, with a female fox anthro, orange fur, white chest fur, fluffy tail",
+     "man in sculptor's apron, dust, with a female horse anthro, mane, hooves, long tail",
+     "man in sculptor's apron, dust, with a female eagle anthro, feathers, wings, beak, talons, white head",
+     "man in sculptor's apron, dust, with a female lizard anthro, green scales, long tail, slit pupils"
     ],
     "none": []
    },
@@ -4776,30 +4810,14 @@
      "she in silk robe, loosely tied, he in shirt open, bare chest"
     ],
     "furry": [
-     "wolf, female, lace lingerie",
-     "wolf, male, shirt open, bare chest",
-     "fox, female, silk robe, loosely tied",
-     "fox, male, towel around the waist",
-     "cat, female, oversized shirt, bare legs",
-     "cat, male, boxer briefs",
-     "rabbit, female, unbuttoned blouse, bra visible",
-     "rabbit, male, unbuttoned jeans, shirtless",
-     "tiger, female, lace lingerie",
-     "tiger, male, shirt open, bare chest",
-     "deer, female, silk robe, loosely tied",
-     "deer, male, towel around the waist",
-     "dragon, female, oversized shirt, bare legs",
-     "dragon, male, boxer briefs",
-     "lion, female, unbuttoned blouse, bra visible",
-     "lion, male, unbuttoned jeans, shirtless",
-     "horse, female, lace lingerie",
-     "horse, male, shirt open, bare chest",
-     "husky, female, silk robe, loosely tied",
-     "husky, male, towel around the waist",
-     "lizard, female, oversized shirt, bare legs",
-     "lizard, male, boxer briefs",
-     "leopard, female, unbuttoned blouse, bra visible",
-     "leopard, male, unbuttoned jeans, shirtless"
+     "eagle, male, feathers, wings, beak, talons, white head, unbuttoned jeans, shirtless",
+     "raven, female, black feathers, wings, beak, oversized shirt, bare legs",
+     "deer, female, spotted back, white tail, large ears, lace lingerie",
+     "bear, male, brown fur, round ears, burly, towel around the waist",
+     "fox, female, orange fur, white chest fur, fluffy tail, lace lingerie",
+     "mouse, male, round ears, long thin tail, grey fur, towel around the waist",
+     "eagle, female, feathers, wings, beak, talons, white head, oversized shirt, bare legs",
+     "leopard, female, spotted fur, long tail, oversized shirt, bare legs"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, lace lingerie",
@@ -4809,6 +4827,14 @@
      "1girl, solo, demon girl, horns, tail, lace lingerie",
      "1boy, solo, oni, horns, towel around the waist",
      "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ],
+    "human_furry": [
+     "woman in unbuttoned blouse, bra visible, with a male fox anthro, arctic fox, white fur",
+     "man in shirt open, bare chest, with a female lizard anthro, green scales, long tail, slit pupils",
+     "man in boxer briefs, with a female leopard anthro, spotted fur, long tail",
+     "man in shirt open, bare chest, with a female husky anthro, husky markings, blue eyes, curled tail",
+     "woman in silk robe, loosely tied, with a male lion anthro, thick mane, tawny fur",
+     "woman in unbuttoned blouse, bra visible, with a male zebra anthro, black and white stripes, mane, hooves"
     ]
    },
    "actions": {
@@ -4968,30 +4994,14 @@
      "nude, she is athletic, he is bara, hairy chest"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "cheetah, male, spotted fur, tear marks, nude",
+     "rabbit, male, long ears, fluffy tail, white fur, nude",
+     "shark, male, grey skin, dorsal fin, gills, sharp teeth, tail fin, nude",
+     "cat, female, black cat, green eyes, nude",
+     "crocodile, female, armored scales, long snout, thick tail, nude",
+     "bear, female, brown fur, round ears, burly, nude",
+     "dragon, female, scales, horns, wings, long tail, nude",
+     "bull, female, cow, horns, cow print, hooves, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -5001,6 +5011,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male fox anthro, arctic fox, white fur",
+     "nude man, with a female horse anthro, black horse, flowing mane",
+     "nude man, with a female horse anthro, mane, hooves, long tail",
+     "nude man, with a female deer anthro, spotted back, white tail, large ears",
+     "nude man, with a female raven anthro, black feathers, wings, beak",
+     "nude man, with a female fox anthro, orange fur, white chest fur, fluffy tail"
     ]
    },
    "actions": {
@@ -5158,30 +5176,14 @@
      "half undressed"
     ],
     "furry": [
-     "wolf, female, nude",
-     "wolf, male, nude",
-     "fox, female, nude",
-     "fox, male, nude",
-     "cat, female, nude",
-     "cat, male, nude",
-     "rabbit, female, nude",
-     "rabbit, male, nude",
-     "tiger, female, nude",
-     "tiger, male, nude",
-     "deer, female, nude",
-     "deer, male, nude",
-     "dragon, female, nude",
-     "dragon, male, nude",
-     "lion, female, nude",
-     "lion, male, nude",
-     "horse, female, nude",
-     "horse, male, nude",
-     "husky, female, nude",
-     "husky, male, nude",
-     "lizard, female, nude",
-     "lizard, male, nude",
-     "leopard, female, nude",
-     "leopard, male, nude"
+     "lion, male, thick mane, tawny fur, nude",
+     "cheetah, male, spotted fur, tear marks, nude",
+     "bear, male, brown fur, round ears, burly, nude",
+     "crocodile, female, armored scales, long snout, thick tail, nude",
+     "leopard, female, snow leopard, thick spotted fur, nude",
+     "lizard, male, green scales, long tail, slit pupils, nude",
+     "owl, female, feathers, wings, large eyes, beak, nude",
+     "dragon, male, scales, horns, wings, long tail, nude"
     ],
     "nonhuman": [
      "1girl, solo, elf, pointy ears, nude",
@@ -5191,6 +5193,14 @@
      "1girl, solo, demon girl, horns, tail, nude",
      "1boy, solo, oni, horns, nude",
      "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ],
+    "human_furry": [
+     "nude woman, with a male orca anthro, black and white skin, dorsal fin, tail fin",
+     "nude man, with a female owl anthro, feathers, wings, large eyes, beak",
+     "nude man, with a female fox anthro, arctic fox, white fur",
+     "nude woman, with a male rabbit anthro, long ears, fluffy tail, white fur",
+     "nude woman, with a male lion anthro, thick mane, tawny fur",
+     "nude man, with a female orca anthro, black and white skin, dorsal fin, tail fin"
     ]
    },
    "actions": {
@@ -5211,6 +5221,11 @@
     "1girl1boy": [
      "fellatio, looking up",
      "cunnilingus",
+     "deepthroat",
+     "breast sucking",
+     "fingering",
+     "handjob",
+     "rimjob",
      "sex on the stool, she sits on his lap",
      "reverse cowgirl on the stool",
      "sex, missionary",
@@ -5219,54 +5234,92 @@
      "doggystyle",
      "spooning sex",
      "69",
-     "mating press"
+     "mating press",
+     "amazon position",
+     "piledriver",
+     "prone bone",
+     "lotus position",
+     "legs over head",
+     "face sitting",
+     "paizuri",
+     "breast sucking during sex",
+     "fingering, kissing",
+     "cunnilingus, legs spread",
+     "thigh sex"
     ],
     "2girls": [
      "kissing and fingering",
      "cunnilingus",
+     "breast sucking",
+     "nipple licking",
      "straddling on the stool, fingering",
      "tribadism",
      "69",
-     "face sitting"
+     "face sitting",
+     "scissoring",
+     "fingering each other",
+     "strap-on sex",
+     "cunnilingus, legs spread",
+     "rimming"
     ],
     "2boys": [
      "fellatio",
      "frottage, kissing",
+     "deepthroat",
+     "nipple licking",
+     "handjob",
      "riding him on the stool",
      "anal sex, missionary",
      "anal sex from behind",
      "anal sex, riding",
-     "prone bone"
+     "prone bone",
+     "69",
+     "rimming",
+     "spooning, anal sex",
+     "legs over shoulders, anal sex",
+     "mutual handjob"
     ],
     "girls": [
      "group sex, kissing and fingering",
      "daisy chain cunnilingus",
-     "one on her back, the others kissing her body"
+     "one on her back, the others kissing her body",
+     "breast sucking, fingering",
+     "strap-on, the others watching"
     ],
     "boys": [
      "group sex, fellatio",
      "anal sex, the others watching",
-     "group sex, a tangle of men"
+     "group sex, a tangle of men",
+     "rimming",
+     "fellatio, anal sex at once"
     ],
     "harem": [
      "cooperative fellatio",
      "the girls kissing him all over",
      "one riding him, the others kissing him",
      "the girls taking turns",
-     "group sex, him in the middle"
+     "group sex, him in the middle",
+     "he licks one while another rides",
+     "cooperative paizuri",
+     "the girls lined up, doggystyle"
     ],
     "reverse": [
      "fellatio, the others waiting",
      "group sex, her in the middle",
      "double penetration",
      "spitroast",
-     "taking turns with her"
+     "taking turns with her",
+     "eiffel tower",
+     "breast sucking on both sides",
+     "she rides one, fellatio on another"
     ],
     "mixed": [
      "group sex",
      "couples side by side",
      "orgy",
-     "partner swap"
+     "partner swap",
+     "daisy chain",
+     "couples side by side, 69"
     ],
     "furry": [
      "masturbating",
@@ -5301,6 +5354,20 @@
      "futanari on male, anal sex",
      "he rides the futanari",
      "sex, he penetrates her pussy, her penis erect"
+    ],
+    "human_furry": [
+     "fellatio",
+     "cunnilingus",
+     "handjob",
+     "fingering",
+     "kissing, interspecies",
+     "sex, missionary",
+     "cowgirl position",
+     "doggystyle",
+     "mating press",
+     "interspecies sex, from behind",
+     "69",
+     "breast sucking"
     ]
    },
    "settings": [

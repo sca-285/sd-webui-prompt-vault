@@ -37,7 +37,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, kinks as kinklib, settings, store, text
+from . import TAG, kinks as kinklib, settings, store, text, vocab
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -60,6 +60,8 @@ CASTS = {
     "futa": ("Futa", "1girl, futanari, solo", ""),
     "futa_girl": ("Futa + girl", "2girls, futanari", "yuri"),
     "futa_boy": ("Futa + boy", "1girl, 1boy, futanari", "hetero"),
+    # a human and an anthro together in the frame
+    "human_furry": ("Human + furry", "furry with non-furry, interspecies", "hetero"),
     "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
     "furry": ("Furry", "anthro, furry", ""),
     "nonhuman": ("Non-human", "", ""),
@@ -71,7 +73,7 @@ RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit":
 # 2girls and 2boys alike; a cast named on its own wins over the names it is part of
 ALIASES = {
     "solo": ("1girl", "1boy", "furry", "nonhuman", "futa"),
-    "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy"),
+    "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy", "human_furry"),
     "groups": ("girls", "boys", "harem", "reverse", "mixed"),
 }
 ALIASES["people"] = ALIASES["solo"] + ALIASES["pair"] + ALIASES["groups"]
@@ -139,7 +141,7 @@ TIPO_LENGTHS = ("very short", "short", "long", "very long")
 
 # NSFW ideas never carry these, whatever a file says, and always send them as negatives.
 MINOR = re.compile(r"\b(child|children|kid|kids|loli|lolicon|shota|shotacon|underage|minor|teen|teenager|"
-                   r"preteen|toddler|infant|schoolgirl|schoolboy|cub|young girl|young boy|little girl|little boy)\b",
+                   r"preteen|toddler|infant|schoolgirl|schoolboy|cub|young girl|young boy|little girl|little boy|chibi)\b",
                    re.IGNORECASE)
 GUARD_NEGATIVES = ["child", "loli", "shota", "underage", "childlike proportions"]
 
@@ -162,6 +164,7 @@ DEFAULT_STATE = {
     "send_mode": "replace",
     "send_negative": True,
     "kinks": [],             # NSFW layers on top of the scene, see kinks.py; empty: none
+    "styles": [],            # style families of the library (vocab.py); empty: the scene's own styles
     "anatomy": True,         # the Body part of NSFW ideas: breasts, pussy, penis, body hair...
     "arrange_with": "library",  # or "qwen"
     "describe_as": "both",      # "paragraph": Qwen's paragraph alone; "both": the tags, then the paragraph
@@ -214,6 +217,7 @@ def _normalise(data):
     out["casts"] = _names(out["casts"], CASTS)
     out["ratings"] = _names(out["ratings"], RATINGS)
     out["kinks"] = _names(out["kinks"], kinklib.KINKS)
+    out["styles"] = _names(out["styles"])[:40]
     sizes = out["sizes"] if isinstance(out["sizes"], list) else []
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
     for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
@@ -370,6 +374,7 @@ def catalogue():
         "group_sizes": {k: list(v) for k, v in GROUP_SIZES.items()},
         "kinks": [[k, v["label"], v.get("themes")] for k, v in kinklib.KINKS.items()],
         "kink_casts": kinklib.casts_by_level(ALIASES, list(CASTS)),
+        "styles": [[family, len(tags)] for family, tags in vocab.styles().items()],
         # one row per scene: [theme index, [casts], rating, [group sizes]]
         "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
     }
@@ -435,6 +440,19 @@ def _pools(scene, cast, st=None):
     return pools
 
 
+ORDER_DRAWN = ("subject", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+
+
+def _library_poses(scene, who, parts):
+    """Poses of the library for one person, or two close at a nude level; group and explicit pairs keep the scene's."""
+    level = scene["rating"]
+    if who in ("none", "group", "any") or who in ALIASES["groups"] or (who in ALIASES["pair"] and level != "nude"):
+        return []
+    female, male = kinklib._sexes(who, parts["subject"]) if who in ALIASES["solo"] else (False, False)
+    gender = "f" if female and not male else "m" if male and not female else ""
+    return vocab.poses_for(level, "solo" if who in ALIASES["solo"] else "pair", gender, parts["action"])
+
+
 def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None, girls=None):
     """A new idea. With scene_id, the same scene again: the parts in keep stay as they are
     (the locked ones), the rest is drawn afresh. roll names a part of keep that must change."""
@@ -470,10 +488,19 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         else:
             people, mix = 0, None
             label, cast_tags = CASTS[who][0], CASTS[who][1]
+        if st["styles"]:  # style families chosen on the card win over the scene's own
+            fams = vocab.styles()
+            pools["style"] = list(dict.fromkeys(t for f in st["styles"] for t in fams.get(f, [])))
+        if scene["rating"] != "sfw":
+            pools["style"] = [x for x in pools["style"] if not MINOR.search(x)]
         parts = {}
-        for slot in SLOTS:
-            if slot == "body":  # the body follows the subject just drawn: a male wolf, a female android...
+        # drawn in this order: the body follows the subject (a male wolf, a female android), the pose
+        # follows the action (no "lying on back" for someone riding); the prompt keeps the order of SLOTS
+        for slot in ORDER_DRAWN:
+            if slot == "body":
                 pools["body"] = kinklib.body(scene["rating"], who, parts["subject"], scene["theme"], rng) if st["anatomy"] else []
+            if slot == "gesture":
+                pools["gesture"] = list(dict.fromkeys(pools["gesture"] + _library_poses(scene, who, parts)))
             if slot in keep:
                 parts[slot] = keep[slot]
                 continue
@@ -497,8 +524,10 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                     seen.add(text.key(piece))
                     pieces.append(piece)
 
+        extra = [n for word, negs in kinklib.SUBJECT_NEGATIVES.items()
+                 if word in (parts["subject"] + " " + parts["kink"]).lower() for n in negs]
         seen, negative = set(), []
-        for n in scene["negatives"] + (GUARD_NEGATIVES if nsfw else []) + rules:
+        for n in scene["negatives"] + (GUARD_NEGATIVES if nsfw else []) + extra + rules:
             if text.key(n) not in seen:
                 seen.add(text.key(n))
                 negative.append(n)
