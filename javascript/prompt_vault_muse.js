@@ -394,34 +394,38 @@
 
     // ------------------------------------------------------------------ generate, right from the card
 
-    const galleryImages = () => [...app().querySelectorAll('#txt2img_gallery img')].map((n) => n.src).filter(Boolean);
+    const genTab = () => (st().generate_in === 'img2img' ? 'img2img' : 'txt2img');
+    const galleryImages = (tab) => [...app().querySelectorAll(`#${tab}_gallery img`)].map((n) => n.src).filter(Boolean);
 
-    // the idea goes into txt2img and its Generate button is pressed: the WebUI's own model and settings
+    // the idea goes into the chosen tab (txt2img, or img2img with its own input image) and that tab's
+    // Generate button is pressed: the WebUI's own model and settings
     function generateImage() {
         const it = idea();
         if (!it || M.gen) return;
-        const pos = area(TARGETS.txt2img);
-        const go = app().querySelector('#txt2img_generate');
-        if (!pos || !go) { toast('txt2img is not on the page', true); return; }
+        const tab = genTab();
+        const pos = area(TARGETS[tab]);
+        const go = app().querySelector(`#${tab}_generate`);
+        if (!pos || !go) { toast(tab + ' is not on the page', true); return; }
         if (generating()) { toast('An image is being generated: wait for it', true); return; }
         const s = st();
         write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
-        const before = new Set(galleryImages());
-        M.gen = {id: it.id, started: Date.now(), seen: false};
+        const before = new Set(galleryImages(tab));
+        M.gen = {id: it.id, started: Date.now(), seen: false, tab};
         render();
         setTimeout(() => go.click(), 60);
         const tick = () => {
             if (!M.gen) return;
             const busy = generating();
             if (busy) M.gen.seen = true;
-            const fresh = galleryImages().filter((src) => !before.has(src));
+            const fresh = galleryImages(tab).filter((src) => !before.has(src));
             const timedOut = Date.now() - M.gen.started > 15 * 60 * 1000;
             if ((M.gen.seen && !busy && fresh.length) || (!busy && fresh.length && Date.now() - M.gen.started > 3000) || timedOut) {
                 const target = M.ideas.find((x) => x.id === M.gen.id);
                 if (target && fresh.length) { target.images = fresh.slice(0, 4); saveIdeas(); }
                 M.gen = null;
                 render();
-                toast(fresh.length ? 'Done: the image is on the card and in txt2img' : 'No image came back', !fresh.length);
+                toast(fresh.length ? `Done: the image is on the card and in ${tab}`
+                    : (tab === 'img2img' ? 'No image came back: does img2img have an input image?' : 'No image came back'), !fresh.length);
                 return;
             }
             setTimeout(tick, 700);
@@ -706,11 +710,12 @@
                 })),
             el('div', {class: 'pv-muse-send'},
                 el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-generate', disabled: !!M.gen,
-                    title: 'Writes the idea in txt2img and generates there, with your model and settings; the image comes back here',
-                    text: M.gen ? 'Generating…' : 'Generate', onclick: generateImage}),
-                el('div', {class: 'pv-muse-seg', role: 'group', 'aria-label': s.send_mode === 'append' ? 'Append to' : 'Send to',
+                    title: `Writes the idea in ${genTab()} and presses its Generate button: your model, sampler, size and negative prompt `
+                        + `as they are there; the image comes back here. Settings → Send picks txt2img or img2img.`,
+                    text: M.gen ? `Generating in ${M.gen.tab}…` : `Generate in ${genTab()}`, onclick: generateImage}),
+                el('div', {class: 'pv-muse-sendseg', role: 'group', 'aria-label': s.send_mode === 'append' ? 'Append to' : 'Send to',
                     title: s.send_mode === 'append' ? 'Append the idea to…' : 'Send the idea to…'},
-                    el('span', {class: 'pv-muse-seg-label', text: s.send_mode === 'append' ? 'Append' : 'Send'}),
+                    el('span', {class: 'pv-muse-sendseg-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
                     ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)})))));
     }
 
@@ -796,7 +801,10 @@
             s.allow_nsfw ? section('NSFW',
                 toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',
-                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']])),
+                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
+                seg('Generate', 'generate_in', [['txt2img', 'in txt2img'], ['img2img', 'in img2img']]),
+                el('div', {class: 'pv-muse-hint', text: 'The card\'s Generate button writes the idea in that tab and presses its Generate: '
+                    + 'your model, sampler, size and negative prompt as they are there. img2img uses the input image you put there.'})),
             section('Arrange & describe',
                 seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
                 seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),

@@ -119,8 +119,10 @@ Qwen-VL and the WD14 tagger) in one tab.
     and the effects are the job's: a wizard's robe, staff and glowing runes. Fiction stays in
     its own worlds: knights and witches only in Fantasy and Myth, netrunners and mecha pilots
     only in Sci-fi, airship pilots only in Steampunk, samurai and geishas in Historical.
-  - **Generate** writes the idea in txt2img and presses its Generate button: your model,
-    sampler, size and negative prompt as they are. The image comes back on the card.
+  - **Generate in txt2img** writes the idea in txt2img and presses its Generate button: your
+    model, sampler, size and negative prompt as they are. The image comes back on the card.
+    **Settings → Send → Generate in** switches it to img2img (with the input image you put
+    there); the button says which tab it uses.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending. Muse writes the positive prompt only: your negative prompt stays yours.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),

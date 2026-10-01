@@ -299,18 +299,19 @@ html body #pv_muse_panel .pv-btn:disabled { opacity: 0.5; cursor: default; }
 html body #pv_muse_panel .pv-muse-new { flex: 1; min-width: 0; white-space: nowrap; }
 html body #pv_muse_panel .pv-muse-actions .pv-btn:not(.pv-muse-new) { padding: 4px 9px; }
 html body #pv_muse_panel .pv-muse-new .pv-muse-icon { width: 15px; height: 15px; }
-#pv_muse_panel .pv-muse-send { display: flex; align-items: stretch; gap: 8px; }
-html body #pv_muse_panel .pv-muse-generate { flex: 0 0 auto; margin: 0; padding: 6px 16px; font-weight: 600; white-space: nowrap; }
+/* Generate on a row of its own, Send to under it; side by side on the wide card */
+#pv_muse_panel .pv-muse-send { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+#pv_muse_panel.pv-muse-wide .pv-muse-send { flex-direction: row; }
+html body #pv_muse_panel .pv-muse-generate { flex: 0 0 auto; margin: 0; padding: 7px 16px; font-weight: 600; white-space: nowrap; }
 /* Send to: one segmented control */
-#pv_muse_panel .pv-muse-seg { display: flex; align-items: stretch; flex: 1 1 auto; min-width: 0; border: 1px solid var(--border-color-primary);
+#pv_muse_panel .pv-muse-sendseg { display: flex; align-items: stretch; flex: 1 1 auto; min-width: 0; border: 1px solid var(--border-color-primary);
     border-radius: 8px; overflow: hidden; }
-#pv_muse_panel .pv-muse-seg-label { display: none; align-items: center; padding: 0 8px; font-size: 11px; opacity: 0.6; white-space: nowrap;
+#pv_muse_panel .pv-muse-sendseg-label { display: flex; align-items: center; padding: 0 8px; font-size: 11px; opacity: 0.6; white-space: nowrap;
     border-right: 1px solid var(--border-color-primary); }
-html body #pv_muse_panel .pv-muse-seg .pv-btn { flex: 1 1 0; min-width: 0; margin: 0; border: none; border-radius: 0; padding: 5px 4px;
+html body #pv_muse_panel .pv-muse-sendseg .pv-btn { flex: 1 1 0; min-width: 0; margin: 0; border: none; border-radius: 0; padding: 5px 4px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: transparent; }
-#pv_muse_panel.pv-muse-wide .pv-muse-seg-label { display: flex; }
-html body #pv_muse_panel .pv-muse-seg .pv-btn + .pv-btn { border-left: 1px solid var(--border-color-primary); }
-html body #pv_muse_panel .pv-muse-seg .pv-btn:hover { background: color-mix(in srgb, var(--pv-muse-accent) 14%, transparent); }
+html body #pv_muse_panel .pv-muse-sendseg .pv-btn + .pv-btn { border-left: 1px solid var(--border-color-primary); }
+html body #pv_muse_panel .pv-muse-sendseg .pv-btn:hover { background: color-mix(in srgb, var(--pv-muse-accent) 14%, transparent); }
 
 /* settings */
 #pv_muse_panel .pv-muse-settings { gap: 0; padding-top: 4px; }

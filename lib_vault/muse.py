@@ -200,6 +200,7 @@ DEFAULT_STATE = {
     "anatomy": True,         # the Body part of NSFW ideas: breasts, pussy, penis, body hair...
     "arrange_with": "library",  # or "qwen"
     "describe_as": "both",      # "paragraph": Qwen's paragraph alone; "both": the tags, then the paragraph
+    "generate_in": "txt2img",   # the tab whose Generate button the card's Generate presses
     "use_tipo": False,
     "tipo_output": "Tags + natural language",
     "tipo_length": "short",
@@ -255,7 +256,8 @@ def _normalise(data):
     sizes = out["sizes"] if isinstance(out["sizes"], list) else []
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
     for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
-                         ("arrange_with", ("library", "qwen")), ("describe_as", ("paragraph", "both"))):
+                         ("arrange_with", ("library", "qwen")), ("describe_as", ("paragraph", "both")),
+                         ("generate_in", ("txt2img", "img2img"))):
         if out[key] not in allowed:
             out[key] = DEFAULT_STATE[key]
     out["blacklist"] = str(out["blacklist"] or "")[:4000]
