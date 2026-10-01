@@ -46,6 +46,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     choice shows how many scenes it leaves: over 1,000 scenes, ten places per theme, and
     every theme, cast, level and group size goes with every other at least ten times. The one thing that cannot
     be is greyed out with the reason: *No humans* is SFW only.
+  - **Kink** (a fourth filter, there once NSFW is on): BDSM, toys, fluids, latex & fetish
+    wear, bites & marks anywhere; tentacles, slime, and blood & bites only in the themes they
+    belong to (Fantasy, Creature, Horror, Sci-fi, Myth). The chosen kink is a part of the idea
+    of its own, rolled and locked like the others. Nude and explicit ideas also carry anatomy
+    tags (nipples, pussy, penis…) for who is in them; a switch in the settings turns them off.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
     do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).

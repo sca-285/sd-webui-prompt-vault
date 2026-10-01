@@ -37,7 +37,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, settings, store, text
+from . import TAG, kinks as kinklib, settings, store, text
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -107,8 +107,8 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "expression", "gesture", "action", "detail", "setting", "lighting", "camera", "style")
-LISTS = {"subject": "subjects", "expression": "expressions", "gesture": "gestures", "action": "actions",
+SLOTS = ("subject", "expression", "gesture", "action", "kink", "detail", "setting", "lighting", "camera", "style")
+LISTS = {"subject": "subjects", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
          "detail": "details", "setting": "settings", "lighting": "lighting", "camera": "camera", "style": "styles"}
 CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
 
@@ -156,6 +156,8 @@ DEFAULT_STATE = {
     "sizes": [],             # groups: empty, any size; else some of SIZES
     "send_mode": "replace",
     "send_negative": True,
+    "kinks": [],             # NSFW layers on top of the scene, see kinks.py; empty: none
+    "anatomy": True,         # nipples, pussy, penis... on nude and explicit ideas
     "arrange_with": "library",  # or "qwen"
     "describe_as": "both",      # "paragraph": Qwen's paragraph alone; "both": the tags, then the paragraph
     "use_tipo": False,
@@ -197,7 +199,7 @@ def _names(value, allowed=None):
 def _normalise(data):
     out = dict(DEFAULT_STATE)
     out.update({k: v for k, v in data.items() if k in DEFAULT_STATE})
-    for key in ("enabled", "allow_nsfw", "send_negative", "use_tipo"):
+    for key in ("enabled", "allow_nsfw", "send_negative", "use_tipo", "anatomy"):
         out[key] = bool(out[key])
     try:
         out["interval_minutes"] = max(5, min(30, int(out["interval_minutes"])))
@@ -206,6 +208,7 @@ def _normalise(data):
     out["themes"] = _names(out["themes"])[:100]
     out["casts"] = _names(out["casts"], CASTS)
     out["ratings"] = _names(out["ratings"], RATINGS)
+    out["kinks"] = _names(out["kinks"], kinklib.KINKS)
     sizes = out["sizes"] if isinstance(out["sizes"], list) else []
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
     for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
@@ -360,6 +363,7 @@ def catalogue():
         "ratings": [[k, v] for k, v in RATINGS.items()],
         "sizes": [[n, _plus(n)] for n in SIZES],
         "group_sizes": {k: list(v) for k, v in GROUP_SIZES.items()},
+        "kinks": [[k, v["label"], v.get("themes")] for k, v in kinklib.KINKS.items()],
         # one row per scene: [theme index, [casts], rating, [group sizes]]
         "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
     }
@@ -373,6 +377,13 @@ def _sizes(scene, cast, wanted=()):
     return [n for n in sizes if n in wanted] if wanted else sizes
 
 
+def _kinks_for(scene, st):
+    """The chosen kinks that can join a scene: NSFW scenes only, of a theme the kink belongs to."""
+    if scene["rating"] == "sfw" or not st["allow_nsfw"]:
+        return []
+    return [k for k in st["kinks"] if kinklib.themed(k, scene["theme"])]
+
+
 def _matching(st):
     ratings = set(_ratings_on(st))
     themes, casts = set(st["themes"]), set(st["casts"])
@@ -380,6 +391,8 @@ def _matching(st):
     for s in load_scenes():
         if s["rating"] not in ratings or (themes and s["theme"] not in themes):
             continue
+        if st["kinks"] and not _kinks_for(s, st):
+            continue  # with a kink chosen, every idea carries one
         usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"])]
         if usable:
             out.append((s, usable))
@@ -403,9 +416,12 @@ def _blacklist_test(rules):
 # ------------------------------------------------------------------ ideas
 
 
-def _pools(scene, cast):
+def _pools(scene, cast, st=None):
     pools = {slot: _for_cast(lists, cast) for slot, lists in scene["lists"].items()}
     pools["subject"] = scene["casts"][cast]
+    chosen = _kinks_for(scene, st) if st else []
+    if chosen:
+        pools["kink"] = list(dict.fromkeys(e for k in chosen for e in kinklib.entries(k, scene["rating"], cast, ALIASES)))
     if cast == "none":  # nobody to have a face or hands
         pools["expression"], pools["gesture"] = [], []
     return pools
@@ -437,7 +453,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
     for _ in range(24):
         scene, casts = rng.choice(choices)
         who = rng.choice(casts)
-        pools = _pools(scene, who)
+        pools = _pools(scene, who, st)
         if who in GROUP_SIZES:
             allowed = _sizes(scene, who, [] if scene_id else st["sizes"])
             people = int(size) if str(size).isdigit() and int(size) in allowed else rng.choice(allowed)
@@ -463,6 +479,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         nsfw = scene["rating"] != "sfw"
         nsfw_tags = CASTS[who][2]
         front = [cast_tags] + ([nsfw_tags, "adults" if who in GROUP_SIZES else "adult"] if nsfw and who != "none" else [])
+        if nsfw and st["anatomy"] and who != "none":
+            front += kinklib.anatomy(scene["rating"], who, parts["subject"])
         seen, pieces = set(), []
         for chunk in front + [parts[s] for s in SLOTS]:
             for piece in text.split(chunk):
