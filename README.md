@@ -38,7 +38,7 @@ Qwen-VL and the WD14 tagger) in one tab.
   (never while an image is generating).
   - **Three filters**: *Theme* (22: Portrait, Fashion, Film, Horror, Street, Home, Food,
     Architecture, Nature, Creature, Myth, Sci-fi, Sports, Party, Bath & shower, Bedroom,
-    Fantasy, Gym, Hotel, Office, Outdoors, Studio), *Cast*
+    Fantasy, Gym, Hotel, Office, Outdoors, Studio, Red light), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
     (harem), 1girl + boys (reverse harem), mixed group, furry, non-human; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
@@ -46,11 +46,20 @@ Qwen-VL and the WD14 tagger) in one tab.
     choice shows how many scenes it leaves: over 1,000 scenes, ten places per theme, and
     every theme, cast, level and group size goes with every other at least ten times. The one thing that cannot
     be is greyed out with the reason: *No humans* is SFW only.
-  - **Kink** (a fourth filter, there once NSFW is on): BDSM, toys, fluids, latex & fetish
-    wear, bites & marks anywhere; tentacles, slime, and blood & bites only in the themes they
-    belong to (Fantasy, Creature, Horror, Sci-fi, Myth). The chosen kink is a part of the idea
-    of its own, rolled and locked like the others. Nude and explicit ideas also carry anatomy
-    tags (nipples, pussy, penis…) for who is in them; a switch in the settings turns them off.
+  - **Kink** (a fourth filter, there once NSFW is on), 19 of them: BDSM, toys, fluids,
+    breeding & x-ray (cross-section, cum inside, insemination, ovum, sperm cell), pregnancy &
+    lactation, anal, oral, femdom, feet, pet play, costume play, exhibitionism, latex & fetish
+    wear, bites & marks; tentacles, slime, monsters and blood & bites only in the themes they
+    belong to. A kink only joins the casts it makes sense for (breeding needs a penis and a
+    pussy); the others are greyed out with the reason. The chosen kink is a part of the idea
+    of its own, rolled and locked like the others.
+  - **Body**, a part of every NSFW idea: breasts, nipples, pussy, pectorals, chest hair,
+    penis, body hair, prosthetics on androids and in Sci-fi; for anthros the anatomy of their
+    kind (canine knot and sheath, flared equine, spiked feline, ribbed or scaled reptile,
+    hemipenes, multiple breasts…). A switch in the settings turns it off.
+  - **Futanari**: Futa, Futa + girl and Futa + boy casts, NSFW only.
+  - **Red light**, a theme with no SFW side: dungeon, BDSM playroom, bordello, strip club,
+    swingers' lounge, porn set, glory hole booth, massage parlor, sauna club, fetish club.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
     do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).

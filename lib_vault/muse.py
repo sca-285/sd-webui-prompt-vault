@@ -56,6 +56,10 @@ CASTS = {
     "harem": ("1boy + girls", None, "hetero"),
     "reverse": ("1girl + boys", None, "hetero"),
     "mixed": ("Mixed group", None, "hetero"),
+    # futanari: NSFW only
+    "futa": ("Futa", "1girl, futanari, solo", ""),
+    "futa_girl": ("Futa + girl", "2girls, futanari", "yuri"),
+    "futa_boy": ("Futa + boy", "1girl, 1boy, futanari", "hetero"),
     "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
     "furry": ("Furry", "anthro, furry", ""),
     "nonhuman": ("Non-human", "", ""),
@@ -66,8 +70,8 @@ RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit":
 # names that stand for several casts in a scene's lists: {"pair": [...]} serves 1girl 1boy,
 # 2girls and 2boys alike; a cast named on its own wins over the names it is part of
 ALIASES = {
-    "solo": ("1girl", "1boy", "furry", "nonhuman"),
-    "pair": ("1girl1boy", "2girls", "2boys"),
+    "solo": ("1girl", "1boy", "furry", "nonhuman", "futa"),
+    "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy"),
     "groups": ("girls", "boys", "harem", "reverse", "mixed"),
 }
 ALIASES["people"] = ALIASES["solo"] + ALIASES["pair"] + ALIASES["groups"]
@@ -107,8 +111,9 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "expression", "gesture", "action", "kink", "detail", "setting", "lighting", "camera", "style")
-LISTS = {"subject": "subjects", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
+SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "lighting", "camera", "style")
+NSFW_ONLY = ("futa", "futa_girl", "futa_boy")
+LISTS = {"subject": "subjects", "body": "bodies", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
          "detail": "details", "setting": "settings", "lighting": "lighting", "camera": "camera", "style": "styles"}
 CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
 
@@ -157,7 +162,7 @@ DEFAULT_STATE = {
     "send_mode": "replace",
     "send_negative": True,
     "kinks": [],             # NSFW layers on top of the scene, see kinks.py; empty: none
-    "anatomy": True,         # nipples, pussy, penis... on nude and explicit ideas
+    "anatomy": True,         # the Body part of NSFW ideas: breasts, pussy, penis, body hair...
     "arrange_with": "library",  # or "qwen"
     "describe_as": "both",      # "paragraph": Qwen's paragraph alone; "both": the tags, then the paragraph
     "use_tipo": False,
@@ -311,7 +316,7 @@ def _read_file(path, custom):
         for name, items in (subjects or {}).items():
             # an alias gives its casts what they were not given by name
             for cast in ALIASES.get(name, (name,)):
-                if cast not in CASTS or (name in ALIASES and cast in subjects):
+                if cast not in CASTS or (name in ALIASES and cast in subjects) or (cast in NSFW_ONLY and not nsfw):
                     continue
                 clean = _clean(items, nsfw)
                 if clean or cast == "none":
@@ -364,6 +369,7 @@ def catalogue():
         "sizes": [[n, _plus(n)] for n in SIZES],
         "group_sizes": {k: list(v) for k, v in GROUP_SIZES.items()},
         "kinks": [[k, v["label"], v.get("themes")] for k, v in kinklib.KINKS.items()],
+        "kink_casts": kinklib.casts_by_level(ALIASES, list(CASTS)),
         # one row per scene: [theme index, [casts], rating, [group sizes]]
         "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
     }
@@ -391,9 +397,11 @@ def _matching(st):
     for s in load_scenes():
         if s["rating"] not in ratings or (themes and s["theme"] not in themes):
             continue
-        if st["kinks"] and not _kinks_for(s, st):
+        chosen = _kinks_for(s, st)
+        if st["kinks"] and not chosen:
             continue  # with a kink chosen, every idea carries one
-        usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"])]
+        usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"])
+                  and (not st["kinks"] or any(kinklib.entries(k, s["rating"], c, ALIASES) for k in chosen))]
         if usable:
             out.append((s, usable))
     return out
@@ -464,6 +472,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             label, cast_tags = CASTS[who][0], CASTS[who][1]
         parts = {}
         for slot in SLOTS:
+            if slot == "body":  # the body follows the subject just drawn: a male wolf, a female android...
+                pools["body"] = kinklib.body(scene["rating"], who, parts["subject"], scene["theme"], rng) if st["anatomy"] else []
             if slot in keep:
                 parts[slot] = keep[slot]
                 continue
@@ -479,8 +489,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         nsfw = scene["rating"] != "sfw"
         nsfw_tags = CASTS[who][2]
         front = [cast_tags] + ([nsfw_tags, "adults" if who in GROUP_SIZES else "adult"] if nsfw and who != "none" else [])
-        if nsfw and st["anatomy"] and who != "none":
-            front += kinklib.anatomy(scene["rating"], who, parts["subject"])
+
         seen, pieces = set(), []
         for chunk in front + [parts[s] for s in SLOTS]:
             for piece in text.split(chunk):
