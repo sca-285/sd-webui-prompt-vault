@@ -112,27 +112,53 @@
     }
 
     const PART_NAMES = {subject: 'Who', job: 'Job', outfit: 'Wear', build: 'Build', skin: 'Skin', body: 'Body', hair: 'Hair', eyes: 'Eyes',
-        face: 'Features', makeup: 'Makeup', accessory: 'Accessory', expression: 'Expression', mouth: 'Mouth', gaze: 'Gaze', gesture: 'Pose',
-        action: 'Doing', kink: 'Kink', fx: 'FX', detail: 'Detail', setting: 'Where', time: 'When', lighting: 'Light', natural: 'Natural light',
-        light_quality: 'Quality', light_mood: 'Mood light', light_support: 'Support light', light_volume: 'Volume', camera: 'Shot',
-        angle: 'Angle', view: 'Viewpoint', framing: 'Framing', color: 'Color & grade', style: 'Style'};
+        face: 'Features', makeup: 'Makeup', accessory: 'Accessory', pet: 'Animal', expression: 'Expression', mouth: 'Mouth', gaze: 'Gaze',
+        gesture: 'Pose', action: 'Doing', kink: 'Kink', fx: 'FX', detail: 'Detail', setting: 'Where', time: 'When', lighting: 'Source',
+        natural: 'Natural', light_quality: 'Quality', light_mood: 'Mood', light_support: 'Support', light_volume: 'Volume', camera: 'Shot',
+        angle: 'Angle', view: 'View', framing: 'Framing', color: 'Color', style: 'Style'};
+    // the long names, for tooltips
+    const PART_TITLES = {face: 'Eyebrows, nose, lips', natural: 'Natural light', light_quality: 'Light quality', light_mood: 'Mood lighting',
+        light_support: 'Support light', light_volume: 'Volume light', lighting: 'Light source', camera: 'Shot size', view: 'Viewpoint',
+        color: 'Color & grading', pet: 'An animal with them', fx: 'Effects'};
     // the parts in groups on the card
-    const PART_GROUPS = [['Character', ['subject', 'job', 'outfit', 'build', 'skin', 'body']],
+    const PART_GROUPS = [['Character', ['subject', 'job', 'outfit', 'pet', 'build', 'skin', 'body']],
         ['Face', ['hair', 'eyes', 'face', 'makeup', 'accessory', 'expression', 'mouth', 'gaze']],
         ['Action', ['gesture', 'action', 'kink', 'fx']], ['Scene', ['detail', 'setting', 'time']],
         ['Light', ['lighting', 'natural', 'light_quality', 'light_mood', 'light_support', 'light_volume']],
         ['Camera', ['camera', 'angle', 'view', 'framing']], ['Look', ['color', 'style']]];
     const GROUP_OF = Object.fromEntries(PART_GROUPS.flatMap(([g, slots]) => slots.map((x) => [x, g])));
+    // groups open by default; the card remembers the ones you open or close
+    const GROUPS_OPEN = new Set(LS.get('groups', ['Character', 'Action', 'Scene']));
+    function toggleGroup(g) {
+        if (GROUPS_OPEN.has(g)) GROUPS_OPEN.delete(g); else GROUPS_OPEN.add(g);
+        LS.set('groups', [...GROUPS_OPEN]);
+        render();
+    }
+
+    // the parts, a block per group: filled ones as rows, empty ones as small chips that draw them
     function partRows(it) {
-        const out = [];
-        let last = '';
+        const byGroup = new Map();
         for (const p of it.parts) {
-            const g = GROUP_OF[p.slot] || '';
-            if (g && g !== last) out.push(el('div', {class: 'pv-muse-part-group', text: g}));
-            last = g;
-            out.push(partRow(it, p));
+            const g = GROUP_OF[p.slot] || 'Other';
+            if (!byGroup.has(g)) byGroup.set(g, []);
+            byGroup.get(g).push(p);
         }
-        return out;
+        return [...byGroup].map(([g, parts]) => {
+            const filled = parts.filter((p) => p.value), empty = parts.filter((p) => !p.value);
+            const open = GROUPS_OPEN.has(g);
+            const locked = filled.filter((p) => it.locks && it.locks[p.slot]).length;
+            const head = el('button', {type: 'button', class: 'pv-muse-group-head', 'aria-expanded': open ? 'true' : 'false', onclick: () => toggleGroup(g),
+                title: open ? 'Fold' : 'Unfold'},
+                icon('down'), el('span', {class: 'pv-muse-group-name', text: g}),
+                open ? el('span', {class: 'pv-muse-group-count', text: locked ? `${filled.length} · ${locked} locked` : String(filled.length)})
+                    : el('span', {class: 'pv-muse-group-sum', text: filled.map((p) => p.value).join(' · ') || '—'}));
+            const body = open ? el('div', {class: 'pv-muse-group-body'},
+                filled.map((p) => partRow(it, p)),
+                empty.length ? el('div', {class: 'pv-muse-adds'}, empty.map((p) => el('button', {type: 'button', class: 'pv-muse-add',
+                    disabled: !!M.busy, title: 'Draw ' + (PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot).toLowerCase(),
+                    onclick: () => rollPart(p.slot)}, '+ ' + (PART_NAMES[p.slot] || p.slot)))) : null) : null;
+            return el('div', {class: 'pv-muse-group' + (open ? ' pv-on' : '')}, head, body);
+        });
     }
     const RATING_NSFW = (r) => r !== 'sfw';
 
@@ -368,34 +394,38 @@
 
     // ------------------------------------------------------------------ generate, right from the card
 
-    const galleryImages = () => [...app().querySelectorAll('#txt2img_gallery img')].map((n) => n.src).filter(Boolean);
+    const genTab = () => (st().generate_in === 'img2img' ? 'img2img' : 'txt2img');
+    const galleryImages = (tab) => [...app().querySelectorAll(`#${tab}_gallery img`)].map((n) => n.src).filter(Boolean);
 
-    // the idea goes into txt2img and its Generate button is pressed: the WebUI's own model and settings
+    // the idea goes into the chosen tab (txt2img, or img2img with its own input image) and that tab's
+    // Generate button is pressed: the WebUI's own model and settings
     function generateImage() {
         const it = idea();
         if (!it || M.gen) return;
-        const pos = area(TARGETS.txt2img);
-        const go = app().querySelector('#txt2img_generate');
-        if (!pos || !go) { toast('txt2img is not on the page', true); return; }
+        const tab = genTab();
+        const pos = area(TARGETS[tab]);
+        const go = app().querySelector(`#${tab}_generate`);
+        if (!pos || !go) { toast(tab + ' is not on the page', true); return; }
         if (generating()) { toast('An image is being generated: wait for it', true); return; }
         const s = st();
         write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
-        const before = new Set(galleryImages());
-        M.gen = {id: it.id, started: Date.now(), seen: false};
+        const before = new Set(galleryImages(tab));
+        M.gen = {id: it.id, started: Date.now(), seen: false, tab};
         render();
         setTimeout(() => go.click(), 60);
         const tick = () => {
             if (!M.gen) return;
             const busy = generating();
             if (busy) M.gen.seen = true;
-            const fresh = galleryImages().filter((src) => !before.has(src));
+            const fresh = galleryImages(tab).filter((src) => !before.has(src));
             const timedOut = Date.now() - M.gen.started > 15 * 60 * 1000;
             if ((M.gen.seen && !busy && fresh.length) || (!busy && fresh.length && Date.now() - M.gen.started > 3000) || timedOut) {
                 const target = M.ideas.find((x) => x.id === M.gen.id);
                 if (target && fresh.length) { target.images = fresh.slice(0, 4); saveIdeas(); }
                 M.gen = null;
                 render();
-                toast(fresh.length ? 'Done: the image is on the card and in txt2img' : 'No image came back', !fresh.length);
+                toast(fresh.length ? `Done: the image is on the card and in ${tab}`
+                    : (tab === 'img2img' ? 'No image came back: does img2img have an input image?' : 'No image came back'), !fresh.length);
                 return;
             }
             setTimeout(tick, 700);
@@ -602,7 +632,7 @@
         const locked = !!(it.locks && it.locks[p.slot]);
         const rolling = M.busy === p.slot;
         return el('div', {class: 'pv-muse-part' + (locked ? ' pv-muse-locked' : '') + (p.value ? '' : ' pv-muse-empty-part')},
-            el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot}),
+            el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot, title: PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot}),
             el('span', {class: 'pv-muse-part-value', text: p.value || '—', title: p.value}),
             iconButton('roll', 'Another ' + (PART_NAMES[p.slot] || p.slot).toLowerCase(), () => rollPart(p.slot),
                 {disabled: !!M.busy || locked || (p.choices < 2 && !!p.value), class: 'pv-muse-icon-btn' + (rolling ? ' pv-muse-spin' : '')}),
@@ -680,10 +710,13 @@
                 })),
             el('div', {class: 'pv-muse-send'},
                 el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-generate', disabled: !!M.gen,
-                    title: 'Writes the idea in txt2img and generates there, with your model and settings; the image comes back here',
-                    text: M.gen ? 'Generating…' : 'Generate', onclick: generateImage}),
-                el('span', {class: 'pv-muse-send-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
-                ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)}))));
+                    title: `Writes the idea in ${genTab()} and presses its Generate button: your model, sampler, size and negative prompt `
+                        + `as they are there; the image comes back here. Settings → Send picks txt2img or img2img.`,
+                    text: M.gen ? `Generating in ${M.gen.tab}…` : `Generate in ${genTab()}`, onclick: generateImage}),
+                el('div', {class: 'pv-muse-sendseg', role: 'group', 'aria-label': s.send_mode === 'append' ? 'Append to' : 'Send to',
+                    title: s.send_mode === 'append' ? 'Append the idea to…' : 'Send the idea to…'},
+                    el('span', {class: 'pv-muse-sendseg-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
+                    ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)})))));
     }
 
     // ------------------------------------------------------------------ settings
@@ -759,6 +792,7 @@
             section('Parts',
                 el('div', {class: 'pv-muse-hint', text: 'Groups of parts every idea can carry; turn off what you do not want in your prompts.'}),
                 [['looks', 'Looks', 'build, skin, hair, eyes, features, makeup, accessories, mouth, gaze'],
+                    ['pet', 'Animals with people', 'a real animal now and then: a cat on the lap, a dog on a leash (SFW ideas only)'],
                     ['job', 'Job', 'an occupation now and then, with its clothes, props and effects'],
                     ['light', 'Light details', 'natural light, quality, mood, support light, volume'],
                     ['camera', 'Camera details', 'angle, viewpoint, framing and lens'],
@@ -767,7 +801,10 @@
             s.allow_nsfw ? section('NSFW',
                 toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',
-                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']])),
+                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
+                seg('Generate', 'generate_in', [['txt2img', 'in txt2img'], ['img2img', 'in img2img']]),
+                el('div', {class: 'pv-muse-hint', text: 'The card\'s Generate button writes the idea in that tab and presses its Generate: '
+                    + 'your model, sampler, size and negative prompt as they are there. img2img uses the input image you put there.'})),
             section('Arrange & describe',
                 seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
                 seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),

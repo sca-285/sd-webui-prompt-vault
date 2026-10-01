@@ -106,16 +106,23 @@ Qwen-VL and the WD14 tagger) in one tab.
     mouth; gaze), *Action* (pose, doing, kink, effects), *Scene* (detail, where, when),
     *Light* (the scene's source, natural light, quality, mood, support light, volume),
     *Camera* (shot size, angle and tilt, viewpoint, framing and lens) and *Look* (colour &
-    grading, style). **↻** draws one part again, **🔒** keeps it for the next idea (same
-    scene). The settings turn whole groups off.
+    grading, style). Each group folds: folded, it shows its parts on one line; open, a row
+    per part, and the parts this idea left out as small **+** chips that draw them. **↻** draws
+    one part again, **🔒** keeps it for the next idea (same scene). The settings turn whole
+    groups off.
+  - **Animal**: now and then a real animal with the people of an SFW idea, one that fits
+    the theme (a cat on the lap at home, a dog on a leash in the street, a horse in the
+    countryside, a raven in a horror scene).
   - **Job**: now and then an idea has an occupation that fits its theme, real (nurse, chef,
     barista, firefighter, detective, pilot, DJ, astronaut…) or not (knight, wizard, witch,
     necromancer, bounty hunter, netrunner, dragon rider…), and then the Wear, the accessories
     and the effects are the job's: a wizard's robe, staff and glowing runes. Fiction stays in
     its own worlds: knights and witches only in Fantasy and Myth, netrunners and mecha pilots
     only in Sci-fi, airship pilots only in Steampunk, samurai and geishas in Historical.
-  - **Generate** writes the idea in txt2img and presses its Generate button: your model,
-    sampler, size and negative prompt as they are. The image comes back on the card.
+  - **Generate in txt2img** writes the idea in txt2img and presses its Generate button: your
+    model, sampler, size and negative prompt as they are. The image comes back on the card.
+    **Settings → Send → Generate in** switches it to img2img (with the input image you put
+    there); the button says which tab it uses.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending. Muse writes the positive prompt only: your negative prompt stays yours.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
