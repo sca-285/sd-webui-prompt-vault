@@ -43,13 +43,22 @@ Qwen-VL and the WD14 tagger) in one tab.
     Post-apocalypse, Steampunk, Seafaring, Music & stage, World cities, Retro 80s-90s,
     Holidays, Red light), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
-    (harem), 1girl + boys (reverse harem), mixed group, furry, human + furry, non-human; groups of 3, 4, 5
+    (harem), 1girl + boys (reverse harem), mixed group, furry, kemono, human + furry, myth &
+    fantasy beings, monsters, sci-fi beings, animals; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
     choice shows how many scenes it leaves: about 3,500 scenes, nine places per theme with
     three spots each (a café's window seat, counter and terrace, each with its own Where and
     Detail), so every theme, cast, level and group size goes with every other 27 times. The
-    one thing that cannot be is greyed out with the reason: *No humans* is SFW only.
+    one thing that cannot be is greyed out with the reason: *No humans* and *Animals* are SFW only.
+  - **Beings**: *Myth & fantasy* (vampire, elf, dark elf, demon, succubus, angel, fallen angel,
+    kitsune, oni, mermaid, dryad, centaur, lamia, harpy, dragon girl, orc, minotaur, pixie,
+    gorgon…), *Monsters* (werewolf, Frankenstein's monster and his bride, zombie, ghost, mummy,
+    gargoyle, golem, lich, slime girl, arachne…), *Sci-fi beings* (android, gynoid, robot,
+    cyborg, mecha musume, mecha, alien, hologram…), *Animals* (real ones, SFW only). The
+    Creature theme has twelve places for them: a vampire castle, a werewolf forest,
+    Frankenstein's lab, a demon realm, a celestial sanctuary, a dragon roost, an elven grove,
+    an orc war camp, a pixie garden, a robot factory, an alien world, a wildlife reserve.
   - **When**: the hour and the sky, for every spot that has one (outdoors, or a room with a
     window, a balcony, a skylight): `morning, clear sky`, `night, rain`, `evening, snowing`.
     Every Where says `outdoors` or `indoors`. The other parts follow the sky: no golden hour
@@ -61,15 +70,15 @@ Qwen-VL and the WD14 tagger) in one tab.
     *Act* picks the family of the explicit act: vaginal, anal, oral, hands & body (handjob,
     fingering, paizuri, tribadism…) or solo. A position ("doggystyle", "mating press") is
     penetration without saying where: vaginal or anal, as the Act filter says.
-    *Kink*, 31 of them: BDSM, bondage, toys, fluids, breeding & x-ray, pregnancy & lactation,
+    *Kink*, 32 of them: BDSM, bondage, toys, fluids, breeding & x-ray, pregnancy & lactation,
     anal, oral, femdom, feet, pet play, costume play, exhibitionism & voyeurism, hypnosis &
     mind control, watersports, scat, latex & fetish wear, bites & marks, size difference,
     small dom big sub, big dom small sub, muscle growth, transformation, inflation & bulge,
-    omegaverse, chastity; tentacles, slime, monsters, corruption and blood & bites only in the
+    belly inflation, male pregnancy, chastity; tentacles, slime, monsters, corruption and blood & bites only in the
     themes they belong to.
     A kink goes with the act: an x-ray shows the womb with vaginal sex, the rectum with anal,
     the throat with a blowjob, and never a womb with a blowjob. Breeding works for 2boys and
-    2girls too, through omegaverse (mpreg, an alpha female's knot). A kink that is an act of
+    2girls too (male pregnancy, knotting; a strap-on). A kink that is an act of
     its own (footjob, pegging, golden shower) takes the Doing's place. Casts and acts a kink has
     nothing for are greyed out with the reason.
   - **Body**, a part of every NSFW idea: breasts, nipples, pussy, pectorals, chest hair,
@@ -91,9 +100,22 @@ Qwen-VL and the WD14 tagger) in one tab.
   - **Save** keeps the idea in the Vault tab's Saved prompts.
   - **Red light**, a theme with no SFW side: brothel parlor, strip club, love hotel, BDSM
     dungeon, red-light windows, massage parlor, private club, peep show, adult film set.
-  - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
-    do, a detail, where, when, light, camera, style. **↻** draws one part again, **🔒** keeps it
-    for the next idea (same scene).
+  - **Every idea is a scene**, so its parts belong together, in groups on the card:
+    *Character* (who, job, wear, build, skin, body), *Face* (hair colour and style, by sex;
+    eyes, colour and details; eyebrows, nose and lips; makeup; accessories; expression;
+    mouth; gaze), *Action* (pose, doing, kink, effects), *Scene* (detail, where, when),
+    *Light* (the scene's source, natural light, quality, mood, support light, volume),
+    *Camera* (shot size, angle and tilt, viewpoint, framing and lens) and *Look* (colour &
+    grading, style). **↻** draws one part again, **🔒** keeps it for the next idea (same
+    scene). The settings turn whole groups off.
+  - **Job**: now and then an idea has an occupation that fits its theme, real (nurse, chef,
+    barista, firefighter, detective, pilot, DJ, astronaut…) or not (knight, wizard, witch,
+    necromancer, bounty hunter, netrunner, dragon rider…), and then the Wear, the accessories
+    and the effects are the job's: a wizard's robe, staff and glowing runes. Fiction stays in
+    its own worlds: knights and witches only in Fantasy and Myth, netrunners and mecha pilots
+    only in Sci-fi, airship pilots only in Steampunk, samurai and geishas in Historical.
+  - **Generate** writes the idea in txt2img and presses its Generate button: your model,
+    sampler, size and negative prompt as they are. The image comes back on the card.
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending. Muse writes the positive prompt only: your negative prompt stays yours.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
@@ -104,7 +126,7 @@ Qwen-VL and the WD14 tagger) in one tab.
     words out with **Never use**, give the button your own **avatar**, drag it anywhere.
   - **⤢ Wide card** (on a window 760 px or wider): the parts on the left, the whole prompt
     on the right; the settings in two columns. Muse remembers it.
-  - NSFW ideas are adults only: every one carries `adult`, and minor-related words are
+  - NSFW ideas are adults only: every one carries `mature`, and minor-related words are
     dropped from any scene.
 
 ![The AI tools](docs/ai-tools.webp)
@@ -232,8 +254,13 @@ lists *of the same scene*, and the ideas stay coherent.
 ```
 
 - `subjects` is keyed by cast: `none`, `1girl`, `1boy`, `1girl1boy`, `2girls`, `2boys`,
-  `girls`, `boys`, `harem`, `reverse`, `mixed` (groups of 3 and more), `furry`, `nonhuman`.
+  `girls`, `boys`, `harem`, `reverse`, `mixed` (groups of 3 and more), `furry`, `kemono`,
+  `mythic`, `monster`, `synth`, `animal`, `nonhuman`.
   Muse writes the cast's own tags in front (`1girl, solo`; for a group, its count tags).
+- `wear` is what people wear there: `{"f": ["sundress", ...], "m": ["linen shirt", ...]}`, one
+  woman's and one man's; Muse puts it together for the cast (a couple, two girls, a group).
+  `jobs`, `hair`, `eyes`, `builds`, `colors`, `angles` and the other parts can be given too;
+  what a scene leaves out comes from Muse's own lists (lib_vault/looks.py).
   `group` is a group that writes its own count tags.
 - `sizes` (3, 4, 5, 6 for 6+) says which group sizes a scene suits, e.g. `[3]` for a
   threesome; a mixed group is 4 or more.
@@ -255,6 +282,9 @@ lists *of the same scene*, and the ideas stay coherent.
   draws it first and leaves out the entries of the other lists it contradicts. Leave it out
   for a room with no window.
 - Packs made for the first versions of Muse still load, each as a theme of its own.
+- The shipped scenes are written by `tools/muse_scenes`: one file per theme or few (places,
+  their spots, what people do and wear there). `python3 tools/muse_scenes/build.py` writes
+  `data/muse_scenes` again, `lint.py` checks that every entry is tags, not prose.
 
 ## Credits
 
