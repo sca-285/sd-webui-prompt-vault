@@ -127,19 +127,23 @@
         const ratings = new Set(over && over.ratings || ratingsOn(s));
         const sizes = new Set(over && over.sizes || s.sizes || []);
         const kinks = new Set(over && over.kinks || s.kinks || []);
+        const acts = new Set(s.allow_nsfw ? (over && over.acts || s.acts || []) : []);
+        const actCasts = cat.act_casts || {}, kinkActs = cat.kink_acts || {};
+        // with an act chosen, only explicit scenes, and casts that have such an act (and a kink to go with it)
+        const castActs = (c, k) => !acts.size || [...acts].some((a) => (actCasts[a] || []).includes(c) && (!k || ((kinkActs[k] || {})[a] || []).includes(c)));
         const kinkThemes = Object.fromEntries((cat.kinks || []).map(([k, , t]) => [k, t]));
         const groups = cat.group_sizes || {};
         // with a kink chosen, a scene counts when it is NSFW and of a theme one of the kinks belongs to
         const kinky = (theme, r) => !kinks.size || (r !== 'sfw' && s.allow_nsfw && [...kinks].some((k) => !kinkThemes[k] || kinkThemes[k].includes(theme)));
         // and a cast counts when one of those kinks has something for it (breeding needs a penis and a pussy)
         const kinkCasts = cat.kink_casts || {};
-        const castKinky = (c, theme, r) => !kinks.size || [...kinks].some((k) => (!kinkThemes[k] || kinkThemes[k].includes(theme))
-            && ((kinkCasts[k] || {})[r] || []).includes(c));
+        const castKinky = (c, theme, r) => !kinks.size ? castActs(c) : [...kinks].some((k) => (!kinkThemes[k] || kinkThemes[k].includes(theme))
+            && ((kinkCasts[k] || {})[r] || []).includes(c) && castActs(c, k));
         // a group cast counts only with a size the scene, the cast and the size filter all allow
         const usable = (c, scSizes) => !groups[c] || scSizes.some((n) => groups[c].includes(n) && (!sizes.size || sizes.has(n)));
         let n = 0;
         for (const [ti, sc, r, scSizes] of cat.index) {
-            if (!ratings.has(r)) continue;
+            if (!ratings.has(r) || (acts.size && r !== 'explicit')) continue;
             if (themes.size && !themes.has(cat.themes[ti])) continue;
             if (!kinky(cat.themes[ti], r)) continue;
             if (!sc.some((c) => (!casts.size || casts.has(c)) && usable(c, scSizes || []) && castKinky(c, cat.themes[ti], r))) continue;
@@ -160,6 +164,11 @@
             if (!s.styles.length) return "Scene's own";
             return s.styles.length <= 2 ? s.styles.join(', ') : s.styles.length + ' families';
         }
+        if (key === 'acts') {
+            if (!s.acts.length) return 'Any';
+            const names = Object.fromEntries(cat.acts);
+            return s.acts.length <= 2 ? s.acts.map((a) => names[a]).join(', ') : s.acts.length + ' acts';
+        }
         if (key === 'kinks') {
             if (!s.kinks.length) return 'None';
             const names = Object.fromEntries(cat.kinks.map(([k, l]) => [k, l]));
@@ -176,9 +185,10 @@
             title: label, onclick: () => { M.tray = M.tray === key ? '' : key; render(); },
         }, el('span', {class: 'pv-muse-filter-label', text: label}), el('span', {class: 'pv-muse-filter-value', text: summary(key)}), icon('down'));
         const n = countMatching();
+        // the scene first; then, once NSFW is on, a tier of its own for what happens in it
         return el('div', {class: 'pv-muse-filters'},
-            el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level'),
-                st().allow_nsfw ? pill('kinks', 'Kink') : null, pill('styles', 'Style')),
+            el('div', {class: 'pv-muse-filter-row'}, pill('themes', 'Theme'), pill('casts', 'Cast'), pill('ratings', 'Level'), pill('styles', 'Style')),
+            st().allow_nsfw ? el('div', {class: 'pv-muse-filter-row pv-muse-filter-row2'}, pill('acts', 'Act'), pill('kinks', 'Kink')) : null,
             M.tray ? tray(M.tray) : null,
             M.tray ? el('div', {class: 'pv-muse-hint', text: n ? `${n} scene${n === 1 ? '' : 's'} match` : 'Nothing matches: loosen a filter'}) : null);
     }
@@ -187,7 +197,7 @@
         const s = st(), cat = M.snap.catalogue;
         const chosen = new Set(key === 'ratings' ? s.ratings : s[key]);
         if (key === 'styles') return styleTray();
-        const options = key === 'themes' ? cat.themes.map((t) => [t, t]) : key === 'kinks' ? cat.kinks.map(([k, l]) => [k, l]) : cat[key];
+        const options = key === 'themes' ? cat.themes.map((t) => [t, t]) : key === 'kinks' ? cat.kinks.map(([k, l]) => [k, l]) : key === 'acts' ? cat.acts : cat[key];
         const toggle = (value) => {
             const next = new Set(chosen);
             if (next.has(value)) next.delete(value); else next.add(value);
@@ -207,7 +217,7 @@
             }, label, key !== 'ratings' && n ? el('small', {text: String(n)}) : null);
         });
         const all = key !== 'ratings' ? el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'),
-            text: {themes: 'All', casts: 'Anyone', kinks: 'None'}[key], onclick: () => patch({[key]: []})}) : null;
+            text: {themes: 'All', casts: 'Anyone', kinks: 'None', acts: 'Any'}[key], onclick: () => patch({[key]: []})}) : null;
         return el('div', {class: 'pv-muse-tray'},
             key === 'ratings' ? toggleSwitch('NSFW', s.allow_nsfw, (v) => patch({allow_nsfw: v})) : null,
             el('div', {class: 'pv-muse-chips'}, all, chips),
@@ -229,8 +239,7 @@
                             const next = new Set(chosen); if (on) next.delete(family); else next.add(family);
                             patch({styles: [...next]});
                         }}, family, el('small', {text: String(n)}));
-                })),
-            el('div', {class: 'pv-muse-hint', text: 'From the Style & Medium category of your library: edit it in the Vault tab.'}));
+                })));
     }
 
     // why a chip leads nowhere, in words
@@ -242,6 +251,10 @@
         if (key === 'sizes' && value === 3 && s.casts.length && s.casts.every((c) => c === 'mixed')) return 'A mixed group is 4 people or more.';
         const kinkThemes = Object.fromEntries((M.snap.catalogue.kinks || []).map(([k, l, t]) => [k, [l, t]]));
         if (key === 'kinks' && !on.some((r) => r !== 'sfw')) return 'Kinks are NSFW: add a NSFW level.';
+        if (key === 'acts' && !on.includes('explicit')) return 'Acts are explicit: add Explicit to Level.';
+        if (key === 'ratings' && value !== 'explicit' && s.acts.length) return 'An act makes an explicit idea. Set Act to Any.';
+        if (key === 'acts' && s.kinks.length) return 'None of the chosen kinks goes with this act.';
+        if (key === 'casts' && s.acts.length && !s.kinks.length) return 'No such act for this cast.';
         if (key === 'ratings' && value === 'sfw' && s.kinks.length) return 'Kinks are NSFW: an SFW idea carries none. Set Kink to None.';
         const futa = ['futa', 'futa_girl', 'futa_boy'];
         if (key === 'casts' && futa.includes(value) && !on.some((r) => r !== 'sfw')) return 'Futanari: NSFW only. Add a NSFW level.';
@@ -278,7 +291,7 @@
 
     // ------------------------------------------------------------------ the WebUI's prompt boxes
 
-    const TARGETS = {txt2img: ['txt2img_prompt', 'txt2img_neg_prompt'], img2img: ['img2img_prompt', 'img2img_neg_prompt'], vault: ['pv_positive', 'pv_negative']};
+    const TARGETS = {txt2img: 'txt2img_prompt', img2img: 'img2img_prompt', vault: 'pv_positive'};
     const TARGET_NAMES = {txt2img: 'txt2img', img2img: 'img2img', vault: 'the Vault editor'};
 
     const area = (id) => app().querySelector('#' + id + ' textarea');
@@ -317,15 +330,12 @@
         const it = idea();
         if (!it) return;
         const s = st();
-        const [posId, negId] = TARGETS[target];
-        const pos = area(posId);
+        const pos = area(TARGETS[target]);
         if (!pos) { toast('The ' + TARGET_NAMES[target] + ' prompt box is not on the page', true); return; }
         write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
-        const neg = s.send_negative && it.negative ? area(negId) : null;
-        if (neg) write(neg, addMissing(neg.value, it.negative));
         const go = window['switch_to_' + target];
         if (typeof go === 'function') { try { go(); } catch (e) { /* the tab switch is a nicety */ } }
-        toast('Sent to ' + TARGET_NAMES[target] + (neg ? ', negatives added' : ''));
+        toast('Sent to ' + TARGET_NAMES[target]);
     }
 
     // ------------------------------------------------------------------ ideas
@@ -394,7 +404,7 @@
         const it = idea();
         if (!it) return;
         const when = new Date().toLocaleString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
-        call('/prompts/save', {name: `${it.title} · ${when}`, positive: it.positive, negative: it.negative})
+        call('/prompts/save', {name: `${it.title} · ${when}`, positive: it.positive, negative: ''})
             .then(() => {
                 toast('Saved in the Vault tab');
                 if (window.promptVault && window.promptVault.reloadSaved) window.promptVault.reloadSaved();
@@ -557,7 +567,6 @@
                     nav),
                 el('div', {class: 'pv-muse-parts'}, it.parts.map((p) => partRow(it, p))));
         const label = it.edited ? 'Prompt (edited: rolling a part rewrites it)' : 'Prompt';
-        const neg = it.negative ? el('div', {class: 'pv-muse-neg', title: it.negative, text: (s.send_negative ? 'Negatives added on send: ' : 'Negatives (not sent): ') + it.negative}) : null;
         const note = it.note ? el('div', {class: 'pv-muse-hint', text: it.note}) : null;
 
         if (isWide()) {
@@ -568,14 +577,14 @@
                 el('div', {class: 'pv-muse-cols'},
                     card,
                     el('div', {class: 'pv-muse-prompt pv-muse-prompt-wide'},
-                        el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, neg, note)));
+                        el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, note)));
         }
         return el('div', {class: 'pv-muse-body'},
             filterBar(),
             card,
             el('details', {class: 'pv-muse-prompt', open: LS.get('prompt_open', true) ? true : null,
                 ontoggle: (e) => LS.set('prompt_open', e.target.open)},
-            el('summary', {text: label}), prompt, neg, note));
+            el('summary', {text: label}), prompt, note));
     }
 
     // always in view, under the scrolling part
@@ -610,6 +619,7 @@
         return (!s.themes.length || s.themes.includes(it.theme)) && (!s.casts.length || s.casts.includes(it.cast))
             && ratingsOn(s).includes(it.rating) && (!it.size || !s.sizes.length || s.sizes.includes(it.size))
             && (!s.kinks.length || it.parts.some((p) => p.slot === 'kink' && p.value))
+            && (!s.acts.length || !s.allow_nsfw || it.rating === 'explicit')
             && (!s.styles.length || it.styles_from === s.styles.join('|'));
     }
 
@@ -626,7 +636,7 @@
         render();
         paintFab();
         // a filter changed and the idea on the card no longer fits it: a fitting one, once the clicks settle
-        if (['themes', 'casts', 'ratings', 'sizes', 'kinks', 'styles', 'allow_nsfw'].some((k) => k in body)) {
+        if (['themes', 'casts', 'ratings', 'sizes', 'kinks', 'acts', 'styles', 'allow_nsfw'].some((k) => k in body)) {
             clearTimeout(patch.t);
             patch.t = setTimeout(() => {
                 const it = idea();
@@ -675,8 +685,7 @@
             s.allow_nsfw ? section('NSFW',
                 toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',
-                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']]),
-                toggleSwitch('Add the idea\'s negatives too', s.send_negative, (v) => patch({send_negative: v}), 'only the ones missing from the negative prompt')),
+                seg('How', 'send_mode', [['replace', 'Replace'], ['append', 'Append']])),
             section('Arrange & describe',
                 seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
                 seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),
@@ -686,7 +695,7 @@
                 s.use_tipo ? seg('Output', 'tipo_output', [['Tags', 'Tags'], ['Natural language', 'Words'], ['Tags + natural language', 'Both']]) : null,
                 s.use_tipo ? seg('Length', 'tipo_length', [['very short', 'XS'], ['short', 'S'], ['long', 'L'], ['very long', 'XL']]) : null),
             section('Never use', blacklist,
-                el('div', {class: 'pv-muse-hint', text: 'Comma-separated. Whole words only; they also go to the negatives.'})),
+                el('div', {class: 'pv-muse-hint', text: 'Comma-separated. Whole words only.'})),
             section('History',
                 el('div', {class: 'pv-muse-field'},
                     el('span', {class: 'pv-muse-hint', text: `${M.ideas.length} of the last ${KEEP} ideas kept, in this browser`}),

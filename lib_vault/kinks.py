@@ -8,7 +8,7 @@ those themes: tentacles belong to a wizard's tower, not to an office.
 
 The body is a part of its own on NSFW ideas: breasts, pussy, penis, body hair, prosthetics,
 and for anthros the anatomy of their kind. Everything here is for adults; muse.py still drops
-minor-related words and sends its guard negatives.
+minor-related words.
 """
 
 from __future__ import annotations
@@ -17,6 +17,10 @@ import random
 import re
 
 FANTASY = ["Fantasy", "Creature", "Horror", "Myth"]
+
+# x-rays where the act is: the throat when it is oral, the rectum when it is anal
+THROAT_X = ["x-ray, cross-section, throat, deepthroat", "x-ray, throat, cum in mouth", "cross-section, deepthroat, throat bulge"]
+ANAL_X = ["cross-section, anal, cum inside", "x-ray, anal, internal cumshot"]
 
 KINKS = {
     "bdsm": {
@@ -80,15 +84,23 @@ KINKS = {
     },
     "breeding": {
         "label": "Breeding & x-ray",
+        # by act: a womb for vaginal sex, the rectum for anal, the throat for oral (see acts.py)
         "explicit": {
             "1girl1boy": ["cross-section, penis inside, cum inside", "x-ray, creampie, sperm cell, ovum", "breeding, cum inside, impregnation",
-                          "internal cumshot, cross-section, womb", "insemination, x-ray, womb", "mating press, breeding"],
-            "harem": ["cross-section, cum inside", "breeding, multiple girls", "x-ray, creampie, ovum"],
-            "reverse": ["cross-section, cum inside", "breeding, cum overflow", "x-ray, sperm cell, ovum"],
-            "mixed": ["breeding, creampie", "cross-section, cum inside"],
-            "futa_girl": ["futanari, creampie, cross-section", "x-ray, cum inside, ovum", "breeding, impregnation"],
-            "futa_boy": ["cross-section, cum inside", "x-ray, creampie, sperm cell, ovum"],
-            "human_furry": ["cross-section, knot, cum inside", "x-ray, interspecies, breeding, ovum", "breeding, cum inside"],
+                          "internal cumshot, cross-section, womb", "insemination, x-ray, womb", "mating press, breeding"] + ANAL_X + THROAT_X,
+            "harem": ["cross-section, cum inside", "breeding, multiple girls", "x-ray, creampie, ovum"] + ANAL_X + THROAT_X,
+            "reverse": ["cross-section, cum inside", "breeding, cum overflow", "x-ray, sperm cell, ovum"] + ANAL_X + THROAT_X,
+            "mixed": ["breeding, creampie", "cross-section, cum inside", "x-ray, womb, cum inside"] + ANAL_X + THROAT_X,
+            "futa_girl": ["futanari, creampie, cross-section", "x-ray, cum inside, ovum", "breeding, impregnation, womb"] + ANAL_X + THROAT_X,
+            "futa_boy": ["cross-section, cum inside", "x-ray, creampie, sperm cell, ovum"] + ANAL_X + THROAT_X,
+            "human_furry": ["cross-section, knot, cum inside", "x-ray, interspecies, breeding, ovum", "breeding, cum inside"] + ANAL_X + THROAT_X,
+            # omegaverse: an alpha breeds an omega, whoever they are
+            "2boys": ["omegaverse, mpreg, anal, cum inside", "omegaverse, knot, anal, breeding", "cross-section, anal, cum inside",
+                      "x-ray, anal, sperm cell", "omegaverse, mating bite, anal, knotting"] + THROAT_X,
+            "boys": ["omegaverse, mpreg, anal, cum inside", "cross-section, anal, cum inside", "omegaverse, knot, anal, breeding"] + THROAT_X,
+            "2girls": ["omegaverse, alpha female, knot, cum inside", "omegaverse, impregnation, womb", "cross-section, strap-on",
+                       "omegaverse, breeding, womb, x-ray"],
+            "girls": ["omegaverse, alpha female, knot, cum inside", "omegaverse, impregnation, womb", "cross-section, strap-on"],
         },
     },
     "pregnancy": {
@@ -154,10 +166,10 @@ KINKS = {
         "explicit": {"people": ["maid, clothes aside", "playboy bunny, leotard pull", "nurse, open clothes", "cheerleader, skirt lift"]},
     },
     "exhibitionism": {
-        "label": "Exhibitionism",
-        "suggestive": {"people": ["flashing, window", "skirt lift, public", "see-through, public"]},
-        "nude": {"people": ["nude, open window", "public nudity", "nude, empty corridor"]},
-        "explicit": {"people": ["against glass, sex, cityscape", "public sex, audience", "public sex, quickie"]},
+        "label": "Exhibitionism & voyeurism",
+        "suggestive": {"people": ["flashing, window", "skirt lift, public", "see-through, public", "voyeurism, peeking"]},
+        "nude": {"people": ["nude, open window", "public nudity", "nude, empty corridor", "voyeurism, peeping"]},
+        "explicit": {"people": ["against glass, sex, cityscape", "public sex, audience", "public sex, quickie", "voyeurism, sex, audience"]},
     },
     "hypnosis": {
         "label": "Hypnosis & mind control",
@@ -223,13 +235,109 @@ KINKS = {
     },
 }
 
+# ---- after Danbooru's tag groups: size, power, bodies that change
+KINKS.update({
+    "size": {
+        "label": "Size difference",
+        "suggestive": {"pair": ["size difference", "height difference", "size difference, lifting another", "size difference, princess carry"],
+                       "groups": ["size difference", "height difference"]},
+        "nude": {"pair": ["size difference, hug", "height difference, standing", "size difference, carrying"], "groups": ["size difference"]},
+        "explicit": {"pair": ["size difference, sex", "size difference, full nelson", "size difference, suspended congress",
+                              "size difference, carrying, sex", "height difference, standing sex"],
+                     "penis": ["size difference, stomach bulge", "size difference, full nelson", "size difference, carrying, sex"],
+                     "groups": ["size difference, group sex", "size difference, sandwiched"]},
+    },
+    "smalldom": {
+        "label": "Small dom, big sub",
+        "suggestive": {"pair": ["small dom big sub, size difference", "small dom big sub, leash", "small dom big sub, necktie grab"],
+                       "groups": ["small dom big sub, size difference"]},
+        "nude": {"pair": ["small dom big sub, kneeling", "small dom big sub, collar, leash", "small dom big sub, foot on chest"],
+                 "groups": ["small dom big sub, kneeling"]},
+        "explicit": {"pair": ["small dom big sub, pinned down, sex", "small dom big sub, size difference, sex", "small dom big sub, bound wrists",
+                              "small dom big sub, leash pull"], "groups": ["small dom big sub, group sex"]},
+    },
+    "bigdom": {
+        "label": "Big dom, small sub",
+        "suggestive": {"pair": ["big dom small sub, size difference", "big dom small sub, pinned against wall", "big dom small sub, chin grab"],
+                       "groups": ["big dom small sub, size difference"]},
+        "nude": {"pair": ["big dom small sub, carrying", "big dom small sub, lap sitting", "big dom small sub, head pat"],
+                 "groups": ["big dom small sub, size difference"]},
+        "explicit": {"pair": ["big dom small sub, full nelson", "big dom small sub, pinned down, sex",
+                              "big dom small sub, suspended congress", "big dom small sub, mating press"],
+                     "penis": ["big dom small sub, stomach bulge", "big dom small sub, full nelson", "big dom small sub, mating press"],
+                     "groups": ["big dom small sub, gangbang"]},
+    },
+    "bondage": {
+        "label": "Bondage",
+        "suggestive": {"people": ["bound wrists", "rope, crossed arms", "handcuffs, bound wrists", "bound ankles"]},
+        "nude": {"solo": ["shibari", "hogtie", "frogtie", "armbinder", "crotch rope", "bound to chair", "rope harness, suspension"],
+                 "pair": ["shibari", "bound wrists, bound ankles", "rope, leash", "bound together"], "groups": ["shibari", "bound wrists"]},
+        "explicit": {"solo": ["frogtie, spread legs", "shibari, crotch rope", "hogtie, gag", "suspension bondage, spread legs", "bound to bed, spreader bar"],
+                     "pair": ["shibari, sex", "frogtie, sex", "bound wrists, sex", "armbinder, sex", "bound to bed, sex", "rope, suspension, sex"],
+                     "groups": ["shibari, group sex", "bound wrists, gangbang"]},
+    },
+    "muscle": {
+        "label": "Muscle growth",
+        "suggestive": {"people": ["muscle growth, torn clothes", "muscle growth, bursting clothes", "muscle growth, flexing, veins"]},
+        "nude": {"people": ["muscle growth, abs, veins", "muscle growth, flexing", "muscular, muscle growth, steam"]},
+        "explicit": {"people": ["muscle growth, sex", "muscle growth, veins, sweat", "muscle growth, flexing, sex"]},
+    },
+    "transform": {
+        "label": "Transformation",
+        "suggestive": {"female": ["mid-transformation, animal ears, tail", "transformation, sparkles", "genderswap, transformation",
+                                  "breast expansion, bursting clothes", "corruption, mid-transformation"],
+                       "people": ["mid-transformation, animal ears, tail", "transformation, sparkles", "genderswap, transformation",
+                                  "corruption, mid-transformation"]},
+        "nude": {"female": ["mid-transformation, fur, claws", "slime transformation", "petrification", "breast expansion",
+                            "animal transformation, tail, ears"],
+                 "people": ["mid-transformation, fur, claws", "slime transformation", "petrification", "animal transformation, tail, ears"]},
+        "explicit": {"female": ["mid-transformation, sex", "transformation, corruption, glowing womb tattoo", "breast expansion, sex",
+                                "furry transformation, sex"],
+                     "people": ["mid-transformation, sex", "furry transformation, sex", "transformation, corruption, sex"]},
+    },
+    "inflation": {
+        "label": "Inflation & bulge",
+        "suggestive": {"female": ["breast expansion", "belly inflation, tight clothes"], "people": ["belly inflation, tight clothes"]},
+        "nude": {"female": ["belly inflation", "breast expansion, large breasts"], "people": ["belly inflation"]},
+        "explicit": {"penis": ["stomach bulge", "cum inflation", "stomach bulge, deep penetration", "cum inflation, cum overflow"],
+                     "rough": ["stomach bulge, gangbang", "cum inflation, group sex"]},
+    },
+    "omegaverse": {
+        "label": "Omegaverse",
+        "suggestive": {"people": ["omegaverse, alpha, omega", "omegaverse, heat, flushed", "omegaverse, scent, nuzzling"]},
+        "nude": {"people": ["omegaverse, mating mark", "omegaverse, heat, sweat", "omegaverse, nape bite"]},
+        "explicit": {"pair": ["omegaverse, knot, cum inside", "omegaverse, mating bite, knotting", "omegaverse, heat, breeding"],
+                     "groups": ["omegaverse, knotting, group sex"]},
+    },
+    "chastity": {
+        "label": "Chastity",
+        "suggestive": {"1boy": ["chastity cage"], "2boys": ["chastity cage"], "boys": ["chastity cage"], "1girl": ["chastity belt"],
+                       "2girls": ["chastity belt"], "girls": ["chastity belt"], "1girl1boy": ["chastity cage, key", "chastity belt, key"],
+                       "harem": ["chastity cage, key"], "reverse": ["chastity belt, key"], "futa": ["chastity cage"]},
+        "nude": {"1boy": ["chastity cage", "chastity cage, orgasm denial"], "2boys": ["chastity cage, key"], "boys": ["chastity cage"],
+                 "1girl": ["chastity belt"], "2girls": ["chastity belt, key"], "girls": ["chastity belt"],
+                 "1girl1boy": ["chastity cage, holding key", "chastity belt, holding key"], "harem": ["chastity cage, key"], "reverse": ["chastity belt"],
+                 "futa": ["chastity cage, orgasm denial"], "futa_girl": ["chastity cage, key"], "futa_boy": ["chastity cage, key"]},
+        "explicit": {"1boy": ["chastity cage, precum"], "2boys": ["chastity cage, anal"], "boys": ["chastity cage, anal"],
+                     "1girl1boy": ["chastity cage, pegging", "chastity cage, handjob"], "harem": ["chastity cage, femdom"],
+                     "futa_boy": ["chastity cage, anal"], "futa": ["chastity cage, precum"]},
+    },
+    "corruption": {
+        "label": "Corruption",
+        "themes": FANTASY + ["Sci-fi", "Red light"],
+        "suggestive": {"people": ["corruption, dark aura", "corruption, glowing eyes", "corruption, black sclera"]},
+        "nude": {"people": ["corruption, glowing womb tattoo", "corruption, dark veins", "corruption, demon horns"]},
+        "explicit": {"people": ["corruption, mind break", "corruption, glowing womb tattoo, sex", "corruption, heart-shaped pupils, sex"]},
+    },
+})
+
 FEMALE = ("1girl", "1girl1boy", "2girls", "girls", "harem", "reverse", "mixed", "futa", "futa_girl", "futa_boy", "human_furry")
 MALE = ("1boy", "1girl1boy", "2boys", "boys", "harem", "reverse", "mixed", "futa_boy", "human_furry")
 
-# a werewolf is a cursed human, a monster: never drawn as a furry
-SUBJECT_NEGATIVES = {"werewolf": ["anthro", "furry", "kemono", "cute", "chibi"]}
 FUTA = ("futa", "futa_girl", "futa_boy")
-EXTRA_ALIASES = {"female": FEMALE}
+# pairs and groups with a penis in them (stomach bulge, cum inflation), and groups that can be a gangbang
+PENIS_PAIRS = ("1girl1boy", "2boys", "futa_girl", "futa_boy", "human_furry", "harem", "reverse", "boys", "mixed")
+EXTRA_ALIASES = {"female": FEMALE, "penis": PENIS_PAIRS, "rough": ("reverse", "boys", "mixed")}
 
 # ------------------------------------------------------------------ the body
 
@@ -372,7 +480,7 @@ def entries(kink, level, cast, aliases):
     lists = KINKS[kink].get(level) or {}
     if cast in lists:
         return lists[cast]
-    for alias in ("pair", "groups", "solo", "female", "people"):
+    for alias in ("penis", "rough", "pair", "groups", "solo", "female", "people"):
         if alias in lists and cast in (EXTRA_ALIASES.get(alias) or aliases.get(alias, ())):
             return lists[alias]
     return []

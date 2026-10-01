@@ -11,7 +11,7 @@ settings and the optional avatar live in <data folder>/muse, so updates never to
 A scene file:
 
   {"theme": "Film", "rating": "sfw",                 <- defaults for its scenes
-   "styles": [...], "camera": [...], "negatives": [...],
+   "styles": [...], "camera": [...],
    "scenes": [
      {"title": "Night diner", "mood": ["tense", "melancholy"],
       "subjects": {"1girl": ["trench coat, red lipstick"], "1boy": ["rumpled shirt"]},
@@ -45,7 +45,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, kinks as kinklib, settings, store, text, vocab, when
+from . import TAG, acts as actlib, kinks as kinklib, settings, store, text, vocab, when
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -147,11 +147,10 @@ MODES = ("replace", "append")
 TIPO_OUTPUTS = ("Tags", "Natural language", "Tags + natural language")
 TIPO_LENGTHS = ("very short", "short", "long", "very long")
 
-# NSFW ideas never carry these, whatever a file says, and always send them as negatives.
+# NSFW ideas never carry these, whatever a file says.
 MINOR = re.compile(r"\b(child|children|kid|kids|loli|lolicon|shota|shotacon|underage|minor|teen|teenager|"
                    r"preteen|toddler|infant|schoolgirl|schoolboy|cub|young girl|young boy|little girl|little boy|chibi)\b",
                    re.IGNORECASE)
-GUARD_NEGATIVES = ["child", "loli", "shota", "underage", "childlike proportions"]
 
 AVATAR_TYPES = {  # extension: leading bytes
     ".png": (b"\x89PNG\r\n\x1a\n",),
@@ -170,8 +169,8 @@ DEFAULT_STATE = {
     "ratings": ["sfw"],
     "sizes": [],             # groups: empty, any size; else some of SIZES
     "send_mode": "replace",
-    "send_negative": True,
     "kinks": [],             # NSFW layers on top of the scene, see kinks.py; empty: none
+    "acts": [],              # families of explicit acts, see acts.py; empty: any
     "styles": [],            # style families of the library (vocab.py); empty: the scene's own styles
     "anatomy": True,         # the Body part of NSFW ideas: breasts, pussy, penis, body hair...
     "arrange_with": "library",  # or "qwen"
@@ -215,7 +214,7 @@ def _names(value, allowed=None):
 def _normalise(data):
     out = dict(DEFAULT_STATE)
     out.update({k: v for k, v in data.items() if k in DEFAULT_STATE})
-    for key in ("enabled", "allow_nsfw", "send_negative", "use_tipo", "anatomy"):
+    for key in ("enabled", "allow_nsfw", "use_tipo", "anatomy"):
         out[key] = bool(out[key])
     try:
         out["interval_minutes"] = max(5, min(30, int(out["interval_minutes"])))
@@ -225,6 +224,7 @@ def _normalise(data):
     out["casts"] = _names(out["casts"], CASTS)
     out["ratings"] = _names(out["ratings"], RATINGS)
     out["kinks"] = _names(out["kinks"], kinklib.KINKS)
+    out["acts"] = _names(out["acts"], actlib.FAMILIES)
     out["styles"] = _names(out["styles"])[:40]
     sizes = out["sizes"] if isinstance(out["sizes"], list) else []
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
@@ -371,7 +371,6 @@ def _read_file(path, custom):
             "sizes": sorted({int(n) for n in (raw.get("sizes") or data.get("sizes") or SIZES)
                              if str(n).isdigit() and int(n) in SIZES}) or list(SIZES),
             "lists": lists,
-            "negatives": _clean(data.get("negatives"), False) + _clean(raw.get("negatives"), False),
             "custom": custom,
         })
     return out
@@ -405,6 +404,8 @@ def catalogue():
         "group_sizes": {k: list(v) for k, v in GROUP_SIZES.items()},
         "kinks": [[k, v["label"], v.get("themes")] for k, v in kinklib.KINKS.items()],
         "kink_casts": kinklib.casts_by_level(ALIASES, list(CASTS)),
+        "acts": [[k, v] for k, v in actlib.FAMILIES.items()],
+        **_act_tables(scenes),
         "styles": [[family, len(tags)] for family, tags in vocab.styles().items()],
         # one row per scene: [theme index, [casts], rating, [group sizes]]
         "index": [[themes.index(s["theme"]), list(s["casts"]), s["rating"], s["sizes"]] for s in scenes],
@@ -426,18 +427,83 @@ def _kinks_for(scene, st):
     return [k for k in st["kinks"] if kinklib.themed(k, scene["theme"])]
 
 
+def _act_families(scene, cast):
+    """The act families a scene has for a cast, a bare position counting as vaginal or anal."""
+    cache = scene.setdefault("_acts", {})
+    if cast not in cache:
+        fams = set()
+        for a in _for_cast(scene["lists"]["action"], cast):
+            fam, generic = actlib.families(a, cast)
+            fams |= fam
+            if generic:
+                fams |= {"anal", "vaginal"} if cast in actlib.VAGINAL_CASTS else {"anal"}
+        cache[cast] = fams
+    return cache[cast]
+
+
+def _kink_goes(entry, fams, cast):
+    """Whether a kink entry has an act to go with among these families."""
+    need = actlib._needs(entry)
+    if not need or "own" in need:
+        return True
+    have = set(fams) | ({"pen"} if fams & {"anal", "vaginal"} else set())
+    return need <= have
+
+
+def _wanted(have, acts):
+    """The families of `have` the chosen acts let through; oral brings its throat along."""
+    out = have & set(acts)
+    if "oral" in out and "throat" in have:
+        out.add("throat")
+    return out
+
+
+def _act_tables(scenes):
+    """For the card: which casts have acts of each family, and which kinks go with which family."""
+    act_casts = {f: set() for f in actlib.FAMILIES}
+    have = {}
+    for s in scenes:
+        if s["rating"] == "explicit":
+            for c in s["casts"]:
+                fams = _act_families(s, c)
+                have.setdefault(c, set()).update(fams)
+                for f in fams & set(actlib.FAMILIES):
+                    act_casts[f].add(c)
+    kink_acts = {k: {f: [c for c in act_casts[f] if any(_kink_goes(e, _wanted(have[c], {f}), c)
+                                                         for e in kinklib.entries(k, "explicit", c, ALIASES))]
+                     for f in actlib.FAMILIES} for k in kinklib.KINKS}
+    return {"act_casts": {f: sorted(v) for f, v in act_casts.items()}, "kink_acts": kink_acts}
+
+
+def _cast_fits(s, c, st, chosen):
+    """A cast of a scene, with the chosen kinks and acts."""
+    acts = set(st["acts"]) if st["allow_nsfw"] else set()
+    fams = _wanted(_act_families(s, c), acts) if acts else None
+    if acts and not fams:
+        return False
+    if not st["kinks"]:
+        return True
+    for k in chosen:
+        for e in kinklib.entries(k, s["rating"], c, ALIASES):
+            if fams is None or _kink_goes(e, fams, c):
+                return True
+    return False
+
+
 def _matching(st):
     ratings = set(_ratings_on(st))
     themes, casts = set(st["themes"]), set(st["casts"])
+    acts = st["acts"] and st["allow_nsfw"]
     out = []
     for s in load_scenes():
         if s["rating"] not in ratings or (themes and s["theme"] not in themes):
             continue
+        if acts and s["rating"] != "explicit":
+            continue  # an act is an explicit idea
         chosen = _kinks_for(s, st)
         if st["kinks"] and not chosen:
             continue  # with a kink chosen, every idea carries one
-        usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"])
-                  and (not st["kinks"] or any(kinklib.entries(k, s["rating"], c, ALIASES) for k in chosen))]
+        usable = [c for c in s["casts"] if (not casts or c in casts) and _sizes(s, c, st["sizes"]) and _cast_fits(s, c, st, chosen)]
         if usable:
             out.append((s, usable))
     return out
@@ -471,7 +537,7 @@ def _pools(scene, cast, st=None):
     return pools
 
 
-ORDER_DRAWN = ("subject", "time", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+ORDER_DRAWN = ("subject", "time", "body", "kink", "action", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
 # what the hour and the sky can contradict (see when.py)
 UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting")
 
@@ -527,6 +593,12 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         if scene["rating"] != "sfw":
             pools["style"] = [x for x in pools["style"] if not MINOR.search(x)]
         parts, sky = {}, (None, None)
+        explicit = scene["rating"] == "explicit"
+        wanted = set(st["acts"]) if st["allow_nsfw"] else set()
+
+        def acts_pool():
+            pool = [a for a in pools["action"] if not blocked(a)]
+            return [a for a in pool if actlib.in_family(a, who, wanted)] if wanted else pool
         # drawn in this order: the body follows the subject (a male wolf, a female android), the pose
         # follows the action (no "lying on back" for someone riding); the prompt keeps the order of SLOTS
         for slot in ORDER_DRAWN:
@@ -546,11 +618,22 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             elif slot in UNDER_SKY and sky != (None, None):
                 fit = [x for x in pool if when.fits(x, *sky)]
                 pool = fit if fit or slot != "setting" else pool
+            if explicit and slot == "kink" and pool:  # a kink with an act to go with
+                doing = [keep["action"]] if "action" in keep else acts_pool()
+                fit = [k for k in pool if "own" in actlib.needs(k) or any(actlib.fits(k, a, who, wanted) for a in doing)]
+                pool = fit or pool
+            if explicit and slot == "action":
+                if wanted:
+                    pool = [a for a in pool if actlib.in_family(a, who, wanted)]
+                if parts.get("kink"):
+                    pool = [] if "own" in actlib.needs(parts["kink"]) else [a for a in pool if actlib.fits(parts["kink"], a, who, wanted)]
             if slot == roll and len(pool) > 1:
                 pool = [x for x in pool if x != current]
             if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:
                 pool = []
             parts[slot] = rng.choice(pool) if pool else ""
+            if explicit and slot == "action" and wanted and parts["action"]:
+                parts["action"] = actlib.as_family(parts["action"], who, wanted, rng, parts.get("kink", ""))
             if slot == "time":
                 sky = when.parse(parts["time"])
         if pools["subject"] != [""] and not parts["subject"]:
@@ -567,14 +650,6 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                     seen.add(text.key(piece))
                     pieces.append(piece)
 
-        extra = [n for word, negs in kinklib.SUBJECT_NEGATIVES.items()
-                 if word in (parts["subject"] + " " + parts["kink"]).lower() for n in negs]
-        seen, negative = set(), []
-        for n in scene["negatives"] + (GUARD_NEGATIVES if nsfw else []) + extra + rules:
-            if text.key(n) not in seen:
-                seen.add(text.key(n))
-                negative.append(n)
-
         return {
             "id": uuid.uuid4().hex[:12],
             "scene": scene["id"],
@@ -588,7 +663,6 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             "nsfw": nsfw,
             "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS if any(pools[s]) or parts[s]],
             "positive": text.join(pieces),
-            "negative": text.join(negative),
         }
     raise store.VaultError("Every idea hit the Never use list: loosen it or the filters.")
 
