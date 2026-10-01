@@ -346,7 +346,7 @@ lists *of the same scene*, and the ideas stay coherent.
 - **WD14 tagger** models by SmilingWolf (<https://huggingface.co/SmilingWolf>).
 - **Qwen-VL** by the Qwen team; **llama.cpp** by ggml-org.
 
-Thanks also to **Claude**, Anthropic's AI assistant, for help building this extension.
+Thanks also to **Claude**, for help building this extension.
 
 ## License
 
