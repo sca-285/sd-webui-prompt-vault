@@ -37,17 +37,24 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
-  - **Three filters**: *Theme* (23: Portrait, Fashion, Film, Horror, Street, Home, Food,
+  - **Three filters**: *Theme* (33: Portrait, Fashion, Film, Horror, Street, Home, Food,
     Architecture, Nature, Creature, Myth, Sci-fi, Sports, Party, Bath & shower, Bedroom,
-    Fantasy, Gym, Hotel, Office, Outdoors, Studio, Red light), *Cast*
+    Fantasy, Gym, Hotel, Office, Outdoors, Studio, Travel, Countryside, Historical,
+    Post-apocalypse, Steampunk, Seafaring, Music & stage, World cities, Retro 80s-90s,
+    Holidays, Red light), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
     (harem), 1girl + boys (reverse harem), mixed group, furry, human + furry, non-human; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
-    choice shows how many scenes it leaves: about 2,500 scenes, nine places per theme with
+    choice shows how many scenes it leaves: about 3,500 scenes, nine places per theme with
     three spots each (a café's window seat, counter and terrace, each with its own Where and
     Detail), so every theme, cast, level and group size goes with every other 27 times. The
     one thing that cannot be is greyed out with the reason: *No humans* is SFW only.
+  - **When**: the hour and the sky, for every spot that has one (outdoors, or a room with a
+    window, a balcony, a skylight): `morning, clear sky`, `night, rain`, `evening, snowing`.
+    Every Where says `outdoors` or `indoors`. The other parts follow the sky: no golden hour
+    at night, no sunbathing in the rain, no starry sky at noon; a desert gets no rain, a
+    night market no morning. Lock the When part and roll the rest, or the other way round.
   - **Tags, never sentences.** Every part is written the way a prompt is: `sitting by window,
     holding cup`, not "she sits by the window holding her cup"; no "she in…, he in…".
   - **Kink** (a fourth filter, there once NSFW is on), 19 of them: BDSM, toys, fluids,
@@ -79,7 +86,7 @@ Qwen-VL and the WD14 tagger) in one tab.
   - **Red light**, a theme with no SFW side: brothel parlor, strip club, love hotel, BDSM
     dungeon, red-light windows, massage parlor, private club, peep show, adult film set.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
-    do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
+    do, a detail, where, when, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).
   - **Send to txt2img, img2img or the Vault editor** right from the card, replacing or
     appending, with the idea's negatives added where they are missing.
@@ -237,6 +244,10 @@ lists *of the same scene*, and the ideas stay coherent.
   `"use": "name"` (or a list of names) starts from it and adds its own entries. The shipped
   files use it: one template per level, one per place, then a scene per spot.
 - Write tags, not sentences: short pieces, no "the", "she", "he", "their".
+- `times` lists the hours and skies a scene can have (`"night, rain"`, `"morning, clear sky"`:
+  morning, day, afternoon, evening, night; clear, cloudy, overcast, rain, fog, snow). Muse
+  draws it first and leaves out the entries of the other lists it contradicts. Leave it out
+  for a room with no window.
 - Packs made for the first versions of Muse still load, each as a theme of its own.
 
 ## Credits

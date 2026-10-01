@@ -45,7 +45,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, kinks as kinklib, settings, store, text, vocab
+from . import TAG, kinks as kinklib, settings, store, text, vocab, when
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -121,10 +121,10 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "lighting", "camera", "style")
+SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "time", "lighting", "camera", "style")
 NSFW_ONLY = ("futa", "futa_girl", "futa_boy")
 LISTS = {"subject": "subjects", "body": "bodies", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
-         "detail": "details", "setting": "settings", "lighting": "lighting", "camera": "camera", "style": "styles"}
+         "detail": "details", "setting": "settings", "time": "times", "lighting": "lighting", "camera": "camera", "style": "styles"}
 CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
 
 MOODS = {
@@ -471,7 +471,9 @@ def _pools(scene, cast, st=None):
     return pools
 
 
-ORDER_DRAWN = ("subject", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+ORDER_DRAWN = ("subject", "time", "body", "action", "kink", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+# what the hour and the sky can contradict (see when.py)
+UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting")
 
 
 def _library_poses(scene, who, parts):
@@ -524,7 +526,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             pools["style"] = list(dict.fromkeys(t for f in st["styles"] for t in fams.get(f, [])))
         if scene["rating"] != "sfw":
             pools["style"] = [x for x in pools["style"] if not MINOR.search(x)]
-        parts = {}
+        parts, sky = {}, (None, None)
         # drawn in this order: the body follows the subject (a male wolf, a female android), the pose
         # follows the action (no "lying on back" for someone riding); the prompt keeps the order of SLOTS
         for slot in ORDER_DRAWN:
@@ -534,13 +536,23 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 pools["gesture"] = list(dict.fromkeys(pools["gesture"] + _library_poses(scene, who, parts)))
             if slot in keep:
                 parts[slot] = keep[slot]
+                if slot == "time":
+                    sky = when.parse(keep[slot])
                 continue
             pool = [x for x in pools[slot] if not blocked(x)]
+            if slot == "time":  # an hour and a sky the locked parts can live with
+                fit = [x for x in pool if all(when.fits(v, *when.parse(x)) for k, v in keep.items() if k in UNDER_SKY)]
+                pool = fit or pool
+            elif slot in UNDER_SKY and sky != (None, None):
+                fit = [x for x in pool if when.fits(x, *sky)]
+                pool = fit if fit or slot != "setting" else pool
             if slot == roll and len(pool) > 1:
                 pool = [x for x in pool if x != current]
             if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:
                 pool = []
             parts[slot] = rng.choice(pool) if pool else ""
+            if slot == "time":
+                sky = when.parse(parts["time"])
         if pools["subject"] != [""] and not parts["subject"]:
             continue  # the blacklist took every subject of this scene
 

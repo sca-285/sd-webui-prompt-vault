@@ -112,7 +112,7 @@
     }
 
     const PART_NAMES = {subject: 'Who', body: 'Body', expression: 'Face', gesture: 'Pose', action: 'Doing', kink: 'Kink', detail: 'Detail',
-        setting: 'Where', lighting: 'Light', camera: 'Camera', style: 'Style'};
+        setting: 'Where', time: 'When', lighting: 'Light', camera: 'Camera', style: 'Style'};
     const RATING_NSFW = (r) => r !== 'sfw';
 
     // ------------------------------------------------------------------ filters

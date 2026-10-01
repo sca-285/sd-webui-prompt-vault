@@ -164,7 +164,7 @@ KINKS = {
         "suggestive": {"people": ["hypnosis, spiral eyes", "pendulum, empty eyes", "glowing eyes, entranced"]},
         "nude": {"people": ["mind control, empty eyes, standing", "hypnosis, expressionless", "heart-shaped pupils, entranced"]},
         "explicit": {"solo": ["hypnosis, empty eyes, masturbation", "mind control, heart-shaped pupils"],
-                     "pair": ["hypnosis, empty eyes, sex", "mind control, glowing eyes", "hypnosis, kneeling, fellatio"],
+                     "pair": ["hypnosis, empty eyes, sex", "mind control, glowing eyes", "hypnosis, kneeling, oral"],
                      "groups": ["hypnosis, group sex", "mind control, glowing eyes, group sex"]},
     },
     "watersports": {
