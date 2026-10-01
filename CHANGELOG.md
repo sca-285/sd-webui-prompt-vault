@@ -1,0 +1,50 @@
+# Changelog
+
+Prompt Vault follows [semantic versioning](https://semver.org): a new major version may change
+the library or saved-prompt files, a minor one adds features, a patch fixes them.
+Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
+
+## 1.0.0 (2026-10-01)
+
+The first release.
+
+### The Vault tab
+- An editor for the positive and negative prompt, pulled from and sent to txt2img or img2img.
+- A tag library of 2,000+ tags in 20 categories: click to add, right-click to weight,
+  Shift+click for the other prompt, search, Hide NSFW; edit it in place, import and export it.
+- Suggestions while you type, from the library and about 10,000 Danbooru tags; **Check tags**
+  finds typos and made-up tags.
+- **Arrange** puts tags in the usual order and drops duplicates (instant, or with Qwen).
+- Saved prompts with thumbnails, and the history of your generations.
+- Local AI helpers: TIPO (expand a prompt), Qwen-VL (rewrite, describe an image), WD14 (tag an
+  image). They run on demand and stop when idle.
+- **Image → Prompt** reads an image with WD14, Qwen or both, or takes the prompt saved in it.
+- A **Send to Prompt Vault** button under the txt2img and img2img galleries takes the image
+  shown there to Image → Prompt.
+- The extension has an icon, on its tab and on that button.
+
+### Muse
+- A floating button on every tab (`Alt+M`) with prompt ideas, on demand or on a timer.
+- 39 themes, about 4,100 scenes: nine places per theme, three spots per place, at four levels
+  (SFW, suggestive, nude, explicit; NSFW stays locked until it is turned on). Kitchen, Living
+  room, Balcony, Garden, Restroom and School (SFW only) among them.
+- Casts from no humans to mixed groups of 6+, futanari, furry, kemono, human + furry, myth and
+  fantasy beings, monsters, sci-fi beings and real animals (SFW only); count tags written
+  for you.
+- Every filter choice leaves 25 scenes or more; what cannot be is greyed out with the reason.
+- An idea is a scene in parts (character, face, action, scene, light, camera, look), each
+  rolled or locked on its own; the Parts switches turn whole groups off.
+- Hour and sky that fit the place; jobs that stay in their worlds; poses that fit the place;
+  small parts left out when another part already says the same thing.
+- Act and Kink filters for explicit ideas (33 kinks), with anatomy tags that fit the cast.
+- Tags, never sentences. NSFW ideas are adults only: every one carries `mature`, and
+  minor-related words are dropped from any scene.
+- **Your prompt**: a box for what every idea starts with, kept as ideas change.
+- Send to txt2img, img2img or the Vault; **Generate** in txt2img or img2img, the image back
+  on the card; Arrange, Describe and TIPO on the card; Save; 500 ideas of history.
+- A wide two-column card, an avatar of your own, a draggable button.
+
+### For contributors
+- `tools/muse_scenes` writes the scene files; `python3 tests/run.py` checks everything, and
+  GitHub Actions runs it on every push.
+- `python3 tools/package.py` builds the release zip.

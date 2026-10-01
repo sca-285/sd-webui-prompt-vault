@@ -1,10 +1,14 @@
+<p align="center"><img src="docs/icon.png" width="96" alt="Prompt Vault"></p>
+
 # Stable Diffusion WebUI Prompt Vault
+
+**Version 1.0.0** · [what's new](CHANGELOG.md)
 
 A prompt workbench for **Stable Diffusion WebUI Forge**, **reForge** and **Forge Classic (Neo)**:
 a searchable tag library, saved prompts and history, and three local AI helpers (TIPO,
 Qwen-VL and the WD14 tagger) in one tab.
 
-![The library](docs/library.webp)
+![Muse on Forge: the idea card over txt2img](docs/muse-forge.webp)
 
 ## Features
 
@@ -34,6 +38,18 @@ Qwen-VL and the WD14 tagger) in one tab.
   language into English, or any instruction ("make it night time").
 - **🏞️ Image → Prompt**: exact Danbooru tags with WD14, a description with Qwen, or both.
   An image made by the WebUI gives back its own prompt with 🧾.
+- **Send to Prompt Vault**: a button with the extension's icon under the txt2img and
+  img2img galleries, next to the WebUI's own "send to" buttons. It takes the image shown
+  there to Image → Prompt; read it, or take back the prompt saved in it.
+
+  ![Send to Prompt Vault, under the txt2img gallery](docs/send-to-vault.webp)
+
+  ![Image → Prompt with a result sent from txt2img](docs/image-prompt.webp)
+
+  ![The Vault tab, with its icon](docs/vault-tab.webp)
+
+  ![The library](docs/library.webp)
+
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
@@ -100,6 +116,12 @@ Qwen-VL and the WD14 tagger) in one tab.
     scene's styles for families of the library's Style & Medium category (pixel art,
     silhouette, vaporwave, stained glass, double exposure, anime eras…).
   - **Save** keeps the idea in the Vault tab's Saved prompts.
+
+  <p><img src="docs/muse-card.webp" width="300" alt="The compact Muse card">
+  <img src="docs/muse-filters.webp" width="520" alt="The Theme filter, with how many scenes each choice leaves"></p>
+
+  ![Muse settings, wide](docs/muse-settings.webp)
+
   - **Red light**, a theme with no SFW side: brothel parlor, strip club, love hotel, BDSM
     dungeon, red-light windows, massage parlor, private club, peep show, adult film set.
   - **Every idea is a scene**, so its parts belong together, in groups on the card:
@@ -168,7 +190,13 @@ extension folder. Keep the two from being enabled at the same time: both would a
 ## Installation
 
 **Extensions → Install from URL**, paste this repository's URL, **Install**, then restart
-the WebUI. Or clone it into `extensions/`.
+the WebUI. Or clone it into `extensions/`. Or take the zip of a
+[release](https://github.com/sca-285/sd-webui-prompt-vault/releases) and unzip it into
+`extensions/` (it makes the `sd-webui-prompt-vault` folder).
+
+Updating: **Extensions → Check for updates**, or a newer release zip over the old folder.
+Your library, saved prompts and Muse's settings live in `prompt_vault/` in the WebUI
+folder, outside the extension, so an update never touches them.
 
 The library, the editor, saved prompts and history need nothing more.
 
