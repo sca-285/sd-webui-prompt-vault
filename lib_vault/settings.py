@@ -38,6 +38,7 @@ DEFAULTS = {
     # main
     "pv_data_dir": "",
     "pv_autocomplete": True,
+    "pv_autocomplete_webui": False,
     "pv_history": True,
     "pv_history_size": 100,
     "pv_hide_nsfw": False,
@@ -150,6 +151,8 @@ def register():
               "so updates never touch it"),
         "pv_autocomplete": O(True, "Suggest tags while typing in the editor")
         .info("from your library and, once a WD14 model is downloaded, about 10,000 Danbooru tags"),
+        "pv_autocomplete_webui": O(False, "Also suggest tags in the txt2img and img2img prompts")
+        .info("left off by itself when the tag autocomplete extension is installed; needs a reload of the page"),
         "pv_history": O(True, "Remember the prompts of every generation"),
         "pv_history_size": O(100, "How many to remember", gr.Slider, {"minimum": 10, "maximum": 1000, "step": 10}),
         "pv_hide_nsfw": O(False, "Hide the NSFW categories of the library by default")

@@ -408,3 +408,16 @@ button[aria-controls="tab_prompt_vault_tab"]::before {
     content: ""; display: inline-block; width: 1.15em; height: 1.15em; margin-right: 0.4em; vertical-align: -0.2em;
     background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><defs><linearGradient id='pv-bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23ffb43a'/><stop offset='1' stop-color='%23ea580c'/></linearGradient></defs><rect x='2' y='2' width='60' height='60' rx='14' fill='url(%23pv-bg)'/><rect x='9' y='14' width='42' height='42' rx='9' fill='none' stroke='%23fff' stroke-width='4'/><rect x='6' y='21' width='5' height='7' rx='2' fill='%23fff'/><rect x='6' y='42' width='5' height='7' rx='2' fill='%23fff'/><circle cx='30' cy='35' r='11' fill='none' stroke='%23fff' stroke-width='3'/><g stroke='%23fff' stroke-width='3' stroke-linecap='round' fill='%23fff'><line x1='30' y1='35' x2='30' y2='21'/><line x1='30' y1='35' x2='42.1' y2='42'/><line x1='30' y1='35' x2='17.9' y2='42'/></g><circle cx='30' cy='21' r='2.6' fill='%23fff'/><circle cx='42.1' cy='42' r='2.6' fill='%23fff'/><circle cx='17.9' cy='42' r='2.6' fill='%23fff'/><circle cx='30' cy='35' r='4' fill='%23fff'/><path d='M51 3 L53.4 9.6 L60 12 L53.4 14.4 L51 21 L48.6 14.4 L42 12 L48.6 9.6 Z' fill='%23fff' stroke='%23ea580c' stroke-width='1.5' stroke-linejoin='round'/></svg>") center / contain no-repeat;
 }
+
+/* your prompt: in front of the idea, or the tags an idea is built around */
+#pv_muse_panel .pv-muse-ownhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+#pv_muse_panel .pv-muse-ownseg { flex: 0 1 260px; }
+html body #pv_muse_panel .pv-muse-ownseg button { padding: 3px 8px; font-size: 12px; }
+#pv_muse_panel .pv-muse-ownbar { position: relative; }
+/* parts from your prompt, parts you wrote; a part's value is written by double-clicking it */
+#pv_muse_panel .pv-muse-mark { margin-right: 5px; font-size: 0.9em; }
+#pv_muse_panel .pv-muse-part-value { cursor: text; }
+#pv_muse_panel .pv-muse-part-edit { display: block; position: relative; flex: 1; min-width: 0; }
+#pv_muse_panel .pv-muse-part-edit input { width: 100%; box-sizing: border-box; padding: 4px 8px; font-size: 13px; }
+#pv_muse_panel .pv-muse-adds .pv-muse-part-edit { flex: 1 1 100%; }
+#pv_muse_panel .pv-suggest { z-index: 1002; }

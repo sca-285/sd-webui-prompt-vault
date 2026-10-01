@@ -208,6 +208,7 @@ DEFAULT_STATE = {
     "tipo_length": "short",
     "blacklist": "",
     "fixed_prompt": "",
+    "prompt_mode": "front",  # front: your prompt goes in front as it is; around: Muse builds the idea around it
 }
 
 _lock = threading.RLock()
@@ -260,7 +261,7 @@ def _normalise(data):
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
     for key, allowed in (("send_mode", MODES), ("tipo_output", TIPO_OUTPUTS), ("tipo_length", TIPO_LENGTHS),
                          ("arrange_with", ("library", "qwen")), ("describe_as", ("paragraph", "both")),
-                         ("generate_in", ("txt2img", "img2img"))):
+                         ("generate_in", ("txt2img", "img2img")), ("prompt_mode", ("front", "around"))):
         if out[key] not in allowed:
             out[key] = DEFAULT_STATE[key]
     out["blacklist"] = str(out["blacklist"] or "")[:4000]
@@ -620,6 +621,124 @@ def _facets(value):
     return frozenset(k for k, rx in FACETS.items() if rx.search(value or ""))
 
 
+# ------------------------------------------------------------------ build around your tags
+# "Your prompt" in Build around: the tags you give are read, each into the part it is (red hair: Hair,
+# bikini: Wear, sunset: When), a scene is picked that has the places and doings you named, and Muse
+# draws the rest around them. What no part takes stays in front, as it is.
+SEED_APPEND = ("setting", "detail")  # yours, then the scene's own
+_COUNT = re.compile(r"^(\d)\+?(girl|boy)s?$")
+_CAST_WORDS = {"solo", "multiple girls", "multiple boys", "hetero", "yuri", "yaoi", "male focus", "female focus", "no humans"}
+_ARRANGE_SLOT = {"face": "face", "expression": "expression", "attire": "outfit", "accessories": "accessory", "pose": "action",
+                 "place": "setting", "time": "time", "light": "lighting", "colour": "color", "camera": "camera", "style": "style",
+                 "body": "build"}
+
+
+@functools.lru_cache(maxsize=1)
+def _seed_vocab():
+    """tag key -> the part it is, from what Muse itself writes."""
+    def flat(v):
+        if isinstance(v, dict):
+            return [x for vv in v.values() for x in flat(vv)]
+        return list(v) if isinstance(v, (list, tuple)) else [v]
+    by = {"hair": [looks.HAIR_COLOR, looks.HAIR_STYLE], "eyes": [looks.EYE_COLOR, looks.EYE_DETAIL],
+          "build": [looks.BUILD, looks.BUILD_DETAIL], "skin": [looks.SKIN_TONE, looks.SKIN_TEXTURE, looks.SKIN_DETAIL],
+          "face": [looks.EYEBROWS, looks.NOSE, looks.LIPS, looks.FACIAL_HAIR], "makeup": [looks.MAKEUP],
+          "accessory": [looks.ACCESSORIES], "gaze": [looks.GAZE], "mouth": [looks.MOUTH], "expression": [MOODS],
+          "camera": [looks.SHOT], "angle": [looks.ANGLE], "view": [looks.VIEW], "framing": [looks.FRAMING],
+          "light_quality": [looks.LIGHT_QUALITY], "light_mood": [looks.LIGHT_MOOD], "light_support": [looks.LIGHT_SUPPORT],
+          "light_volume": [looks.LIGHT_VOLUME], "natural": [looks.NATURAL, looks.NATURAL_SKY], "color": [looks.COLOR],
+          "pet": [looks.PETS], "job": [list(looks.JOBS)]}
+    out = {}
+    for slot, lists in by.items():
+        for lst in lists:
+            for entry in flat(lst):
+                for piece in text.split(str(entry)):
+                    out.setdefault(text.key(piece), slot)
+    for word in list(when._PARSE_TIME) + list(when._PARSE_WEATHER):
+        out[text.key(word)] = "time"
+    return out
+
+
+def _seed_cast(girls, boys):
+    if not girls and not boys:
+        return None
+    if boys == 0:
+        return {1: "1girl", 2: "2girls"}.get(girls, "girls")
+    if girls == 0:
+        return {1: "1boy", 2: "2boys"}.get(boys, "boys")
+    if girls == 1 and boys == 1:
+        return "1girl1boy"
+    if boys == 1:
+        return "harem"
+    if girls == 1:
+        return "reverse"
+    return "mixed"
+
+
+def seed_plan(value):
+    """Your tags, read: {"cast", "parts": {slot: [tags]}, "front": [tags], "words": [tags that pick the scene]}."""
+    from . import arrange
+
+    known = arrange._known()
+    vocab = _seed_vocab()
+    girls = boys = 0
+    nobody = False
+    parts, front, words = {}, [], []
+    for piece in text.split(str(value or "")):
+        k = text.key(piece)
+        if not k:
+            continue
+        m = _COUNT.match(k)
+        if m:
+            n = int(m.group(1))
+            girls, boys = (girls + n, boys) if m.group(2) == "girl" else (girls, boys + n)
+            continue
+        if k in _CAST_WORDS:
+            nobody = nobody or k == "no humans"
+            continue
+        if piece.startswith("<") or piece.startswith("__") or piece != piece.strip("()[]{}") or ":" in piece:
+            front.append(piece)  # LoRAs, wildcards and weighted tags: as you wrote them
+            continue
+        slot = vocab.get(k)
+        if slot is None:
+            rank = known.get(k)
+            if rank is None:
+                rank = arrange._guess(k)
+            name = arrange.ORDER[rank] if rank is not None else None
+            slot = _ARRANGE_SLOT.get(name)
+            if slot == "face":  # the face part is eyebrows, nose and lips; hair and eyes have their own
+                slot = "hair" if re.search(r"\bhair|bangs|ponytail|braid|twintails|bun\b", k) else "eyes" if "eyes" in k else "face"
+        if slot is None and re.search(r"\b[a-z]{3,}ing\b", k):
+            slot = "action"  # a doing no list knows: "cooking together", "feeding ducks"
+        if slot is None:
+            front.append(piece)
+            continue
+        parts.setdefault(slot, []).append(piece)
+        if slot in ("setting", "detail", "action", "time"):
+            words.append(k)
+    cast = "none" if nobody and not (girls or boys) else _seed_cast(girls, boys)
+    return {"cast": cast, "parts": parts, "front": front, "words": words}
+
+
+_scene_text = {}
+
+
+def _scene_words(scene):
+    t = _scene_text.get(scene["id"])
+    if t is None:
+        t = _scene_text[scene["id"]] = json.dumps([scene["title"], scene["lists"]], ensure_ascii=False).lower()
+    return t
+
+
+def _seed_score(scene, plan):
+    """How many of your place, doing and time words the scene has."""
+    t = _scene_words(scene)
+    score = sum(1 for w in plan["words"] if w in t)
+    if plan["parts"].get("time") and any(scene["lists"].get("time", {}).values()):
+        score += 1  # it has a sky for your hour
+    return score
+
+
 UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting", "light_volume", "light_mood", "accessory", "outfit")
 
 
@@ -677,6 +796,17 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
     blocked = _blacklist_test(rules)
     rng = random.Random(seed)
     keep = {k: str(v) for k, v in (keep or {}).items() if k in SLOTS and isinstance(v, str)}
+    plan = seed_plan(st["fixed_prompt"]) if st["prompt_mode"] == "around" and st["fixed_prompt"].strip() else None
+    if plan:  # your tags are locked parts; a part you lock or roll on the card wins
+        hidden_now = {p for g in st["hide"] for p in GROUPS[g]}
+        for slot, tags in plan["parts"].items():
+            if slot in hidden_now:
+                plan["front"] += tags  # its group is off: your tags stay, in front
+            elif slot not in SEED_APPEND:
+                keep.setdefault(slot, ", ".join(tags))
+        if "outfit" in plan["parts"] and "job" not in plan["parts"]:
+            keep.setdefault("job", "")  # a job would dress them otherwise
+        plan["parts"] = {k: v for k, v in plan["parts"].items() if k not in hidden_now}
     current = keep.pop(roll, None) if roll else None  # the part being rolled: anything but this
     for part in DEPENDS.get(roll, ()):
         keep.pop(part, None)
@@ -693,6 +823,14 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         choices = _matching(st)
         if not choices:
             raise store.VaultError("Nothing matches these filters. Loosen them a little.")
+        if plan and plan["cast"]:  # the cast your tags say, when the filters allow it
+            yours = [(sc, [c for c in cs if c == plan["cast"]]) for sc, cs in choices]
+            choices = [x for x in yours if x[1]] or choices
+        if plan and (plan["words"] or plan["parts"].get("time")):  # the scenes with your places and doings
+            scored = [(_seed_score(sc, plan), sc, cs) for sc, cs in choices]
+            best = max(x[0] for x in scored)
+            if best:
+                choices = [(sc, cs) for n, sc, cs in scored if n == best]
 
     for _ in range(24):
         scene, casts = rng.choice(choices)
@@ -823,14 +961,19 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 sky = when.parse(parts["time"])
         if pools["subject"] != [""] and not parts["subject"]:
             continue  # the blacklist took every subject of this scene
+        for slot in SEED_APPEND:  # your places and details first, then the scene's own
+            if plan and plan["parts"].get(slot):
+                parts[slot] = text.join(list(dict.fromkeys(plan["parts"][slot] + text.split(parts[slot]))))
 
         nsfw = scene["rating"] != "sfw"
         nsfw_tags = CASTS[who][2]
-        front = [cast_tags] + ([nsfw_tags, "mature"] if nsfw and who not in SFW_ONLY else [])
+        front = (plan["front"] if plan else []) + [cast_tags] + ([nsfw_tags, "mature"] if nsfw and who not in SFW_ONLY else [])
 
         seen, pieces = set(), []
         for chunk in front + [parts[s] for s in SLOTS]:
             for piece in text.split(chunk):
+                if nsfw and MINOR.search(piece):
+                    continue  # adults only, whatever a scene or your tags say
                 if not blocked(piece) and text.key(piece) not in seen:
                     seen.add(text.key(piece))
                     pieces.append(piece)
@@ -849,6 +992,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS
                       if s not in hidden and (any(pools[s]) or parts[s])],
             "positive": text.join(pieces),
+            "seeded": sorted(k for k, tags in (plan["parts"] if plan else {}).items()  # the parts that still carry your tags
+                             if {text.key(t) for t in tags} <= {text.key(x) for x in text.split(parts.get(k, ""))}),
         }
     raise store.VaultError("Every idea hit the Never use list: loosen it or the filters.")
 

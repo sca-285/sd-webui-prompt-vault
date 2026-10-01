@@ -141,9 +141,14 @@
             return el('div', {class: 'pv-muse-group'},
                 el('div', {class: 'pv-muse-group-head'}, el('span', {class: 'pv-muse-group-name', text: g})),
                 filled.map((p) => partRow(it, p)),
-                empty.length ? el('div', {class: 'pv-muse-adds'}, empty.map((p) => el('button', {type: 'button', class: 'pv-muse-add',
-                    disabled: !!M.busy, title: 'Draw ' + (PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot).toLowerCase(),
-                    onclick: () => rollPart(p.slot)}, '+ ' + (PART_NAMES[p.slot] || p.slot)))) : null);
+                empty.length ? el('div', {class: 'pv-muse-adds'}, empty.map((p) => {
+                    // a click draws it; a double-click writes it yourself (the click waits to tell them apart)
+                    const chip = el('button', {type: 'button', class: 'pv-muse-add', disabled: !!M.busy,
+                        title: 'Draw ' + (PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot).toLowerCase() + ' · double-click: write your own',
+                        onclick: () => { clearTimeout(chip.t); chip.t = setTimeout(() => rollPart(p.slot), 250); },
+                        ondblclick: () => { clearTimeout(chip.t); editPart(it, p.slot, chip); }}, '+ ' + (PART_NAMES[p.slot] || p.slot));
+                    return chip;
+                })) : null);
         });
     }
     const RATING_NSFW = (r) => r !== 'sfw';
@@ -387,24 +392,65 @@
     }
 
     // your own words, kept across ideas, go in front of Muse's tags
+    // your own prompt: in front of every idea as it is, or the tags an idea is built around
+    const around = () => st().prompt_mode === 'around';
     const ownPrompt = () => String(st().fixed_prompt || '').replace(/[\s,]+$/, '').replace(/^[\s,]+/, '');
     function fullPrompt(it) {
-        const own = ownPrompt();
         const tags = String(it.positive || '').replace(/^[\s,]+/, '');
+        if (around()) return tags; // Muse put your tags in the idea itself
+        const own = ownPrompt();
         return own && tags ? own + ', ' + tags : own || tags;
     }
 
+    // the tags of the Vault's library and Danbooru under a box while you type in it
+    function suggest(box, onAccept) {
+        const pv = window.promptVault;
+        if (!pv || !pv.attachSuggest) return;
+        // the list goes next to the box: once the box is on the page
+        const attach = (tries) => {
+            if (box.isConnected && box.parentElement) pv.attachSuggest(box, onAccept);
+            else if (tries) setTimeout(() => attach(tries - 1), 0);
+        };
+        attach(5);
+    }
+
     function ownBar() {
+        const mode = around() ? 'around' : 'front';
         const box = el('textarea', {class: 'pv-muse-text pv-muse-own', rows: '1', spellcheck: 'false', 'aria-label': 'Your prompt',
-            placeholder: 'e.g. masterpiece, best quality, <lora:name:0.8>'});
+            placeholder: mode === 'around' ? 'e.g. 1girl, red hair, bikini, beach, sunset: Enter for an idea around them'
+                : 'e.g. masterpiece, best quality, <lora:name:0.8>'});
         box.value = st().fixed_prompt || '';
+        const save = () => call('/muse/state', {fixed_prompt: box.value}).catch((e) => toast(e.message, true));
         box.addEventListener('input', () => {
             if (M.snap && M.snap.state) M.snap.state.fixed_prompt = box.value;
             clearTimeout(ownBar.t);
-            ownBar.t = setTimeout(() => call('/muse/state', {fixed_prompt: box.value}).catch((e) => toast(e.message, true)), 500);
+            ownBar.t = setTimeout(save, 500);
         });
+        box.addEventListener('keydown', async (e) => {
+            if (e.key !== 'Enter' || e.shiftKey) return;
+            e.preventDefault();
+            clearTimeout(ownBar.t);
+            await save();
+            if (around()) nextIdea(false);
+            else box.blur();
+        });
+        suggest(box);
+        const pick = (v, label, title) => el('button', {type: 'button', role: 'radio', 'aria-checked': v === mode ? 'true' : 'false',
+            class: v === mode ? 'pv-on' : '', text: label, title, onclick: async () => {
+                if (v === mode) return;
+                clearTimeout(ownBar.t);
+                await call('/muse/state', {fixed_prompt: box.value}).catch(() => {});
+                await patch({prompt_mode: v});
+                if (v === 'around' && box.value.trim()) nextIdea(false);
+            }});
         return el('div', {class: 'pv-muse-ownbar'},
-            el('div', {class: 'pv-muse-prompt-label', text: 'Your prompt: kept as ideas change, sent in front of the idea'}), box);
+            el('div', {class: 'pv-muse-ownhead'},
+                el('span', {class: 'pv-muse-prompt-label', text: 'Your prompt'}),
+                el('div', {class: 'pv-muse-seg pv-muse-ownseg', role: 'radiogroup', 'aria-label': 'What Muse does with it'},
+                    pick('front', 'Keep in front', 'Sent in front of every idea, as it is; new ideas never touch it'),
+                    pick('around', 'Build around', 'Muse reads your tags (red hair: Hair, beach: Where, sunset: When), '
+                        + 'picks a scene that has them and draws the rest; what it cannot place stays in front'))),
+            box);
     }
 
     function send(target) {
@@ -493,7 +539,10 @@
             }
             const it = data.idea;
             it.styles_from = st().styles.join('|');
-            if (locked && it.scene === cur.scene) it.locks = Object.assign({}, cur.locks);
+            if (locked && it.scene === cur.scene) {
+                it.locks = Object.assign({}, cur.locks);
+                it.mine = Object.fromEntries(Object.entries(cur.mine || {}).filter(([k, v]) => v && cur.locks[k]));
+            }
             M.ideas.push(it);
             if (M.ideas.length > KEEP) M.ideas.splice(0, M.ideas.length - KEEP);
             M.at = M.ideas.length - 1;
@@ -514,10 +563,55 @@
         if (!it || M.busy) return;
         try {
             const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true)});
-            M.ideas[M.at] = Object.assign(data.idea, {locks: it.locks, images: it.images});
+            M.ideas[M.at] = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine});
             saveIdeas();
             render();
         } catch (e) { /* the scene may be gone: the next idea will do */ }
+    }
+
+    // the idea again with every part as it is: a new prompt from the parts, same scene
+    async function recompose(it) {
+        const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true)});
+        const fresh = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine});
+        const i = M.ideas.indexOf(it);
+        if (i >= 0) M.ideas[i] = fresh;
+        saveIdeas();
+        return fresh;
+    }
+
+    // a part written by hand, right on the card: Enter or leaving the box keeps it (locked), Esc does not
+    function editPart(it, slot, node) {
+        if (M.busy || !node || !node.parentElement) return;
+        const part = it.parts.find((x) => x.slot === slot);
+        const holder = el('span', {class: 'pv-muse-part-edit'});
+        const input = el('input', {type: 'text', class: 'pv-muse-text', spellcheck: 'false', value: part ? part.value : '',
+            'aria-label': (PART_NAMES[slot] || slot) + ': your own', placeholder: 'tags, comma-separated'});
+        holder.append(input);
+        node.replaceWith(holder);
+        let done = false;
+        const finish = async (keep) => {
+            if (done) return;
+            done = true;
+            const v = input.value.replace(/^[\s,]+|[\s,]+$/g, '');
+            if (!keep || (part && v === part.value)) { render(); return; }
+            if (part) part.value = v;
+            else it.parts.push({slot, value: v, choices: 0});
+            it.locks = Object.assign({}, it.locks, {[slot]: !!v});
+            it.mine = Object.assign({}, it.mine, {[slot]: !!v});
+            M.busy = slot;
+            render();
+            try { await recompose(it); } catch (e) { toast(e.message, true); }
+            M.busy = '';
+            render();
+        };
+        suggest(input);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+            else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(false); }
+        });
+        input.addEventListener('blur', () => setTimeout(() => { if (!holder.contains(document.activeElement)) finish(true); }, 180));
+        input.focus();
+        input.select();
     }
 
     async function rollPart(slot) {
@@ -527,7 +621,8 @@
         render();
         try {
             const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true), roll: slot});
-            const fresh = Object.assign(data.idea, {locks: it.locks}); // a fresh prompt: any paragraph is gone
+            const mine = Object.assign({}, it.mine, {[slot]: false}); // rolled: Muse's again
+            const fresh = Object.assign(data.idea, {locks: it.locks, mine}); // a fresh prompt: any paragraph is gone
             M.ideas[M.at] = fresh;
             saveIdeas();
         } catch (e) {
@@ -669,9 +764,16 @@
     function partRow(it, p) {
         const locked = !!(it.locks && it.locks[p.slot]);
         const rolling = M.busy === p.slot;
+        const mine = !!(it.mine && it.mine[p.slot]);
+        const seeded = !mine && (it.seeded || []).includes(p.slot);
+        const value = el('span', {class: 'pv-muse-part-value', title: (p.value || '') + '\nDouble-click to write your own',
+            ondblclick: () => editPart(it, p.slot, value)},
+            seeded ? el('span', {class: 'pv-muse-mark', text: '🌱', title: 'From your prompt'}) : null,
+            mine ? el('span', {class: 'pv-muse-mark', text: '✎', title: 'Written by you'}) : null,
+            p.value || '—');
         return el('div', {class: 'pv-muse-part' + (locked ? ' pv-muse-locked' : '') + (p.value ? '' : ' pv-muse-empty-part')},
             el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot, title: PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot}),
-            el('span', {class: 'pv-muse-part-value', text: p.value || '—', title: p.value}),
+            value,
             iconButton('roll', 'Another ' + (PART_NAMES[p.slot] || p.slot).toLowerCase(), () => rollPart(p.slot),
                 {disabled: !!M.busy || locked || (p.choices < 2 && !!p.value), class: 'pv-muse-icon-btn' + (rolling ? ' pv-muse-spin' : '')}),
             iconButton(locked ? 'lock' : 'unlock', locked ? 'Unlock' : 'Lock: keep it for the next idea', () => toggleLock(p.slot),
@@ -690,6 +792,7 @@
         const prompt = el('textarea', {class: 'pv-muse-text', rows: '3', spellcheck: 'false', 'aria-label': 'Prompt'});
         prompt.value = it.positive;
         prompt.addEventListener('input', () => { it.positive = prompt.value; it.edited = true; clearTimeout(ideaView.t); ideaView.t = setTimeout(saveIdeas, 400); });
+        suggest(prompt);
         const nav = M.ideas.length > 1 ? el('div', {class: 'pv-muse-nav'},
             iconButton('prev', 'Previous idea', () => { M.at--; render(); }, {disabled: M.at <= 0}),
             el('span', {text: `${M.at + 1}/${M.ideas.length}`}),
