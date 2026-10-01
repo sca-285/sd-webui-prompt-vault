@@ -145,10 +145,12 @@ CHANCE = {"gesture": 0.7, "detail": 0.6, "job": 0.4, "pet": 0.25, "build": 0.8, 
           "accessory": 0.45, "mouth": 0.35, "gaze": 0.7, "natural": 0.6, "light_quality": 0.5, "light_mood": 0.5, "light_support": 0.4,
           "light_volume": 0.3, "angle": 0.6, "view": 0.5, "framing": 0.4, "color": 0.5}
 # the parts by group, for the card and for the switches that turn a group off
-GROUPS = {"pet": ("pet",), "looks": ("build", "skin", "hair", "eyes", "face", "makeup", "accessory", "mouth", "gaze"), "job": ("job", "fx"),
-          "light": ("natural", "light_quality", "light_mood", "light_support", "light_volume"), "camera": ("angle", "view", "framing"),
-          "color": ("color",)}
+GROUPS = {"looks": ("build", "skin", "hair", "eyes", "face", "makeup", "accessory", "mouth", "gaze"), "pet": ("pet",), "job": ("job", "fx"),
+          "action": ("gesture", "action"),
+          "light": ("lighting", "natural", "light_quality", "light_mood", "light_support", "light_volume"),
+          "camera": ("camera", "angle", "view", "framing"), "color": ("color",), "style": ("style",)}
 PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit", "pet")
+# a group turned off in the settings is left out of the idea, the scene's own parts too (its light, its camera...)
 SUBJECT_CASTS = ("furry", "kemono", "mythic", "monster", "synth", "nonhuman")  # their subject says if they are a woman or a man
 
 MOODS = {
@@ -762,6 +764,9 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 pools["body"] = kinklib.body(scene["rating"], who, parts["subject"], scene["theme"], rng) if st["anatomy"] else []
             if slot == "gesture":
                 pools["gesture"] = list(dict.fromkeys(pools["gesture"] + _library_poses(scene, who, parts)))
+            if slot in hidden:  # turned off in the settings, even when locked
+                parts[slot] = ""
+                continue
             if slot in keep:
                 parts[slot] = keep[slot]
                 if slot == "time":
@@ -817,7 +822,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
             "girls": mix,
             "rating": scene["rating"],
             "nsfw": nsfw,
-            "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS if any(pools[s]) or parts[s]],
+            "parts": [{"slot": s, "value": parts[s], "choices": len(pools[s])} for s in SLOTS
+                      if s not in hidden and (any(pools[s]) or parts[s])],
             "positive": text.join(pieces),
         }
     raise store.VaultError("Every idea hit the Never use list: loosen it or the filters.")

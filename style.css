@@ -205,9 +205,13 @@ html body #pv_muse_panel.pv-muse-wide { width: min(860px, calc(100vw - 16px)); m
 #pv_muse_panel.pv-muse-wide .pv-muse-filter-row { grid-auto-columns: minmax(0, 200px); justify-content: start; }
 #pv_muse_panel.pv-muse-wide .pv-muse-foot { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; }
 #pv_muse_panel.pv-muse-wide .pv-muse-foot .pv-muse-actions { flex: 1; }
-#pv_muse_panel.pv-muse-wide .pv-muse-foot .pv-muse-send { flex: 1; }
-#pv_muse_panel.pv-muse-wide .pv-muse-settings { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
-#pv_muse_panel.pv-muse-wide .pv-muse-settings > .pv-muse-hint { grid-column: 1 / -1; }
+#pv_muse_panel.pv-muse-wide .pv-muse-foot .pv-muse-send { flex: 1.25; }
+html body #pv_muse_panel.pv-muse-wide .pv-muse-sendseg .pv-btn { padding: 5px 10px; min-width: 64px; }
+/* the settings in two columns that fill like a newspaper's: no hole under a short section */
+#pv_muse_panel.pv-muse-wide .pv-muse-settings { display: block; column-count: 2; column-gap: 28px; }
+#pv_muse_panel.pv-muse-wide .pv-muse-settings > * { break-inside: avoid; }
+#pv_muse_panel.pv-muse-wide .pv-muse-settings .pv-muse-section { display: flex; }
+#pv_muse_panel.pv-muse-wide .pv-muse-settings .pv-muse-section:last-child { border-bottom: 1px solid var(--border-color-primary); }
 
 #pv_muse_panel .pv-muse-head { display: flex; align-items: center; gap: 2px; padding: 10px 8px 10px 12px; border-bottom: 1px solid var(--border-color-primary); }
 #pv_muse_panel .pv-muse-title { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
@@ -274,7 +278,7 @@ html body #pv_muse_panel .pv-muse-nav .pv-muse-icon-btn { width: 26px; height: 2
 
 #pv_muse_panel .pv-muse-parts { display: flex; flex-direction: column; border-top: 1px solid var(--border-color-primary); }
 #pv_muse_panel .pv-muse-part {
-    display: grid; grid-template-columns: 74px minmax(0, 1fr) auto auto; align-items: center; gap: 2px 6px;
+    display: grid; grid-template-columns: 88px minmax(0, 1fr) auto auto; align-items: center; gap: 2px 6px;
     padding: 3px 4px 3px 12px; border-bottom: 1px solid color-mix(in srgb, var(--border-color-primary) 55%, transparent);
 }
 #pv_muse_panel .pv-muse-part:last-child { border-bottom: none; }
@@ -371,17 +375,12 @@ html body #pv_muse_panel .pv-muse-chip.pv-muse-nsfw.pv-on { border-color: rgba(2
 /* the parts of an idea, in groups: Character, Face, Action, Scene, Light, Camera, Look */
 #pv_muse_panel .pv-muse-group { border-bottom: 1px solid color-mix(in srgb, var(--border-color-primary) 70%, transparent); }
 #pv_muse_panel .pv-muse-group:last-child { border-bottom: none; }
-html body #pv_muse_panel .pv-muse-group-head {
-    display: flex; align-items: center; gap: 6px; width: 100%; min-width: 0; margin: 0; padding: 6px 10px; border: none; background: transparent;
-    color: inherit; font: inherit; text-align: left; cursor: pointer;
-}
-html body #pv_muse_panel .pv-muse-group-head:hover { background: color-mix(in srgb, var(--pv-muse-accent) 8%, transparent); }
-#pv_muse_panel .pv-muse-group-head .pv-muse-icon { width: 13px; height: 13px; flex: none; opacity: 0.6; transform: rotate(-90deg); transition: transform 0.15s; }
-#pv_muse_panel .pv-muse-group.pv-on .pv-muse-group-head .pv-muse-icon { transform: none; }
-#pv_muse_panel .pv-muse-group-name { flex: none; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
-#pv_muse_panel .pv-muse-group-count { margin-left: auto; font-size: 11px; opacity: 0.45; }
-#pv_muse_panel .pv-muse-group-sum { flex: 1; min-width: 0; font-size: 12px; opacity: 0.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#pv_muse_panel .pv-muse-group-body .pv-muse-part:last-child { border-bottom: none; }
+#pv_muse_panel .pv-muse-group-head { padding: 7px 12px 3px; }
+#pv_muse_panel .pv-muse-group-name { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;
+    color: var(--pv-muse-accent); }
+#pv_muse_panel .pv-muse-group .pv-muse-part:last-child { border-bottom: none; }
+/* the Parts switches: two by two */
+#pv_muse_panel .pv-muse-switches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
 /* the empty parts of a group: one tap draws them */
 #pv_muse_panel .pv-muse-adds { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 10px 8px 12px; }
 html body #pv_muse_panel .pv-muse-add {

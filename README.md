@@ -106,10 +106,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     mouth; gaze), *Action* (pose, doing, kink, effects), *Scene* (detail, where, when),
     *Light* (the scene's source, natural light, quality, mood, support light, volume),
     *Camera* (shot size, angle and tilt, viewpoint, framing and lens) and *Look* (colour &
-    grading, style). Each group folds: folded, it shows its parts on one line; open, a row
-    per part, and the parts this idea left out as small **+** chips that draw them. **↻** draws
-    one part again, **🔒** keeps it for the next idea (same scene). The settings turn whole
-    groups off.
+    grading, style). Each group shows a row per part, and the parts this idea left out as
+    small **+** chips that draw them. **↻** draws one part again, **🔒** keeps it for the next
+    idea (same scene). **Settings → Parts** turns whole groups off (Looks, Animals, Job,
+    Action, Light, Camera, Color & grade, Style): off, a group is gone from the card and the
+    prompt, the scene's own light or camera too, and the idea on the card follows at once.
   - **Animal**: now and then a real animal with the people of an SFW idea, one that fits
     the theme (a cat on the lap at home, a dog on a leash in the street, a horse in the
     countryside, a raven in a horror scene).

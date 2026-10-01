@@ -245,6 +245,11 @@ def _by_sex(table, f, m):
     return table["u"]
 
 
+def _hair(color, style):
+    """A colour and a style; no colour for a bald head."""
+    return style if style == "bald" else f"{color}, {style}"
+
+
 def pools(f, m, people, rng):
     """The character parts' entries for an idea with women (f) and/or men (m); people: how many."""
     rng = rng or random.Random()
@@ -254,7 +259,7 @@ def pools(f, m, people, rng):
         "skin": [", ".join(dict.fromkeys(x for x in (rng.choice(_by_sex(SKIN_TONE, f, m)),
                                                      rng.choice(SKIN_TEXTURE) if rng.random() < 0.6 else "",
                                                      rng.choice(SKIN_DETAIL) if rng.random() < 0.4 else "") if x)) for _ in range(10)],
-        "hair": [f"{rng.choice(HAIR_COLOR)}, {rng.choice(_by_sex(HAIR_STYLE, f, m))}" for _ in range(14)],
+        "hair": [_hair(rng.choice(HAIR_COLOR), rng.choice(_by_sex(HAIR_STYLE, f, m))) for _ in range(14)],
         "eyes": [f"{c}, {rng.choice(EYE_DETAIL)}" if rng.random() < 0.6 else c for c in EYE_COLOR],
         "face": [", ".join(rng.sample(EYEBROWS, 1) + rng.sample(NOSE, 1) + rng.sample(LIPS, 1))
                  + (f", {rng.choice(FACIAL_HAIR)}" if m and not f and rng.random() < 0.5 else "") for _ in range(10)],
