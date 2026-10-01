@@ -1,0 +1,1992 @@
+{
+ "theme": "Sports",
+ "styles": [
+  "sports photography",
+  "dynamic anime action",
+  "grainy 16mm film"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Locker room",
+   "rating": "sfw",
+   "mood": [
+    "happy",
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "sports bra, shorts",
+     "team jersey"
+    ],
+    "1boy": [
+     "team jersey",
+     "towel over the shoulder, shorts"
+    ],
+    "1girl1boy": [
+     "she in sports bra, shorts, he in team jersey",
+     "she in sports bra, shorts, he in towel over the shoulder, shorts",
+     "she in team jersey, he in team jersey",
+     "she in team jersey, he in towel over the shoulder, shorts"
+    ],
+    "2girls": [
+     "sports bra, shorts",
+     "team jersey"
+    ],
+    "2boys": [
+     "team jersey",
+     "towel over the shoulder, shorts"
+    ],
+    "girls": [
+     "sports bra, shorts",
+     "team jersey"
+    ],
+    "boys": [
+     "team jersey",
+     "towel over the shoulder, shorts"
+    ],
+    "harem": [
+     "he in team jersey, the girls in sports bra, shorts",
+     "he in towel over the shoulder, shorts, the girls in sports bra, shorts",
+     "he in team jersey, the girls in team jersey"
+    ],
+    "reverse": [
+     "she in sports bra, shorts, the boys in team jersey",
+     "she in sports bra, shorts, the boys in towel over the shoulder, shorts",
+     "she in team jersey, the boys in team jersey"
+    ],
+    "mixed": [
+     "the women in sports bra, shorts, the men in team jersey",
+     "the women in sports bra, shorts, the men in towel over the shoulder, shorts",
+     "the women in team jersey, the men in team jersey"
+    ],
+    "furry": [
+     "wolf, female, sports bra, shorts",
+     "wolf, male, team jersey",
+     "fox, female, team jersey",
+     "fox, male, towel over the shoulder, shorts",
+     "cat, female, sports bra, shorts",
+     "cat, male, team jersey",
+     "rabbit, female, team jersey",
+     "rabbit, male, towel over the shoulder, shorts",
+     "tiger, female, sports bra, shorts",
+     "tiger, male, team jersey",
+     "deer, female, team jersey",
+     "deer, male, towel over the shoulder, shorts",
+     "dragon, female, sports bra, shorts",
+     "dragon, male, team jersey",
+     "lion, female, team jersey",
+     "lion, male, towel over the shoulder, shorts"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, sports bra, shorts",
+     "1boy, solo, elf, pointy ears, towel over the shoulder, shorts",
+     "1girl, solo, android, mechanical joints, sports bra, shorts",
+     "1boy, solo, android, mechanical joints, towel over the shoulder, shorts",
+     "1girl, solo, demon girl, horns, tail, sports bra, shorts",
+     "1boy, solo, oni, horns, towel over the shoulder, shorts",
+     "1girl, solo, kitsune, fox ears, fox tail, sports bra, shorts"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "sitting on the bench, catching breath",
+     "taping a wrist"
+    ],
+    "pair": [
+     "high five after the game",
+     "stretching each other"
+    ],
+    "groups": [
+     "team celebrating",
+     "team huddle"
+    ]
+   },
+   "settings": [
+    "locker room after the game, benches, showers behind"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "steam from the showers"
+   ],
+   "details": [
+    "jerseys on the floor",
+    "gym bags"
+   ]
+  },
+  {
+   "title": "Locker room",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "sports bra, leggings pulled down",
+     "towel wrapped, wet hair"
+    ],
+    "1boy": [
+     "towel around the waist",
+     "compression shorts, shirtless"
+    ],
+    "1girl1boy": [
+     "she in sports bra, leggings pulled down, he in towel around the waist",
+     "she in sports bra, leggings pulled down, he in compression shorts, shirtless",
+     "she in towel wrapped, wet hair, he in towel around the waist",
+     "she in towel wrapped, wet hair, he in compression shorts, shirtless"
+    ],
+    "2girls": [
+     "sports bra, leggings pulled down",
+     "towel wrapped, wet hair"
+    ],
+    "2boys": [
+     "towel around the waist",
+     "compression shorts, shirtless"
+    ],
+    "girls": [
+     "sports bra, leggings pulled down",
+     "towel wrapped, wet hair"
+    ],
+    "boys": [
+     "towel around the waist",
+     "compression shorts, shirtless"
+    ],
+    "harem": [
+     "he in towel around the waist, the girls in sports bra, leggings pulled down",
+     "he in compression shorts, shirtless, the girls in sports bra, leggings pulled down",
+     "he in towel around the waist, the girls in towel wrapped, wet hair"
+    ],
+    "reverse": [
+     "she in sports bra, leggings pulled down, the boys in towel around the waist",
+     "she in sports bra, leggings pulled down, the boys in compression shorts, shirtless",
+     "she in towel wrapped, wet hair, the boys in towel around the waist"
+    ],
+    "mixed": [
+     "the women in sports bra, leggings pulled down, the men in towel around the waist",
+     "the women in sports bra, leggings pulled down, the men in compression shorts, shirtless",
+     "the women in towel wrapped, wet hair, the men in towel around the waist"
+    ],
+    "furry": [
+     "wolf, female, sports bra, leggings pulled down",
+     "wolf, male, towel around the waist",
+     "fox, female, towel wrapped, wet hair",
+     "fox, male, compression shorts, shirtless",
+     "cat, female, sports bra, leggings pulled down",
+     "cat, male, towel around the waist",
+     "rabbit, female, towel wrapped, wet hair",
+     "rabbit, male, compression shorts, shirtless",
+     "tiger, female, sports bra, leggings pulled down",
+     "tiger, male, towel around the waist",
+     "deer, female, towel wrapped, wet hair",
+     "deer, male, compression shorts, shirtless",
+     "dragon, female, sports bra, leggings pulled down",
+     "dragon, male, towel around the waist",
+     "lion, female, towel wrapped, wet hair",
+     "lion, male, compression shorts, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, sports bra, leggings pulled down",
+     "1boy, solo, elf, pointy ears, compression shorts, shirtless",
+     "1girl, solo, android, mechanical joints, sports bra, leggings pulled down",
+     "1boy, solo, android, mechanical joints, compression shorts, shirtless",
+     "1girl, solo, demon girl, horns, tail, sports bra, leggings pulled down",
+     "1boy, solo, oni, horns, compression shorts, shirtless",
+     "1girl, solo, kitsune, fox ears, fox tail, sports bra, leggings pulled down"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the bench, legs crossed",
+     "leaning against the lockers, looking at viewer",
+     "standing in the shower, looking over the shoulder"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against the lockers, kissing",
+     "embracing in the shower"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "splashing each other in the shower"
+    ]
+   },
+   "settings": [
+    "locker room after the game, benches, showers behind"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "steam from the showers"
+   ],
+   "details": [
+    "jerseys on the floor",
+    "gym bags",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Locker room",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "sitting on the bench, legs crossed",
+     "leaning against the lockers",
+     "standing in the shower",
+     "bathing in the shower"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "bathing together in the shower"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "bathing together in the shower"
+    ]
+   },
+   "settings": [
+    "locker room after the game, benches, showers behind"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "steam from the showers"
+   ],
+   "details": [
+    "jerseys on the floor",
+    "gym bags",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Locker room",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the bench, legs over the armrests",
+     "masturbating, back against the lockers",
+     "masturbating in the shower"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating on the bench, legs spread",
+     "masturbating, one hand on the lockers",
+     "masturbating in the shower"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "sex on the bench, she sits on his lap",
+     "reverse cowgirl on the bench",
+     "standing sex, lifted against the lockers",
+     "sex from behind, standing, hands on the lockers",
+     "sex in the shower, legs wrapped around him"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "straddling on the bench, fingering",
+     "fingering, pressed against the lockers",
+     "fingering in the shower"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "riding him on the bench",
+     "anal sex, standing against the lockers",
+     "anal sex in the shower"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "group sex in the shower"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "group sex in the shower"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the lockers, the others kissing his neck",
+     "group sex in the shower"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the lockers, the others watching",
+     "group sex in the shower"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex in the shower"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting"
+    ]
+   },
+   "settings": [
+    "locker room after the game, benches, showers behind"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "steam from the showers"
+   ],
+   "details": [
+    "jerseys on the floor",
+    "gym bags",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Beach volleyball",
+   "rating": "sfw",
+   "mood": [
+    "happy"
+   ],
+   "subjects": {
+    "1girl": [
+     "sports bikini",
+     "tank top, shorts"
+    ],
+    "1boy": [
+     "board shorts, shirtless",
+     "tank top"
+    ],
+    "1girl1boy": [
+     "she in sports bikini, he in board shorts, shirtless",
+     "she in sports bikini, he in tank top",
+     "she in tank top, shorts, he in board shorts, shirtless",
+     "she in tank top, shorts, he in tank top"
+    ],
+    "2girls": [
+     "sports bikini",
+     "tank top, shorts"
+    ],
+    "2boys": [
+     "board shorts, shirtless",
+     "tank top"
+    ],
+    "girls": [
+     "sports bikini",
+     "tank top, shorts"
+    ],
+    "boys": [
+     "board shorts, shirtless",
+     "tank top"
+    ],
+    "harem": [
+     "he in board shorts, shirtless, the girls in sports bikini",
+     "he in tank top, the girls in sports bikini",
+     "he in board shorts, shirtless, the girls in tank top, shorts"
+    ],
+    "reverse": [
+     "she in sports bikini, the boys in board shorts, shirtless",
+     "she in sports bikini, the boys in tank top",
+     "she in tank top, shorts, the boys in board shorts, shirtless"
+    ],
+    "mixed": [
+     "the women in sports bikini, the men in board shorts, shirtless",
+     "the women in sports bikini, the men in tank top",
+     "the women in tank top, shorts, the men in board shorts, shirtless"
+    ],
+    "furry": [
+     "wolf, female, sports bikini",
+     "wolf, male, board shorts, shirtless",
+     "fox, female, tank top, shorts",
+     "fox, male, tank top",
+     "cat, female, sports bikini",
+     "cat, male, board shorts, shirtless",
+     "rabbit, female, tank top, shorts",
+     "rabbit, male, tank top",
+     "tiger, female, sports bikini",
+     "tiger, male, board shorts, shirtless",
+     "deer, female, tank top, shorts",
+     "deer, male, tank top",
+     "dragon, female, sports bikini",
+     "dragon, male, board shorts, shirtless",
+     "lion, female, tank top, shorts",
+     "lion, male, tank top"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, sports bikini",
+     "1boy, solo, elf, pointy ears, tank top",
+     "1girl, solo, android, mechanical joints, sports bikini",
+     "1boy, solo, android, mechanical joints, tank top",
+     "1girl, solo, demon girl, horns, tail, sports bikini",
+     "1boy, solo, oni, horns, tank top",
+     "1girl, solo, kitsune, fox ears, fox tail, sports bikini"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "diving for the ball",
+     "serving"
+    ],
+    "pair": [
+     "blocking at the net together",
+     "high five"
+    ],
+    "groups": [
+     "team celebrating a point",
+     "playing a match"
+    ]
+   },
+   "settings": [
+    "beach volleyball court, net, ocean behind"
+   ],
+   "lighting": [
+    "bright sunlight",
+    "golden hour"
+   ],
+   "details": [
+    "sand flying",
+    "volleyball in the air"
+   ]
+  },
+  {
+   "title": "Beach volleyball",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, lace lingerie",
+     "1boy, solo, elf, pointy ears, towel around the waist",
+     "1girl, solo, android, mechanical joints, oversized shirt, bare legs",
+     "1boy, solo, android, mechanical joints, unbuttoned jeans, shirtless",
+     "1girl, solo, demon girl, horns, tail, lace lingerie",
+     "1boy, solo, oni, horns, towel around the waist",
+     "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the sand, knees up",
+     "standing in the sea, looking over the shoulder"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "embracing in the sea"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "splashing each other in the sea"
+    ]
+   },
+   "settings": [
+    "beach volleyball court, net, ocean behind"
+   ],
+   "lighting": [
+    "bright sunlight",
+    "golden hour"
+   ],
+   "details": [
+    "sand flying",
+    "volleyball in the air",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Beach volleyball",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the sand, relaxed",
+     "sitting on the sand, knees drawn up",
+     "standing in the sea",
+     "bathing in the sea"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the sand",
+     "bathing together in the sea"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the sand",
+     "bathing together in the sea"
+    ]
+   },
+   "settings": [
+    "beach volleyball court, net, ocean behind"
+   ],
+   "lighting": [
+    "bright sunlight",
+    "golden hour"
+   ],
+   "details": [
+    "sand flying",
+    "volleyball in the air",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Beach volleyball",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the sand, spread legs",
+     "masturbating in the sea"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating in the sea"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "sex in the sea, legs wrapped around him",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering in the sea",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex in the sea",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "group sex in the sea",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "group sex in the sea",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "group sex in the sea",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "group sex in the sea",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex in the sea",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "beach volleyball court, net, ocean behind"
+   ],
+   "lighting": [
+    "bright sunlight",
+    "golden hour"
+   ],
+   "details": [
+    "sand flying",
+    "volleyball in the air",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Yoga studio",
+   "rating": "sfw",
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "yoga leggings, sports bra",
+     "tank top, leggings"
+    ],
+    "1boy": [
+     "tank top, shorts",
+     "loose t-shirt, joggers"
+    ],
+    "1girl1boy": [
+     "she in yoga leggings, sports bra, he in tank top, shorts",
+     "she in yoga leggings, sports bra, he in loose t-shirt, joggers",
+     "she in tank top, leggings, he in tank top, shorts",
+     "she in tank top, leggings, he in loose t-shirt, joggers"
+    ],
+    "2girls": [
+     "yoga leggings, sports bra",
+     "tank top, leggings"
+    ],
+    "2boys": [
+     "tank top, shorts",
+     "loose t-shirt, joggers"
+    ],
+    "girls": [
+     "yoga leggings, sports bra",
+     "tank top, leggings"
+    ],
+    "boys": [
+     "tank top, shorts",
+     "loose t-shirt, joggers"
+    ],
+    "harem": [
+     "he in tank top, shorts, the girls in yoga leggings, sports bra",
+     "he in loose t-shirt, joggers, the girls in yoga leggings, sports bra",
+     "he in tank top, shorts, the girls in tank top, leggings"
+    ],
+    "reverse": [
+     "she in yoga leggings, sports bra, the boys in tank top, shorts",
+     "she in yoga leggings, sports bra, the boys in loose t-shirt, joggers",
+     "she in tank top, leggings, the boys in tank top, shorts"
+    ],
+    "mixed": [
+     "the women in yoga leggings, sports bra, the men in tank top, shorts",
+     "the women in yoga leggings, sports bra, the men in loose t-shirt, joggers",
+     "the women in tank top, leggings, the men in tank top, shorts"
+    ],
+    "furry": [
+     "wolf, female, yoga leggings, sports bra",
+     "wolf, male, tank top, shorts",
+     "fox, female, tank top, leggings",
+     "fox, male, loose t-shirt, joggers",
+     "cat, female, yoga leggings, sports bra",
+     "cat, male, tank top, shorts",
+     "rabbit, female, tank top, leggings",
+     "rabbit, male, loose t-shirt, joggers",
+     "tiger, female, yoga leggings, sports bra",
+     "tiger, male, tank top, shorts",
+     "deer, female, tank top, leggings",
+     "deer, male, loose t-shirt, joggers",
+     "dragon, female, yoga leggings, sports bra",
+     "dragon, male, tank top, shorts",
+     "lion, female, tank top, leggings",
+     "lion, male, loose t-shirt, joggers"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, yoga leggings, sports bra",
+     "1boy, solo, elf, pointy ears, loose t-shirt, joggers",
+     "1girl, solo, android, mechanical joints, yoga leggings, sports bra",
+     "1boy, solo, android, mechanical joints, loose t-shirt, joggers",
+     "1girl, solo, demon girl, horns, tail, yoga leggings, sports bra",
+     "1boy, solo, oni, horns, loose t-shirt, joggers",
+     "1girl, solo, kitsune, fox ears, fox tail, yoga leggings, sports bra"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "holding a yoga pose",
+     "stretching on the mat"
+    ],
+    "pair": [
+     "partner yoga pose",
+     "stretching together"
+    ],
+    "groups": [
+     "yoga class",
+     "meditating in a circle"
+    ]
+   },
+   "settings": [
+    "yoga studio, wooden floor, mirrors, plants"
+   ],
+   "lighting": [
+    "soft morning light",
+    "warm evening light"
+   ],
+   "details": [
+    "rolled mats",
+    "plants by the window"
+   ]
+  },
+  {
+   "title": "Yoga studio",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, lace lingerie",
+     "1boy, solo, elf, pointy ears, towel around the waist",
+     "1girl, solo, android, mechanical joints, oversized shirt, bare legs",
+     "1boy, solo, android, mechanical joints, unbuttoned jeans, shirtless",
+     "1girl, solo, demon girl, horns, tail, lace lingerie",
+     "1boy, solo, oni, horns, towel around the waist",
+     "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the yoga mat, knees up",
+     "leaning against the mirror, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against the mirror, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting"
+    ]
+   },
+   "settings": [
+    "yoga studio, wooden floor, mirrors, plants"
+   ],
+   "lighting": [
+    "soft morning light",
+    "warm evening light"
+   ],
+   "details": [
+    "rolled mats",
+    "plants by the window",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Yoga studio",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the yoga mat, relaxed",
+     "sitting on the yoga mat, knees drawn up",
+     "leaning against the mirror"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the yoga mat"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the yoga mat"
+    ]
+   },
+   "settings": [
+    "yoga studio, wooden floor, mirrors, plants"
+   ],
+   "lighting": [
+    "soft morning light",
+    "warm evening light"
+   ],
+   "details": [
+    "rolled mats",
+    "plants by the window",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  },
+  {
+   "title": "Yoga studio",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the yoga mat, spread legs",
+     "masturbating, back against the mirror"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating, one hand on the mirror"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the mirror",
+     "sex from behind, standing, hands on the mirror",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the mirror",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the mirror",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the mirror, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the mirror, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "yoga studio, wooden floor, mirrors, plants"
+   ],
+   "lighting": [
+    "soft morning light",
+    "warm evening light"
+   ],
+   "details": [
+    "rolled mats",
+    "plants by the window",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration"
+   ]
+  }
+ ]
+}

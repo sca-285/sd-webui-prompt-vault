@@ -36,12 +36,16 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
-  - **Three filters**: *Theme* (Portrait, Film, Horror, Street, Bedroom, Hotel…), *Cast*
+  - **Three filters**: *Theme* (22: Portrait, Fashion, Film, Horror, Street, Home, Food,
+    Architecture, Nature, Creature, Myth, Sci-fi, Sports, Party, Bath & shower, Bedroom,
+    Fantasy, Gym, Hotel, Office, Outdoors, Studio), *Cast*
     (no humans, 1girl, 1boy, 1girl 1boy, 2girls, 2boys, girls 3+, boys 3+, 1boy + girls
     (harem), 1girl + boys (reverse harem), mixed group, furry, non-human; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
-    choice shows how many scenes it leaves.
+    choice shows how many scenes it leaves: about 400 scenes, and every theme, cast, level
+    and group size goes with every other at least three times. The one thing that cannot
+    be is greyed out with the reason: *No humans* is SFW only.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
     do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).
@@ -183,6 +187,10 @@ lists *of the same scene*, and the ideas stay coherent.
 - `mood` picks the faces: calm, happy, serious, tense, melancholy, cool, playful, shy,
   sultry, passion, afterglow. Or list your own `expressions`.
 - A list a scene leaves out comes from the file (here `styles`, `negatives`).
+- Any list can be given by cast too, so one place serves every cast with what suits it:
+  `"actions": {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}`. `solo` is
+  1girl, 1boy, furry and non-human; `pair` the three pairs; `groups` the five groups;
+  `people` all of them. A cast named on its own wins over these.
 - Packs made for the first versions of Muse still load, each as a theme of its own.
 
 ## Credits

@@ -21,6 +21,9 @@ A scene file:
 subjects is keyed by cast (see CASTS); the cast's own tags ("1girl, solo") are added by
 Muse. rating is one of RATINGS. mood picks the expressions (see MOODS); a scene may list
 its own "expressions" instead. A list a scene leaves out comes from its file.
+
+Any list may also be given by cast, like subjects, so one place serves every cast with what
+suits it: {"solo": [...], "pair": [...], "2girls": [...], "groups": [...]}. See ALIASES.
 """
 
 from __future__ import annotations
@@ -59,6 +62,15 @@ CASTS = {
     "any": ("Other", "", ""),
 }
 RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit": "Explicit"}
+
+# names that stand for several casts in a scene's lists: {"pair": [...]} serves 1girl 1boy,
+# 2girls and 2boys alike; a cast named on its own wins over the names it is part of
+ALIASES = {
+    "solo": ("1girl", "1boy", "furry", "nonhuman"),
+    "pair": ("1girl1boy", "2girls", "2boys"),
+    "groups": ("girls", "boys", "harem", "reverse", "mixed"),
+}
+ALIASES["people"] = ALIASES["solo"] + ALIASES["pair"] + ALIASES["groups"]
 
 # how many people a group can be; 6 stands for 6 and more
 SIZES = (3, 4, 5, 6)
@@ -244,6 +256,25 @@ def _clean(items, nsfw):
     return out
 
 
+def _keyed(value, nsfw):
+    """A list, or lists by cast or alias, as {cast or alias or "*": [entries]}; {} when empty."""
+    if isinstance(value, dict):
+        out = {str(k): _clean(v, nsfw) for k, v in value.items()}
+        return {k: v for k, v in out.items() if v}
+    clean = _clean(value, nsfw)
+    return {"*": clean} if clean else {}
+
+
+def _for_cast(lists, cast):
+    """The entries a cast gets: its own, else those of an alias it is part of, else everyone's."""
+    if cast in lists:
+        return lists[cast]
+    for alias in ("pair", "groups", "solo", "people"):
+        if alias in lists and cast in ALIASES[alias]:
+            return lists[alias]
+    return lists.get("*", [])
+
+
 def _read_file(path, custom):
     """The scenes of one file. Also takes the pack formats of the first versions."""
     with open(path, encoding="utf-8") as f:
@@ -269,23 +300,25 @@ def _read_file(path, custom):
         for slot, key in LISTS.items():
             if slot == "subject":
                 continue
-            lists[slot] = _clean(raw.get(key), nsfw) or _clean(data.get(key), nsfw)
+            lists[slot] = _keyed(raw.get(key), nsfw) or _keyed(data.get(key), nsfw)
         subjects = raw.get("subjects") if "subjects" in raw else data.get("subjects")
         if isinstance(subjects, list):
             subjects = {"any": subjects}
         casts = {}
-        for cast, items in (subjects or {}).items():
-            if cast not in CASTS:
-                continue
-            clean = _clean(items, nsfw)
-            if clean or cast == "none":
-                casts[cast] = clean or [""]
+        for name, items in (subjects or {}).items():
+            # an alias gives its casts what they were not given by name
+            for cast in ALIASES.get(name, (name,)):
+                if cast not in CASTS or (name in ALIASES and cast in subjects):
+                    continue
+                clean = _clean(items, nsfw)
+                if clean or cast == "none":
+                    casts[cast] = clean or [""]
         if not casts:
             continue
         moods = raw.get("mood") or data.get("mood") or []
         moods = [moods] if isinstance(moods, str) else moods
         if not lists["expression"]:
-            lists["expression"] = [e for m in moods for e in MOODS.get(m, [])]
+            lists["expression"] = {"*": [e for m in moods for e in MOODS.get(m, [])]}
         out.append({
             "id": f"{'my' if custom else 'x'}:{stem}:{raw.get('id') or i}",
             "title": str(raw.get("title") or data.get("theme") or stem),
@@ -371,7 +404,7 @@ def _blacklist_test(rules):
 
 
 def _pools(scene, cast):
-    pools = dict(scene["lists"])
+    pools = {slot: _for_cast(lists, cast) for slot, lists in scene["lists"].items()}
     pools["subject"] = scene["casts"][cast]
     if cast == "none":  # nobody to have a face or hands
         pools["expression"], pools["gesture"] = [], []
