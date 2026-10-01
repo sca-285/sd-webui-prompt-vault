@@ -43,9 +43,14 @@ Qwen-VL and the WD14 tagger) in one tab.
     (harem), 1girl + boys (reverse harem), mixed group, furry, non-human; groups of 3, 4, 5
     or 6+, with their count tags written for you: `1boy, 3girls, multiple girls, harem`) and *Level*
     (SFW, suggestive, nude, explicit; the last three stay locked until NSFW is on). Each
-    choice shows how many scenes it leaves: about 400 scenes, and every theme, cast, level
-    and group size goes with every other at least three times. The one thing that cannot
+    choice shows how many scenes it leaves: over 1,000 scenes, ten places per theme, and
+    every theme, cast, level and group size goes with every other at least ten times. The one thing that cannot
     be is greyed out with the reason: *No humans* is SFW only.
+  - **Kink** (a fourth filter, there once NSFW is on): BDSM, toys, fluids, latex & fetish
+    wear, bites & marks anywhere; tentacles, slime, and blood & bites only in the themes they
+    belong to (Fantasy, Creature, Horror, Sci-fi, Myth). The chosen kink is a part of the idea
+    of its own, rolled and locked like the others. Nude and explicit ideas also carry anatomy
+    tags (nipples, pussy, penis…) for who is in them; a switch in the settings turns them off.
   - **Every idea is a scene**, so its parts belong together: who, face, pose, what they
     do, a detail, where, light, camera, style. **↻** draws one part again, **🔒** keeps it
     for the next idea (same scene).
@@ -54,7 +59,8 @@ Qwen-VL and the WD14 tagger) in one tab.
   - The tools of the Vault tab, on the card: **Arrange** (the library, instant, or Qwen),
     **Describe** (Qwen writes a paragraph from the tags, after them or instead of them) and
     **TIPO**. They use the models already set up for the Vault tab.
-  - Edit the prompt before sending, step back through the last 20 ideas with ‹ ›, keep
+  - Edit the prompt before sending, step back through the last 500 ideas with ‹ › (the
+    bin next to them, or the settings, clears that history), keep
     words out with **Never use**, give the button your own **avatar**, drag it anywhere.
   - **⤢ Wide card** (on a window 760 px or wider): the parts on the left, the whole prompt
     and its negatives on the right; the settings in two columns. Muse remembers it.

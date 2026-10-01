@@ -203,7 +203,7 @@ html body #pv_muse_panel.pv-muse-wide { width: min(860px, calc(100vw - 16px)); m
 #pv_muse_panel.pv-muse-wide .pv-muse-prompt-wide .pv-muse-text { min-height: 240px; font-size: 13.5px; }
 #pv_muse_panel.pv-muse-wide .pv-muse-neg { -webkit-line-clamp: 6; }
 #pv_muse_panel.pv-muse-wide .pv-muse-part-value { font-size: 13.5px; }
-#pv_muse_panel.pv-muse-wide .pv-muse-filter-row { grid-template-columns: repeat(3, minmax(0, 220px)); }
+#pv_muse_panel.pv-muse-wide .pv-muse-filter-row { grid-auto-columns: minmax(0, 200px); justify-content: start; }
 #pv_muse_panel.pv-muse-wide .pv-muse-foot { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; }
 #pv_muse_panel.pv-muse-wide .pv-muse-foot .pv-muse-actions { flex: 1; }
 #pv_muse_panel.pv-muse-wide .pv-muse-foot .pv-muse-send { flex: 1; }
@@ -240,7 +240,7 @@ html body #pv_muse_panel .pv-muse-text:focus { outline: none; border-color: var(
 
 /* filters: three pills, one tray open at a time */
 #pv_muse_panel .pv-muse-filters { display: flex; flex-direction: column; gap: 8px; }
-#pv_muse_panel .pv-muse-filter-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+#pv_muse_panel .pv-muse-filter-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
 html body #pv_muse_panel .pv-muse-filter {
     display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 2px; align-items: center;
     min-height: 0; margin: 0; padding: 5px 6px 5px 9px; text-align: left; cursor: pointer; font: inherit;
@@ -331,6 +331,7 @@ html body #pv_muse_panel .pv-muse-switch {
 #pv_muse_panel .pv-muse-field { display: flex; align-items: center; gap: 10px; }
 #pv_muse_panel .pv-muse-field.pv-muse-off { opacity: 0.45; }
 #pv_muse_panel .pv-muse-field-label { width: 58px; flex: none; font-size: 13px; opacity: 0.75; }
+#pv_muse_panel .pv-muse-field > .pv-muse-hint { flex: 1; }
 #pv_muse_panel .pv-muse-field input[type=range] { flex: 1; min-width: 0; accent-color: var(--pv-muse-accent); }
 #pv_muse_panel .pv-muse-field output { width: 48px; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
 
