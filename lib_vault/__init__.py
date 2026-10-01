@@ -17,4 +17,5 @@ api       the HTTP routes the tab's JavaScript talks to
 ui        the tab
 """
 
+VERSION = "1.0.0"
 TAG = "[Prompt Vault]"

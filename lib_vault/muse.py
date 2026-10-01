@@ -605,7 +605,7 @@ DEPENDS = {"job": ("outfit", "accessory", "fx"), "time": ("natural",),
 # otherwise, is not drawn ("smile" in the doing leaves out "grin"; "looking away" leaves out "looking at viewer")
 FACETS = {
     "mouth": re.compile(r"\b(smil\w*|laugh\w*|grin\w*|(open|closed|covering|covered) mouth|tongue\w*|lips?|pout\w*|teeth|fangs?|smirk\w*"
-                        r"|moan\w*|gasp\w*|frown\w*|ahegao|kiss\w*|fellatio|licking|sucking|yawn\w*|eating|drinking)\b", re.I),
+                        r"|moan\w*|gasp\w*|frown\w*|whistl\w*|chewing|bubble blowing|puffy cheeks|mouth hold|ahegao|kiss\w*|fellatio|licking|sucking|yawn\w*|eating|drinking)\b", re.I),
     "eyes": re.compile(r"\b(looking|eyes closed|closed eyes|(half-closed|half-lidded|downcast|wide|tired|sleepy|rolling) eyes|wink\w*|glanc\w*"
                        r"|star(e|ing)|gaze|averting|upturned eyes|eye contact|ahegao|sleeping|blindfold\w*)\b", re.I),
     "angle": re.compile(r"\b(from above|from below|high angle|low angle|overhead|aerial|worm's eye|dutch angle|eye level|straight-on|tilted frame)\b", re.I),
@@ -785,7 +785,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 pools["body"] = kinklib.body(scene["rating"], who, parts["subject"], scene["theme"], rng) if st["anatomy"] else []
             if slot == "gesture":
                 pools["gesture"] = list(dict.fromkeys(pools["gesture"] + _library_poses(scene, who, parts)))
-            if slot in hidden:  # turned off in the settings, even when locked
+            if slot in hidden or (slot in ("expression", "gesture") and who in SFW_ONLY):  # turned off, or no person to have it
                 parts[slot] = ""
                 continue
             if slot in keep:

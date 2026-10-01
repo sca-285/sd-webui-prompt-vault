@@ -16,7 +16,7 @@ import io
 
 import gradio as gr
 
-from . import qwen, qwen_prompts, store, text, tipo, wd14
+from . import VERSION, qwen, qwen_prompts, store, text, tipo, wd14
 from . import llama
 
 INTO = ["Replace", "Append"]
@@ -175,6 +175,9 @@ def build():
             status_btn = gr.Button("ℹ️ AI model status", elem_id="pv_ai_status")
             stop_btn = gr.Button("⏹️ Stop all AI models", elem_id="pv_ai_stop")
         ai_note = gr.HTML("")
+        gr.HTML(f"<div class='pv-version'>Prompt Vault {VERSION} · "
+                "<a href='https://github.com/sca-285/sd-webui-prompt-vault/blob/main/CHANGELOG.md' target='_blank'>"
+                "what's new</a></div>")
 
         # ============================================================ logic
         def run_tipo(pos, output, length, ban, seed, temp, into):
