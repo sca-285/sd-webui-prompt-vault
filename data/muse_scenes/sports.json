@@ -1,0 +1,182 @@
+{
+ "theme": "Sports",
+ "rating": "sfw",
+ "styles": [
+  "sports photography, telephoto",
+  "grainy 16mm film",
+  "dynamic anime action"
+ ],
+ "camera": [
+  "full body",
+  "dynamic angle"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Boxing gym",
+   "mood": [
+    "serious"
+   ],
+   "subjects": {
+    "1boy": [
+     "boxer, taped hands, shirtless"
+    ],
+    "1girl": [
+     "boxer, sports bra, taped hands"
+    ]
+   },
+   "actions": [
+    "hitting a heavy bag",
+    "resting on the ropes",
+    "shadowboxing"
+   ],
+   "settings": [
+    "old boxing gym, high windows"
+   ],
+   "lighting": [
+    "sunlight through high windows, dust",
+    "single overhead light"
+   ],
+   "details": [
+    "sweat drops",
+    "chalk dust"
+   ]
+  },
+  {
+   "title": "Sprint",
+   "mood": [
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "sprinter, running kit"
+    ],
+    "1boy": [
+     "sprinter, running kit"
+    ]
+   },
+   "actions": [
+    "exploding out of the blocks",
+    "mid-sprint"
+   ],
+   "settings": [
+    "athletics track, empty stadium"
+   ],
+   "lighting": [
+    "stadium floodlights at night",
+    "golden hour"
+   ],
+   "camera": [
+    "from side, motion blur background",
+    "from below"
+   ],
+   "details": [
+    "sweat flying",
+    "track lane lines"
+   ]
+  },
+  {
+   "title": "Swimmer",
+   "subjects": {
+    "1girl": [
+     "swimmer, swim cap, goggles"
+    ],
+    "1boy": [
+     "swimmer, swim cap"
+    ]
+   },
+   "actions": [
+    "breaking the surface",
+    "mid-butterfly stroke"
+   ],
+   "settings": [
+    "indoor swimming pool, lane ropes"
+   ],
+   "lighting": [
+    "overhead lights on the water",
+    "underwater light"
+   ],
+   "details": [
+    "frozen water splash",
+    "bubbles"
+   ]
+  },
+  {
+   "title": "Rain-soaked pitch",
+   "mood": [
+    "serious",
+    "happy"
+   ],
+   "subjects": {
+    "1boy": [
+     "football player, muddy kit"
+    ],
+    "1girl": [
+     "football player, muddy kit"
+    ]
+   },
+   "actions": [
+    "sliding tackle",
+    "celebrating, arms spread"
+   ],
+   "settings": [
+    "football pitch in heavy rain"
+   ],
+   "lighting": [
+    "floodlights, rain streaks"
+   ],
+   "details": [
+    "mud spray",
+    "water splashing"
+   ]
+  },
+  {
+   "title": "Rooftop court",
+   "mood": [
+    "happy",
+    "serious"
+   ],
+   "subjects": {
+    "1boy": [
+     "basketball player"
+    ],
+    "1girl": [
+     "basketball player"
+    ],
+    "2boys": [
+     "streetball players, one-on-one"
+    ],
+    "boys": [
+     "streetball players"
+    ],
+    "mixed": [
+     "streetball players, mixed teams"
+    ]
+   },
+   "actions": [
+    "mid-jump shot",
+    "dribbling",
+    "resting on the sideline"
+   ],
+   "settings": [
+    "rooftop basketball court, city behind"
+   ],
+   "lighting": [
+    "sunset",
+    "night, court lights"
+   ],
+   "details": [
+    "chain-link fence",
+    "worn court paint"
+   ]
+  }
+ ]
+}

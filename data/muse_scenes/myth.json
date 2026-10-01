@@ -1,0 +1,176 @@
+{
+ "theme": "Myth",
+ "rating": "sfw",
+ "styles": [
+  "mythic oil painting",
+  "dark folklore illustration",
+  "art nouveau"
+ ],
+ "camera": [
+  "wide shot",
+  "full body",
+  "from below"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "River offering",
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "white ritual robes, flower crown"
+    ],
+    "1boy": [
+     "white robes, bare feet"
+    ]
+   },
+   "gestures": [
+    "hands together in prayer",
+    "head bowed"
+   ],
+   "actions": [
+    "placing a floating lantern on the river",
+    "kneeling at the water's edge"
+   ],
+   "settings": [
+    "river at night, floating lanterns"
+   ],
+   "lighting": [
+    "lantern light",
+    "moonlight"
+   ],
+   "details": [
+    "mist on the water",
+    "petals floating"
+   ]
+  },
+  {
+   "title": "Mountain shrine",
+   "mood": [
+    "calm",
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "miko, red hakama"
+    ],
+    "1boy": [
+     "masked priest, ceremonial robes"
+    ]
+   },
+   "actions": [
+    "ringing a bell",
+    "burning incense",
+    "bowing at the gate"
+   ],
+   "settings": [
+    "mountain shrine, stone steps, torii gate"
+   ],
+   "lighting": [
+    "morning mist, soft light",
+    "sunset through clouds"
+   ],
+   "details": [
+    "incense smoke",
+    "paper talismans in the wind"
+   ]
+  },
+  {
+   "title": "Stone circle",
+   "mood": [
+    "serious"
+   ],
+   "subjects": {
+    "1boy": [
+     "druid, antler headdress, cloak"
+    ],
+    "1girl": [
+     "hooded cloak, holding a torch"
+    ]
+   },
+   "actions": [
+    "raising hands to the sky",
+    "walking between the stones"
+   ],
+   "settings": [
+    "ancient stone circle, moorland"
+   ],
+   "lighting": [
+    "full moon, blue light",
+    "bonfire in the centre"
+   ],
+   "details": [
+    "sparks rising",
+    "ravens on the stones"
+   ]
+  },
+  {
+   "title": "The iron court",
+   "mood": [
+    "serious",
+    "cool"
+   ],
+   "subjects": {
+    "1boy": [
+     "king, iron crown, fur cloak"
+    ],
+    "1girl": [
+     "queen, iron crown, dark gown"
+    ]
+   },
+   "actions": [
+    "sitting on a stone throne",
+    "holding a sword across the lap"
+   ],
+   "settings": [
+    "dark great hall, banners"
+   ],
+   "lighting": [
+    "firelight from braziers"
+   ],
+   "details": [
+    "wolf lying at the feet",
+    "smoke"
+   ]
+  },
+  {
+   "title": "Fae glade",
+   "mood": [
+    "playful",
+    "calm"
+   ],
+   "subjects": {
+    "nonhuman": [
+     "fairy, dragonfly wings, flower dress",
+     "forest spirit, antlers, bark skin"
+    ]
+   },
+   "actions": [
+    "dancing among mushrooms",
+    "sitting on a toadstool",
+    "holding a glowing orb"
+   ],
+   "settings": [
+    "enchanted glade, fairy ring of mushrooms"
+   ],
+   "lighting": [
+    "glowing fireflies at dusk",
+    "moonbeams through the canopy"
+   ],
+   "details": [
+    "floating light particles",
+    "dew on the grass"
+   ]
+  }
+ ]
+}

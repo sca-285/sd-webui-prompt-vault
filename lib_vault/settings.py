@@ -41,6 +41,7 @@ DEFAULTS = {
     "pv_history": True,
     "pv_history_size": 100,
     "pv_hide_nsfw": False,
+    "pv_muse": True,
     # llama-server, shared
     "pv_llama_server_path": "",
     "pv_llm_one_at_a_time": True,
@@ -153,6 +154,8 @@ def register():
         "pv_history_size": O(100, "How many to remember", gr.Slider, {"minimum": 10, "maximum": 1000, "step": 10}),
         "pv_hide_nsfw": O(False, "Hide the NSFW categories of the library by default")
         .info("categories with NSFW in their name; the tab has a switch too"),
+        "pv_muse": O(True, "Show Muse, the floating idea button, on every tab")
+        .info("its filters, timer and NSFW switch are on its own card; applies after a page reload"),
     })
     add(SECTION_QWEN, {
         "pv_llama_server_path": O("", "llama-server executable", gr.Textbox)

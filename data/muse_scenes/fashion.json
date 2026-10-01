@@ -1,0 +1,195 @@
+{
+ "theme": "Fashion",
+ "rating": "sfw",
+ "styles": [
+  "high fashion photography, editorial",
+  "film photography, lookbook",
+  "fashion illustration, marker rendering"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Cyclorama lookbook",
+   "mood": [
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "tall, oversized wool coat, wide trousers"
+    ],
+    "1boy": [
+     "tailored suit, no tie, loafers"
+    ],
+    "nonhuman": [
+     "androgynous android model, sharp-cut blazer, porcelain skin"
+    ]
+   },
+   "actions": [
+    "walking toward camera",
+    "standing, hands in pockets",
+    "mid-stride, coat flaring"
+   ],
+   "settings": [
+    "white cyclorama studio"
+   ],
+   "lighting": [
+    "soft even studio light",
+    "hard beauty dish, crisp shadow"
+   ],
+   "camera": [
+    "full body",
+    "full body, from below"
+   ],
+   "details": [
+    "long shadow on the floor",
+    "fabric in motion"
+   ]
+  },
+  {
+   "title": "Desert highway",
+   "mood": [
+    "cool",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "flowing silk gown",
+     "leather jacket, long skirt"
+    ],
+    "1boy": [
+     "linen suit, sunglasses"
+    ]
+   },
+   "actions": [
+    "walking along the road",
+    "standing on the centre line",
+    "sitting on the hood of a vintage car"
+   ],
+   "settings": [
+    "empty desert highway, mountains in the distance"
+   ],
+   "lighting": [
+    "golden hour, long shadows",
+    "harsh midday sun"
+   ],
+   "camera": [
+    "full body, wide shot",
+    "cowboy shot"
+   ],
+   "details": [
+    "dust blowing",
+    "heat haze"
+   ]
+  },
+  {
+   "title": "Palazzo hallway",
+   "mood": [
+    "cool",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "couture ball gown, long gloves",
+     "tailored cape, statement earrings"
+    ],
+    "1boy": [
+     "velvet tuxedo"
+    ]
+   },
+   "actions": [
+    "walking down the hallway, looking back",
+    "leaning on a marble column",
+    "sitting on the stairs"
+   ],
+   "settings": [
+    "baroque palazzo hallway, marble floor, gilded mirrors"
+   ],
+   "lighting": [
+    "soft window light",
+    "warm chandelier light"
+   ],
+   "details": [
+    "reflection in the mirror",
+    "long train on the marble floor"
+   ]
+  },
+  {
+   "title": "Night street flash",
+   "mood": [
+    "cool",
+    "playful"
+   ],
+   "subjects": {
+    "1girl": [
+     "vinyl trench coat, knee boots",
+     "sequin dress, faux fur coat"
+    ],
+    "1boy": [
+     "oversized puffer jacket, cargo pants"
+    ]
+   },
+   "actions": [
+    "crossing the street",
+    "standing under a street lamp",
+    "stepping out of a taxi"
+   ],
+   "settings": [
+    "city street at night, wet asphalt"
+   ],
+   "lighting": [
+    "hard on-camera flash",
+    "neon rim light"
+   ],
+   "details": [
+    "puddle reflection",
+    "taxi headlights"
+   ]
+  },
+  {
+   "title": "Industrial rooftop",
+   "mood": [
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "knitwear set",
+     "monochrome streetwear"
+    ],
+    "1boy": [
+     "layered workwear jacket"
+    ],
+    "2girls": [
+     "matching streetwear, contrasting colours"
+    ]
+   },
+   "actions": [
+    "sitting on the ledge",
+    "leaning on the railing",
+    "walking toward camera"
+   ],
+   "settings": [
+    "industrial rooftop, pipes and vents, city behind"
+   ],
+   "lighting": [
+    "overcast, soft light",
+    "sunset backlight"
+   ],
+   "details": [
+    "wind in the clothes",
+    "pigeons taking off"
+   ]
+  }
+ ]
+}

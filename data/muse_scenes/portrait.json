@@ -1,0 +1,380 @@
+{
+ "theme": "Portrait",
+ "rating": "sfw",
+ "styles": [
+  "photorealistic, natural skin texture, depth of field",
+  "cinematic still, film grain",
+  "anime illustration, clean lineart",
+  "oil painting, visible brushstrokes",
+  "black and white photography"
+ ],
+ "camera": [
+  "upper body",
+  "close-up",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "deformed face"
+ ],
+ "scenes": [
+  {
+   "title": "Rainy café window",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "short hair, freckles, knit sweater",
+     "long dark hair, turtleneck"
+    ],
+    "1boy": [
+     "messy hair, glasses, cardigan",
+     "stubble, wool coat"
+    ]
+   },
+   "gestures": [
+    "head tilted",
+    "leaning on the table",
+    "shoulders relaxed"
+   ],
+   "actions": [
+    "holding a coffee cup with both hands",
+    "looking out the window",
+    "reading a paperback"
+   ],
+   "settings": [
+    "cafe interior, window seat, rain on the glass, blurry street lights outside"
+   ],
+   "lighting": [
+    "overcast window light, soft shadows",
+    "warm cafe lamps, cool light from the window"
+   ],
+   "details": [
+    "steam rising from the cup",
+    "raindrops on the glass",
+    "wet umbrella against the chair"
+   ]
+  },
+  {
+   "title": "Rooftop at dusk",
+   "mood": [
+    "calm",
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "windswept hair, oversized jacket",
+     "silver hair, heterochromia, hoodie"
+    ],
+    "1boy": [
+     "undercut, earrings, bomber jacket",
+     "long hair tied back, denim jacket"
+    ]
+   },
+   "actions": [
+    "leaning on the railing",
+    "looking back over shoulder",
+    "sitting on the ledge"
+   ],
+   "settings": [
+    "rooftop, city skyline at dusk, water tower"
+   ],
+   "lighting": [
+    "golden hour, backlighting, rim light",
+    "blue hour, city lights coming on"
+   ],
+   "details": [
+    "lens flare",
+    "hair blowing in the wind"
+   ]
+  },
+  {
+   "title": "Studio portrait",
+   "mood": [
+    "calm",
+    "serious",
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "old woman, silver hair in a bun, shawl"
+    ],
+    "1boy": [
+     "old man, deep wrinkles, kind eyes, flat cap"
+    ]
+   },
+   "gestures": [
+    "chin raised",
+    "head tilted",
+    "hand under chin"
+   ],
+   "actions": [
+    "looking at viewer",
+    "looking away",
+    "looking slightly up"
+   ],
+   "settings": [
+    "studio, seamless grey backdrop",
+    "studio, dark background"
+   ],
+   "lighting": [
+    "rembrandt lighting",
+    "softbox key light, subtle fill",
+    "split lighting, dramatic shadows"
+   ],
+   "camera": [
+    "close-up portrait",
+    "head and shoulders portrait"
+   ],
+   "details": [
+    "catchlight in the eyes",
+    "detailed skin texture"
+   ]
+  },
+  {
+   "title": "Library evening",
+   "mood": [
+    "calm",
+    "serious"
+   ],
+   "subjects": {
+    "1girl": [
+     "glasses, messy bun, cardigan",
+     "braided hair, sweater vest"
+    ],
+    "1boy": [
+     "glasses, loosened tie, vest",
+     "curly hair, rolled-up sleeves"
+    ]
+   },
+   "actions": [
+    "reading a book",
+    "pulling a book from the shelf",
+    "sitting on a library ladder with a book"
+   ],
+   "settings": [
+    "old library, tall wooden bookshelves"
+   ],
+   "lighting": [
+    "warm desk lamp, dark surroundings",
+    "dusty sunbeam through tall windows"
+   ],
+   "details": [
+    "dust floating in the light",
+    "stack of old books",
+    "green banker's lamp"
+   ]
+  },
+  {
+   "title": "Greenhouse morning",
+   "mood": [
+    "happy",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "sun hat, linen dress",
+     "curly hair, overalls"
+    ],
+    "1boy": [
+     "rolled-up sleeves, canvas apron",
+     "straw hat, work shirt"
+    ]
+   },
+   "actions": [
+    "watering plants",
+    "smelling a flower",
+    "repotting a plant"
+   ],
+   "settings": [
+    "greenhouse, lush plants, glass roof"
+   ],
+   "lighting": [
+    "soft diffused morning light",
+    "sunlight through glass, dappled shadows"
+   ],
+   "details": [
+    "water droplets on leaves",
+    "terracotta pots",
+    "hanging ferns"
+   ]
+  },
+  {
+   "title": "Neon alley",
+   "mood": [
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "bob cut, leather jacket",
+     "long black hair, choker, bomber jacket"
+    ],
+    "1boy": [
+     "hoodie, face piercings",
+     "slicked-back hair, long coat"
+    ]
+   },
+   "gestures": [
+    "hands in pockets",
+    "head tilted back"
+   ],
+   "actions": [
+    "leaning on a wall",
+    "lighting a cigarette",
+    "walking toward viewer"
+   ],
+   "settings": [
+    "narrow alley at night, neon signs, wet pavement"
+   ],
+   "lighting": [
+    "neon lighting, pink and cyan rim light"
+   ],
+   "details": [
+    "reflections in puddles",
+    "cigarette smoke curling",
+    "light drizzle"
+   ]
+  },
+  {
+   "title": "Train window",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "headphones, hoodie",
+     "long coat, beret"
+    ],
+    "1boy": [
+     "scarf, winter coat",
+     "glasses, knit sweater"
+    ]
+   },
+   "actions": [
+    "looking out the window",
+    "dozing against the window",
+    "writing in a notebook"
+   ],
+   "settings": [
+    "train interior, window seat, countryside passing by"
+   ],
+   "lighting": [
+    "low winter sun through the window",
+    "overcast daylight"
+   ],
+   "details": [
+    "reflection in the window glass",
+    "motion-blurred landscape outside"
+   ]
+  },
+  {
+   "title": "Bar at closing time",
+   "mood": [
+    "melancholy",
+    "cool"
+   ],
+   "subjects": {
+    "1boy": [
+     "stubble, rolled-up sleeves",
+     "full beard, waistcoat",
+     "slicked-back hair, loosened tie"
+    ],
+    "1girl": [
+     "short hair, black blazer",
+     "red dress, bare shoulders"
+    ]
+   },
+   "actions": [
+    "sitting at the bar with a glass of whiskey",
+    "wiping a glass behind the bar",
+    "resting an elbow on the counter"
+   ],
+   "settings": [
+    "dim bar, bottles on shelves, wooden counter"
+   ],
+   "lighting": [
+    "warm low light, amber tones",
+    "single pendant lamp"
+   ],
+   "details": [
+    "ice melting in the glass",
+    "empty bar stools",
+    "cigarette smoke"
+   ]
+  },
+  {
+   "title": "Garage workbench",
+   "mood": [
+    "serious",
+    "happy"
+   ],
+   "subjects": {
+    "1boy": [
+     "muscular, tank top, grease on arms",
+     "beard, flannel shirt, work gloves"
+    ],
+    "1girl": [
+     "ponytail, overalls tied at the waist, grease on cheek"
+    ]
+   },
+   "actions": [
+    "working on a motorcycle engine",
+    "wiping hands on a rag",
+    "leaning on the workbench"
+   ],
+   "settings": [
+    "garage, tools on the wall, motorcycle"
+   ],
+   "lighting": [
+    "hanging work light, harsh shadows",
+    "sunlight through the open garage door"
+   ],
+   "details": [
+    "dust in the air",
+    "old radio on the shelf"
+   ]
+  },
+  {
+   "title": "Morning kitchen",
+   "mood": [
+    "calm",
+    "happy"
+   ],
+   "subjects": {
+    "1boy": [
+     "messy bed hair, t-shirt",
+     "stubble, grey sweatshirt"
+    ],
+    "1girl": [
+     "messy bun, oversized t-shirt",
+     "pajamas, sleepy eyes"
+    ]
+   },
+   "actions": [
+    "making coffee",
+    "reading at the kitchen table",
+    "cooking eggs in a pan"
+   ],
+   "settings": [
+    "small apartment kitchen, morning"
+   ],
+   "lighting": [
+    "morning sunlight through the window",
+    "soft warm light"
+   ],
+   "details": [
+    "steam from the mug",
+    "plants on the windowsill"
+   ]
+  }
+ ]
+}

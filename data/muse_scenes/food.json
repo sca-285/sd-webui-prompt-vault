@@ -1,0 +1,154 @@
+{
+ "theme": "Food",
+ "rating": "sfw",
+ "styles": [
+  "professional food photography",
+  "anime food illustration",
+  "film snapshot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Ramen at night",
+   "subjects": {
+    "none": [
+     "bowl of ramen, chashu, soft-boiled egg"
+    ]
+   },
+   "actions": [
+    "chopsticks lifting noodles",
+    "steam rising"
+   ],
+   "settings": [
+    "ramen shop counter at night"
+   ],
+   "lighting": [
+    "warm overhead lamp",
+    "moody low light"
+   ],
+   "camera": [
+    "close-up",
+    "from side"
+   ],
+   "details": [
+    "sauce bottles on the counter",
+    "noren curtain in the background"
+   ]
+  },
+  {
+   "title": "Baroque table",
+   "subjects": {
+    "none": [
+     "cut fruit, grapes, pomegranate",
+     "silver platter, oysters, lemon halves"
+    ]
+   },
+   "settings": [
+    "dark stone table, draped cloth"
+   ],
+   "lighting": [
+    "single window light, chiaroscuro"
+   ],
+   "camera": [
+    "still life composition",
+    "close-up"
+   ],
+   "details": [
+    "a fly on the fruit",
+    "tipped-over wine glass"
+   ],
+   "styles": [
+    "still life oil painting, baroque",
+    "fine art still life photography"
+   ]
+  },
+  {
+   "title": "Home baking",
+   "mood": [
+    "happy",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "apron, flour on cheek"
+    ],
+    "1boy": [
+     "apron, rolled-up sleeves"
+    ]
+   },
+   "actions": [
+    "kneading dough",
+    "taking bread out of the oven",
+    "dusting flour on the counter"
+   ],
+   "settings": [
+    "home kitchen counter, rolling pin, mixing bowls"
+   ],
+   "lighting": [
+    "morning window light",
+    "warm kitchen light"
+   ],
+   "details": [
+    "flour in the air",
+    "bread on a cooling rack"
+   ]
+  },
+  {
+   "title": "Night market grill",
+   "mood": [
+    "happy"
+   ],
+   "subjects": {
+    "none": [
+     "street food stall, skewers on the grill"
+    ],
+    "1boy": [
+     "street vendor, headband, apron"
+    ]
+   },
+   "actions": [
+    "smoke rising from the grill"
+   ],
+   "settings": [
+    "night market"
+   ],
+   "lighting": [
+    "string lights",
+    "glow of the charcoal"
+   ],
+   "details": [
+    "paper lanterns",
+    "smoke"
+   ]
+  },
+  {
+   "title": "Breakfast flat lay",
+   "subjects": {
+    "none": [
+     "breakfast spread, pancakes, berries, coffee"
+    ]
+   },
+   "settings": [
+    "wooden table"
+   ],
+   "lighting": [
+    "soft morning light"
+   ],
+   "camera": [
+    "from above, flat lay"
+   ],
+   "details": [
+    "syrup dripping",
+    "linen napkin"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,216 @@
+{
+ "theme": "Street",
+ "rating": "sfw",
+ "styles": [
+  "candid street photography, 35mm film",
+  "cinematic night photography",
+  "anime background, detailed city",
+  "black and white street photography, grainy"
+ ],
+ "camera": [
+  "wide shot",
+  "from side",
+  "medium shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "extra limbs"
+ ],
+ "scenes": [
+  {
+   "title": "Crosswalk in heavy rain",
+   "mood": [
+    "calm",
+    "happy"
+   ],
+   "subjects": {
+    "1girl": [
+     "yellow raincoat"
+    ],
+    "1boy": [
+     "business suit, black umbrella"
+    ],
+    "1girl1boy": [
+     "couple sharing one umbrella"
+    ]
+   },
+   "actions": [
+    "waiting at the crosswalk",
+    "crossing the street",
+    "running across the street"
+   ],
+   "settings": [
+    "crosswalk, heavy rain, city at night"
+   ],
+   "lighting": [
+    "car headlights and red tail lights",
+    "traffic light reflections on the wet road"
+   ],
+   "details": [
+    "splashing puddles",
+    "blurred umbrellas in the crowd"
+   ]
+  },
+  {
+   "title": "Morning market",
+   "mood": [
+    "happy",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "tote bag, cardigan",
+     "old woman, street vendor, apron"
+    ],
+    "1boy": [
+     "delivery rider, helmet"
+    ]
+   },
+   "actions": [
+    "picking out fruit",
+    "counting change",
+    "carrying crates"
+   ],
+   "settings": [
+    "morning street market, steaming food stalls, hanging signs"
+   ],
+   "lighting": [
+    "soft morning light through the steam",
+    "sunlight through awnings"
+   ],
+   "details": [
+    "piles of vegetables",
+    "hand-written price signs"
+   ]
+  },
+  {
+   "title": "Convenience store, 2am",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "hoodie, sneakers"
+    ],
+    "1boy": [
+     "headphones, bomber jacket"
+    ]
+   },
+   "actions": [
+    "eating instant noodles at the window counter",
+    "standing outside with a canned coffee",
+    "browsing the shelves"
+   ],
+   "settings": [
+    "convenience store at night, bright interior, dark street"
+   ],
+   "lighting": [
+    "fluorescent store light spilling onto the street"
+   ],
+   "details": [
+    "bicycle parked outside",
+    "glowing vending machines"
+   ]
+  },
+  {
+   "title": "Tram stop in snow",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "wool coat, scarf"
+    ],
+    "1boy": [
+     "old man, flat cap, overcoat"
+    ]
+   },
+   "actions": [
+    "waiting at the tram stop",
+    "breathing into cupped hands",
+    "reading the timetable"
+   ],
+   "settings": [
+    "tram stop, light snowfall, old european street"
+   ],
+   "lighting": [
+    "blue hour, warm shop windows",
+    "street lamps in falling snow"
+   ],
+   "details": [
+    "tram approaching in the distance",
+    "footprints in fresh snow"
+   ]
+  },
+  {
+   "title": "Old-town alley",
+   "mood": [
+    "happy",
+    "calm"
+   ],
+   "subjects": {
+    "1boy": [
+     "street musician, guitar"
+    ],
+    "1girl": [
+     "walking a bicycle, sundress"
+    ]
+   },
+   "actions": [
+    "walking up stone stairs",
+    "leaning on a wall",
+    "looking at a paper map"
+   ],
+   "settings": [
+    "narrow cobblestone alley, laundry lines above"
+   ],
+   "lighting": [
+    "dappled afternoon sunlight",
+    "golden hour light down the alley"
+   ],
+   "details": [
+    "cat on a doorstep",
+    "flower pots on windowsills"
+   ]
+  },
+  {
+   "title": "Subway rush",
+   "mood": [
+    "serious",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "office worker, blazer"
+    ],
+    "1boy": [
+     "office worker, loosened tie"
+    ]
+   },
+   "actions": [
+    "hurrying down the stairs",
+    "checking a phone",
+    "waiting on the platform"
+   ],
+   "settings": [
+    "subway station, tiled walls"
+   ],
+   "lighting": [
+    "harsh fluorescent light",
+    "headlights of an arriving train"
+   ],
+   "details": [
+    "motion blur of a passing train",
+    "crowd in the background"
+   ]
+  }
+ ]
+}

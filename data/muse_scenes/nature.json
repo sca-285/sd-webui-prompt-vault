@@ -1,0 +1,132 @@
+{
+ "theme": "Nature",
+ "rating": "sfw",
+ "styles": [
+  "landscape photography",
+  "ukiyo-e woodblock print",
+  "cinematic matte painting"
+ ],
+ "camera": [
+  "wide shot",
+  "panorama",
+  "aerial view"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Alpine lake at dawn",
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "hiker, backpack, tiny figure in the landscape"
+    ]
+   },
+   "settings": [
+    "alpine lake at dawn, mountains, mirror reflection"
+   ],
+   "lighting": [
+    "pink dawn light",
+    "morning mist"
+   ],
+   "details": [
+    "fog on the water",
+    "wooden canoe"
+   ]
+  },
+  {
+   "title": "Bamboo after rain",
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "kimono, paper umbrella"
+    ]
+   },
+   "actions": [
+    "walking away along the path"
+   ],
+   "settings": [
+    "bamboo forest after rain, stone path"
+   ],
+   "lighting": [
+    "soft green light",
+    "sunbeams through the bamboo"
+   ],
+   "details": [
+    "water droplets",
+    "moss on the stones"
+   ]
+  },
+  {
+   "title": "Storm on the coast",
+   "subjects": {
+    "none": [
+     "lighthouse"
+    ]
+   },
+   "settings": [
+    "rocky coastal cliff, crashing waves"
+   ],
+   "lighting": [
+    "storm light, dark clouds, lightning",
+    "sun breaking through clouds"
+   ],
+   "details": [
+    "sea spray",
+    "seagulls"
+   ]
+  },
+  {
+   "title": "Birch forest in snow",
+   "subjects": {
+    "none": [
+     "deer in the snow"
+    ],
+    "1girl": [
+     "red coat, walking with a lantern, small in the frame"
+    ]
+   },
+   "settings": [
+    "birch forest in deep snow"
+   ],
+   "lighting": [
+    "blue hour, snowfall",
+    "low winter sun"
+   ],
+   "details": [
+    "footprints in the snow",
+    "falling snow"
+   ]
+  },
+  {
+   "title": "Rice terraces",
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "farmer, conical hat, working in the field"
+    ]
+   },
+   "settings": [
+    "rice terraces, mountains"
+   ],
+   "lighting": [
+    "golden hour",
+    "morning fog in the valley"
+   ],
+   "details": [
+    "water reflecting the sky",
+    "birds"
+   ]
+  }
+ ]
+}

@@ -33,6 +33,7 @@ BACKUP_EVERY = 300  # seconds: a burst of edits makes one backup, not twenty
 
 _lock = threading.RLock()
 _cache = {}
+_revision = [0]  # bumped on every change of the library, or of the folder it lives in
 
 
 class VaultError(ValueError):
@@ -147,12 +148,14 @@ def _first_library():
     return default_library(), None
 
 
-def library():
-    """The library, a copy the caller may change."""
+def _library():
+    """The cached library itself: read it, never change it."""
     with _lock:
-        if _cache.get("dir") != settings.data_dir():  # the folder was changed in Settings
+        folder = settings.data_dir()
+        if _cache.get("dir") != folder:  # the folder was changed in Settings
             _cache.clear()
-            _cache["dir"] = settings.data_dir()
+            _cache["dir"] = folder
+            _revision[0] += 1
         if "library" not in _cache:
             path = _path("library.json")
             data = _read(path, None)
@@ -166,7 +169,20 @@ def library():
                     print(f"{TAG} library.json: {exc}; starting from the default library")
                     lib = default_library()
             _cache["library"] = lib
-        return copy.deepcopy(_cache["library"])
+        return _cache["library"]
+
+
+def library():
+    """The library, a copy the caller may change."""
+    with _lock:
+        return copy.deepcopy(_library())
+
+
+def revision():
+    """Changes whenever the library does: lets callers keep what they built from it."""
+    with _lock:
+        _library()
+        return _revision[0]
 
 
 def save_library(lib):
@@ -175,10 +191,11 @@ def save_library(lib):
         _backup(path)
         write_json(path, _wrap(lib))
         _cache["library"] = copy.deepcopy(lib)
+        _revision[0] += 1
 
 
 def library_info():
-    lib = library()
+    lib = _library()
     cats = []
     for cat, groups in lib.items():
         low = cat.lower()
@@ -193,7 +210,7 @@ def library_info():
 
 
 def all_tags():
-    return [t for groups in library().values() for tags in groups.values() for t in tags]
+    return [t for groups in _library().values() for tags in groups.values() for t in tags]
 
 
 # ------------------------------------------------------------------ library edits
@@ -358,7 +375,7 @@ def merge_defaults():
 
 
 def export_library():
-    return _wrap(library())
+    return _wrap(_library())
 
 
 # ------------------------------------------------------------------ saved prompts

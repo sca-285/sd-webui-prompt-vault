@@ -1,0 +1,120 @@
+{
+ "theme": "Architecture",
+ "rating": "sfw",
+ "styles": [
+  "architectural photography",
+  "architectural concept art",
+  "watercolor architectural sketch"
+ ],
+ "camera": [
+  "wide shot, one-point perspective",
+  "wide angle, from below",
+  "two-point perspective"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Brutalist atrium",
+   "subjects": {
+    "none": [],
+    "1boy": [
+     "silhouette, tiny figure for scale"
+    ]
+   },
+   "settings": [
+    "brutalist concrete atrium, massive staircase"
+   ],
+   "lighting": [
+    "single shaft of sunlight through a slit window",
+    "overcast, even light"
+   ],
+   "details": [
+    "long shadows on concrete",
+    "puddle reflecting the ceiling"
+   ]
+  },
+  {
+   "title": "Ruined basilica",
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "walking in the nave, tiny figure for scale"
+    ]
+   },
+   "settings": [
+    "ruined basilica, collapsed roof, overgrown with vines"
+   ],
+   "lighting": [
+    "god rays through the broken roof",
+    "misty morning light"
+   ],
+   "details": [
+    "birds flying inside",
+    "moss on the columns"
+   ]
+  },
+  {
+   "title": "Glass tower lobby",
+   "subjects": {
+    "none": []
+   },
+   "settings": [
+    "modern glass tower lobby, marble floor, tall atrium"
+   ],
+   "lighting": [
+    "night, interior lights, city outside",
+    "morning sunlight through the glass wall"
+   ],
+   "details": [
+    "reflections on the polished floor",
+    "indoor trees"
+   ]
+  },
+  {
+   "title": "Temple courtyard",
+   "subjects": {
+    "none": []
+   },
+   "settings": [
+    "quiet courtyard with a single old tree, white walls",
+    "japanese temple courtyard, raked gravel"
+   ],
+   "lighting": [
+    "soft afternoon light",
+    "autumn light"
+   ],
+   "details": [
+    "fallen leaves on stone",
+    "stone lantern"
+   ]
+  },
+  {
+   "title": "Cathedral metro",
+   "subjects": {
+    "none": [],
+    "1girl": [
+     "waiting on the platform, tiny figure for scale"
+    ]
+   },
+   "settings": [
+    "vast underground metro station, vaulted ceiling, arches"
+   ],
+   "lighting": [
+    "warm chandeliers",
+    "cold fluorescent strips"
+   ],
+   "details": [
+    "train arriving, motion blur",
+    "mosaic tiled walls"
+   ]
+  }
+ ]
+}

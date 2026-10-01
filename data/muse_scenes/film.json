@@ -1,0 +1,224 @@
+{
+ "theme": "Film",
+ "rating": "sfw",
+ "styles": [
+  "film still, 35mm, film grain",
+  "neo-noir, high contrast",
+  "1970s film still, soft halation",
+  "technicolor film still"
+ ],
+ "camera": [
+  "wide shot, cinematic composition, letterboxed",
+  "medium shot",
+  "over the shoulder shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "smartphone",
+  "logo"
+ ],
+ "scenes": [
+  {
+   "title": "Night diner",
+   "mood": [
+    "tense",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "trench coat, red lipstick"
+    ],
+    "1boy": [
+     "rumpled shirt, stubble"
+    ],
+    "1girl1boy": [
+     "sitting across a booth table from each other"
+    ],
+    "2boys": [
+     "two detectives across a booth table"
+    ]
+   },
+   "actions": [
+    "stirring coffee without drinking it",
+    "staring out the window",
+    "sliding an envelope across the table"
+   ],
+   "settings": [
+    "late-night diner, booth, empty counter"
+   ],
+   "lighting": [
+    "fluorescent light, green tint",
+    "neon sign glow through the window"
+   ],
+   "details": [
+    "half-eaten slice of pie",
+    "rain on the window",
+    "jukebox glow"
+   ]
+  },
+  {
+   "title": "Motel room",
+   "mood": [
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "slip dress, messy hair",
+     "sunglasses, headscarf"
+    ],
+    "1boy": [
+     "open collar, suspenders"
+    ]
+   },
+   "actions": [
+    "sitting on the edge of the bed",
+    "packing a suitcase in a hurry",
+    "peeking through the blinds"
+   ],
+   "settings": [
+    "cheap motel room, ugly lamp, open suitcase"
+   ],
+   "lighting": [
+    "venetian blind shadows",
+    "single bedside lamp"
+   ],
+   "details": [
+    "neon motel sign outside the window",
+    "cigarette in the ashtray"
+   ]
+  },
+  {
+   "title": "Underground car park",
+   "mood": [
+    "tense",
+    "serious"
+   ],
+   "subjects": {
+    "1boy": [
+     "long coat"
+    ],
+    "1girl": [
+     "leather gloves, belted coat"
+    ]
+   },
+   "actions": [
+    "waiting by a car",
+    "walking between the pillars",
+    "looking over shoulder"
+   ],
+   "settings": [
+    "underground parking garage, concrete pillars"
+   ],
+   "lighting": [
+    "flickering fluorescent light",
+    "car headlights, long shadows"
+   ],
+   "details": [
+    "puddle on the concrete",
+    "exhaust fumes"
+   ]
+  },
+  {
+   "title": "Theatre wings",
+   "mood": [
+    "melancholy",
+    "happy"
+   ],
+   "subjects": {
+    "1girl": [
+     "dancer, sequin costume, stage makeup"
+    ],
+    "1boy": [
+     "performer, tuxedo, loosened bow tie"
+    ]
+   },
+   "actions": [
+    "catching breath after the show",
+    "sitting on a crate",
+    "looking toward the stage"
+   ],
+   "settings": [
+    "backstage, theatre wings, ropes and curtains"
+   ],
+   "lighting": [
+    "spill light from the stage",
+    "dim work light"
+   ],
+   "details": [
+    "dust in the air",
+    "sandbags and ropes"
+   ]
+  },
+  {
+   "title": "Night train compartment",
+   "mood": [
+    "tense",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "fur collar coat"
+    ],
+    "1boy": [
+     "three-piece suit"
+    ],
+    "1girl1boy": [
+     "strangers sitting face to face"
+    ]
+   },
+   "actions": [
+    "reading a letter",
+    "looking out at the dark",
+    "lighting a match"
+   ],
+   "settings": [
+    "vintage train compartment at night"
+   ],
+   "lighting": [
+    "warm compartment lamp",
+    "passing station lights"
+   ],
+   "details": [
+    "reflection on the dark window",
+    "luggage on the rack"
+   ]
+  },
+  {
+   "title": "Police station, 3am",
+   "mood": [
+    "serious",
+    "melancholy"
+   ],
+   "subjects": {
+    "1boy": [
+     "detective, loosened tie, shoulder holster"
+    ],
+    "1girl": [
+     "detective, blazer, tired eyes"
+    ]
+   },
+   "actions": [
+    "drinking vending machine coffee",
+    "reading a case file",
+    "leaning against the wall"
+   ],
+   "settings": [
+    "police station at night, empty desks"
+   ],
+   "lighting": [
+    "harsh overhead fluorescent light",
+    "desk lamp in a dark office"
+   ],
+   "details": [
+    "cork board with photos",
+    "half-closed blinds"
+   ]
+  }
+ ]
+}

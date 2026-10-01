@@ -1,0 +1,145 @@
+{
+ "theme": "Home",
+ "rating": "sfw",
+ "styles": [
+  "quiet interior photography",
+  "anime background, ghibli style",
+  "kodachrome film photograph"
+ ],
+ "camera": [
+  "wide shot",
+  "from the doorway"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Sunday afternoon",
+   "mood": [
+    "calm",
+    "happy"
+   ],
+   "subjects": {
+    "1girl": [
+     "oversized sweater"
+    ],
+    "1boy": [
+     "t-shirt, socks"
+    ],
+    "1girl1boy": [
+     "couple in loungewear"
+    ],
+    "2girls": [
+     "friends in loungewear"
+    ],
+    "2boys": [
+     "roommates, hoodies"
+    ]
+   },
+   "actions": [
+    "reading on the sofa",
+    "napping on the sofa",
+    "drinking tea by the window"
+   ],
+   "settings": [
+    "sunlit apartment living room, plants, bookshelves"
+   ],
+   "lighting": [
+    "afternoon sun through sheer curtains"
+   ],
+   "details": [
+    "cat sleeping nearby",
+    "blanket draped over the sofa"
+   ]
+  },
+  {
+   "title": "Tiny kitchen at night",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "pajamas"
+    ],
+    "1boy": [
+     "hoodie"
+    ]
+   },
+   "actions": [
+    "waiting for the kettle to boil",
+    "eating noodles at a small table",
+    "looking inside the fridge"
+   ],
+   "settings": [
+    "tiny apartment kitchen at night"
+   ],
+   "lighting": [
+    "fridge light only",
+    "single pendant light"
+   ],
+   "details": [
+    "dishes in the sink",
+    "city lights through the window"
+   ]
+  },
+  {
+   "title": "Cluttered study",
+   "subjects": {
+    "none": []
+   },
+   "settings": [
+    "cluttered study, stacked books, writing desk by the window"
+   ],
+   "lighting": [
+    "late afternoon sun, floating dust",
+    "green desk lamp at night"
+   ],
+   "details": [
+    "open notebook",
+    "cup of cold tea",
+    "cat on the windowsill"
+   ]
+  },
+  {
+   "title": "Genkan",
+   "subjects": {
+    "none": []
+   },
+   "settings": [
+    "japanese apartment entrance, genkan, shoes lined up"
+   ],
+   "lighting": [
+    "evening light from the open door",
+    "soft ceiling light"
+   ],
+   "details": [
+    "umbrella stand",
+    "keys on the shelf"
+   ]
+  },
+  {
+   "title": "Steamy bathroom",
+   "subjects": {
+    "none": []
+   },
+   "settings": [
+    "small bathroom, fogged mirror, white tiles"
+   ],
+   "lighting": [
+    "warm light through steam"
+   ],
+   "details": [
+    "handprint on the fogged mirror",
+    "towel on the rack"
+   ]
+  }
+ ]
+}

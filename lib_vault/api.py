@@ -17,13 +17,13 @@ _vocab_cache = {"key": None, "data": None}
 def _vocab():
     from . import wd14
 
-    lib = store.all_tags()
     try:
         danbooru = wd14.vocabulary()
     except Exception:
         danbooru = []
-    key = (len(lib), hash(tuple(lib)), len(danbooru), id(danbooru))
+    key = (store.revision(), len(danbooru), id(danbooru))
     if _vocab_cache["key"] != key:
+        lib = store.all_tags()
         seen, items = set(), []
         for t in lib:
             k = t.lower()
@@ -107,3 +107,65 @@ def register(app):
     @app.post(f"{BASE}/history/clear")
     def clear_history():
         return run(lambda: (store.clear_history(), {"history": []})[1])
+
+    # ------------------------------------------------------------------ prompt tools, for the editor and Muse
+
+    def tool(fn):
+        result, note = fn()
+        if not result:
+            raise store.VaultError(note or "nothing came back")
+        return {"result": result, "note": note}
+
+    @app.post(f"{BASE}/prompt/arrange")
+    def prompt_arrange(body: dict = Body(...)):
+        from . import arrange
+
+        parts = body.get("parts") if isinstance(body.get("parts"), list) else None
+        return run(lambda: tool(lambda: arrange.arrange(str(body.get("prompt") or ""), parts)))
+
+    @app.post(f"{BASE}/prompt/qwen")
+    def prompt_qwen(body: dict = Body(...)):
+        from . import qwen
+
+        return run(lambda: tool(lambda: qwen.rewrite(str(body.get("prompt") or ""), str(body.get("task") or ""),
+                                                     str(body.get("instruction") or ""))))
+
+    # ------------------------------------------------------------------ Muse
+
+    from . import muse
+
+    @app.get(f"{BASE}/muse")
+    def muse_snapshot():
+        return run(muse.snapshot)
+
+    @app.post(f"{BASE}/muse/state")
+    def muse_state(body: dict = Body(...)):
+        return run(lambda: {"state": muse.save_state(body)})
+
+    @app.post(f"{BASE}/muse/next")
+    def muse_next(body: dict = Body(None)):
+        b = body or {}
+        return run(lambda: {"idea": muse.compose(scene_id=b.get("scene"), cast=b.get("cast"),
+                                                 keep=b.get("keep"), roll=b.get("roll"),
+                                                 size=b.get("size"), girls=b.get("girls"))})
+
+    @app.post(f"{BASE}/muse/tipo")
+    def muse_tipo(body: dict = Body(...)):
+        return run(lambda: muse.expand_with_tipo(str(body.get("positive") or "")))
+
+    @app.get(f"{BASE}/muse/avatar")
+    def muse_avatar():
+        from fastapi.responses import FileResponse
+
+        path = muse.avatar_file()
+        if not path:
+            return Response(status_code=404)
+        return FileResponse(path, headers={"Cache-Control": "max-age=31536000"})
+
+    @app.post(f"{BASE}/muse/avatar")
+    def muse_avatar_set(body: dict = Body(...)):
+        return run(lambda: {"avatar": muse.save_avatar(body.get("data"))})
+
+    @app.post(f"{BASE}/muse/avatar/clear")
+    def muse_avatar_clear():
+        return run(lambda: {"avatar": muse.clear_avatar()})

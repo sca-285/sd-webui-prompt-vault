@@ -1,0 +1,253 @@
+{
+ "theme": "Groups",
+ "rating": "sfw",
+ "styles": [
+  "anime illustration, clean lineart",
+  "cinematic still, film grain",
+  "photorealistic, natural light"
+ ],
+ "camera": [
+  "wide shot",
+  "full body",
+  "group shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "extra limbs",
+  "fused bodies"
+ ],
+ "scenes": [
+  {
+   "title": "Girls' night in",
+   "mood": [
+    "happy",
+    "playful"
+   ],
+   "subjects": {
+    "girls": [
+     "pajamas, messy hair",
+     "oversized t-shirts, shorts"
+    ],
+    "mixed": [
+     "friends in loungewear"
+    ]
+   },
+   "actions": [
+    "sitting on the floor around snacks",
+    "watching a movie under one blanket",
+    "pillow fight"
+   ],
+   "settings": [
+    "small apartment living room at night"
+   ],
+   "lighting": [
+    "tv glow",
+    "string lights"
+   ],
+   "details": [
+    "popcorn everywhere",
+    "pizza boxes"
+   ]
+  },
+  {
+   "title": "On stage",
+   "mood": [
+    "happy",
+    "cool"
+   ],
+   "subjects": {
+    "girls": [
+     "idol group, matching stage costumes"
+    ],
+    "boys": [
+     "rock band, leather jackets"
+    ],
+    "mixed": [
+     "band, mismatched outfits"
+    ]
+   },
+   "actions": [
+    "performing on stage",
+    "bowing to the crowd",
+    "jumping mid-song"
+   ],
+   "settings": [
+    "concert stage, crowd below"
+   ],
+   "lighting": [
+    "stage spotlights, coloured beams",
+    "confetti in the light"
+   ],
+   "camera": [
+    "wide shot, from below"
+   ],
+   "details": [
+    "confetti falling",
+    "glow sticks in the crowd"
+   ]
+  },
+  {
+   "title": "Poker night",
+   "mood": [
+    "happy",
+    "cool"
+   ],
+   "subjects": {
+    "boys": [
+     "rolled-up sleeves, loosened ties"
+    ],
+    "mixed": [
+     "friends, casual clothes"
+    ]
+   },
+   "actions": [
+    "playing cards around a table",
+    "one of them going all in",
+    "laughing at a bad hand"
+   ],
+   "settings": [
+    "kitchen table, chips and cards"
+   ],
+   "lighting": [
+    "single hanging lamp, smoky"
+   ],
+   "details": [
+    "stacks of poker chips",
+    "beer bottles"
+   ]
+  },
+  {
+   "title": "Harem morning",
+   "mood": [
+    "playful",
+    "happy"
+   ],
+   "subjects": {
+    "harem": [
+     "he is overwhelmed, the girls in casual clothes",
+     "he in a suit, the girls in maid outfits"
+    ]
+   },
+   "actions": [
+    "the girls arguing over him",
+    "the girls pulling his arms",
+    "breakfast table, everyone talking at once"
+   ],
+   "settings": [
+    "bright apartment, breakfast table"
+   ],
+   "lighting": [
+    "morning sunlight"
+   ],
+   "details": [
+    "spilled coffee",
+    "toast in his mouth"
+   ]
+  },
+  {
+   "title": "Host club",
+   "mood": [
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "reverse": [
+     "she is the guest, the boys in tailored suits"
+    ]
+   },
+   "actions": [
+    "the boys pouring her tea",
+    "the boys leaning around her on the sofa",
+    "toasting with champagne"
+   ],
+   "settings": [
+    "luxurious host club, velvet sofas"
+   ],
+   "lighting": [
+    "warm chandelier light"
+   ],
+   "details": [
+    "roses on the table",
+    "champagne tower"
+   ]
+  },
+  {
+   "title": "Road trip",
+   "mood": [
+    "happy"
+   ],
+   "subjects": {
+    "mixed": [
+     "friends, summer clothes"
+    ],
+    "girls": [
+     "summer clothes, sunglasses"
+    ],
+    "boys": [
+     "tank tops, sunglasses"
+    ]
+   },
+   "actions": [
+    "leaning on a van by the road",
+    "singing in the car",
+    "eating at a roadside diner"
+   ],
+   "settings": [
+    "coastal highway, summer"
+   ],
+   "lighting": [
+    "golden hour",
+    "harsh midday sun"
+   ],
+   "details": [
+    "surfboards on the roof",
+    "map spread on the hood"
+   ]
+  },
+  {
+   "title": "Adventuring party",
+   "mood": [
+    "serious",
+    "happy"
+   ],
+   "subjects": {
+    "mixed": [
+     "fantasy adventurers, knight, mage, archer, rogue"
+    ],
+    "girls": [
+     "fantasy adventurers, knight, mage, archer"
+    ],
+    "boys": [
+     "fantasy adventurers, warriors and a mage"
+    ]
+   },
+   "actions": [
+    "standing before a dungeon gate",
+    "resting around a campfire",
+    "back to back, weapons drawn"
+   ],
+   "settings": [
+    "fantasy forest at dusk",
+    "ancient dungeon entrance"
+   ],
+   "lighting": [
+    "campfire light",
+    "torchlight"
+   ],
+   "camera": [
+    "wide shot",
+    "full body"
+   ],
+   "details": [
+    "map on the ground",
+    "glowing runes"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,106 @@
+{
+ "theme": "Office",
+ "rating": "explicit",
+ "styles": [
+  "photorealistic, detailed skin",
+  "hentai, anime illustration",
+  "handheld amateur photo",
+  "painterly erotic illustration"
+ ],
+ "camera": [
+  "full body",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text",
+  "child",
+  "loli",
+  "shota",
+  "underage",
+  "childlike proportions",
+  "extra genitals",
+  "fused bodies",
+  "censored",
+  "mosaic censoring",
+  "non-consensual",
+  "unconscious"
+ ],
+ "scenes": [
+  {
+   "title": "After hours",
+   "mood": [
+    "sultry",
+    "cool"
+   ],
+   "subjects": {
+    "1girl": [
+     "office lady, blouse unbuttoned, pencil skirt"
+    ],
+    "1boy": [
+     "dress shirt unbuttoned, loosened tie, bulge"
+    ]
+   },
+   "actions": [
+    "sitting on the desk, legs crossed",
+    "leaning back in the office chair",
+    "loosening the tie"
+   ],
+   "settings": [
+    "office at night, city lights through the windows"
+   ],
+   "lighting": [
+    "monitor glow",
+    "cool city light"
+   ],
+   "details": [
+    "papers scattered",
+    "blinds half closed"
+   ],
+   "rating": "suggestive"
+  },
+  {
+   "title": "On the desk",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl1boy": [
+     "office clothes half undressed"
+    ],
+    "2boys": [
+     "office workers, shirts open, loosened ties"
+    ],
+    "2girls": [
+     "office ladies, blouses open"
+    ]
+   },
+   "gestures": [
+    "hands gripping the desk edge",
+    "legs wrapped around the waist"
+   ],
+   "actions": [
+    "sex on the desk",
+    "bent over the desk, sex from behind",
+    "sitting on the desk, legs apart"
+   ],
+   "settings": [
+    "office at night, city lights"
+   ],
+   "lighting": [
+    "monitor glow",
+    "desk lamp"
+   ],
+   "details": [
+    "papers pushed to the floor",
+    "tie hanging loose"
+   ],
+   "rating": "explicit"
+  }
+ ]
+}

@@ -62,6 +62,15 @@ TEXT_TASKS = {
         + "Answer with the one line of tags only.\n\nPrompt: {prompt}",
         "tags",
     ),
+    "Arrange tags": (
+        "Tidy this image generation prompt, a list of Danbooru-style tags. Put the tags in this order: "
+        "quality, how many people and who, body, face and hair, expression, clothing, accessories, pose "
+        "and action, place, time and weather, lighting, colour, camera and framing, style. Merge "
+        "duplicates and near-duplicates into one tag; when two tags contradict each other, keep the "
+        "first; correct misspelt tags to their Danbooru spelling. Add no new tag and drop no detail. "
+        + _KEEP + "Answer with the one line of tags only.\n\nPrompt: {prompt}",
+        "tags",
+    ),
     "Translate to English": (
         "Translate this image generation prompt into English. Keep its form: if it is a tag list, "
         "answer with a tag list; if it is prose, answer with prose. Words that are already English stay "
