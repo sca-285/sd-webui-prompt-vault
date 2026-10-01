@@ -1,0 +1,2044 @@
+{
+ "theme": "Horror",
+ "styles": [
+  "desaturated horror film still",
+  "grainy analog photograph",
+  "dark ink illustration"
+ ],
+ "camera": [
+  "wide shot",
+  "dutch angle"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Gothic manor",
+   "rating": "sfw",
+   "mood": [
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "victorian nightgown",
+     "black lace dress"
+    ],
+    "1boy": [
+     "white shirt, waistcoat",
+     "long black coat"
+    ],
+    "1girl1boy": [
+     "she in victorian nightgown, he in white shirt, waistcoat",
+     "she in victorian nightgown, he in long black coat",
+     "she in black lace dress, he in white shirt, waistcoat",
+     "she in black lace dress, he in long black coat"
+    ],
+    "2girls": [
+     "victorian nightgown",
+     "black lace dress"
+    ],
+    "2boys": [
+     "white shirt, waistcoat",
+     "long black coat"
+    ],
+    "girls": [
+     "victorian nightgown",
+     "black lace dress"
+    ],
+    "boys": [
+     "white shirt, waistcoat",
+     "long black coat"
+    ],
+    "harem": [
+     "he in white shirt, waistcoat, the girls in victorian nightgown",
+     "he in long black coat, the girls in victorian nightgown",
+     "he in white shirt, waistcoat, the girls in black lace dress"
+    ],
+    "reverse": [
+     "she in victorian nightgown, the boys in white shirt, waistcoat",
+     "she in victorian nightgown, the boys in long black coat",
+     "she in black lace dress, the boys in white shirt, waistcoat"
+    ],
+    "mixed": [
+     "the women in victorian nightgown, the men in white shirt, waistcoat",
+     "the women in victorian nightgown, the men in long black coat",
+     "the women in black lace dress, the men in white shirt, waistcoat"
+    ],
+    "furry": [
+     "wolf, female, victorian nightgown",
+     "wolf, male, white shirt, waistcoat",
+     "fox, female, black lace dress",
+     "fox, male, long black coat",
+     "cat, female, victorian nightgown",
+     "cat, male, white shirt, waistcoat",
+     "rabbit, female, black lace dress",
+     "rabbit, male, long black coat",
+     "tiger, female, victorian nightgown",
+     "tiger, male, white shirt, waistcoat",
+     "deer, female, black lace dress",
+     "deer, male, long black coat",
+     "dragon, female, victorian nightgown",
+     "dragon, male, white shirt, waistcoat",
+     "lion, female, black lace dress",
+     "lion, male, long black coat"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, victorian nightgown",
+     "1boy, solo, vampire, pale skin, red eyes, long black coat",
+     "1girl, solo, ghost girl, translucent, victorian nightgown",
+     "1girl, solo, succubus, horns, bat wings, black lace dress",
+     "1boy, solo, werewolf man, wolf ears, claws, white shirt, waistcoat"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "holding a candelabra",
+     "staring at an old portrait",
+     "listening at a door"
+    ],
+    "pair": [
+     "clinging to each other, listening",
+     "searching the hall with one candle"
+    ],
+    "groups": [
+     "holding a seance around the table",
+     "huddled on the stairs"
+    ]
+   },
+   "settings": [
+    "gothic manor bedroom, four-poster bed, heavy drapes",
+    "candlelit manor hallway, old portraits"
+   ],
+   "lighting": [
+    "candlelight",
+    "moonlight through tall windows"
+   ],
+   "details": [
+    "a portrait whose eyes follow",
+    "cobwebs"
+   ]
+  },
+  {
+   "title": "Gothic manor",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, lace lingerie",
+     "1boy, solo, vampire, pale skin, red eyes, towel around the waist",
+     "1girl, solo, ghost girl, translucent, oversized shirt, bare legs",
+     "1girl, solo, succubus, horns, bat wings, unbuttoned blouse, bra visible",
+     "1boy, solo, werewolf man, wolf ears, claws, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the four-poster bed, propped on elbows",
+     "kneeling on the four-poster bed, looking at viewer",
+     "sitting on the edge of the four-poster bed",
+     "leaning against the paneled wall, looking at viewer",
+     "sitting on the seance table, legs crossed"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the four-poster bed together",
+     "pinned against the paneled wall, kissing",
+     "sitting on the seance table, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the four-poster bed"
+    ]
+   },
+   "settings": [
+    "gothic manor bedroom, four-poster bed, heavy drapes",
+    "candlelit manor hallway, old portraits"
+   ],
+   "lighting": [
+    "candlelight",
+    "moonlight through tall windows"
+   ],
+   "details": [
+    "dripping candles",
+    "cobwebs",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Gothic manor",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, nude",
+     "1boy, solo, vampire, pale skin, red eyes, nude",
+     "1girl, solo, ghost girl, translucent, nude",
+     "1girl, solo, succubus, horns, bat wings, nude",
+     "1boy, solo, werewolf man, wolf ears, claws, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the four-poster bed",
+     "sitting on the edge of the four-poster bed",
+     "leaning against the paneled wall",
+     "sitting on the seance table"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the four-poster bed"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the four-poster bed"
+    ]
+   },
+   "settings": [
+    "gothic manor bedroom, four-poster bed, heavy drapes",
+    "candlelit manor hallway, old portraits"
+   ],
+   "lighting": [
+    "candlelight",
+    "moonlight through tall windows"
+   ],
+   "details": [
+    "dripping candles",
+    "cobwebs",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Gothic manor, the vampire's bed",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, nude",
+     "1boy, solo, vampire, pale skin, red eyes, nude",
+     "1girl, solo, ghost girl, translucent, nude",
+     "1girl, solo, succubus, horns, bat wings, nude",
+     "1boy, solo, werewolf man, wolf ears, claws, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the four-poster bed, fingering herself",
+     "using a vibrator on the four-poster bed",
+     "masturbating, back against the paneled wall",
+     "sitting on the seance table, fingering herself"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the four-poster bed, masturbating",
+     "masturbating, one hand on the paneled wall"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the paneled wall",
+     "sex from behind, standing, hands on the paneled wall",
+     "sex on the seance table",
+     "bent over the seance table, sex from behind",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the paneled wall",
+     "cunnilingus on the seance table",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the paneled wall",
+     "bent over the seance table, anal sex",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the paneled wall, the others kissing his neck",
+     "one bent over the seance table, the others kissing her",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the paneled wall, the others watching",
+     "spitroast on the seance table",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex around the seance table",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the four-poster bed, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the four-poster bed, touching self"
+    ]
+   },
+   "settings": [
+    "gothic manor bedroom, four-poster bed, heavy drapes",
+    "candlelit manor hallway, old portraits"
+   ],
+   "lighting": [
+    "candlelight",
+    "moonlight through tall windows"
+   ],
+   "details": [
+    "dripping candles",
+    "cobwebs",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Cabin in the woods",
+   "rating": "sfw",
+   "mood": [
+    "tense",
+    "happy"
+   ],
+   "subjects": {
+    "1girl": [
+     "flannel shirt, jeans",
+     "oversized hoodie"
+    ],
+    "1boy": [
+     "flannel shirt, beanie",
+     "rain jacket"
+    ],
+    "1girl1boy": [
+     "she in flannel shirt, jeans, he in flannel shirt, beanie",
+     "she in flannel shirt, jeans, he in rain jacket",
+     "she in oversized hoodie, he in flannel shirt, beanie",
+     "she in oversized hoodie, he in rain jacket"
+    ],
+    "2girls": [
+     "flannel shirt, jeans",
+     "oversized hoodie"
+    ],
+    "2boys": [
+     "flannel shirt, beanie",
+     "rain jacket"
+    ],
+    "girls": [
+     "flannel shirt, jeans",
+     "oversized hoodie"
+    ],
+    "boys": [
+     "flannel shirt, beanie",
+     "rain jacket"
+    ],
+    "harem": [
+     "he in flannel shirt, beanie, the girls in flannel shirt, jeans",
+     "he in rain jacket, the girls in flannel shirt, jeans",
+     "he in flannel shirt, beanie, the girls in oversized hoodie"
+    ],
+    "reverse": [
+     "she in flannel shirt, jeans, the boys in flannel shirt, beanie",
+     "she in flannel shirt, jeans, the boys in rain jacket",
+     "she in oversized hoodie, the boys in flannel shirt, beanie"
+    ],
+    "mixed": [
+     "the women in flannel shirt, jeans, the men in flannel shirt, beanie",
+     "the women in flannel shirt, jeans, the men in rain jacket",
+     "the women in oversized hoodie, the men in flannel shirt, beanie"
+    ],
+    "furry": [
+     "wolf, female, flannel shirt, jeans",
+     "wolf, male, flannel shirt, beanie",
+     "fox, female, oversized hoodie",
+     "fox, male, rain jacket",
+     "cat, female, flannel shirt, jeans",
+     "cat, male, flannel shirt, beanie",
+     "rabbit, female, oversized hoodie",
+     "rabbit, male, rain jacket",
+     "tiger, female, flannel shirt, jeans",
+     "tiger, male, flannel shirt, beanie",
+     "deer, female, oversized hoodie",
+     "deer, male, rain jacket",
+     "dragon, female, flannel shirt, jeans",
+     "dragon, male, flannel shirt, beanie",
+     "lion, female, oversized hoodie",
+     "lion, male, rain jacket"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, flannel shirt, jeans",
+     "1boy, solo, elf, pointy ears, rain jacket",
+     "1girl, solo, android, mechanical joints, flannel shirt, jeans",
+     "1boy, solo, android, mechanical joints, rain jacket",
+     "1girl, solo, demon girl, horns, tail, flannel shirt, jeans",
+     "1boy, solo, oni, horns, rain jacket",
+     "1girl, solo, kitsune, fox ears, fox tail, flannel shirt, jeans"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "looking out at the dark woods",
+     "holding a flashlight at the door",
+     "boarding up a window"
+    ],
+    "pair": [
+     "huddled by the fire",
+     "barricading the door together"
+    ],
+    "groups": [
+     "telling ghost stories by the fire",
+     "playing cards by lamplight"
+    ]
+   },
+   "settings": [
+    "log cabin at night, fireplace, dark woods outside"
+   ],
+   "lighting": [
+    "firelight",
+    "flashlight beam"
+   ],
+   "details": [
+    "something moving between the trees",
+    "old radio crackling"
+   ]
+  },
+  {
+   "title": "Cabin in the woods",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, lace lingerie",
+     "1boy, solo, elf, pointy ears, towel around the waist",
+     "1girl, solo, android, mechanical joints, oversized shirt, bare legs",
+     "1boy, solo, android, mechanical joints, unbuttoned jeans, shirtless",
+     "1girl, solo, demon girl, horns, tail, lace lingerie",
+     "1boy, solo, oni, horns, towel around the waist",
+     "1girl, solo, kitsune, fox ears, fox tail, oversized shirt, bare legs"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the old bed, propped on elbows",
+     "kneeling on the old bed, looking at viewer",
+     "sitting on the edge of the old bed",
+     "sitting on the bearskin rug, knees up",
+     "leaning against the log wall, looking at viewer",
+     "sitting on the wooden table, legs crossed"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the old bed together",
+     "pinned against the log wall, kissing",
+     "sitting on the wooden table, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the old bed"
+    ]
+   },
+   "settings": [
+    "log cabin at night, fireplace, dark woods outside"
+   ],
+   "lighting": [
+    "firelight",
+    "flashlight beam"
+   ],
+   "details": [
+    "fire crackling",
+    "rain on the window",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Cabin in the woods",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the old bed",
+     "sitting on the edge of the old bed",
+     "lying on the bearskin rug, relaxed",
+     "sitting on the bearskin rug, knees drawn up",
+     "leaning against the log wall",
+     "sitting on the wooden table"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the old bed",
+     "lying together on the bearskin rug"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the old bed",
+     "lounging together on the bearskin rug"
+    ]
+   },
+   "settings": [
+    "log cabin at night, fireplace, dark woods outside"
+   ],
+   "lighting": [
+    "firelight",
+    "flashlight beam"
+   ],
+   "details": [
+    "fire crackling",
+    "rain on the window",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Cabin in the woods",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, elf, pointy ears, nude",
+     "1boy, solo, elf, pointy ears, nude",
+     "1girl, solo, android, mechanical joints, nude",
+     "1boy, solo, android, mechanical joints, nude",
+     "1girl, solo, demon girl, horns, tail, nude",
+     "1boy, solo, oni, horns, nude",
+     "1girl, solo, kitsune, fox ears, fox tail, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the old bed, fingering herself",
+     "using a vibrator on the old bed",
+     "masturbating on the bearskin rug, spread legs",
+     "masturbating, back against the log wall",
+     "sitting on the wooden table, fingering herself"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the old bed, masturbating",
+     "masturbating, one hand on the log wall"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the log wall",
+     "sex from behind, standing, hands on the log wall",
+     "sex on the wooden table",
+     "bent over the wooden table, sex from behind",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the log wall",
+     "cunnilingus on the wooden table",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the log wall",
+     "bent over the wooden table, anal sex",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the log wall, the others kissing his neck",
+     "one bent over the wooden table, the others kissing her",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the log wall, the others watching",
+     "spitroast on the wooden table",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "group sex around the wooden table",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the old bed, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the old bed, touching self"
+    ]
+   },
+   "settings": [
+    "log cabin at night, fireplace, dark woods outside"
+   ],
+   "lighting": [
+    "firelight",
+    "flashlight beam"
+   ],
+   "details": [
+    "fire crackling",
+    "rain on the window",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Abandoned hospital",
+   "rating": "sfw",
+   "mood": [
+    "tense"
+   ],
+   "subjects": {
+    "1girl": [
+     "hospital gown",
+     "nurse uniform, torn"
+    ],
+    "1boy": [
+     "orderly uniform",
+     "torn jacket"
+    ],
+    "1girl1boy": [
+     "she in hospital gown, he in orderly uniform",
+     "she in hospital gown, he in torn jacket",
+     "she in nurse uniform, torn, he in orderly uniform",
+     "she in nurse uniform, torn, he in torn jacket"
+    ],
+    "2girls": [
+     "hospital gown",
+     "nurse uniform, torn"
+    ],
+    "2boys": [
+     "orderly uniform",
+     "torn jacket"
+    ],
+    "girls": [
+     "hospital gown",
+     "nurse uniform, torn"
+    ],
+    "boys": [
+     "orderly uniform",
+     "torn jacket"
+    ],
+    "harem": [
+     "he in orderly uniform, the girls in hospital gown",
+     "he in torn jacket, the girls in hospital gown",
+     "he in orderly uniform, the girls in nurse uniform, torn"
+    ],
+    "reverse": [
+     "she in hospital gown, the boys in orderly uniform",
+     "she in hospital gown, the boys in torn jacket",
+     "she in nurse uniform, torn, the boys in orderly uniform"
+    ],
+    "mixed": [
+     "the women in hospital gown, the men in orderly uniform",
+     "the women in hospital gown, the men in torn jacket",
+     "the women in nurse uniform, torn, the men in orderly uniform"
+    ],
+    "furry": [
+     "wolf, female, hospital gown",
+     "wolf, male, orderly uniform",
+     "fox, female, nurse uniform, torn",
+     "fox, male, torn jacket",
+     "cat, female, hospital gown",
+     "cat, male, orderly uniform",
+     "rabbit, female, nurse uniform, torn",
+     "rabbit, male, torn jacket",
+     "tiger, female, hospital gown",
+     "tiger, male, orderly uniform",
+     "deer, female, nurse uniform, torn",
+     "deer, male, torn jacket",
+     "dragon, female, hospital gown",
+     "dragon, male, orderly uniform",
+     "lion, female, nurse uniform, torn",
+     "lion, male, torn jacket"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, hospital gown",
+     "1boy, solo, vampire, pale skin, red eyes, torn jacket",
+     "1girl, solo, ghost girl, translucent, hospital gown",
+     "1girl, solo, succubus, horns, bat wings, nurse uniform, torn",
+     "1boy, solo, werewolf man, wolf ears, claws, orderly uniform"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "walking down the ward",
+     "looking back over the shoulder",
+     "reading an old chart"
+    ],
+    "pair": [
+     "holding hands, walking down the corridor",
+     "one holding the flashlight for the other"
+    ],
+    "groups": [
+     "exploring the ward with flashlights",
+     "urban explorers taking photos"
+    ]
+   },
+   "settings": [
+    "abandoned hospital ward, empty gurneys, peeling paint"
+   ],
+   "lighting": [
+    "flickering fluorescent light",
+    "red emergency light"
+   ],
+   "details": [
+    "wheelchair in the distance",
+    "doors left ajar"
+   ]
+  },
+  {
+   "title": "Abandoned hospital",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, lace lingerie",
+     "1boy, solo, vampire, pale skin, red eyes, towel around the waist",
+     "1girl, solo, ghost girl, translucent, oversized shirt, bare legs",
+     "1girl, solo, succubus, horns, bat wings, unbuttoned blouse, bra visible",
+     "1boy, solo, werewolf man, wolf ears, claws, shirt open, bare chest"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the gurney, propped on elbows",
+     "kneeling on the gurney, looking at viewer",
+     "sitting on the edge of the gurney",
+     "leaning against the tiled wall, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the gurney together",
+     "pinned against the tiled wall, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the gurney"
+    ]
+   },
+   "settings": [
+    "abandoned hospital ward, empty gurneys, peeling paint"
+   ],
+   "lighting": [
+    "flickering fluorescent light",
+    "red emergency light"
+   ],
+   "details": [
+    "peeling paint",
+    "dripping water",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Abandoned hospital",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, nude",
+     "1boy, solo, vampire, pale skin, red eyes, nude",
+     "1girl, solo, ghost girl, translucent, nude",
+     "1girl, solo, succubus, horns, bat wings, nude",
+     "1boy, solo, werewolf man, wolf ears, claws, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the gurney",
+     "sitting on the edge of the gurney",
+     "leaning against the tiled wall"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the gurney"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the gurney"
+    ]
+   },
+   "settings": [
+    "abandoned hospital ward, empty gurneys, peeling paint"
+   ],
+   "lighting": [
+    "flickering fluorescent light",
+    "red emergency light"
+   ],
+   "details": [
+    "peeling paint",
+    "dripping water",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  },
+  {
+   "title": "Abandoned hospital",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, vampire, pale skin, red eyes, nude",
+     "1boy, solo, vampire, pale skin, red eyes, nude",
+     "1girl, solo, ghost girl, translucent, nude",
+     "1girl, solo, succubus, horns, bat wings, nude",
+     "1boy, solo, werewolf man, wolf ears, claws, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the gurney, fingering herself",
+     "using a vibrator on the gurney",
+     "masturbating, back against the tiled wall"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the gurney, masturbating",
+     "masturbating, one hand on the tiled wall"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the tiled wall",
+     "sex from behind, standing, hands on the tiled wall",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the tiled wall",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the tiled wall",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the tiled wall, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the tiled wall, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the gurney, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the gurney, touching self"
+    ]
+   },
+   "settings": [
+    "abandoned hospital ward, empty gurneys, peeling paint"
+   ],
+   "lighting": [
+    "flickering fluorescent light",
+    "red emergency light"
+   ],
+   "details": [
+    "peeling paint",
+    "dripping water",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "dark erotic horror illustration",
+    "photorealistic, detailed skin, low key",
+    "hentai, anime illustration"
+   ]
+  }
+ ]
+}

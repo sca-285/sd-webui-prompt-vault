@@ -172,18 +172,30 @@
             const nsfwLocked = key === 'ratings' && RATING_NSFW(value) && !s.allow_nsfw;
             const n = nsfwLocked ? 0 : countMatching({[key]: [value]});
             const on = chosen.has(value) && !nsfwLocked;
+            // nothing there: no "0" to click into, a reason instead (a chosen chip stays clickable, to unchoose it)
+            const empty = !n && !on;
             return el('button', {
-                type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (n ? '' : ' pv-muse-none') + (key === 'ratings' && RATING_NSFW(value) ? ' pv-muse-nsfw' : ''),
-                'aria-pressed': on ? 'true' : 'false', disabled: nsfwLocked,
-                title: nsfwLocked ? 'Turn NSFW on first' : `${n} scene${n === 1 ? '' : 's'} with the other filters`,
+                type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (key === 'ratings' && RATING_NSFW(value) ? ' pv-muse-nsfw' : ''),
+                'aria-pressed': on ? 'true' : 'false', disabled: nsfwLocked || empty,
+                title: nsfwLocked ? 'Turn NSFW on first' : (empty ? whyNone(key, value) : `${n} scene${n === 1 ? '' : 's'} with the other filters`),
                 onclick: () => toggle(value),
-            }, label, key !== 'ratings' ? el('small', {text: String(n)}) : null);
+            }, label, key !== 'ratings' && n ? el('small', {text: String(n)}) : null);
         });
         const all = key !== 'ratings' ? el('button', {type: 'button', class: 'pv-muse-chip' + (chosen.size ? '' : ' pv-on'), text: key === 'themes' ? 'All' : 'Anyone', onclick: () => patch({[key]: []})}) : null;
         return el('div', {class: 'pv-muse-tray'},
             key === 'ratings' ? toggleSwitch('NSFW', s.allow_nsfw, (v) => patch(v ? {allow_nsfw: true} : {allow_nsfw: false}), 'adults only; minors are always kept out') : null,
             el('div', {class: 'pv-muse-chips'}, all, chips),
             key === 'casts' ? sizeRow() : null);
+    }
+
+    // why a chip leads nowhere, in words
+    function whyNone(key, value) {
+        const s = st();
+        const on = ratingsOn(s);
+        if (key === 'casts' && value === 'none' && !on.includes('sfw')) return 'No humans: SFW scenes only. Add SFW to Level.';
+        if (key === 'ratings' && s.casts.length === 1 && s.casts[0] === 'none') return 'No humans: SFW scenes only.';
+        if (key === 'sizes' && value === 3 && s.casts.length && s.casts.every((c) => c === 'mixed')) return 'A mixed group is 4 people or more.';
+        return 'Nothing with the other filters: loosen one of them.';
     }
 
     // how many people in a group: only for the 3+ casts
@@ -197,8 +209,8 @@
                 cat.sizes.map(([n, label]) => {
                     const on = chosen.has(n);
                     const count = countMatching({sizes: [n]});
-                    return el('button', {type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : '') + (count ? '' : ' pv-muse-none'),
-                        'aria-pressed': on ? 'true' : 'false', title: `${count} scenes for a group of ${label}`,
+                    return el('button', {type: 'button', class: 'pv-muse-chip' + (on ? ' pv-on' : ''), disabled: !count && !on,
+                        'aria-pressed': on ? 'true' : 'false', title: count ? `${count} scenes for a group of ${label}` : whyNone('sizes', n),
                         onclick: () => { const next = new Set(chosen); if (on) next.delete(n); else next.add(n); patch({sizes: [...next]}); }}, label);
                 })));
     }

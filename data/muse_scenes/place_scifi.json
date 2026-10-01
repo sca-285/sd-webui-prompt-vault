@@ -1,0 +1,2013 @@
+{
+ "theme": "Sci-fi",
+ "styles": [
+  "lived-in sci-fi, realistic",
+  "anime sci-fi, detailed",
+  "retro-futurism illustration"
+ ],
+ "camera": [
+  "wide shot",
+  "cowboy shot"
+ ],
+ "negatives": [
+  "worst quality",
+  "low quality",
+  "blurry",
+  "bad anatomy",
+  "extra fingers",
+  "watermark",
+  "text"
+ ],
+ "scenes": [
+  {
+   "title": "Crew quarters",
+   "rating": "sfw",
+   "mood": [
+    "calm",
+    "melancholy"
+   ],
+   "subjects": {
+    "1girl": [
+     "flight suit, unzipped to the waist",
+     "tank top, cargo pants"
+    ],
+    "1boy": [
+     "flight suit",
+     "tank top, dog tags"
+    ],
+    "1girl1boy": [
+     "she in flight suit, unzipped to the waist, he in flight suit",
+     "she in flight suit, unzipped to the waist, he in tank top, dog tags",
+     "she in tank top, cargo pants, he in flight suit",
+     "she in tank top, cargo pants, he in tank top, dog tags"
+    ],
+    "2girls": [
+     "flight suit, unzipped to the waist",
+     "tank top, cargo pants"
+    ],
+    "2boys": [
+     "flight suit",
+     "tank top, dog tags"
+    ],
+    "girls": [
+     "flight suit, unzipped to the waist",
+     "tank top, cargo pants"
+    ],
+    "boys": [
+     "flight suit",
+     "tank top, dog tags"
+    ],
+    "harem": [
+     "he in flight suit, the girls in flight suit, unzipped to the waist",
+     "he in tank top, dog tags, the girls in flight suit, unzipped to the waist",
+     "he in flight suit, the girls in tank top, cargo pants"
+    ],
+    "reverse": [
+     "she in flight suit, unzipped to the waist, the boys in flight suit",
+     "she in flight suit, unzipped to the waist, the boys in tank top, dog tags",
+     "she in tank top, cargo pants, the boys in flight suit"
+    ],
+    "mixed": [
+     "the women in flight suit, unzipped to the waist, the men in flight suit",
+     "the women in flight suit, unzipped to the waist, the men in tank top, dog tags",
+     "the women in tank top, cargo pants, the men in flight suit"
+    ],
+    "furry": [
+     "wolf, female, flight suit, unzipped to the waist",
+     "wolf, male, flight suit",
+     "fox, female, tank top, cargo pants",
+     "fox, male, tank top, dog tags",
+     "cat, female, flight suit, unzipped to the waist",
+     "cat, male, flight suit",
+     "rabbit, female, tank top, cargo pants",
+     "rabbit, male, tank top, dog tags",
+     "tiger, female, flight suit, unzipped to the waist",
+     "tiger, male, flight suit",
+     "deer, female, tank top, cargo pants",
+     "deer, male, tank top, dog tags",
+     "dragon, female, flight suit, unzipped to the waist",
+     "dragon, male, flight suit",
+     "lion, female, tank top, cargo pants",
+     "lion, male, tank top, dog tags"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, flight suit, unzipped to the waist",
+     "1boy, solo, cyborg, mechanical arm, tank top, dog tags",
+     "1girl, solo, alien girl, blue skin, antennae, flight suit, unzipped to the waist",
+     "1boy, solo, alien, grey skin, tall, tank top, dog tags",
+     "1girl, solo, gynoid, porcelain skin, flight suit, unzipped to the waist"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "reading a tablet on the bunk",
+     "looking out the porthole"
+    ],
+    "pair": [
+     "talking on the bunk",
+     "sharing a meal pack"
+    ],
+    "groups": [
+     "crew playing cards",
+     "crowded in the cabin, laughing"
+    ]
+   },
+   "settings": [
+    "spaceship crew quarters, bunk, porthole"
+   ],
+   "lighting": [
+    "soft cabin light",
+    "starlight through the porthole"
+   ],
+   "details": [
+    "stars through the porthole",
+    "photo taped to the wall"
+   ]
+  },
+  {
+   "title": "Crew quarters",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, lace lingerie",
+     "1boy, solo, cyborg, mechanical arm, towel around the waist",
+     "1girl, solo, alien girl, blue skin, antennae, oversized shirt, bare legs",
+     "1boy, solo, alien, grey skin, tall, unbuttoned jeans, shirtless",
+     "1girl, solo, gynoid, porcelain skin, lace lingerie"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the bunk, propped on elbows",
+     "kneeling on the bunk, looking at viewer",
+     "sitting on the edge of the bunk",
+     "leaning against the bulkhead, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the bunk together",
+     "pinned against the bulkhead, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the bunk"
+    ]
+   },
+   "settings": [
+    "spaceship crew quarters, bunk, porthole"
+   ],
+   "lighting": [
+    "soft cabin light",
+    "starlight through the porthole"
+   ],
+   "details": [
+    "stars through the porthole",
+    "photo taped to the wall",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Crew quarters",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the bunk",
+     "sitting on the edge of the bunk",
+     "leaning against the bulkhead"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the bunk"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the bunk"
+    ]
+   },
+   "settings": [
+    "spaceship crew quarters, bunk, porthole"
+   ],
+   "lighting": [
+    "soft cabin light",
+    "starlight through the porthole"
+   ],
+   "details": [
+    "stars through the porthole",
+    "photo taped to the wall",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Crew quarters",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the bunk, fingering herself",
+     "using a vibrator on the bunk",
+     "masturbating, back against the bulkhead"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the bunk, masturbating",
+     "masturbating, one hand on the bulkhead"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the bulkhead",
+     "sex from behind, standing, hands on the bulkhead",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the bulkhead",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the bulkhead",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the bulkhead, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the bulkhead, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the bunk, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the bunk, touching self"
+    ]
+   },
+   "settings": [
+    "spaceship crew quarters, bunk, porthole"
+   ],
+   "lighting": [
+    "soft cabin light",
+    "starlight through the porthole"
+   ],
+   "details": [
+    "stars through the porthole",
+    "photo taped to the wall",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Observation deck",
+   "rating": "sfw",
+   "mood": [
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "spacesuit, helmet under arm",
+     "uniform jacket"
+    ],
+    "1boy": [
+     "spacesuit",
+     "officer's uniform"
+    ],
+    "1girl1boy": [
+     "she in spacesuit, helmet under arm, he in spacesuit",
+     "she in spacesuit, helmet under arm, he in officer's uniform",
+     "she in uniform jacket, he in spacesuit",
+     "she in uniform jacket, he in officer's uniform"
+    ],
+    "2girls": [
+     "spacesuit, helmet under arm",
+     "uniform jacket"
+    ],
+    "2boys": [
+     "spacesuit",
+     "officer's uniform"
+    ],
+    "girls": [
+     "spacesuit, helmet under arm",
+     "uniform jacket"
+    ],
+    "boys": [
+     "spacesuit",
+     "officer's uniform"
+    ],
+    "harem": [
+     "he in spacesuit, the girls in spacesuit, helmet under arm",
+     "he in officer's uniform, the girls in spacesuit, helmet under arm",
+     "he in spacesuit, the girls in uniform jacket"
+    ],
+    "reverse": [
+     "she in spacesuit, helmet under arm, the boys in spacesuit",
+     "she in spacesuit, helmet under arm, the boys in officer's uniform",
+     "she in uniform jacket, the boys in spacesuit"
+    ],
+    "mixed": [
+     "the women in spacesuit, helmet under arm, the men in spacesuit",
+     "the women in spacesuit, helmet under arm, the men in officer's uniform",
+     "the women in uniform jacket, the men in spacesuit"
+    ],
+    "furry": [
+     "wolf, female, spacesuit, helmet under arm",
+     "wolf, male, spacesuit",
+     "fox, female, uniform jacket",
+     "fox, male, officer's uniform",
+     "cat, female, spacesuit, helmet under arm",
+     "cat, male, spacesuit",
+     "rabbit, female, uniform jacket",
+     "rabbit, male, officer's uniform",
+     "tiger, female, spacesuit, helmet under arm",
+     "tiger, male, spacesuit",
+     "deer, female, uniform jacket",
+     "deer, male, officer's uniform",
+     "dragon, female, spacesuit, helmet under arm",
+     "dragon, male, spacesuit",
+     "lion, female, uniform jacket",
+     "lion, male, officer's uniform"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, spacesuit, helmet under arm",
+     "1boy, solo, cyborg, mechanical arm, officer's uniform",
+     "1girl, solo, alien girl, blue skin, antennae, spacesuit, helmet under arm",
+     "1boy, solo, alien, grey skin, tall, officer's uniform",
+     "1girl, solo, gynoid, porcelain skin, spacesuit, helmet under arm"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "looking out at the planet",
+     "hand on the glass"
+    ],
+    "pair": [
+     "watching the planet together",
+     "slow dancing by the window"
+    ],
+    "groups": [
+     "crew watching the planet",
+     "celebration on the deck"
+    ]
+   },
+   "settings": [
+    "observation deck, huge window, planet below"
+   ],
+   "lighting": [
+    "planet glow",
+    "blue earthlight"
+   ],
+   "details": [
+    "reflection on the glass",
+    "distant ship lights"
+   ]
+  },
+  {
+   "title": "Observation deck",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, lace lingerie",
+     "1boy, solo, cyborg, mechanical arm, towel around the waist",
+     "1girl, solo, alien girl, blue skin, antennae, oversized shirt, bare legs",
+     "1boy, solo, alien, grey skin, tall, unbuttoned jeans, shirtless",
+     "1girl, solo, gynoid, porcelain skin, lace lingerie"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "sitting on the deck floor, knees up",
+     "leaning against the window, looking at viewer"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "pinned against the window, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting"
+    ]
+   },
+   "settings": [
+    "observation deck, huge window, planet below"
+   ],
+   "lighting": [
+    "planet glow",
+    "blue earthlight"
+   ],
+   "details": [
+    "reflection on the glass",
+    "distant ship lights",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Observation deck",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the deck floor, relaxed",
+     "sitting on the deck floor, knees drawn up",
+     "leaning against the window"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the deck floor"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lounging together on the deck floor"
+    ]
+   },
+   "settings": [
+    "observation deck, huge window, planet below"
+   ],
+   "lighting": [
+    "planet glow",
+    "blue earthlight"
+   ],
+   "details": [
+    "reflection on the glass",
+    "distant ship lights",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Observation deck",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "masturbating on the deck floor, spread legs",
+     "masturbating, back against the window"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "masturbating, one hand on the window"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the window",
+     "sex from behind, standing, hands on the window",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the window",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the window",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the window, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the window, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the floor, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the floor, touching self"
+    ]
+   },
+   "settings": [
+    "observation deck, huge window, planet below"
+   ],
+   "lighting": [
+    "planet glow",
+    "blue earthlight"
+   ],
+   "details": [
+    "reflection on the glass",
+    "distant ship lights",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Neon capsule apartment",
+   "rating": "sfw",
+   "mood": [
+    "cool",
+    "calm"
+   ],
+   "subjects": {
+    "1girl": [
+     "cyberpunk jacket, techwear",
+     "oversized hoodie, led accessories"
+    ],
+    "1boy": [
+     "techwear jacket",
+     "hoodie, cybernetic arm"
+    ],
+    "1girl1boy": [
+     "she in cyberpunk jacket, techwear, he in techwear jacket",
+     "she in cyberpunk jacket, techwear, he in hoodie, cybernetic arm",
+     "she in oversized hoodie, led accessories, he in techwear jacket",
+     "she in oversized hoodie, led accessories, he in hoodie, cybernetic arm"
+    ],
+    "2girls": [
+     "cyberpunk jacket, techwear",
+     "oversized hoodie, led accessories"
+    ],
+    "2boys": [
+     "techwear jacket",
+     "hoodie, cybernetic arm"
+    ],
+    "girls": [
+     "cyberpunk jacket, techwear",
+     "oversized hoodie, led accessories"
+    ],
+    "boys": [
+     "techwear jacket",
+     "hoodie, cybernetic arm"
+    ],
+    "harem": [
+     "he in techwear jacket, the girls in cyberpunk jacket, techwear",
+     "he in hoodie, cybernetic arm, the girls in cyberpunk jacket, techwear",
+     "he in techwear jacket, the girls in oversized hoodie, led accessories"
+    ],
+    "reverse": [
+     "she in cyberpunk jacket, techwear, the boys in techwear jacket",
+     "she in cyberpunk jacket, techwear, the boys in hoodie, cybernetic arm",
+     "she in oversized hoodie, led accessories, the boys in techwear jacket"
+    ],
+    "mixed": [
+     "the women in cyberpunk jacket, techwear, the men in techwear jacket",
+     "the women in cyberpunk jacket, techwear, the men in hoodie, cybernetic arm",
+     "the women in oversized hoodie, led accessories, the men in techwear jacket"
+    ],
+    "furry": [
+     "wolf, female, cyberpunk jacket, techwear",
+     "wolf, male, techwear jacket",
+     "fox, female, oversized hoodie, led accessories",
+     "fox, male, hoodie, cybernetic arm",
+     "cat, female, cyberpunk jacket, techwear",
+     "cat, male, techwear jacket",
+     "rabbit, female, oversized hoodie, led accessories",
+     "rabbit, male, hoodie, cybernetic arm",
+     "tiger, female, cyberpunk jacket, techwear",
+     "tiger, male, techwear jacket",
+     "deer, female, oversized hoodie, led accessories",
+     "deer, male, hoodie, cybernetic arm",
+     "dragon, female, cyberpunk jacket, techwear",
+     "dragon, male, techwear jacket",
+     "lion, female, oversized hoodie, led accessories",
+     "lion, male, hoodie, cybernetic arm"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, cyberpunk jacket, techwear",
+     "1boy, solo, cyborg, mechanical arm, hoodie, cybernetic arm",
+     "1girl, solo, alien girl, blue skin, antennae, cyberpunk jacket, techwear",
+     "1boy, solo, alien, grey skin, tall, hoodie, cybernetic arm",
+     "1girl, solo, gynoid, porcelain skin, cyberpunk jacket, techwear"
+    ],
+    "none": []
+   },
+   "actions": {
+    "solo": [
+     "gaming in the chair",
+     "eating noodles by the window"
+    ],
+    "pair": [
+     "hacking together",
+     "sharing noodles"
+    ],
+    "groups": [
+     "crowded around a hologram",
+     "crew planning a heist"
+    ]
+   },
+   "settings": [
+    "tiny cyberpunk apartment, neon through the window, holograms"
+   ],
+   "lighting": [
+    "pink and cyan neon",
+    "hologram glow"
+   ],
+   "details": [
+    "rain on the window",
+    "holographic ads outside"
+   ]
+  },
+  {
+   "title": "Neon capsule apartment",
+   "rating": "suggestive",
+   "mood": [
+    "sultry",
+    "playful",
+    "shy"
+   ],
+   "subjects": {
+    "1girl": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "1boy": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "1girl1boy": [
+     "she in lace lingerie, he in shirt open, bare chest",
+     "she in lace lingerie, he in towel around the waist",
+     "she in silk robe, loosely tied, he in shirt open, bare chest",
+     "she in silk robe, loosely tied, he in towel around the waist"
+    ],
+    "2girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "2boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "girls": [
+     "lace lingerie",
+     "silk robe, loosely tied",
+     "oversized shirt, bare legs",
+     "unbuttoned blouse, bra visible"
+    ],
+    "boys": [
+     "shirt open, bare chest",
+     "towel around the waist",
+     "boxer briefs",
+     "unbuttoned jeans, shirtless"
+    ],
+    "harem": [
+     "he in shirt open, bare chest, the girls in lace lingerie",
+     "he in towel around the waist, the girls in lace lingerie",
+     "he in shirt open, bare chest, the girls in silk robe, loosely tied"
+    ],
+    "reverse": [
+     "she in lace lingerie, the boys in shirt open, bare chest",
+     "she in lace lingerie, the boys in towel around the waist",
+     "she in silk robe, loosely tied, the boys in shirt open, bare chest"
+    ],
+    "mixed": [
+     "the women in lace lingerie, the men in shirt open, bare chest",
+     "the women in lace lingerie, the men in towel around the waist",
+     "the women in silk robe, loosely tied, the men in shirt open, bare chest"
+    ],
+    "furry": [
+     "wolf, female, lace lingerie",
+     "wolf, male, shirt open, bare chest",
+     "fox, female, silk robe, loosely tied",
+     "fox, male, towel around the waist",
+     "cat, female, oversized shirt, bare legs",
+     "cat, male, boxer briefs",
+     "rabbit, female, unbuttoned blouse, bra visible",
+     "rabbit, male, unbuttoned jeans, shirtless",
+     "tiger, female, lace lingerie",
+     "tiger, male, shirt open, bare chest",
+     "deer, female, silk robe, loosely tied",
+     "deer, male, towel around the waist",
+     "dragon, female, oversized shirt, bare legs",
+     "dragon, male, boxer briefs",
+     "lion, female, unbuttoned blouse, bra visible",
+     "lion, male, unbuttoned jeans, shirtless"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, lace lingerie",
+     "1boy, solo, cyborg, mechanical arm, towel around the waist",
+     "1girl, solo, alien girl, blue skin, antennae, oversized shirt, bare legs",
+     "1boy, solo, alien, grey skin, tall, unbuttoned jeans, shirtless",
+     "1girl, solo, gynoid, porcelain skin, lace lingerie"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "looking at viewer over the shoulder",
+     "stretching, arms above head",
+     "biting lip, looking at viewer",
+     "lying on the futon, propped on elbows",
+     "kneeling on the futon, looking at viewer",
+     "sitting on the edge of the futon",
+     "leaning against the window, looking at viewer",
+     "sitting on the gaming chair, legs crossed"
+    ],
+    "pair": [
+     "kissing",
+     "undressing each other",
+     "embracing, hands under clothes",
+     "whispering in the ear",
+     "falling onto the futon together",
+     "pinned against the window, kissing"
+    ],
+    "groups": [
+     "kissing, hands everywhere",
+     "undressing each other",
+     "lounging together, flirting",
+     "a pile of bodies on the futon"
+    ]
+   },
+   "settings": [
+    "tiny cyberpunk apartment, neon through the window, holograms"
+   ],
+   "lighting": [
+    "pink and cyan neon",
+    "hologram glow"
+   ],
+   "details": [
+    "rain on the window",
+    "holographic ads outside",
+    "clothes on the floor"
+   ],
+   "gestures": {
+    "solo": [
+     "finger on lips",
+     "hand on hip",
+     "hair falling over one shoulder"
+    ],
+    "pair": [
+     "hands in hair",
+     "arms around the neck",
+     "hand on the waist"
+    ],
+    "groups": [
+     "arms around each other",
+     "hands everywhere"
+    ]
+   },
+   "camera": {
+    "people": [
+     "cowboy shot",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Neon capsule apartment",
+   "rating": "nude",
+   "mood": [
+    "calm",
+    "shy",
+    "sultry"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "solo": [
+     "standing, looking at viewer",
+     "stretching, arms above head",
+     "looking over the shoulder",
+     "lying on the futon",
+     "sitting on the edge of the futon",
+     "leaning against the window",
+     "sitting on the gaming chair, legs crossed"
+    ],
+    "pair": [
+     "embracing",
+     "kissing",
+     "standing together, foreheads touching",
+     "lying together on the futon"
+    ],
+    "groups": [
+     "lounging together",
+     "embracing in a group",
+     "lying in a pile on the futon"
+    ]
+   },
+   "settings": [
+    "tiny cyberpunk apartment, neon through the window, holograms"
+   ],
+   "lighting": [
+    "pink and cyan neon",
+    "hologram glow"
+   ],
+   "details": [
+    "rain on the window",
+    "holographic ads outside",
+    "clothes folded nearby"
+   ],
+   "gestures": {
+    "people": [
+     "head tilted",
+     "hair falling over the shoulders",
+     "relaxed shoulders"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body",
+     "cowboy shot",
+     "from side"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  },
+  {
+   "title": "Neon capsule apartment",
+   "rating": "explicit",
+   "mood": [
+    "passion"
+   ],
+   "subjects": {
+    "1girl": [
+     "nude, curvy",
+     "nude, slender",
+     "nude, athletic",
+     "nude, plump, soft belly"
+    ],
+    "1boy": [
+     "nude, muscular",
+     "nude, lean",
+     "nude, bara, hairy chest",
+     "nude, broad-shouldered"
+    ],
+    "1girl1boy": [
+     "nude, she is curvy, he is muscular",
+     "nude, she is slender, he is lean",
+     "nude, she is athletic, he is bara, hairy chest",
+     "nude, she is plump, soft belly, he is broad-shouldered",
+     "half undressed"
+    ],
+    "2girls": [
+     "nude",
+     "nude, one curvy, one slender",
+     "half undressed"
+    ],
+    "2boys": [
+     "nude",
+     "nude, one muscular, one bara, hairy chest",
+     "half undressed"
+    ],
+    "girls": [
+     "nude, different body types",
+     "nude, athletic"
+    ],
+    "boys": [
+     "nude, different body types",
+     "nude, bara, hairy chest"
+    ],
+    "harem": [
+     "nude, he is muscular, the girls curvy",
+     "nude, he is lean, the girls slender",
+     "nude, he is bara, hairy chest, the girls athletic",
+     "half undressed"
+    ],
+    "reverse": [
+     "nude, she is slender, the boys lean",
+     "nude, she is athletic, the boys bara, hairy chest",
+     "nude, she is plump, soft belly, the boys broad-shouldered",
+     "half undressed"
+    ],
+    "mixed": [
+     "nude, different body types",
+     "nude, masks",
+     "half undressed"
+    ],
+    "furry": [
+     "wolf, female, nude",
+     "wolf, male, nude",
+     "fox, female, nude",
+     "fox, male, nude",
+     "cat, female, nude",
+     "cat, male, nude",
+     "rabbit, female, nude",
+     "rabbit, male, nude",
+     "tiger, female, nude",
+     "tiger, male, nude",
+     "deer, female, nude",
+     "deer, male, nude",
+     "dragon, female, nude",
+     "dragon, male, nude",
+     "lion, female, nude",
+     "lion, male, nude"
+    ],
+    "nonhuman": [
+     "1girl, solo, android, glowing seams, nude",
+     "1boy, solo, cyborg, mechanical arm, nude",
+     "1girl, solo, alien girl, blue skin, antennae, nude",
+     "1boy, solo, alien, grey skin, tall, nude",
+     "1girl, solo, gynoid, porcelain skin, nude"
+    ]
+   },
+   "actions": {
+    "1girl": [
+     "masturbating",
+     "spread legs, touching herself",
+     "lying on the futon, fingering herself",
+     "using a vibrator on the futon",
+     "masturbating, back against the window",
+     "masturbating on the gaming chair, legs over the armrests"
+    ],
+    "1boy": [
+     "masturbating, erection",
+     "stroking, looking at viewer",
+     "lying back on the futon, masturbating",
+     "masturbating, one hand on the window",
+     "masturbating on the gaming chair, legs spread"
+    ],
+    "1girl1boy": [
+     "fellatio, looking up",
+     "cunnilingus",
+     "standing sex, lifted against the window",
+     "sex from behind, standing, hands on the window",
+     "sex on the gaming chair, she sits on his lap",
+     "reverse cowgirl on the gaming chair",
+     "sex, missionary",
+     "cowgirl position",
+     "reverse cowgirl position",
+     "doggystyle",
+     "spooning sex",
+     "69",
+     "mating press"
+    ],
+    "2girls": [
+     "kissing and fingering",
+     "cunnilingus",
+     "fingering, pressed against the window",
+     "straddling on the gaming chair, fingering",
+     "tribadism",
+     "69",
+     "face sitting"
+    ],
+    "2boys": [
+     "fellatio",
+     "frottage, kissing",
+     "anal sex, standing against the window",
+     "riding him on the gaming chair",
+     "anal sex, missionary",
+     "anal sex from behind",
+     "anal sex, riding",
+     "prone bone"
+    ],
+    "girls": [
+     "group sex, kissing and fingering",
+     "daisy chain cunnilingus",
+     "one on her back, the others kissing her body"
+    ],
+    "boys": [
+     "group sex, fellatio",
+     "anal sex, the others watching",
+     "group sex, a tangle of men"
+    ],
+    "harem": [
+     "cooperative fellatio",
+     "the girls kissing him all over",
+     "standing sex against the window, the others kissing his neck",
+     "one riding him, the others kissing him",
+     "the girls taking turns",
+     "group sex, him in the middle"
+    ],
+    "reverse": [
+     "fellatio, the others waiting",
+     "group sex, her in the middle",
+     "standing sex against the window, the others watching",
+     "double penetration",
+     "spitroast",
+     "taking turns with her"
+    ],
+    "mixed": [
+     "group sex",
+     "couples side by side",
+     "orgy",
+     "partner swap"
+    ],
+    "furry": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying on the futon, spread legs"
+    ],
+    "nonhuman": [
+     "masturbating",
+     "spread legs, looking at viewer",
+     "presenting",
+     "lying back on the futon, touching self"
+    ]
+   },
+   "settings": [
+    "tiny cyberpunk apartment, neon through the window, holograms"
+   ],
+   "lighting": [
+    "pink and cyan neon",
+    "hologram glow"
+   ],
+   "details": [
+    "rain on the window",
+    "holographic ads outside",
+    "clothes scattered on the floor",
+    "sweat"
+   ],
+   "gestures": {
+    "people": [
+     "arched back",
+     "toes curling",
+     "sweat on the skin",
+     "clenched hands"
+    ]
+   },
+   "camera": {
+    "people": [
+     "full body, from side",
+     "from above",
+     "full body"
+    ],
+    "*": [
+     "wide shot, scenery",
+     "wide shot"
+    ]
+   },
+   "negatives": [
+    "child",
+    "loli",
+    "shota",
+    "underage",
+    "childlike proportions",
+    "extra genitals",
+    "fused bodies",
+    "censored",
+    "mosaic censoring",
+    "non-consensual",
+    "unconscious"
+   ],
+   "styles": [
+    "photorealistic, detailed skin",
+    "hentai, anime illustration",
+    "painterly erotic illustration",
+    "cyberpunk illustration"
+   ]
+  }
+ ]
+}

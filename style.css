@@ -254,8 +254,7 @@ html body #pv_muse_panel .pv-muse-filter:hover, html body #pv_muse_panel .pv-mus
 #pv_muse_panel .pv-muse-tray { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 10px; background: var(--button-secondary-background-fill); }
 #pv_muse_panel .pv-muse-size { display: flex; align-items: center; gap: 8px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--border-color-primary) 70%, transparent); }
 html body #pv_muse_panel .pv-muse-chip small { margin-left: 5px; font-size: 11px; opacity: 0.55; }
-html body #pv_muse_panel .pv-muse-chip.pv-muse-none:not(.pv-on) { opacity: 0.35; }
-html body #pv_muse_panel .pv-muse-chip:disabled { opacity: 0.3; cursor: not-allowed; }
+html body #pv_muse_panel .pv-muse-chip:disabled { opacity: 0.3; cursor: not-allowed; border-style: dashed; }
 
 /* the idea: a title, then one row per part */
 #pv_muse_panel .pv-muse-card { border: 1px solid var(--border-color-primary); border-radius: 10px; overflow: hidden; }
