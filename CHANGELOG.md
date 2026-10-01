@@ -42,6 +42,7 @@ The first release.
 - **Your prompt**, two ways: *Keep in front* (what every idea starts with, kept as ideas change)
   or *Build around* (Muse reads your tags into parts, picks a scene that has them and draws
   the rest to fit; 🌱 marks your parts).
+- ✕ on a part takes it out of the idea; its + chip brings it back.
 - Double-click a part on the card to write it yourself (locked, ✎); double-click a + chip for a
   part the idea left out.
 - Tag suggestions while typing in Muse's boxes; optional in the txt2img and img2img prompts.

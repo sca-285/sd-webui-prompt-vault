@@ -278,7 +278,7 @@ html body #pv_muse_panel .pv-muse-nav .pv-muse-icon-btn { width: 26px; height: 2
 
 #pv_muse_panel .pv-muse-parts { display: flex; flex-direction: column; border-top: 1px solid var(--border-color-primary); }
 #pv_muse_panel .pv-muse-part {
-    display: grid; grid-template-columns: 88px minmax(0, 1fr) auto auto; align-items: center; gap: 2px 6px;
+    display: grid; grid-template-columns: 88px minmax(0, 1fr) auto auto auto; align-items: center; gap: 2px 4px;
     padding: 3px 4px 3px 12px; border-bottom: 1px solid color-mix(in srgb, var(--border-color-primary) 55%, transparent);
 }
 #pv_muse_panel .pv-muse-part:last-child { border-bottom: none; }
@@ -421,3 +421,8 @@ html body #pv_muse_panel .pv-muse-ownseg button { padding: 3px 8px; font-size: 1
 #pv_muse_panel .pv-muse-part-edit input { width: 100%; box-sizing: border-box; padding: 4px 8px; font-size: 13px; }
 #pv_muse_panel .pv-muse-adds .pv-muse-part-edit { flex: 1 1 100%; }
 #pv_muse_panel .pv-suggest { z-index: 1002; }
+
+/* remove a part from the idea: quiet until the row is pointed at */
+html body #pv_muse_panel .pv-muse-remove { opacity: 0.45; }
+html body #pv_muse_panel .pv-muse-part:hover .pv-muse-remove, html body #pv_muse_panel .pv-muse-remove:focus-visible { opacity: 1; }
+html body #pv_muse_panel .pv-muse-remove:hover { color: #ef4444; }

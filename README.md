@@ -131,7 +131,8 @@ Qwen-VL and the WD14 tagger) in one tab.
     *Light* (the scene's source, natural light, quality, mood, support light, volume),
     *Camera* (shot size, angle and tilt, viewpoint, framing and lens) and *Look* (colour &
     grading, style). Each group shows a row per part, and the parts this idea left out as
-    small **+** chips that draw them. **↻** draws one part again, **🔒** keeps it for the next
+    small **+** chips that draw them. **✕** takes a part you do not want out of the idea (its
+    **+** chip brings it back), **↻** draws one part again, **🔒** keeps it for the next
     idea (same scene). **Settings → Parts** turns whole groups off (Looks, Animals, Job,
     Action, Light, Camera, Color & grade, Style): off, a group is gone from the card and the
     prompt, the scene's own light or camera too, and the idea on the card follows at once.

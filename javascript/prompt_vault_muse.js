@@ -614,6 +614,21 @@
         input.select();
     }
 
+    // a part you do not want: gone from this idea (its + chip draws or writes it again)
+    async function removePart(it, slot) {
+        if (M.busy) return;
+        const part = it.parts.find((x) => x.slot === slot);
+        if (!part || !part.value) return;
+        part.value = '';
+        it.locks = Object.assign({}, it.locks, {[slot]: false});
+        it.mine = Object.assign({}, it.mine, {[slot]: false});
+        M.busy = slot;
+        render();
+        try { await recompose(it); } catch (e) { toast(e.message, true); }
+        M.busy = '';
+        render();
+    }
+
     async function rollPart(slot) {
         const it = idea();
         if (!it || M.busy) return;
@@ -774,6 +789,8 @@
         return el('div', {class: 'pv-muse-part' + (locked ? ' pv-muse-locked' : '') + (p.value ? '' : ' pv-muse-empty-part')},
             el('span', {class: 'pv-muse-part-name', text: PART_NAMES[p.slot] || p.slot, title: PART_TITLES[p.slot] || PART_NAMES[p.slot] || p.slot}),
             value,
+            p.slot === 'subject' ? el('span') : iconButton('close', 'Remove it from this idea', () => removePart(it, p.slot),
+                {disabled: !!M.busy, class: 'pv-muse-icon-btn pv-muse-remove'}),
             iconButton('roll', 'Another ' + (PART_NAMES[p.slot] || p.slot).toLowerCase(), () => rollPart(p.slot),
                 {disabled: !!M.busy || locked || (p.choices < 2 && !!p.value), class: 'pv-muse-icon-btn' + (rolling ? ' pv-muse-spin' : '')}),
             iconButton(locked ? 'lock' : 'unlock', locked ? 'Unlock' : 'Lock: keep it for the next idea', () => toggleLock(p.slot),
