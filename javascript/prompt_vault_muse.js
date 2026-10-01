@@ -111,8 +111,29 @@
         for (const n of [KEEP, 200, 50]) if (LS.set('ideas', M.ideas.slice(-n))) return;
     }
 
-    const PART_NAMES = {subject: 'Who', body: 'Body', expression: 'Face', gesture: 'Pose', action: 'Doing', kink: 'Kink', detail: 'Detail',
-        setting: 'Where', time: 'When', lighting: 'Light', camera: 'Camera', style: 'Style'};
+    const PART_NAMES = {subject: 'Who', job: 'Job', outfit: 'Wear', build: 'Build', skin: 'Skin', body: 'Body', hair: 'Hair', eyes: 'Eyes',
+        face: 'Features', makeup: 'Makeup', accessory: 'Accessory', expression: 'Expression', mouth: 'Mouth', gaze: 'Gaze', gesture: 'Pose',
+        action: 'Doing', kink: 'Kink', fx: 'FX', detail: 'Detail', setting: 'Where', time: 'When', lighting: 'Light', natural: 'Natural light',
+        light_quality: 'Quality', light_mood: 'Mood light', light_support: 'Support light', light_volume: 'Volume', camera: 'Shot',
+        angle: 'Angle', view: 'Viewpoint', framing: 'Framing', color: 'Color & grade', style: 'Style'};
+    // the parts in groups on the card
+    const PART_GROUPS = [['Character', ['subject', 'job', 'outfit', 'build', 'skin', 'body']],
+        ['Face', ['hair', 'eyes', 'face', 'makeup', 'accessory', 'expression', 'mouth', 'gaze']],
+        ['Action', ['gesture', 'action', 'kink', 'fx']], ['Scene', ['detail', 'setting', 'time']],
+        ['Light', ['lighting', 'natural', 'light_quality', 'light_mood', 'light_support', 'light_volume']],
+        ['Camera', ['camera', 'angle', 'view', 'framing']], ['Look', ['color', 'style']]];
+    const GROUP_OF = Object.fromEntries(PART_GROUPS.flatMap(([g, slots]) => slots.map((x) => [x, g])));
+    function partRows(it) {
+        const out = [];
+        let last = '';
+        for (const p of it.parts) {
+            const g = GROUP_OF[p.slot] || '';
+            if (g && g !== last) out.push(el('div', {class: 'pv-muse-part-group', text: g}));
+            last = g;
+            out.push(partRow(it, p));
+        }
+        return out;
+    }
     const RATING_NSFW = (r) => r !== 'sfw';
 
     // ------------------------------------------------------------------ filters
@@ -247,6 +268,8 @@
         const s = st();
         const on = ratingsOn(s);
         if (key === 'casts' && value === 'none' && !on.includes('sfw')) return 'No humans: SFW scenes only. Add SFW to Level.';
+        if (key === 'casts' && value === 'animal' && !on.includes('sfw')) return 'Animals: SFW scenes only. Add SFW to Level.';
+        if (key === 'ratings' && s.casts.length && s.casts.every((c) => c === 'animal' || c === 'none')) return 'Animals and no humans: SFW only.';
         if (key === 'ratings' && s.casts.length === 1 && s.casts[0] === 'none') return 'No humans: SFW scenes only.';
         if (key === 'sizes' && value === 3 && s.casts.length && s.casts.every((c) => c === 'mixed')) return 'A mixed group is 4 people or more.';
         const kinkThemes = Object.fromEntries((M.snap.catalogue.kinks || []).map(([k, l, t]) => [k, [l, t]]));
@@ -261,6 +284,9 @@
         if (key === 'ratings' && value === 'sfw' && s.casts.length && s.casts.every((c) => futa.includes(c))) return 'Futanari: NSFW only.';
         if (key === 'themes' && value === 'Red light' && !on.some((r) => r !== 'sfw')) return 'Red light: NSFW only. Add a NSFW level.';
         if (key === 'ratings' && value === 'sfw' && s.themes.length === 1 && s.themes[0] === 'Red light') return 'Red light: NSFW only.';
+        const sfwCasts = (cs) => cs.length && cs.every((c) => c === 'animal' || c === 'none');
+        if (key === 'themes' && value === 'Red light' && sfwCasts(s.casts)) return 'Red light has no SFW side: no animals or empty scenes there.';
+        if (key === 'casts' && (value === 'animal' || value === 'none') && s.themes.length === 1 && s.themes[0] === 'Red light') return 'Red light has no SFW side: no animals or empty scenes there.';
         if (key === 'casts' && s.kinks.length) return `${s.kinks.map((k) => kinkThemes[k][0]).join(', ')}: nothing for this cast.`;
         if (key === 'kinks' && s.casts.length) return 'Nothing for the chosen cast: loosen Cast.';
         if (key === 'kinks' && kinkThemes[value] && kinkThemes[value][1]) return `${kinkThemes[value][0]}: ${kinkThemes[value][1].join(', ')} only.`;
@@ -336,6 +362,49 @@
         const go = window['switch_to_' + target];
         if (typeof go === 'function') { try { go(); } catch (e) { /* the tab switch is a nicety */ } }
         toast('Sent to ' + TARGET_NAMES[target]);
+    }
+
+    // ------------------------------------------------------------------ generate, right from the card
+
+    const galleryImages = () => [...app().querySelectorAll('#txt2img_gallery img')].map((n) => n.src).filter(Boolean);
+
+    // the idea goes into txt2img and its Generate button is pressed: the WebUI's own model and settings
+    function generateImage() {
+        const it = idea();
+        if (!it || M.gen) return;
+        const pos = area(TARGETS.txt2img);
+        const go = app().querySelector('#txt2img_generate');
+        if (!pos || !go) { toast('txt2img is not on the page', true); return; }
+        if (generating()) { toast('An image is being generated: wait for it', true); return; }
+        const s = st();
+        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, it.positive) : it.positive);
+        const before = new Set(galleryImages());
+        M.gen = {id: it.id, started: Date.now(), seen: false};
+        render();
+        setTimeout(() => go.click(), 60);
+        const tick = () => {
+            if (!M.gen) return;
+            const busy = generating();
+            if (busy) M.gen.seen = true;
+            const fresh = galleryImages().filter((src) => !before.has(src));
+            const timedOut = Date.now() - M.gen.started > 15 * 60 * 1000;
+            if ((M.gen.seen && !busy && fresh.length) || (!busy && fresh.length && Date.now() - M.gen.started > 3000) || timedOut) {
+                const target = M.ideas.find((x) => x.id === M.gen.id);
+                if (target && fresh.length) { target.images = fresh.slice(0, 4); saveIdeas(); }
+                M.gen = null;
+                render();
+                toast(fresh.length ? 'Done: the image is on the card and in txt2img' : 'No image came back', !fresh.length);
+                return;
+            }
+            setTimeout(tick, 700);
+        };
+        setTimeout(tick, 1200);
+    }
+
+    function imagesView(it) {
+        if (!it.images || !it.images.length) return null;
+        return el('div', {class: 'pv-muse-images'}, it.images.map((src) =>
+            el('a', {href: src, target: '_blank', rel: 'noopener', title: 'Open the image'}, el('img', {src, alt: 'Generated image', loading: 'lazy'}))));
     }
 
     // ------------------------------------------------------------------ ideas
@@ -565,7 +634,7 @@
                             el('span', {text: it.theme}), el('span', {text: it.cast_label}),
                             el('span', {class: it.nsfw ? 'pv-muse-nsfw' : '', text: (M.snap.catalogue.ratings.find((r) => r[0] === it.rating) || [0, it.rating])[1]}))),
                     nav),
-                el('div', {class: 'pv-muse-parts'}, it.parts.map((p) => partRow(it, p))));
+                el('div', {class: 'pv-muse-parts'}, partRows(it)));
         const label = it.edited ? 'Prompt (edited: rolling a part rewrites it)' : 'Prompt';
         const note = it.note ? el('div', {class: 'pv-muse-hint', text: it.note}) : null;
 
@@ -577,14 +646,14 @@
                 el('div', {class: 'pv-muse-cols'},
                     card,
                     el('div', {class: 'pv-muse-prompt pv-muse-prompt-wide'},
-                        el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, note)));
+                        el('div', {class: 'pv-muse-prompt-label', text: label}), prompt, note, imagesView(it))));
         }
         return el('div', {class: 'pv-muse-body'},
             filterBar(),
             card,
             el('details', {class: 'pv-muse-prompt', open: LS.get('prompt_open', true) ? true : null,
                 ontoggle: (e) => LS.set('prompt_open', e.target.open)},
-            el('summary', {text: label}), prompt, note));
+            el('summary', {text: label}), prompt, note), imagesView(it));
     }
 
     // always in view, under the scrolling part
@@ -608,8 +677,11 @@
                     navigator.clipboard.writeText(it.positive).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
                 })),
             el('div', {class: 'pv-muse-send'},
+                el('button', {type: 'button', class: 'pv-btn pv-primary pv-muse-generate', disabled: !!M.gen,
+                    title: 'Writes the idea in txt2img and generates there, with your model and settings; the image comes back here',
+                    text: M.gen ? 'Generating…' : 'Generate', onclick: generateImage}),
                 el('span', {class: 'pv-muse-send-label', text: s.send_mode === 'append' ? 'Append to' : 'Send to'}),
-                ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn' + (t === 'txt2img' ? ' pv-primary' : ''), text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)}))));
+                ['txt2img', 'img2img', 'vault'].map((t) => el('button', {type: 'button', class: 'pv-btn', text: t === 'vault' ? 'Vault' : t, onclick: () => send(t)}))));
     }
 
     // ------------------------------------------------------------------ settings
@@ -682,6 +754,14 @@
             section('Timer',
                 toggleSwitch('Bring ideas by themselves', s.enabled, (v) => patch({enabled: v}), 'never while an image is generating; the clock on top does the same'),
                 el('div', {class: 'pv-muse-field' + (s.enabled ? '' : ' pv-muse-off')}, el('span', {class: 'pv-muse-field-label', text: 'Every'}), range, rangeText)),
+            section('Parts',
+                el('div', {class: 'pv-muse-hint', text: 'Groups of parts every idea can carry; turn off what you do not want in your prompts.'}),
+                [['looks', 'Looks', 'build, skin, hair, eyes, features, makeup, accessories, mouth, gaze'],
+                    ['job', 'Job', 'an occupation now and then, with its clothes, props and effects'],
+                    ['light', 'Light details', 'natural light, quality, mood, support light, volume'],
+                    ['camera', 'Camera details', 'angle, viewpoint, framing and lens'],
+                    ['color', 'Color & grade', 'palettes, grading, film looks']].map(([key, label, hint]) =>
+                    toggleSwitch(label, !s.hide.includes(key), (v) => patch({hide: v ? s.hide.filter((h) => h !== key) : [...s.hide, key]}), hint))),
             s.allow_nsfw ? section('NSFW',
                 toggleSwitch('Body', s.anatomy, (v) => patch({anatomy: v}), 'breasts, pussy, penis, body hair, prosthetics… a part of NSFW ideas')) : null,
             section('Send',

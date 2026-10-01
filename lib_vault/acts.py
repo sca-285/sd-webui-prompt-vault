@@ -21,7 +21,7 @@ FAMILIES = {"vaginal": "Vaginal", "anal": "Anal", "oral": "Oral", "outer": "Hand
 # casts with a pussy to penetrate and someone to do it (2girls: a strap-on, or an alpha in omegaverse)
 VAGINAL_CASTS = {"1girl1boy", "futa_girl", "futa_boy", "harem", "reverse", "mixed", "human_furry", "2girls", "girls"}
 MALE_CASTS = {"1boy", "2boys", "boys"}
-SOLO_CASTS = {"1girl", "1boy", "futa", "furry", "nonhuman"}
+SOLO_CASTS = {"1girl", "1boy", "futa", "furry", "kemono", "mythic", "monster", "synth", "nonhuman"}
 
 ORAL = re.compile(r"\b(fellatio|deepthroat|irrumatio|blowjob|cunnilingus|69|face sitting|cum in mouth|throat|oral|autofellatio|"
                   r"anilingus|rimjob|licking (?:penis|pussy)|cooperative fellatio|double fellatio|spitroast|toe sucking|foot licking)\b")

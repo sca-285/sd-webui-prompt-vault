@@ -45,7 +45,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, acts as actlib, kinks as kinklib, settings, store, text, vocab, when
+from . import TAG, acts as actlib, kinks as kinklib, looks, settings, store, text, vocab, when
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -72,6 +72,12 @@ CASTS = {
     "human_furry": ("Human + furry", "1furry, interspecies", "hetero"),
     "group": ("3+, own tags", "", ""),  # scenes that write their own count tags
     "furry": ("Furry", "1furry, solo", ""),
+    "kemono": ("Kemono", "1furry, solo, kemono", ""),
+    # beings that are not human: their subject says who (1girl, vampire...)
+    "mythic": ("Myth & fantasy", "", ""),
+    "monster": ("Monsters", "", ""),
+    "synth": ("Sci-fi beings", "", ""),
+    "animal": ("Animals", "no humans, animal focus", ""),  # real creatures, SFW only
     "nonhuman": ("Non-human", "", ""),
     "any": ("Other", "", ""),
 }
@@ -80,7 +86,7 @@ RATINGS = {"sfw": "SFW", "suggestive": "Suggestive", "nude": "Nude", "explicit":
 # names that stand for several casts in a scene's lists: {"pair": [...]} serves 1girl 1boy,
 # 2girls and 2boys alike; a cast gets its own entries and those of the names it is part of
 ALIASES = {
-    "solo": ("1girl", "1boy", "furry", "nonhuman", "futa"),
+    "solo": ("1girl", "1boy", "furry", "kemono", "mythic", "monster", "synth", "nonhuman", "futa"),
     "pair": ("1girl1boy", "2girls", "2boys", "futa_girl", "futa_boy", "human_furry"),
     "groups": ("girls", "boys", "harem", "reverse", "mixed"),
 }
@@ -121,11 +127,28 @@ def _group_tags(kind, size, girls=None):
             f"{girls} girls + {boys} boys{plus}", girls)
 
 # the parts of an idea, in the order they go into the prompt
-SLOTS = ("subject", "body", "expression", "gesture", "action", "kink", "detail", "setting", "time", "lighting", "camera", "style")
+SLOTS = ("subject", "job", "outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory",
+         "expression", "mouth", "gaze", "gesture", "action", "kink", "fx", "detail", "setting", "time",
+         "lighting", "natural", "light_quality", "light_mood", "light_support", "light_volume",
+         "camera", "angle", "view", "framing", "color", "style")
 NSFW_ONLY = ("futa", "futa_girl", "futa_boy")
-LISTS = {"subject": "subjects", "body": "bodies", "expression": "expressions", "gesture": "gestures", "action": "actions", "kink": "kinks",
-         "detail": "details", "setting": "settings", "time": "times", "lighting": "lighting", "camera": "camera", "style": "styles"}
-CHANCE = {"gesture": 0.7, "detail": 0.6}  # on every idea they would become a tic
+SFW_ONLY = ("none", "animal")
+LISTS = {"subject": "subjects", "job": "jobs", "build": "builds", "skin": "skins", "body": "bodies", "hair": "hair", "eyes": "eyes",
+         "face": "faces", "makeup": "makeup", "accessory": "accessories", "expression": "expressions", "mouth": "mouths", "gaze": "gazes",
+         "gesture": "gestures", "action": "actions", "kink": "kinks", "fx": "fx", "detail": "details", "setting": "settings",
+         "time": "times", "lighting": "lighting", "natural": "natural_light", "light_quality": "light_quality", "light_mood": "light_mood",
+         "light_support": "light_support", "light_volume": "light_volume", "camera": "camera", "angle": "angles", "view": "views",
+         "framing": "framing", "color": "colors", "style": "styles"}
+# on every idea they would become a tic: some parts come now and then
+CHANCE = {"gesture": 0.7, "detail": 0.6, "job": 0.4, "build": 0.8, "skin": 0.6, "hair": 0.9, "eyes": 0.8, "face": 0.3, "makeup": 0.3,
+          "accessory": 0.45, "mouth": 0.35, "gaze": 0.7, "natural": 0.6, "light_quality": 0.5, "light_mood": 0.5, "light_support": 0.4,
+          "light_volume": 0.3, "angle": 0.6, "view": 0.5, "framing": 0.4, "color": 0.5}
+# the parts by group, for the card and for the switches that turn a group off
+GROUPS = {"looks": ("build", "skin", "hair", "eyes", "face", "makeup", "accessory", "mouth", "gaze"), "job": ("job", "fx"),
+          "light": ("natural", "light_quality", "light_mood", "light_support", "light_volume"), "camera": ("angle", "view", "framing"),
+          "color": ("color",)}
+PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit")
+SUBJECT_CASTS = ("furry", "kemono", "mythic", "monster", "synth", "nonhuman")  # their subject says if they are a woman or a man
 
 MOODS = {
     "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile"],
@@ -171,6 +194,7 @@ DEFAULT_STATE = {
     "send_mode": "replace",
     "kinks": [],             # NSFW layers on top of the scene, see kinks.py; empty: none
     "acts": [],              # families of explicit acts, see acts.py; empty: any
+    "hide": [],              # groups of parts left out of ideas, see GROUPS
     "styles": [],            # style families of the library (vocab.py); empty: the scene's own styles
     "anatomy": True,         # the Body part of NSFW ideas: breasts, pussy, penis, body hair...
     "arrange_with": "library",  # or "qwen"
@@ -225,6 +249,7 @@ def _normalise(data):
     out["ratings"] = _names(out["ratings"], RATINGS)
     out["kinks"] = _names(out["kinks"], kinklib.KINKS)
     out["acts"] = _names(out["acts"], actlib.FAMILIES)
+    out["hide"] = _names(out["hide"], GROUPS)
     out["styles"] = _names(out["styles"])[:40]
     sizes = out["sizes"] if isinstance(out["sizes"], list) else []
     out["sizes"] = sorted({int(n) for n in sizes if str(n).isdigit() and int(n) in SIZES})
@@ -351,10 +376,12 @@ def _read_file(path, custom):
         for name, items in (subjects or {}).items():
             # an alias gives its casts what they were not given by name
             for cast in ALIASES.get(name, (name,)):
-                if cast not in CASTS or (name in ALIASES and cast in subjects) or (cast in NSFW_ONLY and not nsfw):
+                if cast not in CASTS or (name in ALIASES and cast in subjects) or (cast in NSFW_ONLY and not nsfw) \
+                        or (cast in SFW_ONLY and nsfw):
                     continue
                 clean = _clean(items, nsfw)
-                if clean or cast == "none":
+                # an empty subject is a cast that needs no words of its own (the cast tags say it all)
+                if clean or cast == "none" or (isinstance(items, list) and all(not str(x).strip() for x in items)):
                     casts[cast] = clean or [""]
         if not casts:
             continue
@@ -371,9 +398,16 @@ def _read_file(path, custom):
             "sizes": sorted({int(n) for n in (raw.get("sizes") or data.get("sizes") or SIZES)
                              if str(n).isdigit() and int(n) in SIZES}) or list(SIZES),
             "lists": lists,
+            "wear": _wear(raw.get("wear") or data.get("wear"), nsfw),
             "custom": custom,
         })
     return out
+
+
+def _wear(value, nsfw):
+    """What people wear in a scene: {"f": [...], "m": [...]} for one woman and one man."""
+    value = value if isinstance(value, dict) else {}
+    return {k: _clean(value.get(k), nsfw) for k in ("f", "m")}
 
 
 def load_scenes():
@@ -537,9 +571,50 @@ def _pools(scene, cast, st=None):
     return pools
 
 
-ORDER_DRAWN = ("subject", "time", "body", "kink", "action", "gesture", "expression", "detail", "setting", "lighting", "camera", "style")
+ORDER_DRAWN = ("subject", "time", "job", "outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory", "fx", "kink",
+               "action", "gesture", "expression", "mouth", "gaze", "detail", "setting", "lighting", "natural", "light_quality", "light_mood",
+               "light_support", "light_volume", "camera", "angle", "view", "framing", "color", "style")
+# rolling a part draws again what follows from it
+DEPENDS = {"job": ("outfit", "accessory", "fx"), "time": ("natural",),
+           "subject": ("outfit", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory")}
 # what the hour and the sky can contradict (see when.py)
-UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting")
+UNDER_SKY = ("action", "kink", "gesture", "detail", "setting", "lighting", "light_volume", "light_mood", "accessory", "outfit")
+
+
+LOOK_FILLED = ("job", "outfit", "build", "skin", "hair", "eyes", "face", "makeup", "accessory", "fx", "mouth", "gaze", "natural",
+               "light_quality", "light_mood", "light_support", "light_volume", "camera", "angle", "view", "framing", "color")
+
+
+def _outfits(scene, who, f, m, job, rng):
+    """What the people of an idea wear: the scene's clothes (or a job's), put together for the cast."""
+    level = scene["rating"]
+    wf, wm = scene["wear"]["f"], scene["wear"]["m"]
+    if job in looks.JOBS and level in ("sfw", "suggestive"):
+        _t, jf, jm, _p, _fx = looks.JOBS[job]
+        wf, wm = [jf], [jm]
+        if level == "suggestive":
+            wf = [f"{jf}, {t}" for t in rng.sample(looks.TEASE, 3)]
+            wm = [f"{jm}, {t}" for t in rng.sample(looks.TEASE, 3)]
+    if level == "nude":
+        return ["nude"]
+    if not wf and not wm:
+        return []
+    if level == "explicit":
+        tease = (wf if f else []) + (wm if m else []) or wf + wm
+        return ["completely nude", "completely nude"] + [f"partially undressed, {t}" for t in tease[:3]] + [f"clothes pull, {t}" for t in tease[3:5]]
+    pattern = {"1girl": "f", "futa": "f", "1boy": "m", "1girl1boy": "fm", "futa_boy": "fm", "human_furry": "fm", "2girls": "ff",
+               "futa_girl": "ff", "2boys": "mm", "girls": "f", "boys": "m", "harem": "mf", "reverse": "fm", "mixed": "fm"}.get(who)
+    if pattern is None:  # a being: by what its subject says
+        pattern = "f" if f and not m else "m" if m and not f else "f" if rng.random() < 0.5 else "m"
+    lists = {"f": wf or wm, "m": wm or wf}
+    out = []
+    for _ in range(8):
+        picked = []
+        for sex in pattern:
+            choices = [x for x in lists[sex] if x not in picked] or lists[sex]
+            picked.append(rng.choice(choices))
+        out.append(", ".join(dict.fromkeys(", ".join(picked).split(", "))))
+    return list(dict.fromkeys(out))
 
 
 def _library_poses(scene, who, parts):
@@ -561,6 +636,8 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
     rng = random.Random(seed)
     keep = {k: str(v) for k, v in (keep or {}).items() if k in SLOTS and isinstance(v, str)}
     current = keep.pop(roll, None) if roll else None  # the part being rolled: anything but this
+    for part in DEPENDS.get(roll, ()):
+        keep.pop(part, None)
 
     load_scenes()
     if scene_id:
@@ -587,6 +664,9 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         else:
             people, mix = 0, None
             label, cast_tags = CASTS[who][0], CASTS[who][1]
+        if who == "human_furry":  # who does what to whom, when it comes to that
+            how = rng.choice(["human on furry", "furry on human"]) if scene["rating"] == "explicit" else "human with furry"
+            cast_tags = f"{cast_tags}, {how}"
         if st["styles"]:  # style families chosen on the card win over the scene's own
             fams = vocab.styles()
             pools["style"] = list(dict.fromkeys(t for f in st["styles"] for t in fams.get(f, [])))
@@ -596,12 +676,65 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
         explicit = scene["rating"] == "explicit"
         wanted = set(st["acts"]) if st["allow_nsfw"] else set()
 
+        hidden = {p for g in st["hide"] for p in GROUPS[g]}
+        level = scene["rating"]
+
+        def sexes():
+            """(women, men) in the idea, from the cast or, for beings, from their subject."""
+            if who in SUBJECT_CASTS:
+                return kinklib._sexes(who, parts.get("subject", ""))
+            return who in kinklib.FEMALE, who in kinklib.MALE
+
+        def fill(slot):
+            """The entries of a part the scene leaves to Muse: looks, job, wear, light, camera, colour."""
+            own = pools.get(slot) or []
+            if slot in hidden or (slot in PEOPLE_PARTS and (who in SFW_ONLY or who == "any")):  # "any": a scene's own subject, maybe not a person
+                return []
+            f, m = sexes()
+            if slot == "job":
+                return own or (looks.jobs_for(scene["theme"]) if level in ("sfw", "suggestive") else [])
+            if slot == "outfit":
+                return _outfits(scene, who, f, m, parts.get("job", ""), rng)
+            if slot in GROUPS["looks"]:
+                if own:
+                    return own
+                subject = parts.get("subject", "").lower()
+                if slot in ("hair", "eyes", "skin") and slot.rstrip("s") in subject:
+                    return []  # the subject says it already (red eyes, grey skin)
+                if slot == "skin" and who in kinklib.ANTHROS:
+                    return []  # fur, scales or feathers: in the subject
+                if slot == "makeup" and not f:
+                    return looks.MAKEUP["m"] if rng.random() < 0.3 else []
+                return looks.pools(f, m, people or (2 if who in ALIASES["pair"] else 1), rng)[slot]
+            if slot == "accessory" and parts.get("job"):
+                return [looks.JOBS[parts["job"]][3]] if parts["job"] in looks.JOBS and looks.JOBS[parts["job"]][3] else own
+            if slot == "fx":
+                job = looks.JOBS.get(parts.get("job", ""))
+                return [job[4]] if job and job[4] else own
+            if slot == "natural":
+                if own or sky == (None, None):
+                    return own
+                out = list(looks.NATURAL.get(sky[0], [])) + (list(looks.NATURAL_SKY.get(sky[1], [])) if sky[0] != "night" else [])
+                if "window" in parts.get("setting", "") or "indoors" in parts.get("setting", ""):
+                    out.append("window light")
+                return out
+            defaults = {"light_quality": looks.LIGHT_QUALITY, "light_mood": looks.LIGHT_MOOD, "light_support": looks.LIGHT_SUPPORT,
+                        "light_volume": looks.LIGHT_VOLUME, "angle": looks.ANGLE, "framing": looks.FRAMING, "color": looks.COLOR,
+                        "view": looks.VIEW if who not in SFW_ONLY else [v for v in looks.VIEW if v not in ("pov", "selfie", "over-the-shoulder shot")]}
+            if slot in defaults:
+                return own or defaults[slot]
+            if slot == "camera":
+                return own or looks.SHOT
+            return own
+
         def acts_pool():
             pool = [a for a in pools["action"] if not blocked(a)]
             return [a for a in pool if actlib.in_family(a, who, wanted)] if wanted else pool
         # drawn in this order: the body follows the subject (a male wolf, a female android), the pose
         # follows the action (no "lying on back" for someone riding); the prompt keeps the order of SLOTS
         for slot in ORDER_DRAWN:
+            if slot in LOOK_FILLED:
+                pools[slot] = fill(slot)
             if slot == "body":
                 pools["body"] = kinklib.body(scene["rating"], who, parts["subject"], scene["theme"], rng) if st["anatomy"] else []
             if slot == "gesture":
@@ -641,7 +774,7 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
 
         nsfw = scene["rating"] != "sfw"
         nsfw_tags = CASTS[who][2]
-        front = [cast_tags] + ([nsfw_tags, "adults" if who in GROUP_SIZES else "adult"] if nsfw and who != "none" else [])
+        front = [cast_tags] + ([nsfw_tags, "mature"] if nsfw and who not in SFW_ONLY else [])
 
         seen, pieces = set(), []
         for chunk in front + [parts[s] for s in SLOTS]:

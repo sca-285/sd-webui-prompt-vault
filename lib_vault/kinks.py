@@ -121,7 +121,8 @@ KINKS = {
             "2boys": ["anal", "anilingus", "anal fingering, kiss"],
             "futa_girl": ["futa with female, anal", "anilingus"], "futa_boy": ["futa with male, anal", "anilingus"],
             "groups": ["anal, group sex", "anal, gangbang"],
-            "furry": ["anal, presenting", "raised tail, anal"], "nonhuman": ["anal, presenting"],
+            "furry": ["anal, presenting", "raised tail, anal"], "kemono": ["anal, presenting", "raised tail, anal"],
+            "solo": ["anal, presenting", "anal masturbation"],
         },
     },
     "oral": {
@@ -329,6 +330,25 @@ KINKS.update({
         "nude": {"people": ["corruption, glowing womb tattoo", "corruption, dark veins", "corruption, demon horns"]},
         "explicit": {"people": ["corruption, mind break", "corruption, glowing womb tattoo, sex", "corruption, heart-shaped pupils, sex"]},
     },
+    "belly": {
+        "label": "Belly inflation",
+        "suggestive": {"people": ["belly inflation, tight clothes", "round belly, clothes pull", "belly inflation, hand on own stomach"]},
+        "nude": {"people": ["belly inflation", "belly inflation, round belly", "big belly, hand on own stomach"]},
+        "explicit": {"penis": ["belly inflation, cum inflation", "cum inflation, stomach bulge", "belly inflation, cum inside"],
+                     "solo": ["belly inflation, round belly", "big belly, hand on own stomach"],
+                     "people": ["belly inflation, round belly"]},
+    },
+    "mpreg": {
+        "label": "Male pregnancy",
+        "suggestive": {"male": ["male pregnancy, hand on own stomach", "male pregnancy, tight shirt", "male pregnancy, round belly"]},
+        "nude": {"male": ["male pregnancy", "male pregnancy, round belly", "male pregnancy, lactation"]},
+        "explicit": {"1boy": ["male pregnancy, erection", "male pregnancy, round belly"],
+                     "2boys": ["male pregnancy, anal, sex", "male pregnancy, omegaverse, knot", "male pregnancy, anal, from side"],
+                     "boys": ["male pregnancy, anal, group sex", "male pregnancy, omegaverse"],
+                     "1girl1boy": ["male pregnancy, pegging", "male pregnancy, femdom, cowgirl position"],
+                     "futa_boy": ["male pregnancy, futa with male, anal", "male pregnancy, anal"],
+                     "male": ["male pregnancy, round belly"]},
+    },
 })
 
 FEMALE = ("1girl", "1girl1boy", "2girls", "girls", "harem", "reverse", "mixed", "futa", "futa_girl", "futa_boy", "human_furry")
@@ -337,7 +357,7 @@ MALE = ("1boy", "1girl1boy", "2boys", "boys", "harem", "reverse", "mixed", "futa
 FUTA = ("futa", "futa_girl", "futa_boy")
 # pairs and groups with a penis in them (stomach bulge, cum inflation), and groups that can be a gangbang
 PENIS_PAIRS = ("1girl1boy", "2boys", "futa_girl", "futa_boy", "human_furry", "harem", "reverse", "boys", "mixed")
-EXTRA_ALIASES = {"female": FEMALE, "penis": PENIS_PAIRS, "rough": ("reverse", "boys", "mixed")}
+EXTRA_ALIASES = {"female": FEMALE, "male": MALE, "penis": PENIS_PAIRS, "rough": ("reverse", "boys", "mixed")}
 
 # ------------------------------------------------------------------ the body
 
@@ -410,10 +430,15 @@ def _kind(subject):
     return "other"
 
 
+# casts whose subject says who they are: a female fox, a male android
+ANTHROS = ("furry", "kemono")
+BEINGS = ANTHROS + ("mythic", "monster", "synth", "nonhuman")
+
+
 def _sexes(cast, subject):
     """(female, male) present in the idea; anthros and non-humans say it in their subject."""
     low = f" {subject.lower()} "
-    if cast in ("furry", "nonhuman"):
+    if cast in BEINGS:
         return (any(w in low for w in (" female", "1girl", " girl", " woman")),
                 any(w in low for w in (" male", "1boy", " man,", " man ")))
     return cast in FEMALE, cast in MALE
@@ -426,7 +451,7 @@ def body(level, cast, subject, theme, rng=None):
     rng = rng or random.Random()
     female, male = _sexes(cast, subject)
     futa = cast in FUTA
-    machine = theme == "Sci-fi" or any(w in subject.lower() for w in ("android", "cyborg", "gynoid", "mechanical"))
+    machine = cast == "synth" or theme == "Sci-fi" or any(w in subject.lower() for w in ("android", "cyborg", "gynoid", "mechanical"))
     out = []
     for _ in range(8):
         bits = []
@@ -436,8 +461,8 @@ def body(level, cast, subject, theme, rng=None):
             if male or futa:
                 bits += [rng.choice(["pectorals", "abs", "chest hair"])] if male else []
                 bits += ["bulge"]
-        elif cast == "furry" or (cast == "nonhuman" and "werewolf" in subject.lower()):
-            kind = _kind(subject) if cast == "furry" else "canine"
+        elif cast in ANTHROS or (cast in BEINGS and "werewolf" in subject.lower()):
+            kind = _kind(subject) if cast in ANTHROS else "canine"
             if female:
                 bits += ([] if kind in NO_BREASTS else [rng.choice(BREASTS)]) + [rng.choice(ANTHRO_PUSSY[kind])]
             if male:
@@ -480,7 +505,7 @@ def entries(kink, level, cast, aliases):
     lists = KINKS[kink].get(level) or {}
     if cast in lists:
         return lists[cast]
-    for alias in ("penis", "rough", "pair", "groups", "solo", "female", "people"):
+    for alias in ("penis", "rough", "pair", "groups", "solo", "female", "male", "people"):
         if alias in lists and cast in (EXTRA_ALIASES.get(alias) or aliases.get(alias, ())):
             return lists[alias]
     return []

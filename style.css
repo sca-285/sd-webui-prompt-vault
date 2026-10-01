@@ -357,3 +357,10 @@ html body #pv_muse_panel .pv-muse-chip.pv-muse-nsfw.pv-on { border-color: rgba(2
 
 #pv_muse_panel .pv-muse-avatar-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 #pv_muse_panel.pv-muse-wide .pv-muse-filter-row2 { grid-template-columns: repeat(2, minmax(0, 200px)); }
+/* the parts of an idea, in groups: Character, Face, Action, Scene, Light, Camera, Look */
+#pv_muse_panel .pv-muse-part-group { margin: 8px 0 2px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; }
+#pv_muse_panel .pv-muse-part-group:first-child { margin-top: 0; }
+/* what Generate brought back */
+#pv_muse_panel .pv-muse-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; margin-top: 8px; }
+#pv_muse_panel .pv-muse-images img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; display: block; }
+#pv_muse_panel .pv-muse-generate { margin-right: 6px; }
