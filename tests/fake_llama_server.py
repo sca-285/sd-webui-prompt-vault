@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """A stand-in for llama-server, for the checks: /health, and /v1/chat/completions that streams back what it was
 given (how many messages, images and system words, then the last user words), a few words a chunk.
+When asked to think (chat_template_kwargs.enable_thinking) it reasons first: as reasoning_content, or inside
+<think> tags in the answer when FAKE_THINK=tags; asked not to, it still opens with an empty <think></think>, as Qwen3 does.
 It refuses the newer memory flags when FAKE_OLD=1, as an old llama.cpp build does."""
 import json, os, sys, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -30,11 +32,23 @@ class H(BaseHTTPRequestHandler):
         words = last if isinstance(last, str) else " ".join(p.get("text", "") for p in last if p.get("type") == "text")
         system = next((m["content"] for m in msgs if m["role"] == "system"), "")
         answer = f"messages={len(msgs)} images={images} system={len(system)} | {words[:200]}"
+        think = (body.get("chat_template_kwargs") or {}).get("enable_thinking")
+        reason = f"the user wants {words[:40]}; a short answer will do"
+        tags = os.environ.get("FAKE_THINK") == "tags"
+        if not think:
+            answer = "<think>\n\n</think>\n\n" + answer
+        elif tags:
+            answer = f"<think>{reason}</think>" + answer
         if not body.get("stream"):
             self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
             self.wfile.write(json.dumps({"choices": [{"message": {"content": answer}}]}).encode())
             return
         self.send_response(200); self.send_header("Content-Type", "text/event-stream"); self.end_headers()
+        if think and not tags:
+            for i in range(0, len(reason), 9):
+                chunk = {"choices": [{"delta": {"reasoning_content": reason[i:i + 9]}}]}
+                self.wfile.write(f"data: {json.dumps(chunk)}\n\n".encode()); self.wfile.flush()
+                time.sleep(float(os.environ.get("FAKE_DELAY", "0.01")))
         for i in range(0, len(answer), 12):
             chunk = {"choices": [{"delta": {"content": answer[i:i + 12]}}]}
             self.wfile.write(f"data: {json.dumps(chunk)}\n\n".encode()); self.wfile.flush()

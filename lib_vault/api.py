@@ -156,7 +156,7 @@ def register(app):
 
         def go():
             try:
-                return qwen.choose(body.get("model"), body.get("mmproj"), body.get("memory"))
+                return qwen.choose(body.get("model"), body.get("mmproj"), body.get("memory"), body.get("think"))
             except ValueError as exc:
                 raise store.VaultError(str(exc))
         return run(go)
@@ -209,7 +209,15 @@ def register(app):
 
     @app.post(f"{BASE}/chat/regenerate")
     def chat_regenerate(body: dict = Body(...)):
-        return stream(lambda: chat.send(body.get("id"), "", regenerate=True))
+        return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message")))
+
+    @app.post(f"{BASE}/chat/edit")
+    def chat_edit(body: dict = Body(...)):
+        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), edit=body.get("message")))
+
+    @app.post(f"{BASE}/chat/version")
+    def chat_version(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.switch(body.get("id"), body.get("message"), body.get("step") or 1)})
 
     @app.post(f"{BASE}/chat/stop")
     def chat_stop(body: dict = Body(...)):

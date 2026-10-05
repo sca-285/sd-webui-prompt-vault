@@ -513,3 +513,15 @@ html body #pv_muse_panel .pv-muse-select option, html body #pv_muse_panel .pv-mu
 #pv_muse_panel .pv-muse-folders { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; padding-top: 8px;
     border-top: 1px dashed var(--pv-muse-line, rgba(127, 127, 127, 0.3)); }
 #pv_muse_panel .pv-muse-warn { color: #f87171; opacity: 1; }
+.pv-chat-thought { margin: 2px 0 8px; padding: 6px 10px; border-left: 3px solid rgba(127, 127, 127, 0.4); border-radius: 4px;
+    background: rgba(127, 127, 127, 0.08); font-size: 12.5px; }
+.pv-chat-thought summary, .pv-chat-thought-head { cursor: pointer; opacity: 0.7; font-weight: 600; }
+.pv-chat-thought-text { margin-top: 4px; white-space: pre-wrap; opacity: 0.7; max-height: 220px; overflow-y: auto; }
+.pv-chat-versions { display: inline-flex; align-items: center; gap: 2px; margin-right: 4px; }
+html body .pv-chat-versions .pv-chat-btn { padding: 1px 6px; }
+html body .pv-chat-versions .pv-chat-btn[disabled] { opacity: 0.35; cursor: default; }
+.pv-chat-editing { width: 92%; }
+html body textarea.pv-chat-edit-box { width: 100%; box-sizing: border-box; resize: vertical; padding: 6px 8px; border-radius: 6px;
+    font: inherit; color: var(--body-text-color, inherit) !important; background: var(--input-background-fill, rgba(0, 0, 0, 0.25)) !important;
+    border: 1px solid var(--input-border-color, rgba(127, 127, 127, 0.4)) !important; }
+.pv-chat-mine .pv-chat-text { cursor: text; }

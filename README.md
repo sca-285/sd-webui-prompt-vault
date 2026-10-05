@@ -54,6 +54,9 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💬 Qwen Chat**, a small assistant on the Qwen model of the Vault tab: a **Chat** tab on Muse's
   card, and the same conversation in the Vault tab's *Qwen Chat* window. It talks like a chat model
   (it remembers the conversation, the answer appears as it is written, ■ stops it, ↻ asks again).
+  - **Edit and versions**: ✎ Edit (or double-click) one of your messages and Qwen answers the new
+    words; ↻ Again on any answer gives a new one. Nothing is lost: **‹ 2/3 ›** under a message goes
+    back to an earlier version, with the conversation that followed it. Saved and exported with them.
   - **Files**: images (png, jpeg, webp) are shown to the model, text and Markdown files are read into
     the conversation; add them with 📎, paste them or drop them.
   - **The prompt you work on**, read with your message when you choose it: Muse's idea, the Vault
@@ -67,6 +70,10 @@ Qwen-VL and the WD14 tagger) in one tab.
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
   - A long conversation keeps within the model's context: the oldest messages are left out, and the
     card says how many.
+  - **Thinking models** (Qwen3.5, Qwen3.8 27B…): with *Let it think first* on (Muse → ⚙ → Qwen model),
+    the reasoning streams in a dim box and folds into **💭 Thought** above the answer; it never gets into
+    the answer, a copy or a prompt. Off, such a model answers at once. Qwen3-VL Instruct does not think.
+    A newer model needs a recent llama.cpp build.
 
   ![Qwen Chat on Muse's card: an image and a Markdown file, and the prompt of txt2img](docs/qwen-chat.webp)
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
