@@ -152,6 +152,10 @@ def build():
             qwen_btn = gr.Button("✍️ Rewrite the positive prompt", variant="primary", elem_id="pv_qwen_run")
             qwen_note = gr.HTML("", elem_id="pv_qwen_note")
 
+        # ============================================================ chat
+        with gr.Accordion("💬 Qwen Chat", open=False, elem_id="pv_chat_acc"):
+            gr.HTML("<div id='pv_chat_vault' class='pv-chat-host'></div>")
+
         # ============================================================ image
         with gr.Accordion("🏞️ Image → Prompt", open=False, elem_id="pv_image"):
             gr.Markdown("WD14 gives exact Danbooru tags (anime, illustration; CPU, no VRAM). Qwen describes "

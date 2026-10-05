@@ -143,6 +143,85 @@ def register(app):
     def muse_snapshot():
         return run(muse.snapshot)
 
+    # ---------------------------------------------------------------- Qwen Chat
+    from . import chat
+
+    def stream(make):
+        """The model's answer as it comes: one JSON object a line."""
+        import json as _json
+
+        from fastapi.responses import StreamingResponse
+
+        try:
+            events = make()
+        except store.VaultError as exc:
+            return JSONResponse({"error": str(exc)}, status_code=400)
+        except Exception as exc:
+            print(f"{TAG} {exc}")
+            return JSONResponse({"error": f"{type(exc).__name__}: {exc}"}, status_code=500)
+        return StreamingResponse((_json.dumps(e, ensure_ascii=False) + "\n" for e in events), media_type="application/x-ndjson",
+                                 headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+    @app.get(f"{BASE}/chat")
+    def chat_list():
+        return run(chat.listing)
+
+    @app.get(f"{BASE}/chat/one")
+    def chat_one(id: str = ""):
+        return run(lambda: {"chat": chat.get(id)})
+
+    @app.post(f"{BASE}/chat/new")
+    def chat_new(body: dict = Body(None)):
+        return run(lambda: {"chat": chat.new((body or {}).get("system"))})
+
+    @app.post(f"{BASE}/chat/send")
+    def chat_send(body: dict = Body(...)):
+        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), body.get("context") or ""))
+
+    @app.post(f"{BASE}/chat/regenerate")
+    def chat_regenerate(body: dict = Body(...)):
+        return stream(lambda: chat.send(body.get("id"), "", regenerate=True))
+
+    @app.post(f"{BASE}/chat/stop")
+    def chat_stop(body: dict = Body(...)):
+        return run(lambda: chat.stop(body.get("id")))
+
+    @app.post(f"{BASE}/chat/update")
+    def chat_update(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.update(body.get("id"), body.get("title"), body.get("system"))})
+
+    @app.post(f"{BASE}/chat/remove-message")
+    def chat_remove_message(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.remove_message(body.get("id"), body.get("message"))})
+
+    @app.post(f"{BASE}/chat/delete")
+    def chat_delete(body: dict = Body(...)):
+        return run(lambda: chat.delete(body.get("id")))
+
+    @app.post(f"{BASE}/chat/save")
+    def chat_save(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.save(body.get("id"))})
+
+    @app.post(f"{BASE}/chat/unsave")
+    def chat_unsave(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.unsave(body.get("id"))})
+
+    @app.post(f"{BASE}/chat/open")
+    def chat_open(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.open_saved(body.get("name"))})
+
+    @app.post(f"{BASE}/chat/saved/delete")
+    def chat_saved_delete(body: dict = Body(...)):
+        return run(lambda: chat.delete_saved(body.get("name")))
+
+    @app.post(f"{BASE}/chat/import")
+    def chat_import(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.import_data(body.get("data"))})
+
+    @app.get(f"{BASE}/chat/export")
+    def chat_export(id: str = "", fmt: str = "md"):
+        return run(lambda: chat.export(id, fmt))
+
     @app.post(f"{BASE}/muse/state")
     def muse_state(body: dict = Body(...)):
         return run(lambda: {"state": muse.save_state(body)})

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import atexit
 import os
+import re
 import socket
 import subprocess
 import threading
@@ -75,8 +76,9 @@ class LlamaServer:
 
     def _argv(self, port, model_args):
         server = settings.clean_path(settings.opt("pv_llama_server_path"))
-        argv = [server, *model_args, "--host", "127.0.0.1", "--port", str(port),
-                "-ngl", str(int(settings.opt(self.layers_opt)))]
+        argv = [server, *model_args, "--host", "127.0.0.1", "--port", str(port)]
+        if "-ngl" not in model_args:
+            argv += ["-ngl", str(int(settings.opt(self.layers_opt)))]
         argv += str(settings.opt(self.extra_opt) or "").split()
         return argv
 
@@ -156,6 +158,17 @@ class LlamaServer:
         model_args = self.model_args()
         port = _free_port(settings.opt(self.port_opt))
         argv = self._argv(port, model_args)
+        try:
+            return self._launch(argv, port, model_args)
+        except RuntimeError as exc:
+            newer = [a for a in argv if a in NEWER_FLAGS]
+            if not newer or not re.search(r"invalid argument|unknown argument|error: unrecognized|usage:", str(exc), re.I):
+                raise
+            self.say(f"this llama-server does not know {' '.join(newer)}: starting it without (update llama.cpp to keep "
+                     "more of the model in RAM)")
+            return self._launch([a for a in argv if a not in NEWER_FLAGS], port, model_args)
+
+    def _launch(self, argv, port, model_args):
         self.say(f"starting llama-server on 127.0.0.1:{port}")
 
         creation = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
@@ -230,6 +243,14 @@ class LlamaServer:
             self.say("stopped")
         return running
 
+    def restart_if_changed(self, key):
+        """Settings that place the model (which one, how much on the GPU) changed: start it again with them."""
+        with self.lock:
+            if self.proc is not None and getattr(self, "placed", None) is not None and self.placed != key:
+                self.say("its model or memory settings changed, restarting")
+                self._stop_locked()
+            self.placed = key
+
     def restart_if_model_changed(self, wanted):
         """A different model was chosen in Settings: the running server has the old one."""
         with self.lock:
@@ -262,6 +283,10 @@ class LlamaServer:
             return response.json()
         except Exception:
             raise RuntimeError(f"unexpected answer from the {self.name} server: {response.text[:400]}") from None
+
+
+# flags of newer llama.cpp builds (memory placement); an older build is started without them
+NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe"}
 
 
 def _terminate(proc):

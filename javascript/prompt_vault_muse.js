@@ -91,7 +91,8 @@
         view: 'idea',                       // or 'settings'
         tray: '',                           // the open filter: '', 'themes', 'casts' or 'ratings'
         busy: '',                           // '', 'next', 'tipo' or the slot being rolled
-        due: LS.get('due', 0),              // when the timer brings the next idea (ms)
+        due: LS.get('due', 0),
+        pane: LS.get('pane', 'ideas'),      // ideas | chat              // when the timer brings the next idea (ms)
         fresh: false,                       // an idea came while the panel was closed
         dragged: false,
         wide: LS.get('wide', false),        // the wide card: two columns
@@ -771,6 +772,23 @@
         return url ? el('img', {class: cls, src: root() + API + url, alt: '', draggable: 'false'}) : el('span', {class: cls + ' pv-muse-noface'}, icon('idea'));
     }
 
+    // Ideas, or the chat with Qwen: the same conversation as the Qwen Chat window of the Vault tab
+    function panes() {
+        const pick = (v, label, title) => el('button', {type: 'button', role: 'tab', 'aria-selected': M.pane === v ? 'true' : 'false',
+            class: 'pv-muse-pane' + (M.pane === v ? ' pv-on' : ''), text: label, title,
+            onclick: () => { if (M.pane !== v) { M.pane = v; LS.set('pane', v); render(); } }});
+        return el('div', {class: 'pv-muse-panes', role: 'tablist'},
+            pick('ideas', 'Ideas', 'Prompt ideas from scenes'),
+            pick('chat', 'Chat', 'Talk with Qwen: the same conversation as in the Vault tab'));
+    }
+
+    function chatView() {
+        const host = el('div', {class: 'pv-muse-body pv-muse-chat'});
+        if (window.pvChat) setTimeout(() => window.pvChat.mount(host, {compact: true}), 0);
+        else host.append(el('div', {class: 'pv-muse-empty', text: 'Qwen Chat is not loaded: reload the page.'}));
+        return host;
+    }
+
     function header() {
         const s = st();
         const title = M.view === 'settings'
@@ -1026,7 +1044,10 @@
         const scroll = panel.querySelector('.pv-muse-body');
         const y = scroll ? scroll.scrollTop : 0;
         panel.classList.toggle('pv-muse-wide', isWide());
-        panel.replaceChildren(...[header(), ...(M.view === 'settings' ? [settingsView()] : [ideaView(), ideaFooter()])].filter(Boolean));
+        const chat = M.view !== 'settings' && M.pane === 'chat';
+        panel.classList.toggle('pv-muse-chatting', chat);
+        panel.replaceChildren(...[header(), M.view === 'settings' ? null : panes(),
+            ...(M.view === 'settings' ? [settingsView()] : chat ? [chatView()] : [ideaView(), ideaFooter()])].filter(Boolean));
         const again = panel.querySelector('.pv-muse-body');
         if (again) again.scrollTop = y;
         place();
@@ -1139,6 +1160,15 @@
     }
 
     // ------------------------------------------------------------------ start
+
+    // for Qwen Chat: the idea on the card, and Your prompt to build around
+    window.pvMuse = {
+        prompt: () => (idea() ? fullPrompt(idea()) : ''),
+        setOwn: async (value) => {
+            await patch({fixed_prompt: value, prompt_mode: 'around'});
+            if (M.open) { M.pane = 'ideas'; LS.set('pane', 'ideas'); render(); }
+        },
+    };
 
     async function boot() {
         if (window.opts && opts.pv_muse === false) return;
