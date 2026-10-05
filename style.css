@@ -517,3 +517,11 @@ html body #pv_muse_panel .pv-muse-select option, html body #pv_muse_panel .pv-mu
     background: rgba(127, 127, 127, 0.08); font-size: 12.5px; }
 .pv-chat-thought summary, .pv-chat-thought-head { cursor: pointer; opacity: 0.7; font-weight: 600; }
 .pv-chat-thought-text { margin-top: 4px; white-space: pre-wrap; opacity: 0.7; max-height: 220px; overflow-y: auto; }
+.pv-chat-versions { display: inline-flex; align-items: center; gap: 2px; margin-right: 4px; }
+html body .pv-chat-versions .pv-chat-btn { padding: 1px 6px; }
+html body .pv-chat-versions .pv-chat-btn[disabled] { opacity: 0.35; cursor: default; }
+.pv-chat-editing { width: 92%; }
+html body textarea.pv-chat-edit-box { width: 100%; box-sizing: border-box; resize: vertical; padding: 6px 8px; border-radius: 6px;
+    font: inherit; color: var(--body-text-color, inherit) !important; background: var(--input-background-fill, rgba(0, 0, 0, 0.25)) !important;
+    border: 1px solid var(--input-border-color, rgba(127, 127, 127, 0.4)) !important; }
+.pv-chat-mine .pv-chat-text { cursor: text; }

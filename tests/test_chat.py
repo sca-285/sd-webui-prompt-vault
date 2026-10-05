@@ -142,6 +142,46 @@ assert qwen.strip_thinking("<think>hmm</think>\n\n1girl, red hair") == "1girl, r
 assert qwen.strip_thinking("hmm, so</think>1girl") == "1girl" and qwen.strip_thinking("<think>cut off") == ""
 print("thinking ok")
 
+# versions: your message edited, an answer asked again; the earlier ones kept, with what followed them
+vc = c.post(B + "/new").json()["chat"]["id"]
+send(vc, "a cat")
+send(vc, "make it orange")
+def msgs(cid=None):
+    return c.get(B + "/one", params={"id": cid or vc}).json()["chat"]["messages"]
+first = msgs()
+ev = send(vc, "", path="/regenerate")  # the last answer again
+m = msgs()
+assert len(m) == 4 and m[3]["versions"] == 2 and m[3]["version"] == 2 and "others" not in m[3], m[3]
+ev = []
+with c.stream("POST", B + "/edit", json={"id": vc, "message": first[0]["id"], "text": "a dog"}) as r:
+    ev = [json.loads(x) for x in r.iter_lines() if x]
+m = msgs()
+assert len(m) == 2 and m[0]["text"] == "a dog" and m[0]["versions"] == 2 and m[0]["version"] == 2 and "a dog" in m[1]["text"], m
+back = c.post(B + "/version", json={"id": vc, "message": m[0]["id"], "step": -1}).json()["chat"]["messages"]
+assert [x["text"] for x in back[:3]] == ["a cat", first[1]["text"], "make it orange"] and back[3]["versions"] == 2, back
+older = c.post(B + "/version", json={"id": vc, "message": back[3]["id"], "step": -1}).json()["chat"]["messages"]
+assert older[3]["text"] == first[3]["text"] and older[3]["version"] == 1
+assert c.post(B + "/version", json={"id": vc, "message": back[0]["id"], "step": -1}).json()["chat"]["messages"][0]["version"] == 1  # the first stays first
+fwd = c.post(B + "/version", json={"id": vc, "message": back[0]["id"], "step": 1}).json()["chat"]["messages"]
+assert len(fwd) == 2 and fwd[0]["text"] == "a dog"
+with c.stream("POST", B + "/regenerate", json={"id": vc, "message": msgs()[1]["id"]}) as r:  # an answer in the middle
+    list(r.iter_lines())
+assert msgs()[1]["versions"] == 2
+# kept through saving and import, with every version
+data = json.loads(c.get(B + "/export", params={"id": vc, "fmt": "json"}).json()["text"])
+imp = c.post(B + "/import", json={"data": data}).json()["chat"]
+assert imp["messages"][0]["versions"] == 2 and imp["messages"][1]["versions"] == 2
+again = c.post(B + "/version", json={"id": imp["id"], "message": imp["messages"][0]["id"], "step": -1}).json()["chat"]["messages"]
+assert len(again) == 4 and again[3]["versions"] == 2
+# nothing came of a new answer: the earlier one is back
+qwen.SERVER.stop(); good = shared.opts.pv_llama_server_path; shared.opts.pv_llama_server_path = "/no/server"
+r = c.post(B + "/regenerate", json={"id": vc})
+shared.opts.pv_llama_server_path = good
+m = msgs()
+assert len(m) == 2 and m[1]["versions"] == 2 and m[1]["text"], m
+assert c.post(B + "/edit", json={"id": vc, "message": m[1]["id"], "text": "x"}).status_code == 400  # only your own
+print("versions ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))

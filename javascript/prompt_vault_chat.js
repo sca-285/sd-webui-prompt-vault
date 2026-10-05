@@ -53,6 +53,8 @@
         stream: '',                 // the answer so far
         thinking: '',               // a thinking model's reasoning so far
         pending: null,              // what you just sent, until the server has it
+        cut: -1,                    // while a message is edited or answered again: the messages before it are shown
+        editing: null,              // {id, text}: your message being edited
         draft: '',
         files: [],                  // [{kind, name, data, size}] waiting to be sent
         context: LS.get('context', 'none'),
@@ -79,6 +81,12 @@
                 const b = m.querySelector('.pv-chat-input');
                 b.focus();
                 if (caret !== null) b.setSelectionRange(caret, caret);
+            }
+            const edit = m.querySelector('.pv-chat-edit-box');
+            if (edit && C.editing && C.editing.focus && edit.offsetParent) {  // in the window you see, not the hidden one
+                C.editing.focus = false;
+                edit.focus();
+                edit.setSelectionRange(edit.value.length, edit.value.length);
             }
         }
     }
@@ -198,7 +206,32 @@
     }
 
     const stop = () => { if (C.chat) call('/chat/stop', {id: C.chat.id}).catch(() => {}); };
-    const again = () => { if (C.chat && !C.busy) stream('/chat/regenerate', {id: C.chat.id}); };
+    // a new answer to the message before this one; the earlier answer stays as a version (‹ 1/2 ›)
+    async function again(m, at) {
+        if (!C.chat || C.busy) return;
+        C.editing = null;
+        C.cut = at;
+        await stream('/chat/regenerate', {id: C.chat.id, message: m.id});
+        C.cut = -1;
+        paint();
+    }
+
+    // your message with new words, answered anew; the earlier one stays as a version, with what followed it
+    async function resend(m, at) {
+        const text = ((C.editing && C.editing.text) || '').trim();
+        if (!C.chat || C.busy || (!text && !(m.files || []).length)) return;
+        C.editing = null;
+        if (text === m.text.trim()) { paint(); return; }
+        C.cut = at;
+        C.pending = {role: 'user', text, files: m.files || []};
+        await stream('/chat/edit', {id: C.chat.id, message: m.id, text});
+        C.pending = null;
+        C.cut = -1;
+        paint();
+    }
+
+    const version = (m, step) => { if (!C.busy) act('/chat/version', {id: C.chat.id, message: m.id, step}); };
+    const startEdit = (m) => { if (!C.busy) { C.editing = {id: m.id, text: m.text, focus: true}; paint(); } };
 
     async function act(path, body, then) {
         try {
@@ -331,17 +364,48 @@
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
     }
 
-    function bubble(m, last) {
+    // ‹ 2/3 ›: the versions of a message, each with what followed it
+    function versions(m) {
+        if (!m.versions || m.versions < 2) return null;
+        return el('span', {class: 'pv-chat-versions'},
+            button('‹', 'The earlier version', () => version(m, -1), {disabled: C.busy || m.version <= 1}),
+            el('span', {class: 'pv-chat-meta', text: `${m.version}/${m.versions}`}),
+            button('›', 'The later version', () => version(m, 1), {disabled: C.busy || m.version >= m.versions}));
+    }
+
+    function editor(m, at) {
+        const box = el('textarea', {class: 'pv-chat-edit-box', rows: '3', spellcheck: 'true'});
+        box.value = C.editing.text;
+        box.addEventListener('input', () => { C.editing.text = box.value; });
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); resend(m, at); }
+            if (e.key === 'Escape') { e.stopPropagation(); C.editing = null; paint(); }
+        });
+        return el('div', {class: 'pv-chat-msg pv-chat-mine pv-chat-editing'},
+            el('div', {class: 'pv-chat-who', text: 'You · editing'}),
+            files(m.files),
+            box,
+            el('div', {class: 'pv-chat-actions'},
+                el('span', {class: 'pv-chat-meta', text: 'Qwen answers it anew; the earlier version is kept'}),
+                button('Cancel', 'Keep it as it was (Esc)', () => { C.editing = null; paint(); }),
+                button('Send', 'Send the new words (Enter)', () => resend(m, at), {class: 'pv-chat-btn pv-chat-send'})));
+    }
+
+    function bubble(m, last, at) {
         const mine = m.role === 'user';
+        if (mine && C.editing && C.editing.id === m.id && !C.busy) return editor(m, at);
         const actions = mine
             ? el('div', {class: 'pv-chat-actions'},
+                versions(m),
+                C.busy || !m.id ? null : button('✎ Edit', 'Change these words; Qwen answers anew and the earlier version is kept (or double-click the message)', () => startEdit(m)),
                 C.busy || !m.id ? null : button('✕', 'Remove this message', () => act('/chat/remove-message', {id: C.chat.id, message: m.id})))
             : el('div', {class: 'pv-chat-actions'},
+                versions(m),
                 button('Copy', 'Copy the answer', () => useAnswer(m, 'copy')),
                 button('→ Vault', 'The prompt in it (its code block, or all of it) into the Vault editor', () => useAnswer(m, 'vault')),
                 button('→ txt2img', 'The prompt in it into txt2img', () => useAnswer(m, 'txt2img')),
                 button('→ Muse', "The prompt in it as Muse's Your prompt", () => useAnswer(m, 'muse')),
-                last && !C.busy ? button('↻ Again', 'Answer this again', again) : null,
+                !C.busy && m.id ? button('↻ Again', 'A new answer; this one is kept as a version (‹ ›)', () => again(m, at)) : null,
                 m.stopped ? el('span', {class: 'pv-chat-meta', text: 'stopped'}) : null,
                 m.seconds ? el('span', {class: 'pv-chat-meta', text: `${m.seconds}s`}) : null);
         return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
@@ -350,7 +414,8 @@
             m.thinking ? el('details', {class: 'pv-chat-thought'},
                 el('summary', {text: `💭 Thought (${m.thinking.split(/\s+/).length} words)`}),
                 el('div', {class: 'pv-chat-thought-text', text: m.thinking})) : null,
-            m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : md(m.text)}) : null,
+            m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : md(m.text),
+                ondblclick: mine && m.id ? () => startEdit(m) : null}) : null,
             actions);
     }
 
@@ -449,14 +514,14 @@
 
     function view(m) {
         const c = C.chat;
-        const msgs = c ? c.messages.slice() : [];
+        const msgs = c ? c.messages.slice(0, C.cut >= 0 ? C.cut : undefined) : [];
         if (C.pending) msgs.push(C.pending);
         const log = el('div', {class: 'pv-chat-log'},
             !msgs.length && !C.busy ? el('div', {class: 'pv-chat-empty'},
                 el('strong', {text: 'Qwen Chat'}),
                 el('div', {text: 'Talk with the Qwen model of the Vault tab: ideas, prompts, a picture to describe, a story to turn into prompts.'}),
                 el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'})) : null,
-            msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant')),
+            msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant', i)),
             C.busy ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
                 el('div', {class: 'pv-chat-who', text: 'Qwen'}),
                 el('div', {class: 'pv-chat-thought pv-chat-thinking-now', hidden: !C.thinking},

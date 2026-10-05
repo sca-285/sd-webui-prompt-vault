@@ -52,6 +52,22 @@ def _blank(system=None):
             "system": (system if system is not None else _system_default()), "messages": [], "saved_as": ""}
 
 
+def _view(c):
+    """A conversation as the page sees it: the messages on the chosen path, each with which version it is
+    ("version" of "versions"); the other versions stay here."""
+    out = dict(c)
+    out["messages"] = [_shown(m) for m in c["messages"]]
+    return out
+
+
+def _shown(m):
+    out = {k: v for k, v in m.items() if k != "others"}
+    if m.get("others"):
+        order = sorted([m.get("v", 0)] + [t[0].get("v", 0) for t in m["others"]])
+        out["versions"], out["version"] = len(order), order.index(m.get("v", 0)) + 1
+    return out
+
+
 def _brief(c):
     return {"id": c["id"], "title": c["title"], "updated": c["updated"], "count": len(c["messages"]), "saved_as": c["saved_as"]}
 
@@ -83,14 +99,14 @@ def listing():
 
 def get(cid):
     with _lock:
-        return dict(_get(cid))
+        return _view(_get(cid))
 
 
 def new(system=None):
     with _lock:
         c = _blank(system)
         _chats[c["id"]] = c
-        return dict(c)
+        return _view(c)
 
 
 def delete(cid):
@@ -108,7 +124,7 @@ def update(cid, title=None, system=None):
         if system is not None:
             c["system"] = str(system)[:8000]
         _touch(c)
-        return dict(c)
+        return _view(c)
 
 
 def remove_message(cid, mid):
@@ -116,7 +132,50 @@ def remove_message(cid, mid):
         c = _get(cid)
         c["messages"] = [m for m in c["messages"] if m["id"] != mid]
         _touch(c)
-        return dict(c)
+        return _view(c)
+
+
+def _at(c, mid):
+    for i, m in enumerate(c["messages"]):
+        if m["id"] == mid:
+            return i
+    raise store.VaultError("That message is not in the conversation any more.")
+
+
+def _branch(c, i):
+    """The messages from i on put aside as a version of their own; (the versions put aside, the new one's number)."""
+    tail = c["messages"][i:]
+    del c["messages"][i:]
+    others = tail[0].pop("others", []) if tail else []
+    if tail:
+        others.append(tail)
+    return others, max([t[0].get("v", 0) for t in others] or [-1]) + 1
+
+
+def _unbranch(c, others):
+    """Nothing came of a new version: the newest one put aside is back."""
+    if others:
+        tail = others.pop()
+        if others:
+            tail[0]["others"] = others
+        c["messages"].extend(tail)
+
+
+def switch(cid, mid, step):
+    """Another version of a message (step -1 or +1), and what followed it in that version."""
+    with _lock:
+        c = _get(cid)
+        i = _at(c, mid)
+        head = c["messages"][i]
+        tails = head.pop("others", []) + [c["messages"][i:]]
+        tails.sort(key=lambda t: t[0].get("v", 0))
+        at = next(n for n, t in enumerate(tails) if t[0] is head)
+        pick = tails.pop(max(0, min(len(tails), at + int(step))))
+        if tails:
+            pick[0]["others"] = tails
+        c["messages"][i:] = pick
+        _touch(c)
+        return _view(c)
 
 
 def _touch(c):
@@ -144,7 +203,7 @@ def save(cid):
         if not c["saved_as"]:
             c["saved_as"] = f"{time.strftime('%Y-%m-%d_%H%M', time.localtime(c['created']))}_{_slug(c['title'])}.json"
         _write(c)
-        return dict(c)
+        return _view(c)
 
 
 def unsave(cid):
@@ -157,7 +216,7 @@ def unsave(cid):
             except FileNotFoundError:
                 pass
         c["saved_as"] = ""
-        return dict(c)
+        return _view(c)
 
 
 def _from_data(data, saved_as=""):
@@ -166,13 +225,28 @@ def _from_data(data, saved_as=""):
     c = _blank(str(data.get("system") or _system_default()))
     c["title"] = str(data.get("title") or "Conversation")[:120]
     c["created"] = float(data.get("created") or c["created"])
-    for m in data["messages"]:
-        if isinstance(m, dict) and m.get("role") in ("user", "assistant"):
-            c["messages"].append({"id": str(m.get("id") or uuid.uuid4().hex[:10]), "role": m["role"], "text": str(m.get("text") or ""),
-                                  "files": [f for f in (m.get("files") or []) if isinstance(f, dict)], "time": m.get("time") or c["created"],
-                                  "tokens": int(m.get("tokens") or _tokens(str(m.get("text") or ""), m.get("files") or []))})
+    c["messages"] = _messages(data["messages"], c["created"])
     c["saved_as"] = saved_as
     return c
+
+
+def _messages(items, when):
+    out = []
+    for m in items if isinstance(items, list) else []:
+        if isinstance(m, dict) and m.get("role") in ("user", "assistant"):
+            text = str(m.get("text") or "")
+            one = {"id": str(m.get("id") or uuid.uuid4().hex[:10]), "role": m["role"], "text": text,
+                   "files": [f for f in (m.get("files") or []) if isinstance(f, dict)], "time": m.get("time") or when,
+                   "tokens": int(m.get("tokens") or _tokens(text, m.get("files") or []))}
+            for key in ("thinking", "stopped", "seconds", "context"):
+                if m.get(key):
+                    one[key] = m[key]
+            one["v"] = int(m.get("v") or 0)
+            others = [t for t in (_messages(t, when) for t in (m.get("others") or [])) if t]
+            if others:
+                one["others"] = others
+            out.append(one)
+    return out
 
 
 def open_saved(name):
@@ -186,11 +260,11 @@ def open_saved(name):
     with _lock:
         for c in _chats.values():
             if c["saved_as"] == name:
-                return dict(c)
+                return _view(c)
         c = _from_data(data, saved_as=name)
         c["id"] = str(data.get("id") or c["id"]) if str(data.get("id") or "") not in _chats else c["id"]
         _chats[c["id"]] = c
-        return dict(c)
+        return _view(c)
 
 
 def delete_saved(name):
@@ -210,7 +284,7 @@ def import_data(data):
     with _lock:
         c = _from_data(data)
         _chats[c["id"]] = c
-        return dict(c)
+        return _view(c)
 
 
 def export(cid, fmt="md"):
@@ -313,17 +387,40 @@ def _window(c, max_tokens):
     return kept, len(c["messages"]) - len(kept)
 
 
-def send(cid, words, files=None, context="", regenerate=False):
-    """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}."""
+def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None):
+    """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}.
+
+    regenerate: a new answer to the last message (again: to the one answered by that answer); edit: that message of
+    yours, with new words, answered anew. Either way the earlier version is kept, with what followed it."""
     from . import qwen
 
+    branch = None  # (the versions put aside, the new version's number) for the answer to come
     with _lock:
         c = _get(cid)
         if regenerate:
-            while c["messages"] and c["messages"][-1]["role"] == "assistant":
-                c["messages"].pop()
-            if not c["messages"]:
+            i = _at(c, again) if again else len(c["messages"])
+            if not again and c["messages"] and c["messages"][-1]["role"] == "assistant":
+                i -= 1
+            if c["messages"][i:i + 1] and c["messages"][i]["role"] == "assistant":
+                branch = _branch(c, i)
+            if not c["messages"] or c["messages"][-1]["role"] != "user":
+                _unbranch(c, branch[0] if branch else [])
                 raise store.VaultError("Nothing to answer again.")
+        elif edit:
+            i = _at(c, edit)
+            old = c["messages"][i]
+            if old["role"] != "user":
+                raise store.VaultError("Only your own messages can be edited.")
+            words = str(words or "").strip()
+            got = read_files(files) if files else old.get("files") or []
+            if not words and not got:
+                raise store.VaultError("Write something, or add a file.")
+            others, v = _branch(c, i)
+            msg = {"id": uuid.uuid4().hex[:10], "role": "user", "text": words, "files": got, "time": time.time(),
+                   "context": old.get("context", ""), "v": v, "others": others}
+            msg["tokens"] = _tokens(words + msg["context"], got)
+            c["messages"].append(msg)
+            _touch(c)
         else:
             words = str(words or "").strip()
             got = read_files(files)
@@ -385,6 +482,10 @@ def send(cid, words, files=None, context="", regenerate=False):
                             yield {kind: piece}
         except Exception as exc:
             if not text:
+                if branch:
+                    with _lock:
+                        if cid in _chats:
+                            _unbranch(_chats[cid], branch[0])
                 yield {"error": f"Qwen: {exc}"}
                 return
         answer = "".join(text).strip()
@@ -400,9 +501,13 @@ def send(cid, words, files=None, context="", regenerate=False):
         with _lock:
             live = _chats.get(cid)
             if live is not None and answer:
+                if branch:
+                    reply["others"], reply["v"] = branch
                 live["messages"].append(reply)
                 _touch(live)
-        yield {"done": True, "message": reply, "status": qwen.MEMORY.get("note", "")}
+            elif live is not None and branch:
+                _unbranch(live, branch[0])
+        yield {"done": True, "message": _shown(reply), "status": qwen.MEMORY.get("note", "")}
 
     return events()
 

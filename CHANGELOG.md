@@ -10,6 +10,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - A Chat tab on Muse's card, and the same conversation in a Qwen Chat window of the Vault tab: a small
   assistant on the Qwen model, answers streamed as they are written, Stop and Again.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
+- Edit a message of yours (✎ or double-click) and Qwen answers it anew; ↻ Again on any answer. The earlier
+  versions are kept, each with the conversation that followed it: ‹ 2/3 › goes back to them.
 - The prompt you work on (Muse's idea, the Vault editor, txt2img) read with your message when you choose.
 - An answer to the Vault editor, txt2img or Muse's Your prompt in one click (minor-related words left out).
 - Conversations live while the WebUI runs; Save keeps one in prompt_vault/chats/, Export gives Markdown
