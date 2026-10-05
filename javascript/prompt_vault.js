@@ -88,6 +88,27 @@
         return s.replace(/\\\(/g, '(').replace(/\\\)/g, ')').replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
     }
 
+    function dedupePrompt(prompt) {
+        const seen = new Set();
+        const out = [];
+        for (const piece of split(prompt)) {
+            const k = key(piece);
+            if (!k || seen.has(k)) continue;
+            seen.add(k);
+            out.push(piece);
+        }
+        return out.join(', ');
+    }
+
+    function dedupeBox(area) {
+        if (!area) return;
+        const next = dedupePrompt(area.value);
+        if (next === area.value) return;
+        area.value = next;
+        if (typeof updateInput === 'function') updateInput(area);
+        else area.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+
     function weightOf(piece) {
         const m = (piece || '').trim().match(WEIGHT);
         if (m) return parseFloat(m[2]);
@@ -554,6 +575,8 @@
             if (!button || button.dataset.pvWatched) continue;
             button.dataset.pvWatched = '1';
             button.addEventListener('click', () => {
+                dedupeBox($('#' + tab + '_prompt textarea'));
+                dedupeBox($('#' + tab + '_neg_prompt textarea'));
                 if (window.opts && opts.pv_history === false) return;
                 const get = (id) => { const a = $('#' + id + ' textarea'); return a ? a.value : ''; };
                 const positive = get(tab + '_prompt'), negative = get(tab + '_neg_prompt');
@@ -736,7 +759,7 @@
         }
     }
 
-    window.promptVault = {reloadSaved, reloadLibrary: loadLibrary, split, key, attachSuggest};
+    window.promptVault = {reloadSaved, reloadLibrary: loadLibrary, split, key, dedupePrompt, attachSuggest};
 
     const boot = () => { if (!start()) setTimeout(boot, 500); };
     if (typeof onUiLoaded === 'function') onUiLoaded(boot);

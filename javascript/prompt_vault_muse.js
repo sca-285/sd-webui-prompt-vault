@@ -453,13 +453,18 @@
             box);
     }
 
+    function cleanPrompt(value) {
+        const pv = window.promptVault;
+        return pv && pv.dedupePrompt ? pv.dedupePrompt(value || '') : (value || '');
+    }
+
     function send(target) {
         const it = idea();
         if (!it) return;
         const s = st();
         const pos = area(TARGETS[target]);
         if (!pos) { toast('The ' + TARGET_NAMES[target] + ' prompt box is not on the page', true); return; }
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
+        write(pos, cleanPrompt(s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it)));
         const go = window['switch_to_' + target];
         if (typeof go === 'function') { try { go(); } catch (e) { /* the tab switch is a nicety */ } }
         toast('Sent to ' + TARGET_NAMES[target]);
@@ -481,7 +486,7 @@
         if (!pos || !go) { toast(tab + ' is not on the page', true); return; }
         if (generating()) { toast('An image is being generated: wait for it', true); return; }
         const s = st();
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
+        write(pos, cleanPrompt(s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it)));
         const before = new Set(galleryImages(tab));
         M.gen = {id: it.id, started: Date.now(), seen: false, tab};
         render();
@@ -563,7 +568,7 @@
         if (!it || M.busy) return;
         try {
             const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true)});
-            M.ideas[M.at] = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine});
+            M.ideas[M.at] = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine, seen: it.seen});
             saveIdeas();
             render();
         } catch (e) { /* the scene may be gone: the next idea will do */ }
@@ -572,7 +577,7 @@
     // the idea again with every part as it is: a new prompt from the parts, same scene
     async function recompose(it) {
         const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true)});
-        const fresh = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine});
+        const fresh = Object.assign(data.idea, {locks: it.locks, images: it.images, mine: it.mine, seen: it.seen});
         const i = M.ideas.indexOf(it);
         if (i >= 0) M.ideas[i] = fresh;
         saveIdeas();
@@ -635,9 +640,14 @@
         M.busy = slot;
         render();
         try {
-            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true), roll: slot});
+            // what this part has already been: each roll brings one not seen yet, until there are none left
+            const part = it.parts.find((x) => x.slot === slot);
+            const seen = Object.assign({}, it.seen);
+            seen[slot] = [...new Set([...(seen[slot] || []), part && part.value].filter(Boolean))].slice(-60);
+            const data = await call('/muse/next', {scene: it.scene, cast: it.cast, size: it.size, girls: it.girls, keep: keepOf(it, true),
+                roll: slot, avoid: seen[slot]});
             const mine = Object.assign({}, it.mine, {[slot]: false}); // rolled: Muse's again
-            const fresh = Object.assign(data.idea, {locks: it.locks, mine}); // a fresh prompt: any paragraph is gone
+            const fresh = Object.assign(data.idea, {locks: it.locks, mine, seen}); // a fresh prompt: any paragraph is gone
             M.ideas[M.at] = fresh;
             saveIdeas();
         } catch (e) {

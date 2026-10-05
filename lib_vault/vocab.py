@@ -26,7 +26,7 @@ FEMALE_WORDS = r"breast|pussy|clit|labia|panties|skirt|bra\b|nipple|curtsy"
 MALE_WORDS = r"penis|shaft|erect|balls|waistband|flexing"
 SKIP = r"object use|mouth|pacing|afterglow|camera|framing|kiss|oral|manual|family|toys|fantasy adult|body notes"
 # a pose with furniture in it would fight the scene's own place ("sitting backwards, chair" on a beach)
-PROPS = r"\b(chair|bed|bar|shelf|windowsill|desk|counter|door|wall|stairs|table|sofa|couch|pillow|sheets?)\b"
+PROPS = r"\b(chair|bed|bar|shelf|windowsill|desk|counter|door|wall|stairs|table|sofa|couch|pillow|sheets?|railing|balcony|window|fence|tree|car|pole|steps|throne|stool|bench|ledge|mirror)\b"
 # poses that need a place of their own: no sprinting in a restroom, no heroic stance in a kitchen
 OUTSIDE = ("Sports", "Gym", "Outdoors", "Nature", "Party", "Music & stage", "Fantasy", "Myth", "Film", "Creature", "Post-apocalypse",
            "Sci-fi", "Steampunk", "Street", "Studio", "Fashion", "Portrait", "Garden", "Holidays", "Travel", "World cities", "Countryside",

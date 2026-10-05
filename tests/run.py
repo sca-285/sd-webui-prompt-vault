@@ -4,7 +4,7 @@
     python3 tests/run.py --quick    without the chip coverage, and 800 ideas instead of 4000
 
 Needs fastapi and httpx (the WebUI has both); the WebUI itself is stubbed in tests/stub."""
-import hashlib, os, shutil, subprocess, sys, tempfile, time
+import glob, hashlib, os, shutil, subprocess, sys, tempfile, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
@@ -18,6 +18,8 @@ CHECKS = [
     ("every act for every cast", ["tests/check_acts.py"]),
     ("every kink: 25 scenes or more", ["tests/check_kinks.py"]),
     ("every chip: 25 scenes or more", ["tests/check_chips.py"]),
+    ("every part: ten values or more to roll", ["tests/check_variety.py"]),
+    ("javascript parses", "js"),
 ]
 
 
@@ -41,11 +43,19 @@ def main():
     quick = "--quick" in sys.argv
     failed = []
     for name, cmd in CHECKS:
-        if quick and cmd and cmd[0].endswith("check_chips.py"):
+        if quick and isinstance(cmd, list) and cmd[0].endswith("check_chips.py"):
             continue
         start = time.time()
         if cmd is None:
             code, text = rebuilt()
+        elif cmd == "js":
+            node = shutil.which("node")
+            if not node:
+                print("skip javascript parses (no node)")
+                continue
+            outs = [subprocess.run([node, "--check", f], cwd=REPO, capture_output=True, text=True)
+                    for f in sorted(glob.glob(os.path.join(REPO, "javascript", "*.js")))]
+            code, text = max(o.returncode for o in outs), "".join(o.stderr for o in outs)
         else:
             data = tempfile.mkdtemp(prefix="pv-test-")
             env = dict(os.environ, STUB=os.path.join(HERE, "stub"), PV_TEST_DATA=data, PYTHONDONTWRITEBYTECODE="1")

@@ -118,14 +118,32 @@ SOFT = ("bed", "floor")
 
 SFW_GESTURES = {
     "solo": L("hand on hip | hand in own hair | head tilt | hand on own cheek | arms behind back | hand on own chin | adjusting hair"
-              " | hand in pocket | arms crossed | looking away | looking at viewer | waving"),
+              " | hand in pocket | arms crossed | looking away | looking at viewer | waving | peace sign | thumbs up"
+              " | hand on own chest | fist on hip | hands clasped | finger on chin | stretching arms | hand shading eyes"),
     "pair": L("holding hands | arm around shoulder | hand on another's shoulder | hand on another's cheek | high five | arm hug"
-              " | back-to-back | leaning on person | hand on another's head | eye contact"),
-    "groups": L("arms around shoulders | group hug | high five | v | pointing | waving | laughing together"),
+              " | back-to-back | leaning on person | hand on another's head | eye contact | linked arms | pinky swear"
+              " | fist bump | hand on another's back | heads together"),
+    "groups": L("arms around shoulders | group hug | high five | v | pointing | waving | laughing together | fist bump"
+                " | thumbs up | linked arms | arms raised | clapping"),
 }
 # what anyone can do anywhere, under the place's own
 SFW_ANY = {"solo": L("looking at viewer, smile"), "pair": L("chatting, smiling | walking together"),
            "groups": L("group photo | chatting, group")}
+# what anyone does with what a spot has, SFW: added to every zone's own doings
+SFW_SURF = {
+    "solo": {"bed": L("sitting on {bed} | lying on {bed}, reading | sitting on edge, {bed} | lying on {bed}, looking up"),
+             "wall": L("leaning against {wall} | back against {wall} | hand on {wall} | standing by {wall}"),
+             "table": L("sitting at {table} | leaning on {table} | elbows on {table} | standing by {table}"),
+             "chair": L("sitting on {chair} | sitting on {chair}, crossed legs | leaning back, {chair} | sitting sideways, {chair}"),
+             "floor": L("sitting on {floor} | kneeling on {floor} | sitting cross-legged, {floor} | lying on {floor}"),
+             "water": L("standing in {water} | wading in {water} | sitting by {water} | hand in {water}")},
+    "pair": {"bed": L("sitting on {bed}, together | lying on {bed}, talking"), "wall": L("leaning against {wall}, together"),
+             "table": L("sitting at {table}, facing another | leaning on {table}, together"),
+             "chair": L("sitting side by side, {chair}"), "floor": L("sitting on {floor}, together"),
+             "water": L("standing in {water}, together | splashing, {water}")},
+    "groups": {"table": L("sitting around {table}"), "chair": L("sitting in row, {chair}"), "floor": L("sitting on {floor}, circle"),
+               "wall": L("lined up, {wall}"), "water": L("in {water}, together")},
+}
 TEASE = {
     "solo": {"bed": L("lying on {bed}, on stomach | kneeling on {bed} | on back, on {bed}, legs up | sitting on {bed}, knees up"),
              "wall": L("leaning against {wall} | back against {wall}, looking at viewer"),
@@ -134,25 +152,41 @@ TEASE = {
              "floor": L("sitting on {floor}, hugging knees | kneeling on {floor}"),
              "water": L("standing in {water}, looking back | wading in {water}"),
              "*": L("looking back | arms up, stretching | lip biting | undressing | strap slip | hand on own chest"
-                    " | clothes pull | looking at viewer, seductive smile")},
+                    " | clothes pull | looking at viewer, seductive smile | shirt lift | bending forward"
+                    " | hand on own thigh | arched back | unbuttoning shirt | looking over shoulder | hip sway")},
     "pair": {"bed": L("lying on {bed}, kiss | on {bed}, straddling"), "wall": L("against {wall}, kiss | pinned against {wall}"),
              "table": L("sitting on {table}, kiss"), "chair": L("sitting on lap, {chair}"), "water": L("hug, in {water}"),
-             "*": L("kiss | undressing another | hug, hands under clothes | whispering | french kiss | neck kiss | sitting on lap")},
+             "*": L("kiss | undressing another | hug, hands under clothes | whispering | french kiss | neck kiss | sitting on lap"
+                    " | hand on another's thigh | ear nibbling | pulling another closer | forehead to forehead | lap sitting, kiss"
+                    " | hands on hips, close | grabbing collar, kiss | embrace from behind | unzipping another")},
     "groups": {"bed": L("lying on {bed}, cuddling"), "water": L("splashing, in {water}"),
-               "*": L("kiss, group | undressing another | lounging, flirting | neck kiss")},
+               "*": L("kiss, group | undressing another | lounging, flirting | neck kiss | dancing close | sitting on laps"
+                      " | whispering, group | hands on another's body | toasting, flirting | group hug, close | kiss on cheek"
+                      " | pulling another close | strip game | body shots | feeding another | massage, shoulders"
+                      " | hands under clothes | lying together, flirting")},
 }
+# a woman's own, at the suggestive level
+F_TEASE_ACTS = L("skirt lift | adjusting stockings | panty peek | cleavage, leaning forward | pulling down strap | bra peek"
+                 " | lifting skirt hem | adjusting bra")
 NUDE = {
     "solo": {"bed": L("lying on {bed} | on side, on {bed} | sitting on {bed}, knees up | on stomach, on {bed}, legs up"),
              "floor": L("lying on {floor} | sitting on {floor}, hugging knees"),
              "water": L("standing in {water} | bathing, in {water} | wet body, in {water}"),
              "chair": L("sitting on {chair}, crossed legs"), "table": L("sitting on {table}"),
              "wall": L("leaning against {wall} | back against {wall}"),
-             "*": L("standing, contrapposto | arms up, stretching | looking back | hands behind head | sitting, knees up")},
+             "*": L("standing, contrapposto | arms up, stretching | looking back | hands behind head | sitting, knees up"
+                    " | covering breasts | hand on own hip | hair over shoulder | twisting torso | kneeling, upright"
+                    " | reclining | stretching on toes | crossing arms under chest | towel in hand | looking over shoulder")},
     "pair": {"bed": L("lying together, on {bed} | cuddling, on {bed} | spooning, on {bed}"), "floor": L("lying together, on {floor}"),
              "water": L("bathing together, in {water}"), "wall": L("hug, against {wall}"),
-             "*": L("hug | kiss | forehead to forehead | caressing | holding hands | back-to-back | hand on another's cheek")},
+             "*": L("hug | kiss | forehead to forehead | caressing | holding hands | back-to-back | hand on another's cheek"
+                    " | embrace from behind | lying on chest | stroking hair | intertwined fingers | head on shoulder | slow dance"
+                    " | tracing skin | nuzzling")},
     "groups": {"bed": L("cuddling, on {bed} | lying together, on {bed}"), "floor": L("lounging, on {floor}"),
-               "water": L("bathing together, in {water}"), "*": L("group hug | lounging together | sitting in circle | arms around shoulders")},
+               "water": L("bathing together, in {water}"), "*": L("group hug | lounging together | sitting in circle | arms around shoulders"
+                                                                   " | resting heads on laps | intertwined | posing together | leaning on another"
+                                                                   " | massage | lying in pile | holding hands, circle | stretching together"
+                                                                   " | back to back, sitting | caressing another | kiss, group | dancing together")},
 }
 SEX = {
     "1girl": {"bed": L("female masturbation, on {bed} | fingering, spread legs, on {bed} | vibrator, on back, on {bed}"),
@@ -193,53 +227,94 @@ SEX = {
         "soft": L("group sex, cowgirl position | face sitting, cowgirl position | cooperative paizuri | lineup, doggystyle"
                   " | group sex, taking turns | harem, kiss, cowgirl position | double cunnilingus"),
         "table": L("bent over {table}, group sex"), "wall": L("standing sex, against {wall}, multiple girls"),
-        "water": L("group sex, in {water}"), "*": L("cooperative fellatio | double fellatio | group sex, kiss | harem, handjob"),
+        "water": L("group sex, in {water}"), "*": L("cooperative fellatio | double fellatio | group sex, kiss | harem, handjob | harem, breast sucking"
+                                        " | multiple girls, kiss, sex | cooperative handjob | girl on top, kiss, harem | harem, paizuri"
+                                        " | sex from behind, multiple girls | harem, cunnilingus | group sex, fingering"),
     },
     "reverse": {
         "soft": L("double penetration | spitroast | gangbang | triple penetration | cowgirl position, fellatio | group sex, sandwiched"
                   " | breast sucking, multiple boys"),
         "table": L("spitroast, on {table}"), "wall": L("standing sex, against {wall}, multiple boys"), "water": L("group sex, in {water}"),
-        "*": L("double handjob | fellatio, multiple boys | group sex | double fellatio | bukkake"),
+        "*": L("double handjob | fellatio, multiple boys | group sex | double fellatio | bukkake | sex from behind, fellatio"
+               " | breast sucking, multiple boys | group sex, girl on top | handjob, fellatio | cunnilingus, multiple boys"
+               " | standing sex, multiple boys | gangbang, kiss"),
     },
     "mixed": {"soft": L("orgy | partner swap | daisy chain | orgy, 69 | orgy, doggystyle | group sex, cowgirl position"),
-              "table": L("group sex, on {table}"), "water": L("group sex, in {water}"), "*": L("group sex | orgy, kiss | fellatio, orgy")},
+              "table": L("group sex, on {table}"), "water": L("group sex, in {water}"), "*": L("group sex | orgy, kiss | fellatio, orgy | orgy, cunnilingus"
+                                                 " | group sex, from behind | orgy, handjob | orgy, fingering | group sex, girl on top"
+                                                 " | orgy, breast sucking | group sex, standing sex | orgy, paizuri | group sex, kiss")},
     "girls": {"soft": L("daisy chain, cunnilingus | breast sucking, fingering | strap-on, group sex | face sitting, tribadism"
                         " | yuri, group sex, kiss"),
-              "water": L("group sex, in {water}"), "*": L("yuri, group sex | kiss, fingering | breast press, kiss")},
+              "water": L("group sex, in {water}"), "*": L("yuri, group sex | kiss, fingering | breast press, kiss | cunnilingus, yuri"
+                                                 " | breast sucking, yuri | tribadism, yuri | fingering, group | face sitting, yuri"
+                                                 " | licking nipple, yuri | strap-on, yuri | grinding, yuri | anilingus, yuri")},
     "boys": {"soft": L("anal, group sex | gangbang | anilingus | spitroast | frottage, group sex"), "water": L("group sex, in {water}"),
-             "*": L("yaoi, group sex | fellatio, group sex | handjob, group sex")},
+             "*": L("yaoi, group sex | fellatio, group sex | handjob, group sex | anal, yaoi | double fellatio, yaoi"
+                    " | frottage, yaoi | spitroast, yaoi | licking nipple, yaoi | anilingus, yaoi | deepthroat, yaoi"
+                    " | anal, from behind, yaoi | mutual masturbation, yaoi")},
     "futa": {"bed": L("futanari masturbation, on {bed}"), "chair": L("futanari masturbation, on {chair}"),
              "water": L("futanari masturbation, in {water}"),
-             "*": L("futanari masturbation | penis grab, fingering | erection, looking at viewer | autofellatio | precum, erection")},
+             "*": L("futanari masturbation | penis grab, fingering | erection, looking at viewer | autofellatio | precum, erection"
+                    " | futanari, stroking | futanari, ejaculation | futanari, spread legs, erection | futanari, grabbing own breast"
+                    " | futanari, kneeling, erection | futanari, cum | futanari, standing, erection | futanari, lying, masturbation")},
     "futa_girl": {"soft": L("futa with female, missionary | futa with female, cowgirl position | futa with female, doggystyle | 69"
                             " | futa with female, mating press"),
                   "wall": L("futa with female, standing sex, against {wall}"), "table": L("futa with female, on {table}"),
                   "water": L("futa with female, in {water}"),
-                  "*": L("fellatio, futanari | cunnilingus, erection | futa with female, kiss | handjob, futanari")},
+                  "*": L("fellatio, futanari | cunnilingus, erection | futa with female, kiss | handjob, futanari"
+                         " | futa with female, sex from behind | futa with female, standing sex | breast sucking, futanari"
+                         " | futa with female, girl on top | futa with female, prone bone | paizuri, futanari | 69, futanari"
+                         " | futa with female, spooning | fingering, erection | kiss, penis grab")},
     "futa_boy": {"soft": L("futa with male, anal | futa with male, cowgirl position | futa with male, missionary"),
                  "wall": L("futa with male, against {wall}"), "table": L("futa with male, bent over {table}"),
-                 "water": L("futa with male, in {water}"), "*": L("mutual masturbation | fellatio | futa with male, frottage")},
+                 "water": L("futa with male, in {water}"), "*": L("mutual masturbation | fellatio | futa with male, frottage"
+                                                                  " | futa with male, anal, from behind | futa with male, girl on top | handjob, futanari"
+                                                                  " | futa with male, kiss | 69, futanari | futa with male, standing sex"
+                                                                  " | futa with male, spooning | deepthroat, futanari | paizuri, futanari")},
     "human_furry": {"soft": L("missionary, on {soft} | cowgirl position | doggystyle | mating press | 69 | breast sucking | prone bone"),
                     "wall": L("standing sex, against {wall} | suspended congress, against {wall}"), "table": L("sex, on {table}"),
                     "water": L("sex, in {water}"),
                     "*": L("fellatio | cunnilingus | handjob | fingering | kiss, interspecies | sex from behind")},
     "furry": {"soft": L("on back, spread legs, on {soft} | presenting, on {soft}"),
-              "*": L("masturbation | spread legs, looking at viewer | presenting | raised tail, presenting")},
-    "nonhuman": {"soft": L("on back, on {soft}, masturbation"), "*": L("masturbation | spread legs, looking at viewer | presenting")},
+              "*": L("masturbation | spread legs, looking at viewer | presenting | raised tail, presenting | masturbation, lying on back"
+                     " | masturbation, sitting | masturbation, kneeling | touching self | spread legs, sitting | on all fours, presenting"
+                     " | looking back, raised tail | lying on side, masturbation | hand between legs | arched back, masturbation")},
+    "nonhuman": {"soft": L("on back, on {soft}, masturbation"), "*": L("masturbation | spread legs, looking at viewer | presenting"
+                                                                    " | masturbation, lying on back | masturbation, sitting | masturbation, kneeling"
+                                                                    " | touching self | spread legs, sitting | on all fours, presenting"
+                                                                    " | looking back, presenting | lying on side, masturbation | hand between legs"
+                                                                    " | arched back, masturbation | standing, touching self")},
 }
 MOODS = {"suggestive": ["sultry", "playful", "shy"], "nude": ["calm", "shy", "sultry"], "explicit": ["passion"]}
 GESTURES = {
-    "suggestive": {"solo": L("finger to mouth | hand on hip | hair over shoulder | hand on own thigh"),
-                   "pair": L("hands in hair | arms around neck | hand on another's waist | hand on another's thigh"),
-                   "groups": L("arms around shoulders | hands on another's body")},
-    "nude": {"people": L("head tilt | hair over shoulder | relaxed | hand on own chest | covering mouth")},
-    "explicit": {"people": L("arched back | curled toes | sweat | clenched hands | grabbing sheets | trembling | ahegao")},
+    "suggestive": {"solo": L("finger to mouth | hand on hip | hair over shoulder | hand on own thigh | hand in own hair | finger on lips"
+                             " | hand on own collarbone | thumb in waistband | head tilt | hands behind back | twirling hair"
+                             " | tugging collar | biting finger | hand on own neck"),
+                   "pair": L("hands in hair | arms around neck | hand on another's waist | hand on another's thigh | hand on another's chest"
+                             " | fingers interlaced | hand on another's jaw | hand on another's hip | gripping shirt | hand on another's back"
+                             " | hand on another's neck | hands on another's shoulders | finger on another's lips | tugging another's collar"
+                             " | arm around waist | hand on another's cheek"),
+                   "groups": L("arms around shoulders | hands on another's body | hand on another's waist | leaning on another"
+                               " | hands in another's hair | hand on another's thigh | fingers interlaced | hand on another's chest"
+                               " | arm around waist | hand on another's hip | hand on own hip | finger to mouth | head tilt"
+                               " | hair over shoulder | hand on another's back")},
+    "nude": {"people": L("head tilt | hair over shoulder | relaxed | hand on own chest | covering mouth | hand on own hip"
+                         " | hands behind head | arm across chest | hand in own hair | hand on own thigh | arms at sides"
+                         " | covering crotch | hand on own stomach | fingers on collarbone")},
+    "explicit": {"people": L("arched back | curled toes | sweat | clenched hands | grabbing sheets | trembling | ahegao"
+                             " | hand on another's head | gripping hips | legs wrapped around | spread legs | hands pinned"
+                             " | holding legs | toes spread | back arch, head back | hand grabbing hair | fingers digging in")},
 }
-LEVEL_CAMERA = {"suggestive": L("cowboy shot | full body | from side | from behind | pov"),
-                "nude": L("full body | cowboy shot | from side | from behind | from above"),
-                "explicit": L("full body, from side | from above | full body | pov | from below | close-up")}
-LEVEL_DETAILS = {"suggestive": L("clothes on floor | dropped clothes"), "nude": L("folded clothes | clothes on floor | towel"),
-                 "explicit": L("discarded clothes | sweat | condom wrapper | tissue box | clothes on floor")}
+LEVEL_CAMERA = {"suggestive": L("cowboy shot | full body | from side | from behind | pov | upper body | thigh focus | ass focus"
+                                " | from below | dutch angle | close-up | knees up"),
+                "nude": L("full body | cowboy shot | from side | from behind | from above | upper body | from below | close-up"
+                          " | knees up | lower body | wide shot | back view"),
+                "explicit": L("full body, from side | from above | full body | pov | from below | close-up | cowboy shot"
+                              " | upper body | from behind | lower body | between legs | pov, from above | dutch angle")}
+LEVEL_DETAILS = {"suggestive": L("clothes on floor | dropped clothes | wine glasses | candles | lipstick mark | rose petals"),
+                 "nude": L("folded clothes | clothes on floor | towel | rose petals | candles | robe on floor"),
+                 "explicit": L("discarded clothes | sweat | condom wrapper | tissue box | clothes on floor | messy sheets"
+                               " | lube bottle | steam | wet spot | torn panties")}
 
 CASTS = ("1girl", "1boy", "1girl1boy", "2girls", "2boys", "girls", "boys", "harem", "reverse", "mixed", "furry", "kemono",
          "mythic", "monster", "synth", "futa", "futa_girl", "futa_boy", "human_furry")
@@ -289,7 +364,7 @@ def _join(*bits):
 HUMANS = ("1girl", "1boy", "1girl1boy", "2girls", "2boys", "girls", "boys", "harem", "reverse", "mixed", "futa", "futa_girl", "futa_boy")
 
 
-def _subjects(level, theme_name, rng, beings=None, n=12):
+def _subjects(level, theme_name, rng, beings=None, n=18):
     """Who is there, never what they wear: the cast tags say it for humans; anthros and beings by kind."""
     out = {c: [""] for c in HUMANS}
     out["furry"] = [_join(f"anthro {sex}", kind, feat) for kind, sex, feat in rng.sample(ANTHRO_BODIES, n)]
@@ -417,6 +492,8 @@ def theme(stem, name, places, styles, nsfw_styles, camera, nonhuman="default", w
             if level in ("suggestive", "nude"):
                 lib = TEASE if level == "suggestive" else NUDE
                 t["actions"] = {cls: lib[cls]["*"] for cls in ("solo", "pair", "groups")}
+                if level == "suggestive":
+                    t["actions"].update({c: F_TEASE_ACTS for c in ("1girl", "futa")})
             else:
                 t["actions"] = {cast: SEX[SEX_KEY.get(cast, cast)]["*"] for cast in CASTS}
         templates[level] = t
@@ -468,7 +545,7 @@ def theme(stem, name, places, styles, nsfw_styles, camera, nonhuman="default", w
                     templates[zid] = zt
                 s = {"use": [level, f"p{pi}", pid, zid], "title": f"{p.title} · {z.title}"}
                 if level == "sfw":
-                    acts = {k: v for k, v in z.acts.items() if v}
+                    acts = {k: list(dict.fromkeys(v + _by_surface(SFW_SURF[k], names))) for k, v in z.acts.items() if v}
                     if z.none:
                         acts["none"] = z.none
                 else:

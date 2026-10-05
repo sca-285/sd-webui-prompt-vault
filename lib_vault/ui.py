@@ -32,12 +32,15 @@ function(target, pos, neg) {
 
 JS_SEND = """
 function(target, pos, neg) {
+    const clean = (value) => (window.promptVault && promptVault.dedupePrompt) ? promptVault.dedupePrompt(value || '') : (value || '');
     const put = (id, value) => {
         const el = gradioApp().querySelector('#' + id + ' textarea');
         if (!el || !value.trim()) return;
         el.value = value;
         if (typeof updateInput === 'function') updateInput(el); else el.dispatchEvent(new Event('input', {bubbles: true}));
     };
+    pos = clean(pos);
+    neg = clean(neg);
     put(target + '_prompt', pos);
     put(target + '_neg_prompt', neg);
     return [target, pos, neg];
@@ -94,14 +97,22 @@ def _generation_info(image):
     return params.get("Prompt", ""), params.get("Negative prompt", "")
 
 
+def _copyable(**kwargs):
+    """A text box with Gradio's own copy button, where this Gradio has it."""
+    try:
+        return gr.Textbox(show_copy_button=True, **kwargs)
+    except TypeError:
+        return gr.Textbox(**kwargs)
+
+
 def build():
     with gr.Blocks(analytics_enabled=False) as tab:
         # ============================================================ editor
         with gr.Group(elem_id="pv_editor"):
-            positive = gr.Textbox(label="Positive", lines=4, elem_id="pv_positive",
-                                  placeholder="Type, pick tags from the library below, or pull from txt2img")
-            negative = gr.Textbox(label="Negative", lines=2, elem_id="pv_negative",
-                                  placeholder="Negative prompt; tags of the Negative categories land here")
+            positive = _copyable(label="Positive", lines=4, elem_id="pv_positive",
+                                 placeholder="Type, pick tags from the library below, or pull from txt2img")
+            negative = _copyable(label="Negative", lines=2, elem_id="pv_negative",
+                                 placeholder="Negative prompt; tags of the Negative categories land here")
         gr.HTML("<div id='pv_editor_tools'></div>")
         with gr.Row(elem_id="pv_io_row", equal_height=True):
             target = gr.Radio(["txt2img", "img2img"], value="txt2img", label="Workspace", elem_id="pv_target",

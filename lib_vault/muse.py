@@ -46,7 +46,7 @@ import re
 import threading
 import uuid
 
-from . import TAG, acts as actlib, kinks as kinklib, looks, settings, store, text, vocab, when
+from . import TAG, acts as actlib, banks, kinks as kinklib, looks, settings, store, text, vocab, when
 
 EXT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCENE_DIR = os.path.join(EXT_ROOT, "data", "muse_scenes")
@@ -154,18 +154,30 @@ PEOPLE_PARTS = GROUPS["looks"] + ("job", "fx", "outfit", "pet")
 SUBJECT_CASTS = ("furry", "kemono", "mythic", "monster", "synth", "nonhuman")  # their subject says if they are a woman or a man
 
 MOODS = {
-    "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile", "serene", "gentle smile", "peaceful"],
-    "happy": ["smile", "laughing", "grin", "bright smile", "happy", "excited", "cheerful", "closed eyes, smile"],
-    "serious": ["serious expression", "determined expression", "focused expression", "stern expression", "frown", "concentrating", "thinking"],
-    "tense": ["worried expression", "wide eyes", "nervous expression", "fearful expression", "holding breath", "scared", "surprised", "shocked", "sweatdrop"],
-    "melancholy": ["sad expression", "tired eyes", "wistful expression", "downcast eyes", "teary eyes", "lonely", "melancholic"],
-    "cool": ["smirk", "confident expression", "half-lidded eyes", "expressionless", "smug", "aloof", "unimpressed", "bored"],
-    "playful": ["playful smile", "tongue out", "one eye closed, wink", "teasing smile", "mischievous smile", "giggling", "cheeky grin"],
-    "shy": ["blush", "shy smile", "embarrassed expression", "flustered", "nervous smile", "averting eyes, blush", "full-face blush"],
-    "sultry": ["seductive smile", "biting lip", "half-lidded eyes, blush", "parted lips", "naughty face", "bedroom eyes", "smoldering gaze"],
+    "calm": ["calm expression", "soft smile", "pensive", "relaxed expression", "faint smile", "serene", "gentle smile", "peaceful",
+             "content expression", "dreamy expression", "soft expression", "light smile", "tranquil", "at ease"],
+    "happy": ["smile", "laughing", "grin", "bright smile", "happy", "excited", "cheerful", "closed eyes, smile", "open-mouth smile",
+              "beaming", "joyful", "giggling", "playful grin", "toothy grin"],
+    "serious": ["serious expression", "determined expression", "focused expression", "stern expression", "frown", "concentrating",
+                "thinking", "intense gaze", "furrowed brow", "resolute", "stoic", "narrowed eyes", "cold stare", "steady gaze"],
+    "tense": ["worried expression", "wide eyes", "nervous expression", "fearful expression", "holding breath", "scared", "surprised",
+              "shocked", "sweatdrop", "anxious", "trembling lips", "alarmed", "panicked", "uneasy expression"],
+    "melancholy": ["sad expression", "tired eyes", "wistful expression", "downcast eyes", "teary eyes", "lonely", "melancholic",
+                   "nostalgic", "sorrowful", "empty eyes", "single tear", "sighing", "gloomy expression", "pained smile"],
+    "cool": ["smirk", "confident expression", "half-lidded eyes", "expressionless", "smug", "aloof", "unimpressed", "bored",
+             "cool expression", "raised eyebrow", "slight smirk", "indifferent", "sly smile", "poker face"],
+    "playful": ["playful smile", "tongue out", "one eye closed, wink", "teasing smile", "mischievous smile", "giggling", "cheeky grin",
+                "puffed cheeks", "pout", "silly face", "smug grin", "laughing, closed eyes", "excited expression", ":p"],
+    "shy": ["blush", "shy smile", "embarrassed expression", "flustered", "nervous smile", "averting eyes, blush", "full-face blush",
+            "light blush", "covering face", "bashful", "looking away, blush", "nose blush", "timid expression", "awkward smile"],
+    "sultry": ["seductive smile", "biting lip", "half-lidded eyes, blush", "parted lips", "naughty face", "bedroom eyes",
+               "smoldering gaze", "sultry expression", "licking lips", "come hither", "lustful expression", "heavy-lidded eyes",
+               "flirty smile", "teasing look"],
     "passion": ["flushed face, heavy breathing", "moaning, open mouth", "half-closed eyes, blush", "biting lip, sweat",
-                "tears of pleasure", "gasping", "drooling", "rolling eyes", "panting", "ecstatic expression"],
-    "afterglow": ["satisfied smile", "sleepy eyes", "blush, relaxed", "content expression", "dazed", "afterglow", "messy hair, smile"],
+                "tears of pleasure", "gasping", "drooling", "rolling eyes", "panting", "ecstatic expression", "flushed, moaning",
+                "trembling, blush", "open mouth, tongue out", "eyes squeezed shut", "screaming", "breathless"],
+    "afterglow": ["satisfied smile", "sleepy eyes", "blush, relaxed", "content expression", "dazed", "afterglow", "messy hair, smile",
+                  "exhausted, smile", "dreamy eyes", "lazy smile", "half-asleep", "glowing skin, smile", "sweaty, relaxed", "soft sigh"],
 }
 
 TARGETS = ("txt2img", "img2img", "vault")
@@ -548,7 +560,24 @@ def _cast_fits(s, c, st, chosen):
     return False
 
 
+_matched = {}
+
+
 def _matching(st):
+    """The scenes the filters leave, with the casts each can have; kept for the same filters and scenes."""
+    scenes = load_scenes()
+    key = (id(scenes), tuple(_ratings_on(st)), tuple(st["themes"]), tuple(st["casts"]), tuple(st["acts"]), tuple(st["kinks"]),
+           tuple(st["sizes"]), st["allow_nsfw"], st["anatomy"])
+    hit = _matched.get(key)
+    if hit is None:
+        hit = _matching_now(st)
+        if len(_matched) > 32:
+            _matched.clear()
+        _matched[key] = hit
+    return hit
+
+
+def _matching_now(st):
     ratings = set(_ratings_on(st))
     themes, casts = set(st["themes"]), set(st["casts"])
     acts = st["acts"] and st["allow_nsfw"]
@@ -590,9 +619,51 @@ def _pools(scene, cast, st=None):
     chosen = _kinks_for(scene, st) if st else []
     if chosen:
         pools["kink"] = list(dict.fromkeys(e for k in chosen for e in kinklib.entries(k, scene["rating"], cast, ALIASES)))
+    if cast == "1boy" and scene["rating"] != "sfw":
+        have = {text.key(a) for a in pools.get("action") or []}
+        extra = [a for a in kinklib.MALE_SOLO_ACTIONS.get(scene["rating"], []) if text.key(a) not in have]
+        pools["action"] = list(pools.get("action") or []) + extra
+    _widen(scene, cast, pools)
     if cast == "none":  # nobody to have a face or hands
         pools["expression"], pools["gesture"] = [], []
     return pools
+
+
+def _exposure(scene):
+    """out (outdoors), view (a room with a window on the sky) or in (a closed room), from the scene's Where."""
+    first = " ".join(str(x) for v in scene["lists"].get("setting", {}).values() for x in v[:1]).lower()
+    if first.startswith("outdoors"):
+        return "out"
+    if not first.startswith("indoors"):
+        return "none"  # under the sea, in space, an underworld
+    return "view" if "window" in first else "in"
+
+
+def _widen(scene, cast, pools):
+    """The scene's own lists first, then the wider vocabulary that fits it: every part has some fifteen to roll through."""
+    exp = _exposure(scene)
+    theme, sfw = scene["theme"], scene["rating"] == "sfw"
+    people = cast in ALIASES["people"]
+    cls = next((c for c in ("solo", "pair", "groups") if cast in ALIASES[c]), None)
+    add = lambda slot, more: pools.__setitem__(slot, list(dict.fromkeys(list(pools.get(slot) or []) + list(more))))
+    if pools.get("setting"):
+        touch = banks.SETTING_TOUCH[exp]
+        pools["setting"] = list(dict.fromkeys(w if not t or t in w else f"{w}, {t}" for w in pools["setting"] for t in touch))
+    add("lighting", banks.light_sources(theme, exp))
+    detail = banks.DETAIL_ANY[exp]
+    if theme not in banks.MODERN_THEMES:
+        detail = [d for d in detail if not banks.OLD_DETAIL.search(d)]
+    add("detail", detail)
+    add("style", banks.STYLE_ANY if sfw else banks.STYLE_NSFW)
+    shots = banks.SHOT_PEOPLE if people else banks.SHOT_PLACE
+    if cls in ("pair", "groups"):
+        shots = [x for x in shots if x not in banks.CLOSE_SHOTS]
+        pools["camera"] = [x for x in pools.get("camera") or [] if not any(c in x for c in ("extreme close-up", "face focus"))]
+    add("camera", shots)
+    if sfw and cls and pools.get("action") is not None:
+        add("action", banks.ACT_ANY[cls] + (banks.ACT_MODERN[cls] if theme in banks.MODERN_THEMES else []))
+    if sfw and cls in ("pair", "groups"):
+        add("gesture", banks.GESTURE_MORE[cls])
 
 
 ORDER_DRAWN = ("subject", "time", "job", "outfit", "pet", "build", "skin", "body", "hair", "eyes", "face", "makeup", "accessory", "fx", "kink",
@@ -606,7 +677,7 @@ DEPENDS = {"job": ("outfit", "accessory", "fx"), "time": ("natural",),
 # otherwise, is not drawn ("smile" in the doing leaves out "grin"; "looking away" leaves out "looking at viewer")
 FACETS = {
     "mouth": re.compile(r"\b(smil\w*|laugh\w*|grin\w*|(open|closed|covering|covered) mouth|tongue\w*|lips?|pout\w*|teeth|fangs?|smirk\w*"
-                        r"|moan\w*|gasp\w*|frown\w*|whistl\w*|chewing|bubble blowing|puffy cheeks|mouth hold|ahegao|kiss\w*|fellatio|licking|sucking|yawn\w*|eating|drinking)\b", re.I),
+                        r"|\w+ mouth|moan\w*|gasp\w*|frown\w*|whistl\w*|chewing|bubble blowing|puffy cheeks|mouth hold|ahegao|kiss\w*|fellatio|licking|sucking|yawn\w*|eating|drinking)\b", re.I),
     "eyes": re.compile(r"\b(looking|eyes closed|closed eyes|(half-closed|half-lidded|downcast|wide|tired|sleepy|rolling) eyes|wink\w*|glanc\w*"
                        r"|star(e|ing)|gaze|averting|upturned eyes|eye contact|ahegao|sleeping|blindfold\w*)\b", re.I),
     "angle": re.compile(r"\b(from above|from below|high angle|low angle|overhead|aerial|worm's eye|dutch angle|eye level|straight-on|tilted frame)\b", re.I),
@@ -746,30 +817,57 @@ LOOK_FILLED = ("job", "outfit", "pet", "build", "skin", "hair", "eyes", "face", 
                "light_quality", "light_mood", "light_support", "light_volume", "camera", "angle", "view", "framing", "color")
 
 
+def _pieces_and_whole(value):
+    """"a, b, c" -> each of them, the pairs and the whole: a part with one entry gets a few to roll through."""
+    pieces = text.split(value)
+    out = list(pieces)
+    for i in range(len(pieces)):
+        for j in range(i + 1, len(pieces)):
+            out.append(f"{pieces[i]}, {pieces[j]}")
+    out.append(", ".join(pieces))
+    return list(dict.fromkeys(out))
+
+
+# what a nude idea still wears
+NUDE_WEAR = ["nude", "completely nude", "nude, barefoot", "nude, necklace", "nude, glasses", "nude, choker", "nude, anklet",
+             "nude, earrings", "nude, wristwatch", "nude, bracelet", "nude, socks", "nude, wet hair", "nude, body chain",
+             "nude, wet skin", "nude, jewelry"]
+
+
 def _outfits(scene, who, f, m, job, rng):
     """What the people of an idea wear: the scene's clothes (or a job's), put together for the cast."""
     level = scene["rating"]
-    wf, wm = scene["wear"]["f"], scene["wear"]["m"]
+    wf, wm = list(scene["wear"]["f"]), list(scene["wear"]["m"])
+    if level == "sfw" or scene["custom"] is False:  # the wider wardrobe of such a place
+        more_f, more_m = banks.wear(scene["theme"], scene["title"], "f"), banks.wear(scene["theme"], scene["title"], "m")
+        if level == "sfw":
+            wf, wm = wf + more_f, wm + more_m
+        elif level in ("suggestive", "explicit"):  # their clothes, coming off
+            pick = lambda pool: [f"{w}, {t}" for w, t in zip(rng.sample(pool, min(10, len(pool))), (rng.choice(looks.TEASE) for _ in range(10)))]
+            wf, wm = wf + pick(more_f), wm + pick(more_m)
     if job in looks.JOBS and level in ("sfw", "suggestive"):
         _t, jf, jm, _p, _fx = looks.JOBS[job]
-        wf, wm = [jf], [jm]
+        touch = rng.sample(banks.JOB_TOUCH, 12)
+        wf, wm = [jf] + [f"{jf}, {t}" for t in touch], [jm] + [f"{jm}, {t}" for t in touch]
         if level == "suggestive":
-            wf = [f"{jf}, {t}" for t in rng.sample(looks.TEASE, 3)]
-            wm = [f"{jm}, {t}" for t in rng.sample(looks.TEASE, 3)]
+            wf = [f"{jf}, {t}" for t in rng.sample(looks.TEASE, min(12, len(looks.TEASE)))]
+            wm = [f"{jm}, {t}" for t in rng.sample(looks.TEASE, min(12, len(looks.TEASE)))]
     if level == "nude":
-        return ["nude"]
+        return NUDE_WEAR
     if not wf and not wm:
         return []
     if level == "explicit":
         tease = (wf if f else []) + (wm if m else []) or wf + wm
-        return ["completely nude", "completely nude"] + [f"partially undressed, {t}" for t in tease[:3]] + [f"clothes pull, {t}" for t in tease[3:5]]
+        tease = rng.sample(tease, len(tease))
+        return (["completely nude"] * 3 + NUDE_WEAR[2:8] + [f"partially undressed, {t}" for t in tease[:8]]
+                + [f"clothes pull, {t}" for t in tease[8:13]])
     pattern = {"1girl": "f", "futa": "f", "1boy": "m", "1girl1boy": "fm", "futa_boy": "fm", "human_furry": "fm", "2girls": "ff",
                "futa_girl": "ff", "2boys": "mm", "girls": "f", "boys": "m", "harem": "mf", "reverse": "fm", "mixed": "fm"}.get(who)
     if pattern is None:  # a being: by what its subject says
         pattern = "f" if f and not m else "m" if m and not f else "f" if rng.random() < 0.5 else "m"
     lists = {"f": wf or wm, "m": wm or wf}
     out = []
-    for _ in range(8):
+    for _ in range(30):
         picked = []
         for sex in pattern:
             choices = [x for x in lists[sex] if x not in picked] or lists[sex]
@@ -788,9 +886,11 @@ def _library_poses(scene, who, parts):
     return vocab.poses_for(level, "solo" if who in ALIASES["solo"] else "pair", gender, parts["action"], scene["theme"])
 
 
-def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None, girls=None):
+def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None, girls=None, avoid=None):
     """A new idea. With scene_id, the same scene again: the parts in keep stay as they are
-    (the locked ones), the rest is drawn afresh. roll names a part of keep that must change."""
+    (the locked ones), the rest is drawn afresh. roll names a part of keep that must change; avoid, what that part
+    already was on the card: it comes back only once everything else has."""
+    avoid = {str(x) for x in (avoid or [])[:200]}
     st = state()
     rules = parse_blacklist(st["blacklist"])
     blocked = _blacklist_test(rules)
@@ -888,13 +988,21 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                 if slot == "skin" and who in kinklib.ANTHROS:
                     return []  # fur, scales or feathers: in the subject
                 if slot == "makeup" and not f:
-                    return looks.MAKEUP["m"] if rng.random() < 0.3 else []
+                    return looks.MAKEUP["m"] if roll == slot or rng.random() < 0.3 else []
                 return looks.pools(f, m, people or (2 if who in ALIASES["pair"] else 1), rng)[slot]
             if slot == "accessory" and parts.get("job"):
-                return [looks.JOBS[parts["job"]][3]] if parts["job"] in looks.JOBS and looks.JOBS[parts["job"]][3] else own
+                props = looks.JOBS[parts["job"]][3] if parts["job"] in looks.JOBS else ""
+                if not props:
+                    return own
+                mine = _pieces_and_whole(props)  # a job's props, one by one or together, now and then with a ring or a watch
+                worn = own or looks.pools(f, m, 1, rng)["accessory"]
+                return mine + [f"{p}, {a}" for p, a in zip(rng.sample(mine * 4, min(10, len(mine) * 4)), rng.sample(worn, min(10, len(worn))))]
             if slot == "fx":
                 job = looks.JOBS.get(parts.get("job", ""))
-                return [job[4]] if job and job[4] else own
+                if not (job and job[4]):
+                    return own
+                mine = _pieces_and_whole(job[4])
+                return mine + [f"{mine[0]}, {x}" for x in banks.FX_ANY if x not in mine]
             if slot == "natural":
                 if own or sky == (None, None):
                     return own
@@ -947,11 +1055,12 @@ def compose(scene_id=None, cast=None, keep=None, roll=None, seed=None, size=None
                     pool = [a for a in pool if actlib.in_family(a, who, wanted)]
                 if parts.get("kink"):
                     pool = [] if "own" in actlib.needs(parts["kink"]) else [a for a in pool if actlib.fits(parts["kink"], a, who, wanted)]
-            if slot in TIDY and pool:
+            if slot in TIDY and pool and slot != roll:  # rolled by hand: you asked for one
                 taken = set().union(*(_facets(v) for k, v in {**keep, **parts}.items() if k != slot and k not in hidden and isinstance(v, str)))
                 pool = [x for x in pool if not _facets(x) & taken]
             if slot == roll and len(pool) > 1:
-                pool = [x for x in pool if x != current]
+                others = [x for x in pool if x != current]
+                pool = [x for x in others if x not in avoid] or others
             if slot != roll and slot in CHANCE and rng.random() >= CHANCE[slot]:
                 pool = []
             parts[slot] = rng.choice(pool) if pool else ""
