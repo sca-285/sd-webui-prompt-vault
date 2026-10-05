@@ -143,6 +143,24 @@ def register(app):
     def muse_snapshot():
         return run(muse.snapshot)
 
+    # ---------------------------------------------------------------- Qwen: which model, where it lives
+    @app.get(f"{BASE}/qwen/models")
+    def qwen_models():
+        from . import qwen
+
+        return run(qwen.models)
+
+    @app.post(f"{BASE}/qwen/models")
+    def qwen_choose(body: dict = Body(...)):
+        from . import qwen
+
+        def go():
+            try:
+                return qwen.choose(body.get("model"), body.get("mmproj"), body.get("memory"))
+            except ValueError as exc:
+                raise store.VaultError(str(exc))
+        return run(go)
+
     # ---------------------------------------------------------------- Qwen Chat
     from . import chat
 

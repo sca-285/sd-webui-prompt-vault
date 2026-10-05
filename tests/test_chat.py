@@ -154,6 +154,30 @@ assert ev[-1]["done"] and "--no-kv-offload" not in open(os.environ["FAKE_ARGS_LO
 os.environ.pop("FAKE_OLD")
 print("old build ok")
 
+# choosing the model from Muse's card: the .gguf files found, the projector picked for the model
+from lib_vault import settings as pv_settings
+vlm = os.path.join(pv_settings.webui_models_dir(), "VLM")
+os.makedirs(os.path.join(vlm, "huihui-30b"), exist_ok=True)
+for name in ("Qwen3VL-4B-Instruct-Q8_0.gguf", "mmproj-Qwen3VL-4B-Instruct-F16.gguf", "Qwen3VL-8B-Instruct-Q6_K.gguf",
+             "mmproj-Qwen3VL-8B-Instruct-F16.gguf", os.path.join("huihui-30b", "Huihui-Qwen3-VL-30B-A3B-Instruct-abliterated-Q4_K_M.gguf"),
+             os.path.join("huihui-30b", "mmproj-F16.gguf")):
+    fake_gguf(os.path.join(vlm, name), 36)
+M = "/prompt-vault/api/qwen/models"
+lst = c.get(M).json()
+names = [m["name"] for m in lst["models"]]
+assert "Qwen3VL-8B-Instruct-Q6_K.gguf" in names and all("mmproj" not in n for n in names), names
+assert len(lst["mmprojs"]) == 4 and any(d.endswith("VLM") for d in lst["dirs"]), lst
+pick = lambda name: next(m["path"] for m in lst["models"] if m["name"] == name)
+got = c.post(M, json={"model": pick("Qwen3VL-8B-Instruct-Q6_K.gguf")}).json()
+assert got["model"].endswith("Qwen3VL-8B-Instruct-Q6_K.gguf") and got["mmproj"].endswith("mmproj-Qwen3VL-8B-Instruct-F16.gguf"), got
+got = c.post(M, json={"model": pick("Huihui-Qwen3-VL-30B-A3B-Instruct-abliterated-Q4_K_M.gguf")}).json()
+assert got["mmproj"].endswith(os.path.join("huihui-30b", "mmproj-F16.gguf")), got["mmproj"]
+got = c.post(M, json={"memory": "Low VRAM"}).json()
+assert got["memory"] == "Low VRAM" and shared.opts.pv_vlm_memory == "Low VRAM"
+assert c.post(M, json={"model": "/nowhere/x.gguf"}).status_code == 400
+assert c.post(M, json={"memory": "Lots"}).status_code == 400
+print("model choice ok")
+
 assert c.post(B + "/send", json={"id": "nope", "text": "hi"}).status_code == 400
 assert c.post(B + "/send", json={"id": big, "text": ""}).status_code == 400
 c.post(B + "/delete", json={"id": big})

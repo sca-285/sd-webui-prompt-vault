@@ -504,3 +504,9 @@ html body .pv-chat-saved-open { flex: 1; display: flex; justify-content: space-b
 .pv-chat-compact .pv-chat-msg { max-width: 96%; }
 .pv-chat-code code { padding: 0; background: none; font-size: inherit; }
 html body .pv-chat .pv-chat-input::placeholder { color: var(--body-text-color); opacity: 0.45; }
+#pv_muse_panel .pv-muse-pick { display: grid; grid-template-columns: 70px minmax(0, 1fr); align-items: center; gap: 8px; }
+html body #pv_muse_panel .pv-muse-select {
+    width: 100%; min-width: 0; margin: 0; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border-color-primary);
+    background: var(--input-background-fill, var(--block-background-fill)); color: var(--body-text-color); font-size: 13px;
+}
+html body #pv_muse_panel .pv-muse-select option, html body #pv_muse_panel .pv-muse-select optgroup { background: var(--background-fill-primary, #111); color: var(--body-text-color); }

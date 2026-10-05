@@ -256,7 +256,14 @@ recommended models:
 Which zip fits your GPU, which Qwen size fits your VRAM, and how to check that it all
 works: **[SETUP_AI.md](SETUP_AI.md)**, sections 1 and 2.
 
-**VRAM or RAM.** *Settings → Prompt Vault (Qwen / llama-server) → Where Qwen lives*: **Auto** (the
+**Choosing the model on Muse's card.** Put the model's `.gguf` and its `mmproj-*.gguf` in
+`models/VLM` (a folder of their own inside it is fine), then **Muse → ⚙ Settings → Qwen model**:
+pick the **Model** from the list, and the **Vision** projector that came with it is picked for you;
+**Lives in** says where it runs (below). The choice is saved in the WebUI's settings and takes effect
+at once. Another folder: *Settings → Prompt Vault (Qwen / llama-server) → Folder of Qwen .gguf files*;
+the two path boxes there still work for a file anywhere else.
+
+**VRAM or RAM.** *Lives in* on Muse's card, or *Settings → Prompt Vault (Qwen / llama-server) → Where Qwen lives*: **Auto** (the
 default) puts as many of the model's layers on the GPU as fit in the free VRAM, less what it leaves for
 Stable Diffusion (4 GB by default), and the rest in RAM; **KV cache in RAM** keeps the conversation's
 memory in RAM; **Low VRAM** puts half the layers (or a mixture-of-experts model's experts), the context

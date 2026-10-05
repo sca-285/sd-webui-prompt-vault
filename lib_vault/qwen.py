@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import io
 import os
+import re
 import time
 
 from . import gguf, llama, settings, text, vram
@@ -232,3 +233,122 @@ def rewrite(prompt, task, instruction=""):
     if kept:
         result = f"{text.join(kept)}, {result}"
     return result, f"Qwen: {task.lower()} in {time.time() - started:.1f}s"
+
+
+# ------------------------------------------------------------------ choosing the model from a list
+MODEL_DIRS = ("VLM", "LLM", "llm", "Qwen", "qwen", os.path.join("prompt_vault", "qwen"))
+
+
+def _model_dirs():
+    """Where .gguf files for Qwen are looked for: models/VLM and the like, the folder in Settings, and the
+    folders of the files already chosen."""
+    base = settings.webui_models_dir()
+    dirs = [os.path.join(base, d) for d in MODEL_DIRS]
+    extra = settings.clean_path(settings.opt("pv_vlm_models_dir"))
+    if extra:
+        dirs.insert(0, extra)
+    for key in ("pv_vlm_model_path", "pv_vlm_mmproj_path"):
+        p = settings.clean_path(settings.opt(key))
+        if p:
+            dirs.append(os.path.dirname(p))
+    seen, out = [], []
+    for d in dirs:
+        k = os.path.normcase(os.path.abspath(d))
+        inside = any(k == s or k.startswith(s + os.sep) for s in seen)  # a folder already looked through
+        if not inside and os.path.isdir(d):
+            seen.append(k)
+            out.append(d)
+    return out
+
+
+def _tokens_of(name):
+    stem = os.path.splitext(os.path.basename(name))[0].lower()
+    stem = stem.replace("mmproj", " ").replace("qwen3vl", "qwen3-vl")
+    return {t for t in re.split(r"[^a-z0-9]+", stem) if t and t not in ("gguf", "f16", "f32", "bf16", "q8", "0", "model")}
+
+
+def models():
+    """{"models", "mmprojs", "model", "mmproj", "memory", "memory_modes", "dirs", "running", "note"}."""
+    found = {}
+    for d in _model_dirs():
+        for root, _subdirs, files in os.walk(d):
+            if root[len(d):].count(os.sep) > 2:
+                continue
+            for f in files:
+                if f.lower().endswith(".gguf"):
+                    p = os.path.join(root, f)
+                    found.setdefault(os.path.normcase(os.path.abspath(p)), p)
+    items = []
+    for p in sorted(found.values(), key=lambda x: os.path.basename(x).lower()):
+        try:
+            size = os.path.getsize(p)
+        except OSError:
+            continue
+        items.append({"path": p, "name": os.path.basename(p), "folder": os.path.basename(os.path.dirname(p)),
+                      "gb": round(size / 1024 ** 3, 2), "mmproj": "mmproj" in os.path.basename(p).lower()})
+    model = settings.clean_path(settings.opt("pv_vlm_model_path"))
+    mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
+    return {"models": [i for i in items if not i["mmproj"]], "mmprojs": [i for i in items if i["mmproj"]],
+            "model": model, "mmproj": mmproj,
+            "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
+            "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", "")}
+
+
+def mmproj_for(model_path, mmprojs):
+    """The vision projector that belongs to a model: the one in its folder whose name shares the most with it."""
+    if not model_path:
+        return ""
+    folder = os.path.normcase(os.path.dirname(os.path.abspath(model_path)))
+    mine = _tokens_of(model_path)
+    sizes = lambda tokens: {t for t in tokens if re.fullmatch(r"\d+(\.\d+)?b|a\d+b", t)}
+    my_size = sizes(mine)
+    best, score = "", None
+    for m in mmprojs:
+        theirs = _tokens_of(m["path"])
+        s = len(mine & theirs)
+        if os.path.normcase(os.path.dirname(os.path.abspath(m["path"]))) == folder:
+            s += 10  # beside the model: what its download came with
+        if my_size and sizes(theirs) and not my_size & sizes(theirs):
+            s -= 20  # a 4B projector does not fit an 8B model
+        if score is None or s > score:
+            best, score = m["path"], s
+    return best
+
+
+def _set_opt(key, value):
+    from modules import shared
+
+    try:
+        shared.opts.set(key, value)
+    except Exception:
+        setattr(shared.opts, key, value)
+    try:
+        shared.opts.save(shared.config_filename)
+    except Exception:
+        pass
+
+
+def choose(model=None, mmproj=None, memory=None):
+    """Settings from Muse's card: the model and its projector (picked for it when not given), where it lives.
+    The server starts again with them at its next use."""
+    listing = models()
+    known = {os.path.normcase(os.path.abspath(i["path"])) for i in listing["models"] + listing["mmprojs"]}
+    if model is not None:
+        model = str(model)
+        if model and os.path.normcase(os.path.abspath(model)) not in known:
+            raise ValueError("That model file is not in the list any more: refresh it.")
+        _set_opt("pv_vlm_model_path", model)
+        if mmproj is None:
+            mmproj = mmproj_for(model, listing["mmprojs"])
+    if mmproj is not None:
+        mmproj = str(mmproj)
+        if mmproj and os.path.normcase(os.path.abspath(mmproj)) not in known:
+            raise ValueError("That projector file is not in the list any more: refresh it.")
+        _set_opt("pv_vlm_mmproj_path", mmproj)
+    if memory is not None:
+        if memory not in MEMORY_MODES:
+            raise ValueError(f"Unknown memory mode {memory!r}")
+        _set_opt("pv_vlm_memory", memory)
+    if SERVER.running() and getattr(SERVER, "placed", None) != _placement():
+        SERVER.stop()  # started again with the new choice when Qwen is next used
+    return models()

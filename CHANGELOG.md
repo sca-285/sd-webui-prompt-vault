@@ -16,6 +16,11 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
   or JSON, Import brings a JSON one back. A system prompt per conversation; the default in Settings.
 - Long conversations keep within the model's context: the oldest messages are left out.
 
+### Qwen: choose the model on Muse's card
+- Muse's settings list the .gguf files in models/VLM (and models/LLM, models/prompt_vault/qwen, a folder of
+  your choice): pick the model, and the vision projector beside it (same folder, same size) is picked for
+  it; where it lives too. Saved in the WebUI's settings; the server starts again with the new choice.
+
 ### Qwen: VRAM or RAM
 - Where Qwen lives: Auto (as many layers on the GPU as fit, less a reserve for Stable Diffusion, the rest
   in RAM; read from the model file), All on GPU, KV cache in RAM, Low VRAM (half the layers or a MoE
