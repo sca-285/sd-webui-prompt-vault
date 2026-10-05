@@ -453,13 +453,18 @@
             box);
     }
 
+    function cleanPrompt(value) {
+        const pv = window.promptVault;
+        return pv && pv.dedupePrompt ? pv.dedupePrompt(value || '') : (value || '');
+    }
+
     function send(target) {
         const it = idea();
         if (!it) return;
         const s = st();
         const pos = area(TARGETS[target]);
         if (!pos) { toast('The ' + TARGET_NAMES[target] + ' prompt box is not on the page', true); return; }
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
+        write(pos, cleanPrompt(s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it)));
         const go = window['switch_to_' + target];
         if (typeof go === 'function') { try { go(); } catch (e) { /* the tab switch is a nicety */ } }
         toast('Sent to ' + TARGET_NAMES[target]);
@@ -481,7 +486,7 @@
         if (!pos || !go) { toast(tab + ' is not on the page', true); return; }
         if (generating()) { toast('An image is being generated: wait for it', true); return; }
         const s = st();
-        write(pos, s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it));
+        write(pos, cleanPrompt(s.send_mode === 'append' && pos.value.trim() ? addMissing(pos.value, fullPrompt(it)) : fullPrompt(it)));
         const before = new Set(galleryImages(tab));
         M.gen = {id: it.id, started: Date.now(), seen: false, tab};
         render();

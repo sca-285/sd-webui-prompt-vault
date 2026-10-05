@@ -356,8 +356,10 @@ EXTRA_ALIASES = {"female": FEMALE, "male": MALE, "penis": PENIS_PAIRS, "rough": 
 BREASTS = ["small breasts", "medium breasts", "large breasts", "huge breasts", "perky breasts", "sagging breasts"]
 NIPPLES = ["pink nipples", "dark nipples", "puffy nipples", "large areolae", "inverted nipples"]
 PUSSY = ["pussy", "shaved pussy", "pubic hair", "hairy pussy", "trimmed pubic hair", "puffy pussy", "vagina"]
-CHEST = ["pectorals", "muscular pectorals", "chest hair", "hairy chest", "abs", "smooth chest"]
-PENIS = ["penis", "large penis", "veiny penis", "uncut penis, foreskin", "circumcised penis", "thick penis", "huge penis"]
+CHEST = ["pectorals", "muscular pectorals", "chest hair", "hairy chest", "abs", "smooth chest",
+         "happy trail", "defined Adonis belt", "soft stomach", "veined forearms"]
+PENIS = ["penis", "large penis", "veiny penis", "uncut penis, foreskin", "circumcised penis", "thick penis", "huge penis",
+         "soft penis", "erect penis", "heavy balls"]
 BODY_HAIR = ["armpit hair", "pubic hair", "happy trail"]
 PROSTHETIC = ["prosthetic arm", "mechanical arm", "cybernetic leg", "robot joints", "exposed mechanical parts",
               "glowing cybernetic implants"]
@@ -493,14 +495,91 @@ def themed(kink, theme):
 
 
 def entries(kink, level, cast, aliases):
-    """What a kink gives a cast at a level: its own entries, else those of an alias it is in."""
+    """What a kink gives a cast at a level: its own entries, else those of an alias it is in.
+
+    1boy gets an extra male-solo list on top. Phrases already in the cast list are not added again.
+    """
     lists = KINKS[kink].get(level) or {}
     if cast in lists:
-        return lists[cast]
-    for alias in ("penis", "rough", "pair", "groups", "solo", "female", "male", "people"):
-        if alias in lists and cast in (EXTRA_ALIASES.get(alias) or aliases.get(alias, ())):
-            return lists[alias]
-    return []
+        base = list(lists[cast])
+    else:
+        base = []
+        for alias in ("penis", "rough", "pair", "groups", "solo", "female", "male", "people"):
+            if alias in lists and cast in (EXTRA_ALIASES.get(alias) or aliases.get(alias, ())):
+                base = list(lists[alias])
+                break
+    extra = MALE_SOLO.get(kink, {}).get(level, []) if cast == "1boy" else []
+    if not extra:
+        return base
+    seen = {_phrase_key(x) for x in base}
+    return base + [x for x in extra if _phrase_key(x) not in seen]
+
+
+def _phrase_key(piece):
+    return re.sub(r"\s+", " ", str(piece or "").replace("_", " ")).strip().lower()
+
+
+# Doing phrases added only when the cast is 1boy and the scene is not SFW. Keys already in the scene are skipped.
+MALE_SOLO_ACTIONS = {
+    "suggestive": ["adjusting bulge", "shirt lift, abs", "hand in pants", "loosened belt, bulge"],
+    "nude": ["nude, male focus", "penis grab", "erection, looking at viewer", "masturbation, hand on penis",
+             "standing nude, male focus", "sitting nude, legs apart"],
+    "explicit": ["masturbation, male focus", "penis grab, ejaculation", "autofellatio", "spread legs, erection",
+                 "onahole, masturbation", "anal fingering, male focus"],
+}
+
+
+# 1boy only. Never copied onto 2boys or hetero. phrases already in that kink's 1boy list are skipped.
+MALE_SOLO = {
+    "toys": {
+        "nude": ["onahole, holding", "cock ring", "prostate massager, holding"],
+        "explicit": ["onahole, thrusting", "fleshlight, precum", "prostate massager, erection", "cock ring, masturbation",
+                     "vibrator against perineum"],
+    },
+    "fluids": {
+        "nude": ["precum, erection", "sweat, male focus"],
+        "explicit": ["precum string", "cum on own stomach", "cum on own chest", "cum on own face", "ejaculation, male focus",
+                     "cum drip, penis"],
+    },
+    "anal": {
+        "nude": ["butt plug, male", "spreading own ass"],
+        "explicit": ["anal fingering, male focus", "butt plug, prostate", "dildo, anal, male", "anal beads, male focus"],
+    },
+    "oral": {
+        "explicit": ["autofellatio", "licking own penis", "penis in own mouth"],
+    },
+    "exhibitionism": {
+        "suggestive": ["bulge, open window", "shirt lift, public, male"],
+        "nude": ["nude, male focus, open window", "public nudity, male"],
+        "explicit": ["masturbation, open window", "public masturbation, male"],
+    },
+    "hypnosis": {
+        "explicit": ["hypnosis, empty eyes, male masturbation", "mind control, erection"],
+    },
+    "watersports": {
+        "explicit": ["peeing, male focus, erection", "peeing, masturbation, male"],
+    },
+    "latex": {
+        "suggestive": ["latex shorts, bulge", "open latex shirt, male"],
+        "explicit": ["latex bodysuit, crotch zipper, male", "leather harness, erection"],
+    },
+    "marks": {
+        "nude": ["bite mark, pectoral", "scratches, male chest"],
+        "explicit": ["handprint, male hip", "bite mark, shoulder, male"],
+    },
+    "muscle": {
+        "explicit": ["muscle growth, masturbation", "muscle growth, flexing, erection"],
+    },
+    "chastity": {
+        "explicit": ["chastity cage, leaking", "chastity cage, hands behind back"],
+    },
+    "bondage": {
+        "explicit": ["shibari, male, erection", "bound wrists, male masturbation", "spreader bar, male"],
+    },
+    "bdsm": {
+        "explicit": ["ball gag, male, erection", "blindfold, male masturbation", "collar, male, kneeling"],
+    },
+}
 
 
 def casts_by_level(aliases, casts):

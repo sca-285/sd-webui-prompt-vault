@@ -590,6 +590,10 @@ def _pools(scene, cast, st=None):
     chosen = _kinks_for(scene, st) if st else []
     if chosen:
         pools["kink"] = list(dict.fromkeys(e for k in chosen for e in kinklib.entries(k, scene["rating"], cast, ALIASES)))
+    if cast == "1boy" and scene["rating"] != "sfw":
+        have = {text.key(a) for a in pools.get("action") or []}
+        extra = [a for a in kinklib.MALE_SOLO_ACTIONS.get(scene["rating"], []) if text.key(a) not in have]
+        pools["action"] = list(pools.get("action") or []) + extra
     if cast == "none":  # nobody to have a face or hands
         pools["expression"], pools["gesture"] = [], []
     return pools

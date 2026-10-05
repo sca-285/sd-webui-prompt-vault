@@ -32,12 +32,15 @@ function(target, pos, neg) {
 
 JS_SEND = """
 function(target, pos, neg) {
+    const clean = (value) => (window.promptVault && promptVault.dedupePrompt) ? promptVault.dedupePrompt(value || '') : (value || '');
     const put = (id, value) => {
         const el = gradioApp().querySelector('#' + id + ' textarea');
         if (!el || !value.trim()) return;
         el.value = value;
         if (typeof updateInput === 'function') updateInput(el); else el.dispatchEvent(new Event('input', {bubbles: true}));
     };
+    pos = clean(pos);
+    neg = clean(neg);
     put(target + '_prompt', pos);
     put(target + '_neg_prompt', neg);
     return [target, pos, neg];
