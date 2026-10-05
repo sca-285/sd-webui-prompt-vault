@@ -178,6 +178,25 @@ assert c.post(M, json={"model": "/nowhere/x.gguf"}).status_code == 400
 assert c.post(M, json={"memory": "Lots"}).status_code == 400
 print("model choice ok")
 
+# folders on another drive: several for Qwen, one for Prompt Vault's own models
+other, third, own = (tempfile.mkdtemp(prefix=p) for p in ("drive-d-", "drive-e-", "pv-models-"))
+fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.Q5_K_M.gguf"), 36)
+fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.mmproj-f16.gguf"), 1)
+os.environ["PV_FAR"] = third
+F = "/prompt-vault/api/qwen/folders"
+got = c.post(F, json={"qwen_dirs": f'"{other}"; $PV_FAR', "models_dir": own}).json()
+assert any(m["name"] == "Far-Qwen3-VL-8B.Q5_K_M.gguf" for m in got["models"]), got["models"]
+assert got["dirs"][:2] == [other, third] and got["models_base"] == own and not got["missing"], got
+assert pv_settings.models_dir("wd14") == os.path.join(own, "wd14") and os.path.isdir(os.path.join(own, "wd14"))
+far = next(m["path"] for m in got["models"] if m["name"].startswith("Far-"))
+assert c.post(M, json={"model": far}).json()["mmproj"].endswith("Far-Qwen3-VL-8B.mmproj-f16.gguf")
+bad = c.post(F, json={"qwen_dirs": "/no/such/drive"})
+assert bad.status_code == 400 and "Not found" in bad.json()["error"]
+assert c.post(F, json={"models_dir": "/no/such/place"}).status_code == 400
+c.post(F, json={"qwen_dirs": "", "models_dir": ""})
+assert pv_settings.models_base().endswith(os.path.join("models", "prompt_vault"))
+print("folders ok")
+
 assert c.post(B + "/send", json={"id": "nope", "text": "hi"}).status_code == 400
 assert c.post(B + "/send", json={"id": big, "text": ""}).status_code == 400
 c.post(B + "/delete", json={"id": big})

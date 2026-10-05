@@ -260,8 +260,14 @@ works: **[SETUP_AI.md](SETUP_AI.md)**, sections 1 and 2.
 `models/VLM` (a folder of their own inside it is fine), then **Muse → ⚙ Settings → Qwen model**:
 pick the **Model** from the list, and the **Vision** projector that came with it is picked for you;
 **Lives in** says where it runs (below). The choice is saved in the WebUI's settings and takes effect
-at once. Another folder: *Settings → Prompt Vault (Qwen / llama-server) → Folder of Qwen .gguf files*;
-the two path boxes there still work for a file anywhere else.
+at once.
+
+**Models on another drive.** The same section of Muse's settings has two folders (also in *Settings →
+Prompt Vault*): **Qwen in**, one or more folders of Qwen `.gguf` files on any drive, separated by `;`
+(`D:\AI\VLM; E:\LLM`; `models/VLM` is looked through as well), and **WD14, TIPO**, the folder of
+Prompt Vault's own models (empty: `models/prompt_vault`). Moving WD14 or TIPO: move their `wd14` and
+`tipo` folders there yourself, then set the new place. The two path boxes in Settings still work for a
+file anywhere else.
 
 **VRAM or RAM.** *Lives in* on Muse's card, or *Settings → Prompt Vault (Qwen / llama-server) → Where Qwen lives*: **Auto** (the
 default) puts as many of the model's layers on the GPU as fit in the free VRAM, less what it leaves for

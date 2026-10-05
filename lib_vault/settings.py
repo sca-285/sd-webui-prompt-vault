@@ -8,6 +8,7 @@ they were, so an existing setup carries over.
 from __future__ import annotations
 
 import os
+import re
 
 from modules import shared
 
@@ -37,6 +38,7 @@ WD14_MODELS = {
 DEFAULTS = {
     # main
     "pv_data_dir": "",
+    "pv_models_dir": "",
     "pv_autocomplete": True,
     "pv_autocomplete_webui": False,
     "pv_history": True,
@@ -116,8 +118,24 @@ def data_dir():
     return path
 
 
+def expand(path):
+    """A folder as typed: quotes, ~ and %VARIABLES% / $VARIABLES taken care of."""
+    path = clean_path(path)
+    return os.path.expanduser(os.path.expandvars(path)) if path else ""
+
+
+def folders(value):
+    """Several folders in one box: separated by ; or new lines."""
+    return [expand(p) for p in re.split(r"[;\n]+", str(value or "")) if clean_path(p)]
+
+
+def models_base():
+    """The folder of Prompt Vault's own models (WD14, TIPO; Qwen may live there too): Settings, or models/prompt_vault."""
+    return expand(opt("pv_models_dir")) or os.path.join(_webui_paths()[1], "prompt_vault")
+
+
 def models_dir(kind):
-    path = os.path.join(_webui_paths()[1], "prompt_vault", kind)
+    path = os.path.join(models_base(), kind)
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -156,6 +174,9 @@ def register():
         "pv_data_dir": O("", "Folder for the library, saved prompts and history", gr.Textbox)
         .info("empty: a prompt_vault folder in the WebUI folder. Kept apart from the extension, "
               "so updates never touch it"),
+        "pv_models_dir": O("", "Folder for Prompt Vault's models (WD14, TIPO)", gr.Textbox)
+        .info("empty: models/prompt_vault in the WebUI folder. Another drive is fine, e.g. D:\\AI\\prompt_vault_models; "
+              "move what is already downloaded there yourself (its wd14 and tipo folders)"),
         "pv_autocomplete": O(True, "Suggest tags while typing in the editor")
         .info("from your library and, once a WD14 model is downloaded, about 10,000 Danbooru tags"),
         "pv_autocomplete_webui": O(False, "Also suggest tags in the txt2img and img2img prompts")
@@ -173,9 +194,10 @@ def register():
         "pv_llm_one_at_a_time": O(True, "Run one model at a time")
         .info("starting Qwen stops TIPO and the other way round: less VRAM, a few seconds "
               "more when switching"),
-        "pv_vlm_models_dir": O("", "Folder of Qwen .gguf files (for the lists on Muse's card)", gr.Textbox)
-        .info("empty: models/VLM, models/LLM and models/prompt_vault/qwen are looked through. Muse's settings choose "
-              "the model and its projector from what is there; the two paths below are what was chosen"),
+        "pv_vlm_models_dir": O("", "Folders of Qwen .gguf files (for the lists on Muse's card)", gr.Textbox)
+        .info("one or more, separated by ; e.g. D:\\AI\\VLM; E:\\LLM. Also looked through: models/VLM, models/LLM and "
+              "the qwen folder of Prompt Vault's models. Muse's settings choose the model and its projector from "
+              "what is there; the two paths below are what was chosen"),
         "pv_vlm_model_path": O("", "Qwen-VL model .gguf", gr.Textbox)
         .info("e.g. Qwen3VL-4B-Instruct-Q8_0.gguf"),
         "pv_vlm_mmproj_path": O("", "Vision projector (mmproj) .gguf", gr.Textbox)

@@ -236,17 +236,15 @@ def rewrite(prompt, task, instruction=""):
 
 
 # ------------------------------------------------------------------ choosing the model from a list
-MODEL_DIRS = ("VLM", "LLM", "llm", "Qwen", "qwen", os.path.join("prompt_vault", "qwen"))
+MODEL_DIRS = ("VLM", "LLM", "llm", "Qwen", "qwen")
 
 
 def _model_dirs():
     """Where .gguf files for Qwen are looked for: models/VLM and the like, the folder in Settings, and the
     folders of the files already chosen."""
     base = settings.webui_models_dir()
-    dirs = [os.path.join(base, d) for d in MODEL_DIRS]
-    extra = settings.clean_path(settings.opt("pv_vlm_models_dir"))
-    if extra:
-        dirs.insert(0, extra)
+    dirs = settings.folders(settings.opt("pv_vlm_models_dir")) + [os.path.join(base, d) for d in MODEL_DIRS] \
+        + [os.path.join(settings.models_base(), "qwen")]
     for key in ("pv_vlm_model_path", "pv_vlm_mmproj_path"):
         p = settings.clean_path(settings.opt(key))
         if p:
@@ -291,7 +289,10 @@ def models():
     return {"models": [i for i in items if not i["mmproj"]], "mmprojs": [i for i in items if i["mmproj"]],
             "model": model, "mmproj": mmproj,
             "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
-            "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", "")}
+            "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", ""),
+            "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
+            "models_base": settings.models_base(), "missing": [d for d in settings.folders(settings.opt("pv_vlm_models_dir"))
+                                                            if not os.path.isdir(d)]}
 
 
 def mmproj_for(model_path, mmprojs):
@@ -326,6 +327,21 @@ def _set_opt(key, value):
         shared.opts.save(shared.config_filename)
     except Exception:
         pass
+
+
+def set_folders(qwen_dirs=None, models_dir=None):
+    """The folders from Muse's card: where Qwen's .gguf files are, where Prompt Vault keeps its own models."""
+    if qwen_dirs is not None:
+        wrong = [d for d in settings.folders(qwen_dirs) if not os.path.isdir(d)]
+        if wrong:
+            raise ValueError("Not found: " + "; ".join(wrong))
+        _set_opt("pv_vlm_models_dir", "; ".join(settings.folders(qwen_dirs)))
+    if models_dir is not None:
+        folder = settings.expand(models_dir)
+        if folder and not os.path.isdir(folder):
+            raise ValueError(f"Not found: {folder} (make the folder first)")
+        _set_opt("pv_models_dir", folder)
+    return models()
 
 
 def choose(model=None, mmproj=None, memory=None):
