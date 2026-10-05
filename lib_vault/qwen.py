@@ -129,6 +129,8 @@ def chat(content, *, max_tokens=None, temperature=None, timeout=300):
         "max_tokens": int(max_tokens if max_tokens is not None else settings.opt("pv_vlm_max_tokens")),
         "temperature": float(temperature if temperature is not None else settings.opt("pv_vlm_temperature")),
         "stream": False,
+        # thinking models (Qwen3.5, Qwen3.8...): no thinking for these short jobs, or it eats the answer's tokens
+        "chat_template_kwargs": {"enable_thinking": False},
     }
     answer = SERVER.post("/v1/chat/completions", body, timeout=timeout)
     try:
@@ -137,7 +139,18 @@ def chat(content, *, max_tokens=None, temperature=None, timeout=300):
         raise RuntimeError(f"unexpected answer from the Qwen server: {str(answer)[:300]}") from None
     if isinstance(reply, list):
         reply = "".join(part.get("text", "") for part in reply if isinstance(part, dict))
-    return str(reply or "")
+    return strip_thinking(str(reply or ""))
+
+
+THINK = re.compile(r"<think>.*?(</think>|$)", re.S)
+
+
+def strip_thinking(text):
+    """A thinking model's reasoning, when it comes inside the answer: left out."""
+    text = THINK.sub("", text)
+    if "</think>" in text:  # the opening tag was in the template, only the closing one came back
+        text = text.split("</think>", 1)[1]
+    return text.strip()
 
 
 class _SdAside:
@@ -290,7 +303,7 @@ def models():
             "model": model, "mmproj": mmproj,
             "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
             "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", ""),
-            "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
+            "think": bool(settings.opt("pv_chat_think")), "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
             "models_base": settings.models_base(), "missing": [d for d in settings.folders(settings.opt("pv_vlm_models_dir"))
                                                             if not os.path.isdir(d)]}
 
@@ -344,7 +357,7 @@ def set_folders(qwen_dirs=None, models_dir=None):
     return models()
 
 
-def choose(model=None, mmproj=None, memory=None):
+def choose(model=None, mmproj=None, memory=None, think=None):
     """Settings from Muse's card: the model and its projector (picked for it when not given), where it lives.
     The server starts again with them at its next use."""
     listing = models()
@@ -361,6 +374,8 @@ def choose(model=None, mmproj=None, memory=None):
         if mmproj and os.path.normcase(os.path.abspath(mmproj)) not in known:
             raise ValueError("That projector file is not in the list any more: refresh it.")
         _set_opt("pv_vlm_mmproj_path", mmproj)
+    if think is not None:
+        _set_opt("pv_chat_think", bool(think))
     if memory is not None:
         if memory not in MEMORY_MODES:
             raise ValueError(f"Unknown memory mode {memory!r}")

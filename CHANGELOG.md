@@ -15,6 +15,9 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Conversations live while the WebUI runs; Save keeps one in prompt_vault/chats/, Export gives Markdown
   or JSON, Import brings a JSON one back. A system prompt per conversation; the default in Settings.
 - Long conversations keep within the model's context: the oldest messages are left out.
+- Thinking models (Qwen3.5, Qwen3.8…): *Let it think first* in Muse's settings; the reasoning is shown
+  apart, live and then folded under the answer, never mixed into it. Off, the model answers at once;
+  Describe, Muse and the other prompt tools never let it think.
 
 ### Qwen: choose the model on Muse's card
 - Muse's settings list the .gguf files in models/VLM (and models/LLM, models/prompt_vault/qwen, a folder of

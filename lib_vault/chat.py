@@ -345,15 +345,18 @@ def send(cid, words, files=None, context="", regenerate=False):
 
     def events():
         yield {"start": True, "left_out": left_out}
-        text, started = [], time.time()
+        text, thought, started = [], [], time.time()
+        split = _ThinkSplit()
         try:
             with qwen._SdAside():
                 qwen.SERVER.restart_if_changed(qwen._placement())
                 url = qwen.SERVER.ensure()
             import requests
 
-            body = {"messages": messages, "max_tokens": max_tokens, "temperature": float(settings.opt("pv_chat_temperature")),
-                    "stream": True}
+            think = bool(settings.opt("pv_chat_think"))
+            body = {"messages": messages, "max_tokens": max_tokens * (3 if think else 1),
+                    "temperature": float(settings.opt("pv_chat_temperature")), "stream": True,
+                    "chat_template_kwargs": {"enable_thinking": think}}
             with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
                 if res.status_code != 200:
                     raise RuntimeError(f"the Qwen server answered {res.status_code}: {res.text[:300]}")
@@ -366,20 +369,33 @@ def send(cid, words, files=None, context="", regenerate=False):
                     if data == "[DONE]":
                         break
                     try:
-                        delta = json.loads(data)["choices"][0].get("delta", {}).get("content") or ""
+                        d = json.loads(data)["choices"][0].get("delta", {})
                     except Exception:
                         continue
-                    if delta:
-                        text.append(delta)
-                        qwen.SERVER.touch()
-                        yield {"delta": delta}
+                    qwen.SERVER.touch()
+                    if d.get("reasoning_content"):  # a thinking model's reasoning, given apart by llama-server
+                        thought.append(d["reasoning_content"])
+                        yield {"thinking": d["reasoning_content"]}
+                    for kind, piece in split.feed(d.get("content") or ""):  # or inside the answer, between <think> tags
+                        into = thought if kind == "thinking" else text
+                        if not "".join(into).strip():  # the blank lines around an empty <think></think>: not shown
+                            piece = piece.lstrip()
+                        if piece:
+                            into.append(piece)
+                            yield {kind: piece}
         except Exception as exc:
             if not text:
                 yield {"error": f"Qwen: {exc}"}
                 return
         answer = "".join(text).strip()
+        if "</think>" in answer:  # a template that opens <think> itself: only the closing tag came back
+            before, _, answer = answer.rpartition("</think>")
+            thought.insert(0, before)
+            answer = answer.strip()
         reply = {"id": uuid.uuid4().hex[:10], "role": "assistant", "text": answer, "files": [], "time": time.time(),
                  "stopped": stop.is_set(), "seconds": round(time.time() - started, 1)}
+        if "".join(thought).strip():
+            reply["thinking"] = "".join(thought).strip()
         reply["tokens"] = _tokens(answer, [])
         with _lock:
             live = _chats.get(cid)
@@ -389,6 +405,31 @@ def send(cid, words, files=None, context="", regenerate=False):
         yield {"done": True, "message": reply, "status": qwen.MEMORY.get("note", "")}
 
     return events()
+
+
+class _ThinkSplit:
+    """Streamed text cut into the reasoning (inside <think>...</think>) and the answer, however the pieces fall."""
+
+    def __init__(self):
+        self.inside, self.buf = False, ""
+
+    def feed(self, piece):
+        out = []
+        self.buf += piece
+        while self.buf:
+            tag = "</think>" if self.inside else "<think>"
+            at = self.buf.find(tag)
+            if at < 0:  # keep what could be the start of a tag for the next piece
+                keep = next((n for n in range(len(tag) - 1, 0, -1) if self.buf.endswith(tag[:n])), 0)
+                ready, self.buf = self.buf[:len(self.buf) - keep], self.buf[len(self.buf) - keep:]
+                if ready:
+                    out.append(("thinking" if self.inside else "delta", ready))
+                break
+            if at:
+                out.append(("thinking" if self.inside else "delta", self.buf[:at]))
+            self.buf = self.buf[at + len(tag):]
+            self.inside = not self.inside
+        return out
 
 
 def stop(cid):

@@ -118,6 +118,30 @@ os.environ["FAKE_DELAY"] = "0.01"
 assert holder["ev"][-1]["done"] and holder["ev"][-1]["message"]["stopped"], holder["ev"][-1]
 print("stop ok")
 
+# a thinking model: its reasoning comes apart from the answer, given by llama-server or between <think> tags
+shared.opts.pv_chat_think = True
+for how in ("reasoning_content", "tags"):
+    os.environ["FAKE_THINK"] = how
+    qwen.SERVER.stop()
+    ev = send(cid, "think about a castle")
+    thinking = "".join(e["thinking"] for e in ev if "thinking" in e)
+    answer = "".join(e["delta"] for e in ev if "delta" in e)
+    msg = ev[-1]["message"]
+    assert thinking.startswith("the user wants think about a castle") and msg["thinking"] == thinking.strip(), (how, ev)
+    assert "<think>" not in answer and "</think>" not in msg["text"] and answer == msg["text"], (how, msg)
+shared.opts.pv_chat_think = False
+os.environ.pop("FAKE_THINK")
+ev = send(cid, "no thinking now")  # Qwen3's empty <think></think>: neither shown nor kept
+assert "thinking" not in ev[-1]["message"] and not any("thinking" in e for e in ev), ev
+assert ev[-1]["message"]["text"].startswith("messages=") and "".join(e["delta"] for e in ev if "delta" in e) == ev[-1]["message"]["text"]
+split, got = chat._ThinkSplit(), []
+for piece in ["<thi", "nk>wei", "gh it</th", "ink>the an", "swer"]:
+    got += split.feed(piece)
+assert "".join(p for k, p in got if k == "thinking") == "weigh it" and "".join(p for k, p in got if k == "delta") == "the answer", got
+assert qwen.strip_thinking("<think>hmm</think>\n\n1girl, red hair") == "1girl, red hair"
+assert qwen.strip_thinking("hmm, so</think>1girl") == "1girl" and qwen.strip_thinking("<think>cut off") == ""
+print("thinking ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))
@@ -174,6 +198,8 @@ got = c.post(M, json={"model": pick("Huihui-Qwen3-VL-30B-A3B-Instruct-abliterate
 assert got["mmproj"].endswith(os.path.join("huihui-30b", "mmproj-F16.gguf")), got["mmproj"]
 got = c.post(M, json={"memory": "Low VRAM"}).json()
 assert got["memory"] == "Low VRAM" and shared.opts.pv_vlm_memory == "Low VRAM"
+assert c.post(M, json={"think": True}).json()["think"] and shared.opts.pv_chat_think is True
+assert not c.post(M, json={"think": False}).json()["think"]
 assert c.post(M, json={"model": "/nowhere/x.gguf"}).status_code == 400
 assert c.post(M, json={"memory": "Lots"}).status_code == 400
 print("model choice ok")

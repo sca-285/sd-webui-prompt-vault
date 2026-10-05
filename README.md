@@ -67,6 +67,10 @@ Qwen-VL and the WD14 tagger) in one tab.
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
   - A long conversation keeps within the model's context: the oldest messages are left out, and the
     card says how many.
+  - **Thinking models** (Qwen3.5, Qwen3.8 27B…): with *Let it think first* on (Muse → ⚙ → Qwen model),
+    the reasoning streams in a dim box and folds into **💭 Thought** above the answer; it never gets into
+    the answer, a copy or a prompt. Off, such a model answers at once. Qwen3-VL Instruct does not think.
+    A newer model needs a recent llama.cpp build.
 
   ![Qwen Chat on Muse's card: an image and a Markdown file, and the prompt of txt2img](docs/qwen-chat.webp)
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask

@@ -1065,6 +1065,8 @@
                 (q.memory_modes || []).map((m) => el('option', {value: m, text: {Auto: 'Auto: VRAM as fits, the rest in RAM', 'All on GPU': 'All on the GPU',
                     'KV cache in RAM': 'GPU, the context in RAM', 'Low VRAM': 'Low VRAM: most in RAM', 'RAM only': 'RAM only (slow)'}[m] || m,
                 selected: m === q.memory})))),
+            toggleSwitch('Let it think first', !!q.think, (v) => loadQwen({think: v}),
+                'Qwen Chat, with a model that reasons before answering (Qwen3.5, Qwen3.8…): better answers, much slower. Qwen3-VL Instruct does not think'),
             el('div', {class: 'pv-muse-field'},
                 el('span', {class: 'pv-muse-hint', text: q.running ? `Running: ${q.note || ''}` : 'Starts when Qwen is first used; a new choice applies at once.'}),
                 el('button', {type: 'button', class: 'pv-btn', text: '⟳', title: 'Look for .gguf files again', disabled: !!M.qwenBusy, onclick: () => loadQwen()})),

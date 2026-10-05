@@ -51,6 +51,7 @@
         chat: null,                 // the conversation shown
         busy: false,                // an answer is coming
         stream: '',                 // the answer so far
+        thinking: '',               // a thinking model's reasoning so far
         pending: null,              // what you just sent, until the server has it
         draft: '',
         files: [],                  // [{kind, name, data, size}] waiting to be sent
@@ -89,11 +90,14 @@
         streamFrame = requestAnimationFrame(() => {
             streamFrame = 0;
             for (const m of C.mounts) {
+                const th = m.querySelector('.pv-chat-streaming .pv-chat-thought-text');
+                if (th && C.thinking) { th.textContent = C.thinking; th.parentElement.hidden = false; th.scrollTop = th.scrollHeight; }
                 const t = m.querySelector('.pv-chat-streaming .pv-chat-text');
                 if (!t) continue;
                 const list = m.querySelector('.pv-chat-log');
                 const atEnd = list.scrollHeight - list.scrollTop - list.clientHeight < 60;
-                t.innerHTML = md(C.stream) + '<span class="pv-chat-caret"></span>';
+                t.innerHTML = C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>'
+                    : `<span class="pv-chat-wait">${C.thinking ? 'thinking…' : 'reading…'}</span>`;
                 if (atEnd) list.scrollTop = list.scrollHeight;
             }
         });
@@ -135,6 +139,7 @@
     async function stream(path, body) {
         C.busy = true;
         C.stream = '';
+        C.thinking = '';
         paint();
         let failed = '';
         try {
@@ -159,6 +164,7 @@
                     const ev = JSON.parse(line);
                     if (ev.start) { C.leftOut = ev.left_out || 0; paint(); }
                     if (ev.delta) { C.stream += ev.delta; paintStream(); }
+                    if (ev.thinking) { C.thinking += ev.thinking; paintStream(); }
                     if (ev.error) failed = ev.error;
                     if (ev.done && ev.status) C.status = ev.status;
                 }
@@ -168,6 +174,7 @@
         }
         C.busy = false;
         C.stream = '';
+        C.thinking = '';
         if (failed) toast(failed, true);
         if (C.chat) await load(C.chat.id, true);
         await refresh();
@@ -340,6 +347,9 @@
         return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
             el('div', {class: 'pv-chat-who', text: mine ? 'You' : 'Qwen'}),
             files(m.files),
+            m.thinking ? el('details', {class: 'pv-chat-thought'},
+                el('summary', {text: `💭 Thought (${m.thinking.split(/\s+/).length} words)`}),
+                el('div', {class: 'pv-chat-thought-text', text: m.thinking})) : null,
             m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : md(m.text)}) : null,
             actions);
     }
@@ -449,6 +459,9 @@
             msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant')),
             C.busy ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
                 el('div', {class: 'pv-chat-who', text: 'Qwen'}),
+                el('div', {class: 'pv-chat-thought pv-chat-thinking-now', hidden: !C.thinking},
+                    el('div', {class: 'pv-chat-thought-head', text: '💭 Thinking'}),
+                    el('div', {class: 'pv-chat-thought-text', text: C.thinking})),
                 el('div', {class: 'pv-chat-text', html: C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>' : '<span class="pv-chat-wait">thinking…</span>'})) : null);
         const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? 'Qwen: ' + C.status : '']
             .filter(Boolean).join(' · ');

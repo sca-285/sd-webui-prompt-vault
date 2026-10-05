@@ -513,3 +513,7 @@ html body #pv_muse_panel .pv-muse-select option, html body #pv_muse_panel .pv-mu
 #pv_muse_panel .pv-muse-folders { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; padding-top: 8px;
     border-top: 1px dashed var(--pv-muse-line, rgba(127, 127, 127, 0.3)); }
 #pv_muse_panel .pv-muse-warn { color: #f87171; opacity: 1; }
+.pv-chat-thought { margin: 2px 0 8px; padding: 6px 10px; border-left: 3px solid rgba(127, 127, 127, 0.4); border-radius: 4px;
+    background: rgba(127, 127, 127, 0.08); font-size: 12.5px; }
+.pv-chat-thought summary, .pv-chat-thought-head { cursor: pointer; opacity: 0.7; font-weight: 600; }
+.pv-chat-thought-text { margin-top: 4px; white-space: pre-wrap; opacity: 0.7; max-height: 220px; overflow-y: auto; }
