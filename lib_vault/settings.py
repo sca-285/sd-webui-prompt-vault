@@ -51,6 +51,8 @@ DEFAULTS = {
     "pv_vlm_mmproj_path": "",
     "pv_vlm_port": 8079,
     "pv_vlm_gpu_layers": 99,
+    "pv_vlm_memory": "Auto",
+    "pv_vlm_vram_reserve": 4.0,
     "pv_vlm_context": 8192,
     "pv_vlm_extra_args": "",
     "pv_vlm_idle_minutes": 10,
@@ -60,6 +62,10 @@ DEFAULTS = {
     "pv_vlm_temperature": 0.2,
     "pv_vlm_unload_sd": True,
     "pv_vlm_verbose": False,
+    # Qwen Chat
+    "pv_chat_system": "",
+    "pv_chat_max_tokens": 1024,
+    "pv_chat_temperature": 0.7,
     # TIPO
     "pv_tipo_model": "TIPO-500M-ft (recommended)",
     "pv_tipo_model_path": "",
@@ -172,7 +178,16 @@ def register():
         .info("the mmproj-*.gguf that ships beside the model; without it the model cannot see images"),
         "pv_vlm_port": O(8079, "Port for the Qwen server", gr.Number, {"precision": 0})
         .info("127.0.0.1 only. A busy port is skipped automatically"),
-        "pv_vlm_gpu_layers": O(99, "GPU layers (-ngl)", gr.Slider, {"minimum": 0, "maximum": 99, "step": 1})
+        "pv_vlm_memory": O("Auto", "Where Qwen lives: VRAM or RAM", gr.Radio,
+                           {"choices": ["Auto", "All on GPU", "KV cache in RAM", "Low VRAM", "RAM only"]})
+        .info("Auto: as many layers on the GPU as fit in the free VRAM (less the reserve below), the rest in RAM. "
+              "KV cache in RAM: the conversation's memory in RAM. Low VRAM: half the layers (or a MoE model's experts), "
+              "the context and the vision part in RAM. RAM only: no VRAM at all, slow. Needs a recent llama.cpp; "
+              "an older one is started without these"),
+        "pv_vlm_vram_reserve": O(4.0, "VRAM to leave for Stable Diffusion (GB), in Auto", gr.Slider,
+                                 {"minimum": 0, "maximum": 24, "step": 0.5}),
+        "pv_vlm_gpu_layers": O(99, "GPU layers (-ngl), in All on GPU and KV cache in RAM", gr.Slider,
+                               {"minimum": 0, "maximum": 99, "step": 1})
         .info("99 puts the whole model on the GPU; lower it if VRAM is tight"),
         "pv_vlm_context": O(8192, "Context size", gr.Slider, {"minimum": 2048, "maximum": 32768, "step": 1024}),
         "pv_vlm_extra_args": O("", "Extra llama-server arguments", gr.Textbox)
@@ -192,6 +207,11 @@ def register():
         .info("recommended below 16GB"),
         "pv_vlm_verbose": O(False, "Print the servers' own log to the console")
         .info("turn on when a server refuses to start"),
+        "pv_chat_system": O("", "Qwen Chat: default system prompt", gr.Textbox, {"lines": 3})
+        .info("how the assistant behaves in a new conversation; each conversation can change its own. "
+              "Empty: a prompt-writing assistant for Stable Diffusion"),
+        "pv_chat_max_tokens": O(1024, "Qwen Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
+        "pv_chat_temperature": O(0.7, "Qwen Chat: temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05}),
     })
     add(SECTION_TIPO, {
         "pv_tipo_model": O("TIPO-500M-ft (recommended)", "TIPO model", gr.Dropdown,

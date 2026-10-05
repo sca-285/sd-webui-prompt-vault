@@ -6,6 +6,22 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
 ## 1.1.0 (2026-10-05)
 
+### Qwen Chat
+- A Chat tab on Muse's card, and the same conversation in a Qwen Chat window of the Vault tab: a small
+  assistant on the Qwen model, answers streamed as they are written, Stop and Again.
+- Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
+- The prompt you work on (Muse's idea, the Vault editor, txt2img) read with your message when you choose.
+- An answer to the Vault editor, txt2img or Muse's Your prompt in one click (minor-related words left out).
+- Conversations live while the WebUI runs; Save keeps one in prompt_vault/chats/, Export gives Markdown
+  or JSON, Import brings a JSON one back. A system prompt per conversation; the default in Settings.
+- Long conversations keep within the model's context: the oldest messages are left out.
+
+### Qwen: VRAM or RAM
+- Where Qwen lives: Auto (as many layers on the GPU as fit, less a reserve for Stable Diffusion, the rest
+  in RAM; read from the model file), All on GPU, KV cache in RAM, Low VRAM (half the layers or a MoE
+  model's experts, the context and the vision part in RAM), RAM only. An older llama.cpp that does not
+  know these flags is started without them.
+
 ### Muse: every part has something to roll
 - Every part of a card now has fifteen and more values to roll through, and a roll never brings back what
   the part has already been until every other one has come: ten rolls, ten different values.

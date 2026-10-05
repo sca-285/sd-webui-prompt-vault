@@ -1,0 +1,485 @@
+// Prompt Vault: Qwen Chat. One conversation, shown in two places at once: the Chat tab of Muse's card and
+// the Qwen Chat window of the Vault tab. Conversations live in the WebUI (lib_vault/chat.py) until it stops,
+// unless saved; this file only shows them and sends what you write.
+
+(() => {
+    'use strict';
+
+    const API = '/prompt-vault/api';
+    const LS = {
+        get(key, fallback) { try { const v = localStorage.getItem('pv_chat_' + key); return v === null ? fallback : JSON.parse(v); } catch (e) { return fallback; } },
+        set(key, value) { try { localStorage.setItem('pv_chat_' + key, JSON.stringify(value)); } catch (e) { /* private window */ } },
+    };
+    const app = () => (typeof gradioApp === 'function' ? gradioApp() : document);
+    const $ = (sel, root) => (root || app()).querySelector(sel);
+    const el = (tag, attrs, ...children) => {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs || {})) {
+            if (v === undefined || v === null || v === false) continue;
+            if (k === 'class') node.className = v;
+            else if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
+            else if (k === 'text') node.textContent = v;
+            else if (k === 'html') node.innerHTML = v;
+            else node.setAttribute(k, v === true ? '' : v);
+        }
+        for (const c of children.flat()) if (c !== null && c !== undefined && c !== false) node.append(c);
+        return node;
+    };
+    const root = () => ((window.gradio_config && window.gradio_config.root) || '').replace(/\/$/, '');
+
+    async function call(path, body) {
+        const opts = body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)};
+        const res = await fetch(root() + API + path, opts);
+        let data = null;
+        try { data = await res.json(); } catch (e) { /* not json */ }
+        if (!res.ok) throw new Error((data && data.error) || ('HTTP ' + res.status));
+        return data;
+    }
+
+    function toast(message, bad) {
+        const box = $('#pv_toast') || (document.querySelector('.gradio-container') || document.body).appendChild(el('div', {id: 'pv_toast'}));
+        box.textContent = message;
+        box.className = 'pv-show' + (bad ? ' pv-bad' : '');
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => { box.className = ''; }, bad ? 5000 : 2200);
+    }
+
+    // ------------------------------------------------------------------ state, shared by every place it is shown
+
+    const C = {
+        list: {chats: [], saved: [], system_default: ''},
+        chat: null,                 // the conversation shown
+        busy: false,                // an answer is coming
+        stream: '',                 // the answer so far
+        pending: null,              // what you just sent, until the server has it
+        draft: '',
+        files: [],                  // [{kind, name, data, size}] waiting to be sent
+        context: LS.get('context', 'none'),
+        leftOut: 0,
+        status: '',
+        panel: '',                  // '' | 'system' | 'saved'
+        mounts: new Set(),
+        ready: false,
+    };
+
+    function paint() {
+        for (const m of [...C.mounts]) {
+            if (!m.isConnected) { C.mounts.delete(m); continue; }
+            const list = m.querySelector('.pv-chat-log');
+            const y = list ? list.scrollTop : 0;
+            const atEnd = !list || list.scrollHeight - list.scrollTop - list.clientHeight < 40;
+            const box = m.querySelector('.pv-chat-input');
+            const focused = box && document.activeElement === box;
+            const caret = focused ? box.selectionStart : null;
+            m.replaceChildren(view(m));
+            const again = m.querySelector('.pv-chat-log');
+            if (again) again.scrollTop = atEnd ? again.scrollHeight : y;
+            if (focused) {
+                const b = m.querySelector('.pv-chat-input');
+                b.focus();
+                if (caret !== null) b.setSelectionRange(caret, caret);
+            }
+        }
+    }
+
+    // while the answer streams in, only its bubble changes
+    let streamFrame = 0;
+    function paintStream() {
+        if (streamFrame) return;
+        streamFrame = requestAnimationFrame(() => {
+            streamFrame = 0;
+            for (const m of C.mounts) {
+                const t = m.querySelector('.pv-chat-streaming .pv-chat-text');
+                if (!t) continue;
+                const list = m.querySelector('.pv-chat-log');
+                const atEnd = list.scrollHeight - list.scrollTop - list.clientHeight < 60;
+                t.innerHTML = md(C.stream) + '<span class="pv-chat-caret"></span>';
+                if (atEnd) list.scrollTop = list.scrollHeight;
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------ talking to the server
+
+    async function refresh() {
+        try { C.list = await call('/chat'); } catch (e) { return; }
+        if (!C.chat) {
+            const id = LS.get('id', '');
+            if (id && C.list.chats.some((c) => c.id === id)) await load(id, true);
+        }
+        C.ready = true;
+        paint();
+    }
+
+    async function load(id, quiet) {
+        try {
+            C.chat = (await call('/chat/one?id=' + encodeURIComponent(id))).chat;
+            LS.set('id', C.chat.id);
+        } catch (e) {
+            C.chat = null;
+            if (!quiet) toast(e.message, true);
+        }
+        C.leftOut = 0;
+        paint();
+    }
+
+    async function newChat() {
+        if (C.busy) return;
+        C.chat = (await call('/chat/new', {})).chat;
+        LS.set('id', C.chat.id);
+        C.panel = '';
+        C.leftOut = 0;
+        await refresh();
+    }
+
+    async function stream(path, body) {
+        C.busy = true;
+        C.stream = '';
+        paint();
+        let failed = '';
+        try {
+            const res = await fetch(root() + API + path, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+            if (!res.ok) {
+                let data = null;
+                try { data = await res.json(); } catch (e) { /* not json */ }
+                throw new Error((data && data.error) || ('HTTP ' + res.status));
+            }
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            for (;;) {
+                const {value, done} = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, {stream: true});
+                let nl;
+                while ((nl = buffer.indexOf('\n')) >= 0) {
+                    const line = buffer.slice(0, nl).trim();
+                    buffer = buffer.slice(nl + 1);
+                    if (!line) continue;
+                    const ev = JSON.parse(line);
+                    if (ev.start) { C.leftOut = ev.left_out || 0; paint(); }
+                    if (ev.delta) { C.stream += ev.delta; paintStream(); }
+                    if (ev.error) failed = ev.error;
+                    if (ev.done && ev.status) C.status = ev.status;
+                }
+            }
+        } catch (e) {
+            failed = e.message;
+        }
+        C.busy = false;
+        C.stream = '';
+        if (failed) toast(failed, true);
+        if (C.chat) await load(C.chat.id, true);
+        await refresh();
+        return !failed;
+    }
+
+    async function send() {
+        if (C.busy) return;
+        const text = C.draft.trim();
+        if (!text && !C.files.length) return;
+        if (!C.chat) await newChat();
+        const files = C.files.map((f) => ({kind: f.kind, name: f.name, data: f.data}));
+        C.pending = {role: 'user', text, files: C.files.map((f) => ({kind: f.kind, name: f.name, url: f.kind === 'image' ? f.data : ''}))};
+        const keep = {draft: C.draft, files: C.files};
+        C.draft = '';
+        C.files = [];
+        const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText()});
+        if (!ok && C.pending) { C.draft = keep.draft; C.files = keep.files; }
+        C.pending = null;
+        paint();
+    }
+
+    const stop = () => { if (C.chat) call('/chat/stop', {id: C.chat.id}).catch(() => {}); };
+    const again = () => { if (C.chat && !C.busy) stream('/chat/regenerate', {id: C.chat.id}); };
+
+    async function act(path, body, then) {
+        try {
+            const data = await call(path, body);
+            if (data.chat) C.chat = data.chat;
+            if (then) then(data);
+        } catch (e) { toast(e.message, true); }
+        await refresh();
+    }
+
+    // ------------------------------------------------------------------ what the conversation can be given
+
+    // the prompt you are working on, read with your message when you ask for it
+    const CONTEXTS = [['none', 'No prompt'], ['muse', "Muse's idea"], ['vault', 'Vault editor'], ['txt2img', 'txt2img prompt']];
+    function contextPrompt(kind) {
+        if (kind === 'muse') return window.pvMuse && window.pvMuse.prompt ? window.pvMuse.prompt() : '';
+        if (kind === 'vault') { const a = $('#pv_positive textarea'); return a ? a.value : ''; }
+        if (kind === 'txt2img') { const a = $('#txt2img_prompt textarea'); return a ? a.value : ''; }
+        return '';
+    }
+    function contextText() {
+        const p = contextPrompt(C.context).trim();
+        if (!p) return '';
+        const where = (CONTEXTS.find((c) => c[0] === C.context) || [0, ''])[1];
+        return `The image prompt I am working on (${where}):\n${p}`;
+    }
+
+    const TEXT_EXT = /\.(txt|md|markdown|json|csv|log|yaml|yml)$/i;
+    async function addFiles(list) {
+        for (const file of [...list]) {
+            if (C.files.length >= 8) { toast('Eight files at most on one message', true); break; }
+            if (file.type.startsWith('image/')) {
+                if (file.size > 20 * 1024 * 1024) { toast(`${file.name}: too big (20 MB at most)`, true); continue; }
+                const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+                C.files.push({kind: 'image', name: file.name || 'pasted image.png', data, size: file.size});
+            } else if (file.type.startsWith('text/') || TEXT_EXT.test(file.name)) {
+                if (file.size > 2 * 1024 * 1024) { toast(`${file.name}: too big (2 MB at most)`, true); continue; }
+                C.files.push({kind: 'text', name: file.name, data: await file.text(), size: file.size});
+            } else {
+                toast(`${file.name}: images (png, jpeg, webp) and text or Markdown files only`, true);
+            }
+        }
+        paint();
+    }
+
+    // ------------------------------------------------------------------ an answer, put to use
+
+    // adults only, the same words Muse keeps out of every idea
+    const MINOR = /\b(child|children|kid|kids|loli|lolicon|shota|shotacon|underage|minor|teen|teenager|preteen|toddler|infant|schoolgirl|schoolboy|cub|young girl|young boy|little girl|little boy|chibi)\b/gi;
+    function promptOf(text) {
+        const block = /```[\w-]*\n?([\s\S]*?)```/.exec(text || '');
+        let p = (block ? block[1] : text || '').trim();
+        p = p.replace(/^\s*(positive( prompt)?|prompt)\s*:\s*/i, '');
+        const cleaned = p.replace(MINOR, '').replace(/\s*,\s*(,\s*)+/g, ', ').replace(/^[\s,]+|[\s,]+$/g, '');
+        if (cleaned !== p) toast('Minor-related words left out');
+        return cleaned;
+    }
+    function write(area, value) {
+        if (!area) return false;
+        area.value = value;
+        if (typeof updateInput === 'function') updateInput(area);
+        else area.dispatchEvent(new Event('input', {bubbles: true}));
+        return true;
+    }
+    function useAnswer(m, where) {
+        const p = promptOf(m.text);
+        if (!p) return;
+        if (where === 'copy') {
+            navigator.clipboard.writeText(m.text).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
+        } else if (where === 'vault') {
+            if (write($('#pv_positive textarea'), p)) toast('In the Vault editor');
+        } else if (where === 'txt2img' || where === 'img2img') {
+            if (write($(`#${where}_prompt textarea`), p)) {
+                toast('In ' + where);
+                const go = window['switch_to_' + where];
+                if (typeof go === 'function') { try { go(); } catch (e) { /* a nicety */ } }
+            }
+        } else if (where === 'muse' && window.pvMuse && window.pvMuse.setOwn) {
+            window.pvMuse.setOwn(p).then(() => toast("Muse's Your prompt: Build around it with Enter there"));
+        }
+    }
+
+    // ------------------------------------------------------------------ Markdown, a safe little of it
+
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    function inline(s) {
+        return esc(s)
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
+    }
+    function md(src) {
+        const out = [];
+        const parts = String(src || '').split(/```/);
+        parts.forEach((part, i) => {
+            if (i % 2) {  // a code block
+                const body = part.replace(/^[\w-]*\n/, '');
+                out.push(`<pre class="pv-chat-code"><code>${esc(body.replace(/\n$/, ''))}</code></pre>`);
+                return;
+            }
+            let list = '';
+            const close = () => { if (list) { out.push(`</${list}>`); list = ''; } };
+            for (const line of part.split('\n')) {
+                const h = /^(#{1,4})\s+(.*)$/.exec(line);
+                const ul = /^\s*[-*•]\s+(.*)$/.exec(line);
+                const ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
+                if (h) { close(); out.push(`<div class="pv-chat-h">${inline(h[2])}</div>`); }
+                else if (ul) { if (list !== 'ul') { close(); out.push('<ul>'); list = 'ul'; } out.push(`<li>${inline(ul[1])}</li>`); }
+                else if (ol) { if (list !== 'ol') { close(); out.push('<ol>'); list = 'ol'; } out.push(`<li>${inline(ol[1])}</li>`); }
+                else if (!line.trim()) { close(); out.push('<div class="pv-chat-gap"></div>'); }
+                else { close(); out.push(`<div>${inline(line)}</div>`); }
+            }
+            close();
+        });
+        return out.join('');
+    }
+
+    // ------------------------------------------------------------------ drawing
+
+    function button(text, title, onclick, extra) {
+        return el('button', Object.assign({type: 'button', class: 'pv-chat-btn', text, title, onclick}, extra || {}));
+    }
+
+    function files(list, removable) {
+        if (!list || !list.length) return null;
+        return el('div', {class: 'pv-chat-files'}, list.map((f, i) => el('span', {class: 'pv-chat-file', title: f.name},
+            f.kind === 'image' && (f.url || f.data) ? el('img', {src: f.url || f.data, alt: f.name}) : el('span', {class: 'pv-chat-file-icon', text: '📄'}),
+            el('span', {class: 'pv-chat-file-name', text: f.name}),
+            removable ? el('button', {type: 'button', class: 'pv-chat-file-x', title: 'Remove', text: '✕',
+                onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
+    }
+
+    function bubble(m, last) {
+        const mine = m.role === 'user';
+        const actions = mine
+            ? el('div', {class: 'pv-chat-actions'},
+                C.busy || !m.id ? null : button('✕', 'Remove this message', () => act('/chat/remove-message', {id: C.chat.id, message: m.id})))
+            : el('div', {class: 'pv-chat-actions'},
+                button('Copy', 'Copy the answer', () => useAnswer(m, 'copy')),
+                button('→ Vault', 'The prompt in it (its code block, or all of it) into the Vault editor', () => useAnswer(m, 'vault')),
+                button('→ txt2img', 'The prompt in it into txt2img', () => useAnswer(m, 'txt2img')),
+                button('→ Muse', "The prompt in it as Muse's Your prompt", () => useAnswer(m, 'muse')),
+                last && !C.busy ? button('↻ Again', 'Answer this again', again) : null,
+                m.stopped ? el('span', {class: 'pv-chat-meta', text: 'stopped'}) : null,
+                m.seconds ? el('span', {class: 'pv-chat-meta', text: `${m.seconds}s`}) : null);
+        return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
+            el('div', {class: 'pv-chat-who', text: mine ? 'You' : 'Qwen'}),
+            files(m.files),
+            m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : md(m.text)}) : null,
+            actions);
+    }
+
+    function head() {
+        const c = C.chat;
+        const pick = el('select', {class: 'pv-chat-pick', title: 'Conversations of this session', onchange: (e) => {
+            const v = e.target.value;
+            if (v === '__new') newChat();
+            else if (v) load(v);
+        }},
+        el('option', {value: '', text: c ? '' : 'No conversation yet', disabled: true, selected: !c}),
+        ...C.list.chats.map((x) => el('option', {value: x.id, text: (x.saved_as ? '💾 ' : '') + x.title, selected: c && x.id === c.id})),
+        el('option', {value: '__new', text: '＋ New conversation'}));
+        return el('div', {class: 'pv-chat-head'}, pick,
+            button('＋', 'New conversation', newChat, {disabled: C.busy}),
+            c ? button(c.saved_as ? '💾 Saved' : '💾 Save', c.saved_as ? `Kept in prompt_vault/chats/${c.saved_as}, and as it goes on. Click: not kept any more`
+                : 'Keep it: saved in prompt_vault/chats/ (otherwise it is gone when the WebUI stops)',
+            () => act(c.saved_as ? '/chat/unsave' : '/chat/save', {id: c.id}, () => toast(c.saved_as ? 'Not kept any more' : 'Saved')),
+            {class: 'pv-chat-btn' + (c.saved_as ? ' pv-on' : '')}) : null,
+            button('📂', 'Saved conversations; import a JSON one', () => { C.panel = C.panel === 'saved' ? '' : 'saved'; paint(); },
+                {class: 'pv-chat-btn' + (C.panel === 'saved' ? ' pv-on' : '')}),
+            c ? button('⚙', 'How the assistant behaves in this conversation (system prompt)', () => { C.panel = C.panel === 'system' ? '' : 'system'; paint(); },
+                {class: 'pv-chat-btn' + (C.panel === 'system' ? ' pv-on' : '')}) : null,
+            c ? button('⇩ .md', 'Export as Markdown', () => exportChat('md')) : null,
+            c ? button('⇩ .json', 'Export as JSON (can be imported again)', () => exportChat('json')) : null,
+            c ? button('🗑', 'Close this conversation (a saved copy stays saved)', () => {
+                if (!confirm('Close this conversation? Unless it is saved, it is gone.')) return;
+                act('/chat/delete', {id: c.id}, () => { C.chat = null; LS.set('id', ''); });
+            }, {disabled: C.busy}) : null);
+    }
+
+    async function exportChat(fmt) {
+        try {
+            const data = await call(`/chat/export?id=${encodeURIComponent(C.chat.id)}&fmt=${fmt}`);
+            const url = URL.createObjectURL(new Blob([data.text], {type: data.type}));
+            el('a', {href: url, download: data.name}).click();
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+        } catch (e) { toast(e.message, true); }
+    }
+
+    function panelView() {
+        if (C.panel === 'system' && C.chat) {
+            const box = el('textarea', {class: 'pv-chat-system', rows: '4', spellcheck: 'false'});
+            box.value = C.chat.system || '';
+            return el('div', {class: 'pv-chat-panel'},
+                el('div', {class: 'pv-chat-label', text: 'System prompt: how the assistant behaves in this conversation'}), box,
+                el('div', {class: 'pv-chat-row'},
+                    button('Keep', 'Use it from the next message on', () => act('/chat/update', {id: C.chat.id, system: box.value}, () => { C.panel = ''; toast('System prompt kept'); })),
+                    button('Default', 'The default from Settings', () => { box.value = C.list.system_default || ''; }),
+                    el('span', {class: 'pv-chat-hint', text: 'The model decides what it will write; a model that refuses needs another model, not another prompt.'})));
+        }
+        if (C.panel === 'saved') {
+            const imp = el('input', {type: 'file', accept: '.json,application/json', class: 'pv-chat-hidden', onchange: async (e) => {
+                const f = e.target.files[0];
+                if (!f) return;
+                try { await act('/chat/import', {data: JSON.parse(await f.text())}, (d) => { LS.set('id', d.chat.id); C.panel = ''; toast('Imported'); }); }
+                catch (err) { toast('Not a conversation exported from here', true); }
+            }});
+            return el('div', {class: 'pv-chat-panel'},
+                el('div', {class: 'pv-chat-label', text: C.list.saved.length ? 'Saved conversations' : 'No saved conversation yet: 💾 Save keeps the one you are in'}),
+                el('div', {class: 'pv-chat-saved'}, C.list.saved.map((s) => el('div', {class: 'pv-chat-saved-row'},
+                    el('button', {type: 'button', class: 'pv-chat-saved-open', title: s.name, onclick: () => act('/chat/open', {name: s.name}, (d) => { LS.set('id', d.chat.id); C.panel = ''; })},
+                        el('span', {text: s.title}), el('span', {class: 'pv-chat-meta', text: `${s.count} messages · ${new Date(s.updated * 1000).toLocaleString()}`})),
+                    button('🗑', 'Delete the saved file', () => { if (confirm(`Delete ${s.title}?`)) act('/chat/saved/delete', {name: s.name}); })))),
+                el('div', {class: 'pv-chat-row'}, imp, button('⇧ Import .json', 'A conversation exported as JSON', () => imp.click())));
+        }
+        return null;
+    }
+
+    function composer() {
+        const box = el('textarea', {class: 'pv-chat-input', rows: '2', spellcheck: 'true',
+            placeholder: 'Write to Qwen… Enter sends, Shift+Enter a new line. Add images or .txt/.md with 📎, paste or drop them.'});
+        box.value = C.draft;
+        box.addEventListener('input', () => { C.draft = box.value; });
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); C.draft = box.value; send(); }
+        });
+        box.addEventListener('paste', (e) => {
+            const got = [...(e.clipboardData ? e.clipboardData.files : [])];
+            if (got.length) { e.preventDefault(); addFiles(got); }
+        });
+        const pickFile = el('input', {type: 'file', multiple: true, class: 'pv-chat-hidden',
+            accept: 'image/png,image/jpeg,image/webp,.txt,.md,.markdown,text/plain,text/markdown', onchange: (e) => addFiles(e.target.files)});
+        const ctx = el('select', {class: 'pv-chat-ctx', title: 'Read with your message: the prompt you are working on', onchange: (e) => { C.context = e.target.value; LS.set('context', C.context); }},
+            CONTEXTS.map(([v, t]) => el('option', {value: v, text: '+ ' + t, selected: v === C.context})));
+        return el('div', {class: 'pv-chat-compose'},
+            files(C.files, true),
+            box,
+            el('div', {class: 'pv-chat-row'},
+                pickFile, button('📎', 'Add images (png, jpeg, webp) or text and Markdown files', () => pickFile.click()),
+                ctx,
+                el('span', {class: 'pv-chat-grow'}),
+                C.busy ? button('■ Stop', 'Stop the answer here', stop, {class: 'pv-chat-btn pv-chat-stop'})
+                    : button('Send', 'Send (Enter)', () => { C.draft = box.value; send(); }, {class: 'pv-chat-btn pv-chat-send'})));
+    }
+
+    function view(m) {
+        const c = C.chat;
+        const msgs = c ? c.messages.slice() : [];
+        if (C.pending) msgs.push(C.pending);
+        const log = el('div', {class: 'pv-chat-log'},
+            !msgs.length && !C.busy ? el('div', {class: 'pv-chat-empty'},
+                el('strong', {text: 'Qwen Chat'}),
+                el('div', {text: 'Talk with the Qwen model of the Vault tab: ideas, prompts, a picture to describe, a story to turn into prompts.'}),
+                el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'})) : null,
+            msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant')),
+            C.busy ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
+                el('div', {class: 'pv-chat-who', text: 'Qwen'}),
+                el('div', {class: 'pv-chat-text', html: C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>' : '<span class="pv-chat-wait">thinking…</span>'})) : null);
+        const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? 'Qwen: ' + C.status : '']
+            .filter(Boolean).join(' · ');
+        const body = el('div', {class: 'pv-chat' + (m.dataset.compact ? ' pv-chat-compact' : '')},
+            head(), panelView(), log, composer(), foot ? el('div', {class: 'pv-chat-status', text: foot}) : null);
+        body.addEventListener('dragover', (e) => { e.preventDefault(); body.classList.add('pv-chat-drop'); });
+        body.addEventListener('dragleave', () => body.classList.remove('pv-chat-drop'));
+        body.addEventListener('drop', (e) => { e.preventDefault(); body.classList.remove('pv-chat-drop'); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+        return body;
+    }
+
+    // ------------------------------------------------------------------ the places it is shown
+
+    function mount(node, opts) {
+        if (!node) return;
+        if (opts && opts.compact) node.dataset.compact = '1';
+        C.mounts.add(node);
+        node.replaceChildren(view(node));
+        const list = node.querySelector('.pv-chat-log');
+        if (list) list.scrollTop = list.scrollHeight;
+        if (!C.ready) refresh();
+    }
+
+    window.pvChat = {mount, refresh};
+
+    // the window of the Vault tab
+    const boot = () => {
+        const host = $('#pv_chat_vault');
+        if (!host) { setTimeout(boot, 800); return; }
+        mount(host);
+    };
+    if (typeof onUiLoaded === 'function') onUiLoaded(boot);
+    else document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 1000));
+})();

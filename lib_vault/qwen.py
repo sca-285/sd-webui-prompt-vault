@@ -12,7 +12,7 @@ import io
 import os
 import time
 
-from . import llama, settings, text, vram
+from . import gguf, llama, settings, text, vram
 from . import qwen_prompts as prompts
 
 
@@ -27,10 +27,79 @@ def _missing():
     return problems
 
 
+MEMORY_MODES = ("Auto", "All on GPU", "KV cache in RAM", "Low VRAM", "RAM only")
+MEMORY = {"note": ""}  # how the running server was placed, for the status line
+
+
+def _free_vram_gb():
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            free, _total = torch.cuda.mem_get_info()
+            return free / 1024 ** 3
+    except Exception:
+        pass
+    return None
+
+
+def _memory_args(model, mmproj):
+    """llama-server's placement flags: what goes on the GPU, what stays in RAM."""
+    mode = settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto"
+    layers_opt = int(settings.opt("pv_vlm_gpu_layers"))
+    meta = gguf.info(model)
+    layers, experts = meta["layers"], meta["experts"]
+    size = os.path.getsize(model) / 1024 ** 3 if os.path.isfile(model) else 0
+    mm_size = os.path.getsize(mmproj) / 1024 ** 3 if mmproj and os.path.isfile(mmproj) else 0
+    if mode == "All on GPU":
+        MEMORY["note"] = f"{layers_opt} layers on the GPU"
+        return ["-ngl", str(layers_opt)]
+    if mode == "KV cache in RAM":
+        MEMORY["note"] = f"{layers_opt} layers on the GPU, the context in RAM"
+        return ["-ngl", str(layers_opt), "--no-kv-offload"]
+    if mode == "RAM only":
+        MEMORY["note"] = "everything in RAM (slow, no VRAM)"
+        return ["-ngl", "0", "--no-kv-offload", "--no-mmproj-offload"]
+    if mode == "Low VRAM":
+        if experts:  # a mixture of experts: the experts (most of the weights) in RAM, the rest on the GPU
+            MEMORY["note"] = "experts in RAM, attention on the GPU, the context and vision in RAM"
+            return ["-ngl", "99", "--cpu-moe", "--no-kv-offload", "--no-mmproj-offload"]
+        n = max(1, (layers or 40) // 2)
+        MEMORY["note"] = f"{n} of {layers or '?'} layers on the GPU, the rest, the context and vision in RAM"
+        return ["-ngl", str(n), "--no-kv-offload", "--no-mmproj-offload"]
+    # Auto: as much as fits in the free VRAM, less what Stable Diffusion needs back
+    free = _free_vram_gb()
+    if free is None or not size:
+        MEMORY["note"] = f"{layers_opt} layers on the GPU (free VRAM unknown)"
+        return ["-ngl", str(layers_opt)]
+    context_gb = int(settings.opt("pv_vlm_context")) / 1024 * 0.14
+    budget = free - float(settings.opt("pv_vlm_vram_reserve")) - 0.6
+    if budget >= size + mm_size + context_gb:
+        MEMORY["note"] = f"all on the GPU ({free:.1f} GB free)"
+        return ["-ngl", "99"]
+    flags = ["--no-kv-offload"]
+    if budget < size + mm_size:
+        flags.append("--no-mmproj-offload")  # the vision part in RAM: the layers come first
+    else:
+        budget -= mm_size
+    if experts and budget >= size * 0.15:
+        MEMORY["note"] = f"experts in RAM, the rest on the GPU ({free:.1f} GB free)"
+        return ["-ngl", "99", "--cpu-moe"] + flags
+    n = max(0, int((layers or 40) * max(0.0, budget) / size))
+    MEMORY["note"] = f"{n} of {layers or '?'} layers on the GPU, the rest and the context in RAM ({free:.1f} GB free)"
+    return ["-ngl", str(n)] + flags
+
+
 def _model_args():
-    return ["-m", settings.clean_path(settings.opt("pv_vlm_model_path")),
-            "--mmproj", settings.clean_path(settings.opt("pv_vlm_mmproj_path")),
-            "-c", str(int(settings.opt("pv_vlm_context")))]
+    model = settings.clean_path(settings.opt("pv_vlm_model_path"))
+    mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
+    return ["-m", model, "--mmproj", mmproj, "-c", str(int(settings.opt("pv_vlm_context")))] + _memory_args(model, mmproj)
+
+
+def _placement():
+    """What the server was started with that a change in Settings should restart it for."""
+    return (settings.clean_path(settings.opt("pv_vlm_model_path")), settings.opt("pv_vlm_memory"),
+            float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")))
 
 
 SERVER = llama.LlamaServer("Qwen", "pv_vlm_port", "pv_vlm_idle_minutes", _model_args, _missing,
@@ -53,7 +122,7 @@ def _encode(image, max_side):
 
 
 def chat(content, *, max_tokens=None, temperature=None, timeout=300):
-    SERVER.restart_if_model_changed(settings.clean_path(settings.opt("pv_vlm_model_path")))
+    SERVER.restart_if_changed(_placement())
     body = {
         "messages": [{"role": "user", "content": content}],
         "max_tokens": int(max_tokens if max_tokens is not None else settings.opt("pv_vlm_max_tokens")),

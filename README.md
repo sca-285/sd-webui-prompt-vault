@@ -51,6 +51,24 @@ Qwen-VL and the WD14 tagger) in one tab.
 
   ![The library](docs/library.webp)
 
+- **💬 Qwen Chat**, a small assistant on the Qwen model of the Vault tab: a **Chat** tab on Muse's
+  card, and the same conversation in the Vault tab's *Qwen Chat* window. It talks like a chat model
+  (it remembers the conversation, the answer appears as it is written, ■ stops it, ↻ asks again).
+  - **Files**: images (png, jpeg, webp) are shown to the model, text and Markdown files are read into
+    the conversation; add them with 📎, paste them or drop them.
+  - **The prompt you work on**, read with your message when you choose it: Muse's idea, the Vault
+    editor or txt2img's prompt ("make it rainy and at night").
+  - **An answer, put to use**: Copy, → Vault, → txt2img, → Muse (as *Your prompt*, to build an idea
+    around). The prompt in a code block is taken, or the whole answer; minor-related words are left out.
+  - **Kept only while the WebUI runs**: closing its terminal ends every conversation. **💾 Save** keeps
+    one (in `prompt_vault/chats/`, and as it goes on); 📂 opens a saved one; **⇩ .md / .json** export
+    it; a JSON export can be imported again.
+  - **⚙ System prompt**, per conversation (the default is in Settings). What the assistant will write
+    is up to the model: nothing here filters or refuses; a model that refuses needs another model.
+  - A long conversation keeps within the model's context: the oldest messages are left out, and the
+    card says how many.
+
+  ![Qwen Chat on Muse's card: an image and a Markdown file, and the prompt of txt2img](docs/qwen-chat.webp)
 - **💡 Muse**, a floating button on every tab that gives prompt ideas when you ask
   (click it, or `Alt+M`), or by itself every 5–30 minutes with the clock on its card
   (never while an image is generating).
@@ -238,6 +256,13 @@ recommended models:
 Which zip fits your GPU, which Qwen size fits your VRAM, and how to check that it all
 works: **[SETUP_AI.md](SETUP_AI.md)**, sections 1 and 2.
 
+**VRAM or RAM.** *Settings → Prompt Vault (Qwen / llama-server) → Where Qwen lives*: **Auto** (the
+default) puts as many of the model's layers on the GPU as fit in the free VRAM, less what it leaves for
+Stable Diffusion (4 GB by default), and the rest in RAM; **KV cache in RAM** keeps the conversation's
+memory in RAM; **Low VRAM** puts half the layers (or a mixture-of-experts model's experts), the context
+and the vision part in RAM; **RAM only** uses no VRAM at all (slow). These need a recent llama.cpp; an
+older one is started without them, and the console says so.
+
 Keep the file names as they download. Then check the model choices in **Settings →
 Prompt Vault (WD14 tagger)**, **(TIPO)** and **(Qwen / llama-server)**.
 
@@ -271,6 +296,7 @@ prompt_vault/            (in the WebUI folder)
 ├─ prompts.json          saved prompts
 ├─ history.json          history
 ├─ backups/              earlier versions of the library
+├─ chats/                Qwen Chat conversations you saved
 └─ muse/
    ├─ state.json         Muse's settings
    ├─ avatar.png         your avatar, if you chose one

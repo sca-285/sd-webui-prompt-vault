@@ -3,7 +3,7 @@
     python3 tests/run.py            all of them (the chip coverage takes a few minutes)
     python3 tests/run.py --quick    without the chip coverage, and 800 ideas instead of 4000
 
-Needs fastapi and httpx (the WebUI has both); the WebUI itself is stubbed in tests/stub."""
+Needs fastapi, httpx, pillow and requests (the WebUI has them); the WebUI itself is stubbed in tests/stub."""
 import glob, hashlib, os, shutil, subprocess, sys, tempfile, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +19,7 @@ CHECKS = [
     ("every kink: 25 scenes or more", ["tests/check_kinks.py"]),
     ("every chip: 25 scenes or more", ["tests/check_chips.py"]),
     ("every part: ten values or more to roll", ["tests/check_variety.py"]),
+    ("qwen chat, memory placement", ["tests/test_chat.py"]),
     ("javascript parses", "js"),
 ]
 
