@@ -447,13 +447,14 @@ def body(level, cast, subject, theme, rng=None):
     futa = cast in FUTA
     machine = cast == "synth" or theme == "Sci-fi" or any(w in subject.lower() for w in ("android", "cyborg", "gynoid", "mechanical"))
     out = []
-    for _ in range(8):
+    for _ in range(20):
         bits = []
         if level == "suggestive":
             if female:
-                bits += [rng.choice(BREASTS), "cleavage"]
+                bits += [rng.choice(BREASTS), rng.choice(["cleavage", "cleavage", "sideboob", "underboob", "navel", "midriff", "thighs",
+                                                          "thigh gap", "collarbone", "bare shoulders"])]
             if male or futa:
-                bits += [rng.choice(["pectorals", "abs", "chest hair"])] if male else []
+                bits += [rng.choice(["pectorals", "abs", "chest hair", "v-line", "navel", "bare shoulders", "happy trail"])] if male else []
                 bits += ["bulge"]
         elif cast in ANTHROS or (cast in BEINGS and "werewolf" in subject.lower()):
             kind = _kind(subject) if cast in ANTHROS else "canine"
@@ -461,6 +462,9 @@ def body(level, cast, subject, theme, rng=None):
                 bits += ([] if kind in NO_BREASTS else [rng.choice(BREASTS)]) + [rng.choice(ANTHRO_PUSSY[kind])]
             if male:
                 bits += [rng.choice(ANTHRO_PENIS[kind])] + ([] if kind in ("shark", "cetacean", "avian", "reptile", "dragon") else ["balls"])
+            if rng.random() < 0.6:  # the build under the fur, scales or feathers
+                bits.append(rng.choice(["muscular", "chubby", "thick thighs", "wide hips", "toned", "slim", "big butt", "broad shoulders",
+                                        "soft belly", "athletic"]))
         elif cast == "human_furry":
             # one human, one anthro of the other sex; the subject says which is which
             kind = _kind(subject)

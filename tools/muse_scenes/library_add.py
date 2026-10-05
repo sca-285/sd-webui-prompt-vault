@@ -163,6 +163,25 @@ merge(R16, "Creatures", sorted({p.split(", ")[2] for kind in ("mythic", "monster
 merge("22. Furry & Anthro", "Anthro Basics", ["kemono"])
 merge("14. Attire", "Uniforms", sorted({t for v in looks.JOBS.values() for w in (v[1], v[2]) for t in w.split(", ")}))
 
+# ---- Muse's wider vocabulary (lib_vault/banks.py): wardrobes, light sources, styles, doings
+spec3 = importlib.util.spec_from_file_location("banks", os.path.join(REPO, "lib_vault", "banks.py"))
+banks = importlib.util.module_from_spec(spec3); spec3.loader.exec_module(banks)
+pieces = lambda items: sorted({t for x in items for t in x.split(", ") if t})
+for key, label in (("casual", "Casual"), ("cozy", "Loungewear & Sleepwear"), ("formal", "Formal & Evening"), ("business", "Business"),
+                   ("sporty", "Sportswear"), ("beach", "Swimwear"), ("outdoor", "Outdoor"), ("winter", "Winter"), ("street", "Streetwear"),
+                   ("party", "Party & Club"), ("rustic", "Rustic"), ("fantasy", "Fantasy Wear"), ("historical", "Historical Wear"),
+                   ("scifi", "Sci-fi Wear"), ("steampunk", "Steampunk Wear"), ("wasteland", "Wasteland Wear"), ("nautical", "Nautical"),
+                   ("stage", "Stage & Costume"), ("retro", "Retro"), ("festive", "Festive & Costumes")):
+    merge("14. Attire", label, pieces(banks.WARDROBE[key]["f"] + banks.WARDROBE[key]["m"]))
+merge("17. NSFW — Clothing & Tease", "Lingerie", pieces(banks.WARDROBE["lingerie"]["f"] + banks.WARDROBE["lingerie"]["m"]))
+merge(L9, "Light Sources", pieces(x for v in banks.LIGHT_SOURCE.values() for x in v))
+merge("13. Style & Medium", "Everyday Styles", pieces(banks.STYLE_ANY))
+merge("07. Interaction & Staging (SFW)", "Doings", pieces(banks.ACT_ANY["solo"] + banks.ACT_MODERN["solo"]))  # not a Pose category: Muse would take them for poses
+merge("07. Interaction & Staging (SFW)", "Together", pieces(banks.ACT_ANY["pair"] + banks.ACT_ANY["groups"] + banks.ACT_MODERN["pair"]
+                                                               + banks.GESTURE_MORE["pair"] + banks.GESTURE_MORE["groups"]))
+merge("08. Camera & Composition", "Shot Size", pieces(banks.SHOT_PEOPLE + banks.SHOT_PLACE))
+merge(R16, "VFX", banks.FX_ANY)
+
 # keep the categories in their numbered order
 data["library"] = {k: lib[k] for k in sorted(lib, key=lambda c: int(c.split(".")[0]) if c.split(".")[0].isdigit() else 99)}
 json.dump(data, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)

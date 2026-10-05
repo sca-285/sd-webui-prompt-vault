@@ -2,7 +2,7 @@
 
 # Stable Diffusion WebUI Prompt Vault
 
-**Version 1.0.0** · [CHANGELOG](CHANGELOG.md)
+**Version 1.1.0** · [CHANGELOG](CHANGELOG.md)
 
 A prompt workbench for **Stable Diffusion WebUI Forge**, **reForge** and **Forge Classic (Neo)**:
 a searchable tag library, saved prompts and history, and three local AI helpers (TIPO,
@@ -12,8 +12,9 @@ Qwen-VL and the WD14 tagger) in one tab.
 
 ## Features
 
-- **Editor.** A positive and a negative prompt, pulled from and sent to txt2img or img2img.
-- **Tag library.** 2,000+ tags in 20 categories. Click a tag to add it, click again to
+- **Editor.** A positive and a negative prompt, pulled from and sent to txt2img or img2img, each with a
+  copy button; duplicate tags are dropped on the way.
+- **Tag library.** 4,900 tags in 24 categories. Click a tag to add it, click again to
   remove it; tags already in the prompt are lit.
   - **Search** across the whole library.
   - **Right-click** an added tag to change its weight: `(tag:1.2)`.
@@ -133,7 +134,8 @@ Qwen-VL and the WD14 tagger) in one tab.
     grading, style). Each group shows a row per part, and the parts this idea left out as
     small **+** chips that draw them. **✕** takes a part you do not want out of the idea (its
     **+** chip brings it back), **↻** draws one part again, **🔒** keeps it for the next
-    idea (same scene). **Settings → Parts** turns whole groups off (Looks, Animals, Job,
+    idea (same scene). Every part has fifteen and more values to roll through, and ↻ never
+    brings back what the part has already been until every other one has come. **Settings → Parts** turns whole groups off (Looks, Animals, Job,
     Action, Light, Camera, Color & grade, Style): off, a group is gone from the card and the
     prompt, the scene's own light or camera too, and the idea on the card follows at once.
     Small parts are drawn only where they add something: no "grin" when the Doing already

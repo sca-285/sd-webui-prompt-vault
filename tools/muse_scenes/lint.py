@@ -42,6 +42,12 @@ if __name__ == "__main__":
     from lib_vault import looks
     walk({k: v for k, v in vars(looks).items() if k.isupper() and k != "JOBS"}, "looks.py")
     walk({k: list(v[1:]) for k, v in looks.JOBS.items()}, "looks.py jobs")
+    from lib_vault import banks
+    walk({k: v for k, v in vars(banks).items() if k.isupper() and isinstance(v, (dict, list))}, "banks.py")
+    import ast  # muse.py needs the WebUI to import: its lists are read from the source
+    for node in ast.parse(open(os.path.join(REPO, "lib_vault", "muse.py"), encoding="utf-8").read()).body:
+        if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") in ("MOODS", "NUDE_WEAR"):
+            walk(ast.literal_eval(node.value), "muse.py " + node.targets[0].id)
     print(len(hits), "prose pieces")
     for p, w in list(hits.items())[:int(os.environ.get("SHOW", 40))]:
         print(f"  {w}: {p}")

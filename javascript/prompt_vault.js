@@ -108,6 +108,8 @@
         if (typeof updateInput === 'function') updateInput(area);
         else area.dispatchEvent(new Event('input', {bubbles: true}));
     }
+
+    function weightOf(piece) {
         const m = (piece || '').trim().match(WEIGHT);
         if (m) return parseFloat(m[2]);
         let s = (piece || '').trim(), w = 1;

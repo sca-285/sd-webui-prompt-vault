@@ -92,7 +92,7 @@ for _ in range(20):
 # rolling a part of yours gives it back to Muse
 parts = {p["slot"]: p["value"] for p in i["parts"]}
 j = nx(scene=i["scene"], cast=i["cast"], keep=parts, roll="hair").json()["idea"]
-assert "hair" not in j["seeded"] and "red hair" not in j["positive"], j["positive"]
+assert "hair" not in j["seeded"] and "red hair" not in [t.strip() for t in j["positive"].split(",")], j["positive"]
 # Keep in front: the idea itself does not carry it (the card puts it in front)
 c.post(B + "/muse/state", json={"prompt_mode": "front"})
 assert "seeded" in nx().json()["idea"] and not nx().json()["idea"]["seeded"]

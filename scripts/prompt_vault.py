@@ -2,6 +2,7 @@
 
 import os
 import sys
+import threading
 
 from modules import script_callbacks
 
@@ -34,6 +35,16 @@ def on_app_started(_demo, app):
         api.register(app)
     except Exception as exc:
         print(f"{TAG} the library routes could not be added: {exc}")
+
+    def warm():  # Muse's scenes, read while the page loads: the first idea comes at once
+        try:
+            from lib_vault import muse
+
+            muse.catalogue()
+        except Exception as exc:
+            print(f"{TAG} Muse could not read its scenes yet: {exc}")
+
+    threading.Thread(target=warm, name="prompt-vault-warm", daemon=True).start()
 
 
 script_callbacks.on_ui_tabs(on_ui_tabs)

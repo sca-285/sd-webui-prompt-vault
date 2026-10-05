@@ -4,6 +4,35 @@ Prompt Vault follows [semantic versioning](https://semver.org): a new major vers
 the library or saved-prompt files, a minor one adds features, a patch fixes them.
 Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
+## 1.1.0 (2026-10-05)
+
+### Muse: every part has something to roll
+- Every part of a card now has fifteen and more values to roll through, and a roll never brings back what
+  the part has already been until every other one has come: ten rolls, ten different values.
+- Wear by kind of place (casual, cozy, formal, business, sporty, beach, outdoor, winter, street, party,
+  rustic, bath, fantasy, historical, sci-fi, steampunk, wasteland, nautical, stage, retro, festive,
+  school, lingerie), some twenty each for a woman and a man; a job's clothes worn a few ways.
+- Doings anyone can have in a place, and doings with what a spot has (sitting at the table, leaning on
+  the wall); more teasing, nude and explicit doings, for groups, futanari and non-humans too.
+- More shots, angles, viewpoints, light sources (none electric in old worlds), natural light by hour
+  and sky, light quality, mood, support and volume, details, styles, expressions (14 per mood), gaze,
+  mouth, makeup for men, animals (big ones are never carried, small ones never walked), 30 more jobs.
+- A part rolled by hand is drawn even where another part already says something like it.
+- Logic: no close-up for two or more people, women's teasing doings for women, poses that need a prop
+  only where the prop is, no indoor details under the sea or in an underworld.
+
+### Faster
+- An idea takes about 6 ms instead of 15 (the scenes the filters leave are kept between ideas), and the
+  scenes are read in the background when the WebUI starts, so the first idea comes at once.
+
+### The Vault tab
+- Copy buttons on the Positive and Negative boxes.
+- Duplicate tags are dropped when a prompt is sent to txt2img or img2img.
+- Fixed: a broken line in the tab's script.
+
+### For contributors
+- `tests/run.py` also checks that every part has ten values or more to roll, and that the JavaScript parses.
+
 ## 1.0.0 (2026-10-01)
 
 The first release.
