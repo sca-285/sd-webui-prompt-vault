@@ -161,6 +161,17 @@ def register(app):
                 raise store.VaultError(str(exc))
         return run(go)
 
+    @app.post(f"{BASE}/qwen/folders")
+    def qwen_folders(body: dict = Body(...)):
+        from . import qwen
+
+        def go():
+            try:
+                return qwen.set_folders(body.get("qwen_dirs"), body.get("models_dir"))
+            except ValueError as exc:
+                raise store.VaultError(str(exc))
+        return run(go)
+
     # ---------------------------------------------------------------- Qwen Chat
     from . import chat
 

@@ -1022,7 +1022,12 @@
     async function loadQwen(body) {
         M.qwenBusy = true;
         try {
-            M.qwen = body ? await call('/qwen/models', body) : await call('/qwen/models');
+            if (body && body.__folders) {
+                M.qwen = await call('/qwen/folders', {qwen_dirs: body.qwen_dirs, models_dir: body.models_dir});
+                toast('Folders saved');
+            } else {
+                M.qwen = body ? await call('/qwen/models', body) : await call('/qwen/models');
+            }
         } catch (e) {
             toast(e.message, true);
             if (!M.qwen) M.qwen = {models: [], mmprojs: [], memory_modes: [], dirs: [], error: e.message};
@@ -1063,8 +1068,26 @@
             el('div', {class: 'pv-muse-field'},
                 el('span', {class: 'pv-muse-hint', text: q.running ? `Running: ${q.note || ''}` : 'Starts when Qwen is first used; a new choice applies at once.'}),
                 el('button', {type: 'button', class: 'pv-btn', text: '⟳', title: 'Look for .gguf files again', disabled: !!M.qwenBusy, onclick: () => loadQwen()})),
-            el('div', {class: 'pv-muse-hint', text: 'Looked in: ' + ((q.dirs || []).join(' · ') || 'models/VLM (not there yet)')
-                + '. Put the model and its mmproj-*.gguf there; another folder: Settings → Prompt Vault (Qwen / llama-server).'}));
+            el('div', {class: 'pv-muse-hint', text: 'Looked in: ' + ((q.dirs || []).join(' · ') || 'models/VLM (not there yet)')}),
+            foldersView(q));
+    }
+
+    // where the models are: Qwen's .gguf files (one or more folders, any drive), and Prompt Vault's own (WD14, TIPO)
+    function foldersView(q) {
+        const qwenDirs = el('input', {type: 'text', class: 'pv-muse-text', spellcheck: 'false', value: q.qwen_dirs || '',
+            placeholder: 'e.g. D:\\AI\\VLM; E:\\LLM (models/VLM is always looked through)'});
+        const ownDir = el('input', {type: 'text', class: 'pv-muse-text', spellcheck: 'false', value: q.models_dir || '',
+            placeholder: q.models_base || 'models/prompt_vault'});
+        const save = () => loadQwen({__folders: true, qwen_dirs: qwenDirs.value, models_dir: ownDir.value});
+        for (const box of [qwenDirs, ownDir]) box.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save(); } });
+        return el('div', {class: 'pv-muse-folders'},
+            el('label', {class: 'pv-muse-field pv-muse-pick'}, el('span', {class: 'pv-muse-field-label', text: 'Qwen in'}), qwenDirs),
+            el('label', {class: 'pv-muse-field pv-muse-pick'}, el('span', {class: 'pv-muse-field-label', text: 'WD14, TIPO'}), ownDir),
+            (q.missing || []).length ? el('div', {class: 'pv-muse-hint pv-muse-warn', text: 'Not found: ' + q.missing.join('; ')}) : null,
+            el('div', {class: 'pv-muse-field'},
+                el('span', {class: 'pv-muse-hint', text: 'Any drive. Several Qwen folders: separate them with ;. Moving the WD14 and TIPO '
+                    + 'models: move their folders (wd14, tipo) yourself, then set the new place here.'}),
+                el('button', {type: 'button', class: 'pv-btn', text: 'Save folders', disabled: !!M.qwenBusy, onclick: save})));
     }
 
     function onAvatar(ev) {
