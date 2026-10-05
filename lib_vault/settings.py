@@ -47,6 +47,7 @@ DEFAULTS = {
     "pv_llama_server_path": "",
     "pv_llm_one_at_a_time": True,
     # Qwen (the old vision keys)
+    "pv_vlm_models_dir": "",
     "pv_vlm_model_path": "",
     "pv_vlm_mmproj_path": "",
     "pv_vlm_port": 8079,
@@ -172,6 +173,9 @@ def register():
         "pv_llm_one_at_a_time": O(True, "Run one model at a time")
         .info("starting Qwen stops TIPO and the other way round: less VRAM, a few seconds "
               "more when switching"),
+        "pv_vlm_models_dir": O("", "Folder of Qwen .gguf files (for the lists on Muse's card)", gr.Textbox)
+        .info("empty: models/VLM, models/LLM and models/prompt_vault/qwen are looked through. Muse's settings choose "
+              "the model and its projector from what is there; the two paths below are what was chosen"),
         "pv_vlm_model_path": O("", "Qwen-VL model .gguf", gr.Textbox)
         .info("e.g. Qwen3VL-4B-Instruct-Q8_0.gguf"),
         "pv_vlm_mmproj_path": O("", "Vision projector (mmproj) .gguf", gr.Textbox)

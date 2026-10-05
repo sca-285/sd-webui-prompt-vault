@@ -800,7 +800,7 @@
                 {class: 'pv-muse-icon-btn' + (s.enabled ? ' pv-on' : ''), 'aria-pressed': s.enabled ? 'true' : 'false'}),
             innerWidth >= WIDE_MIN ? iconButton(isWide() ? 'narrow' : 'widen', isWide() ? 'Compact card' : 'Wide card: two columns, a bigger prompt',
                 () => { M.wide = !M.wide; LS.set('wide', M.wide); render(); }) : null,
-            M.view === 'idea' ? iconButton('gear', 'Settings', () => { M.view = 'settings'; render(); }) : null,
+            M.view === 'idea' ? iconButton('gear', 'Settings', () => { M.view = 'settings'; M.qwen = null; render(); }) : null,
             iconButton('close', 'Close (Esc)', () => openPanel(false)));
     }
 
@@ -996,6 +996,7 @@
                 seg('Generate', 'generate_in', [['txt2img', 'in txt2img'], ['img2img', 'in img2img']]),
                 el('div', {class: 'pv-muse-hint', text: 'The card\'s Generate button writes the idea in that tab and presses its Generate: '
                     + 'your model, sampler, size and negative prompt as they are there. img2img uses the input image you put there.'})),
+            qwenSection(),
             section('Arrange & describe',
                 seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
                 seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),
@@ -1015,6 +1016,55 @@
                     el('button', {type: 'button', class: 'pv-btn', text: 'Choose an image…', onclick: () => file.click()}), file,
                     M.snap.avatar.url ? el('button', {type: 'button', class: 'pv-btn', text: 'Remove', onclick: () => setAvatar(call('/muse/avatar/clear', {}))}) : null)),
             el('div', {class: 'pv-muse-hint', text: 'Scenes of your own: JSON files in prompt_vault/muse/scenes (see the README).'}));
+    }
+
+    // Qwen: which model and projector (from the .gguf files found), and where it lives (VRAM or RAM)
+    async function loadQwen(body) {
+        M.qwenBusy = true;
+        try {
+            M.qwen = body ? await call('/qwen/models', body) : await call('/qwen/models');
+        } catch (e) {
+            toast(e.message, true);
+            if (!M.qwen) M.qwen = {models: [], mmprojs: [], memory_modes: [], dirs: [], error: e.message};
+        }
+        M.qwenBusy = false;
+        if (M.view === 'settings') render();
+    }
+
+    function qwenSection() {
+        const q = M.qwen;
+        if (!q) {
+            if (!M.qwenBusy) loadQwen();
+            return section('Qwen model', el('div', {class: 'pv-muse-hint', text: 'Looking for .gguf files…'}));
+        }
+        const same = (a, b) => !!a && !!b && a.replace(/\\/g, '/').toLowerCase() === b.replace(/\\/g, '/').toLowerCase();
+        const pick = (label, list, current, onchange, none) => {
+            const known = list.some((m) => same(m.path, current));
+            const groups = {};
+            for (const m of list) (groups[m.folder] = groups[m.folder] || []).push(m);
+            return el('label', {class: 'pv-muse-field pv-muse-pick'},
+                el('span', {class: 'pv-muse-field-label', text: label}),
+                el('select', {class: 'pv-muse-select', disabled: !!M.qwenBusy, onchange: (e) => onchange(e.target.value)},
+                    el('option', {value: '', text: none, selected: !current}),
+                    current && !known ? el('option', {value: current, text: current.split(/[\\/]/).pop() + ' (not in the folders below)', selected: true}) : null,
+                    Object.entries(groups).map(([folder, ms]) => el('optgroup', {label: folder},
+                        ms.map((m) => el('option', {value: m.path, title: m.path, text: `${m.name} · ${m.gb >= 0.1 ? m.gb + ' GB' : 'small'}`, selected: same(m.path, current)}))))));
+        };
+        return section('Qwen model',
+            pick('Model', q.models, q.model, (v) => loadQwen({model: v}), q.models.length ? '— choose a model —' : '— no .gguf found —'),
+            pick('Vision', q.mmprojs, q.mmproj, (v) => loadQwen({mmproj: v}), '— none: no images —'),
+            el('label', {class: 'pv-muse-field pv-muse-pick'},
+                el('span', {class: 'pv-muse-field-label', text: 'Lives in'}),
+                el('select', {class: 'pv-muse-select', disabled: !!M.qwenBusy, onchange: (e) => loadQwen({memory: e.target.value}),
+                    title: 'Auto: as much on the GPU as fits, the rest in RAM. Low VRAM: half (or a MoE model\'s experts) in RAM. RAM only: no VRAM, slow.'},
+                (q.memory_modes || []).map((m) => el('option', {value: m, text: {Auto: 'Auto: VRAM as fits, the rest in RAM', 'All on GPU': 'All on the GPU',
+                    'KV cache in RAM': 'GPU, the context in RAM', 'Low VRAM': 'Low VRAM: most in RAM', 'RAM only': 'RAM only (slow)'}[m] || m,
+                selected: m === q.memory})))),
+            el('div', {class: 'pv-muse-field'},
+                el('span', {class: 'pv-muse-hint', text: q.running ? `Running: ${q.note || ''}` : 'Starts when Qwen is first used; a new choice applies at once.'}),
+                el('button', {type: 'button', class: 'pv-btn', text: '⟳', title: 'Look for .gguf files again', disabled: !!M.qwenBusy, onclick: () => loadQwen()})),
+            el('div', {class: 'pv-muse-hint', text: 'Looked in: ' + ((q.dirs || []).join(' · ') || 'models/VLM (not there yet)')
+                + '. Put the model and its mmproj-*.gguf there; another folder: Settings → Prompt Vault (Qwen / llama-server).'}));
     }
 
     function onAvatar(ev) {
