@@ -25,6 +25,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Muse's settings list the .gguf files in models/VLM (and models/LLM, models/prompt_vault/qwen, a folder of
   your choice): pick the model, and the vision projector beside it (same folder, same size) is picked for
   it; where it lives too. Saved in the WebUI's settings; the server starts again with the new choice.
+- A speculative-decoding draft beside a model (dflash-…, …-MTP…, eagle…) is left out of the Model list:
+  it only speeds up its model and cannot answer by itself.
 - Models on another drive: Qwen's .gguf files in one or more folders of your choice (separated by ;),
   and a folder of your choice for Prompt Vault's own models (WD14, TIPO), from Muse's card or Settings.
 

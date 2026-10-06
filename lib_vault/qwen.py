@@ -299,13 +299,19 @@ def models():
                       "gb": round(size / 1024 ** 3, 2), "mmproj": "mmproj" in os.path.basename(p).lower()})
     model = settings.clean_path(settings.opt("pv_vlm_model_path"))
     mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
-    return {"models": [i for i in items if not i["mmproj"]], "mmprojs": [i for i in items if i["mmproj"]],
+    for i in items:  # a speculative-decoding draft (DFlash, MTP, EAGLE) only speeds up its model: never one to pick
+        i["draft"] = not i["mmproj"] and bool(DRAFT.search(i["name"]))
+    return {"models": [i for i in items if not i["mmproj"] and not i["draft"]], "mmprojs": [i for i in items if i["mmproj"]],
+            "drafts": [i for i in items if i["draft"]],
             "model": model, "mmproj": mmproj,
             "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
             "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", ""),
             "think": bool(settings.opt("pv_chat_think")), "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
             "models_base": settings.models_base(), "missing": [d for d in settings.folders(settings.opt("pv_vlm_models_dir"))
                                                             if not os.path.isdir(d)]}
+
+
+DRAFT = re.compile(r"(^|[-_. ])(dflash\d*|draft|mtp|eagle\d*)([-_. ]|$)", re.I)
 
 
 def mmproj_for(model_path, mmprojs):
