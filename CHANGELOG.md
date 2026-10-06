@@ -31,8 +31,6 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
   and a folder of your choice for Prompt Vault's own models (WD14, TIPO), from Muse's card or Settings.
 
 ### Qwen: VRAM or RAM
-- Seen by Memory Keeper, when it is installed (an extension of its own): Qwen, TIPO and WD14 are listed in its
-  panel with their size, and can be freed from there or kept. Without it, nothing changes.
 - Where Qwen lives: Auto (as many layers on the GPU as fit, less a reserve for Stable Diffusion, the rest
   in RAM; read from the model file), All on GPU, KV cache in RAM, Low VRAM (half the layers or a MoE
   model's experts, the context and the vision part in RAM), RAM only. An older llama.cpp that does not

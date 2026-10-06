@@ -32,12 +32,6 @@ def on_app_started(_demo, app):
     except Exception:
         pass
     try:
-        from lib_vault import memory
-
-        memory.register()  # for Memory Keeper: Qwen, TIPO and WD14, and a way to let go of them
-    except Exception as exc:
-        print(f"{TAG} {exc}")
-    try:
         api.register(app)
     except Exception as exc:
         print(f"{TAG} the library routes could not be added: {exc}")

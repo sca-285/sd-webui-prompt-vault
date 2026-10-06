@@ -251,19 +251,6 @@ assert not any("dflash" in m["name"] for m in got["models"]) and got["drafts"][0
 assert qwen.DRAFT.search("Qwen3.8-27B-MTP-Q8_0.gguf") and not qwen.DRAFT.search("Qwen3.8-27B-Q4_K_M.gguf")
 print("drafts ok")
 
-# told to Memory Keeper: Qwen with its size, and a way to let go of it
-from lib_vault import memory
-memory.register(); memory.register()  # twice: listed once
-hs = {h["id"]: h for h in shared.memory_holders}
-assert len(shared.memory_holders) == 3 and set(hs) == {"prompt_vault.qwen", "prompt_vault.tipo", "prompt_vault.wd14"}
-send(c.post(B + "/new").json()["chat"]["id"], "hello")
-q = hs["prompt_vault.qwen"]
-assert q["usage"]()["vram"] > 0 and q["pid"]() == qwen.SERVER.proc.pid and "Qwen" in q["detail"](), q["usage"]()
-assert q["category"] == "llm" and hs["prompt_vault.wd14"]["category"] == "tagger" and q["source"] == "Prompt Vault"
-q["unload"]()
-assert q["usage"]() is None and not qwen.SERVER.running() and hs["prompt_vault.wd14"]["usage"]() is None
-print("memory holders ok")
-
 # folders on another drive: several for Qwen, one for Prompt Vault's own models
 other, third, own = (tempfile.mkdtemp(prefix=p) for p in ("drive-d-", "drive-e-", "pv-models-"))
 fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.Q5_K_M.gguf"), 36)
