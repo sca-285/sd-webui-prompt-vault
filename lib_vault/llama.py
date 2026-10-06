@@ -193,7 +193,7 @@ class LlamaServer:
             raise RuntimeError("llama-server did not become ready in time. Raise the startup timeout, "
                                "or turn on the verbose setting to see its log.")
 
-        self.proc, self.url, self.last_used = proc, url, time.time()
+        self.proc, self.url, self.last_used, self.argv = proc, url, time.time(), list(argv)
         try:
             with open(self._pid_file(), "w", encoding="utf-8") as f:
                 f.write(str(proc.pid))
