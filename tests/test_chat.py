@@ -211,6 +211,16 @@ assert seen[0][0]["content"] == chat.ENHANCE_SYSTEM and asked.endswith("make her
 assert asked.startswith("The conversation so far:") and "User: a red-haired knight" in asked, asked[:300]
 print("assist ok")
 
+# how full the context is, and what is kept for the answer (three times as much when the model thinks first)
+x = c.get(B + "/one", params={"id": cid}).json()["chat"]["context"]
+from lib_vault import settings as pv_settings
+assert x["size"] == pv_settings.opt("pv_vlm_context") and x["reserve"] == pv_settings.opt("pv_chat_max_tokens") and 0 < x["used"] < x["room"] < x["size"], x
+shared.opts.pv_chat_think = True
+assert c.get(B + "/one", params={"id": cid}).json()["chat"]["context"]["room"] == x["room"] - 2 * x["reserve"]
+shared.opts.pv_chat_think = False
+assert chat._tokens("Cô gái tóc đỏ đứng dưới mưa", []) > chat._tokens("The girl with red hair in rain", [])  # accents count more
+print("context meter ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))

@@ -591,6 +591,24 @@
                     : button('Send', 'Send (Enter)', () => { C.draft = box.value; send(); }, {class: 'pv-chat-btn pv-chat-send'})));
     }
 
+    // how full the model's context is: the conversation, of what it may take (the rest is kept for the answer)
+    const kTok = (n) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(Math.round(n)));
+    function contextMeter() {
+        const x = C.chat && C.chat.context;
+        if (!x || !C.chat.messages.length || !x.room) return null;
+        const share = x.used / x.room;
+        const level = share >= 1 ? 'pv-ctx-over' : share >= 0.75 ? 'pv-ctx-high' : '';
+        const note = share >= 1 ? 'full: the oldest messages are no longer read. 💾 Save it and start a new one, or raise Context size'
+            : share >= 0.75 ? 'nearly full: soon the oldest messages stop being read' : '';
+        return el('div', {class: 'pv-chat-ctx-meter ' + level,
+            title: `Context size ${x.size} tokens (Settings → Prompt Vault → Context size): ${x.reserve} kept for the answer, ` +
+                `the rest for the conversation and its system prompt. Counts are estimates; an image is about its width × height / 1024.`},
+            el('span', {class: 'pv-ctx-label', text: 'Context'}),
+            el('span', {class: 'pv-ctx-bar'}, el('span', {class: 'pv-ctx-fill', style: `width:${Math.min(100, share * 100).toFixed(1)}%`})),
+            el('span', {class: 'pv-ctx-num', text: `~${kTok(x.used)} / ${kTok(x.room)} tokens · ${Math.round(share * 100)}%`}),
+            note ? el('span', {class: 'pv-ctx-note', text: note}) : null);
+    }
+
     function view(m) {
         const c = C.chat;
         const msgs = c ? c.messages.slice(0, C.cut >= 0 ? C.cut : undefined) : [];
@@ -610,7 +628,7 @@
         const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? 'Qwen: ' + C.status : '']
             .filter(Boolean).join(' · ');
         const body = el('div', {class: 'pv-chat' + (m.dataset.compact ? ' pv-chat-compact' : '')},
-            head(), panelView(), log, composer(), foot ? el('div', {class: 'pv-chat-status', text: foot}) : null);
+            head(), panelView(), log, composer(), contextMeter(), foot ? el('div', {class: 'pv-chat-status', text: foot}) : null);
         body.addEventListener('dragover', (e) => { e.preventDefault(); body.classList.add('pv-chat-drop'); });
         body.addEventListener('dragleave', () => body.classList.remove('pv-chat-drop'));
         body.addEventListener('drop', (e) => { e.preventDefault(); body.classList.remove('pv-chat-drop'); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });

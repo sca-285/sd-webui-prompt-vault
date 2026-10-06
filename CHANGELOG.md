@@ -18,7 +18,9 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - An answer to the Vault editor, txt2img or Muse's Your prompt in one click (minor-related words left out).
 - Conversations live while the WebUI runs; Save keeps one in prompt_vault/chats/, Export gives Markdown
   or JSON, Import brings a JSON one back. A system prompt per conversation; the default in Settings.
-- Long conversations keep within the model's context: the oldest messages are left out.
+- Long conversations keep within the model's context: the oldest messages are left out. A Context meter
+  under the box shows how full it is (amber from 75%, red when full); a thinking model's longer answer is
+  kept room for; Vietnamese and other accented or non-Latin text is counted closer to its real size.
 - Thinking models (Qwen3.5, Qwen3.8…): *Let it think first* in Muse's settings; the reasoning is shown
   apart, live and then folded under the answer, never mixed into it. Off, the model answers at once;
   Describe, Muse and the other prompt tools never let it think.

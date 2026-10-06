@@ -57,6 +57,7 @@ def _view(c):
     ("version" of "versions"); the other versions stay here."""
     out = dict(c)
     out["messages"] = [_shown(m) for m in c["messages"]]
+    out["context"] = _context(c)
     return out
 
 
@@ -342,8 +343,11 @@ def read_files(files):
 
 
 def _tokens(text, files):
-    """A rough count, to keep a conversation within the model's context."""
-    n = len(text or "") / 3.2
+    """A rough count, to keep a conversation within the model's context: English runs about 3.2 characters a token,
+    Vietnamese, Chinese and the like fewer (their accented and non-Latin letters count double)."""
+    text = text or ""
+    wide = sum(1 for ch in text if ord(ch) > 127)
+    n = (len(text) - wide) / 3.2 + wide / 1.6
     for f in files or []:
         n += (f.get("w", 1024) * f.get("h", 1024) / 1024) if f.get("kind") == "image" else len(f.get("text") or "") / 3.2
     return int(n) + 8
@@ -371,9 +375,25 @@ def _content(m):
     return parts
 
 
-def _window(c, max_tokens):
+def _reserve():
+    """Tokens kept free for the answer: the longest answer, three times that when the model thinks first."""
+    return int(settings.opt("pv_chat_max_tokens")) * (3 if settings.opt("pv_chat_think") else 1)
+
+
+def _room(c):
+    """Tokens the messages may take: the context, less the answer's share, the system prompt and a margin."""
+    return int(settings.opt("pv_vlm_context")) - _reserve() - _tokens(c["system"], []) - 64
+
+
+def _context(c):
+    """How full the context is: {"used", "room", "size", "reserve"}, in tokens (estimated)."""
+    used = sum(m.get("tokens") or _tokens(m["text"], m.get("files")) for m in c["messages"])
+    return {"used": used, "room": max(0, _room(c)), "size": int(settings.opt("pv_vlm_context")), "reserve": _reserve()}
+
+
+def _window(c, max_tokens=None):
     """The messages that fit in the context, the newest kept; how many older ones were left out."""
-    budget = int(settings.opt("pv_vlm_context")) - max_tokens - _tokens(c["system"], []) - 64
+    budget = _room(c)
     kept, used = [], 0
     for m in reversed(c["messages"]):
         need = m.get("tokens") or _tokens(m["text"], m.get("files"))
@@ -477,7 +497,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
-        window, left_out = _window(c, max_tokens)
+        window, left_out = _window(c)
         messages = ([{"role": "system", "content": c["system"]}] if c["system"].strip() else []) + \
                    [{"role": m["role"], "content": _content(m)} for m in window]
 

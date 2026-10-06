@@ -72,8 +72,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     it; a JSON export can be imported again.
   - **⚙ System prompt**, per conversation (the default is in Settings). What the assistant will write
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
-  - A long conversation keeps within the model's context: the oldest messages are left out, and the
-    card says how many.
+  - **Context**, under the box: how much of the model's context the conversation takes (an estimate),
+    green, then amber from 75%, red when full. The context is Settings → Prompt Vault → *Context size*
+    (8192 tokens unless changed), less what is kept for the answer (*longest answer*, three times that
+    when the model thinks first). When it is full the oldest messages are left out, and the card says
+    how many: 💾 Save and start a new conversation, or raise Context size.
   - **Thinking models** (Qwen3.5, Qwen3.8 27B…): with *Let it think first* on (Muse → ⚙ → Qwen model),
     the reasoning streams in a dim box and folds into **💭 Thought** above the answer; it never gets into
     the answer, a copy or a prompt. Off, such a model answers at once. Qwen3-VL Instruct does not think.
