@@ -244,6 +244,13 @@ assert c.post(M, json={"model": "/nowhere/x.gguf"}).status_code == 400
 assert c.post(M, json={"memory": "Lots"}).status_code == 400
 print("model choice ok")
 
+# a DFlash draft beside its model is not one to pick
+fake_gguf(os.path.join(os.path.dirname(c.get(M).json()["models"][0]["path"]), "dflash-Qwen3.8-27B-ABLITERATED-BF16.gguf"), 5)
+got = c.get(M).json()
+assert not any("dflash" in m["name"] for m in got["models"]) and got["drafts"][0]["name"].startswith("dflash-"), got
+assert qwen.DRAFT.search("Qwen3.8-27B-MTP-Q8_0.gguf") and not qwen.DRAFT.search("Qwen3.8-27B-Q4_K_M.gguf")
+print("drafts ok")
+
 # folders on another drive: several for Qwen, one for Prompt Vault's own models
 other, third, own = (tempfile.mkdtemp(prefix=p) for p in ("drive-d-", "drive-e-", "pv-models-"))
 fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.Q5_K_M.gguf"), 36)
