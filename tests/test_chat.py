@@ -182,6 +182,35 @@ assert len(m) == 2 and m[1]["versions"] == 2 and m[1]["text"], m
 assert c.post(B + "/edit", json={"id": vc, "message": m[1]["id"], "text": "x"}).status_code == 400  # only your own
 print("versions ok")
 
+# help with your own message: nothing is sent, nothing is kept
+def assist(cid, mode, text):
+    with c.stream("POST", B + "/assist", json={"id": cid, "mode": mode, "text": text, "context": "1girl, red hair"}) as r:
+        assert r.status_code == 200, r.read()
+        return [json.loads(x) for x in r.iter_lines() if x]
+before = len(c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"])
+ev = assist(cid, "enhance", "make her look sad pls")
+deltas = "".join(e["delta"] for e in ev if "delta" in e)
+done = ev[-1]
+assert done["done"] and f"system={len(chat.ENHANCE_SYSTEM)}" in done["text"] and done["text"] == deltas.strip(), ev
+assert "messages=2 images=0" in deltas and "| The conversation so far" in deltas  # one system prompt, one request with the talk
+ev = assist(cid, "write", "")
+assert f"system={len(chat.WRITE_SYSTEM)}" in ev[-1]["text"], ev[-1]
+ev = assist("", "write", "a castle")  # before any conversation
+assert ev[-1]["done"] and "a castle" in ev[-1]["text"]
+assert len(c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"]) == before
+assert c.post(B + "/assist", json={"id": cid, "mode": "enhance", "text": " "}).status_code == 400
+assert c.post(B + "/assist", json={"id": cid, "mode": "poem", "text": "x"}).status_code == 400
+assert chat.tidy_draft('Improved message: "Make her hair silver"') == "Make her hair silver"
+assert chat.tidy_draft('She said "hi" and left') == 'She said "hi" and left'
+seen, real = [], chat._stream
+chat._stream = lambda messages, *a, **k: (seen.append(messages), iter(()))[1]
+list(chat.assist(cid, "enhance", "make her look sad pls", "1girl, red hair"))
+chat._stream = real
+asked = seen[0][1]["content"]
+assert seen[0][0]["content"] == chat.ENHANCE_SYSTEM and asked.endswith("make her look sad pls") and "1girl, red hair" in asked
+assert asked.startswith("The conversation so far:") and "User: a red-haired knight" in asked, asked[:300]
+print("assist ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))

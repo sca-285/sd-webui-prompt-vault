@@ -387,6 +387,47 @@ def _window(c, max_tokens):
     return kept, len(c["messages"]) - len(kept)
 
 
+def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
+    """The model's answer as it comes: {"delta"} and {"thinking"} events; the pieces are kept in text and thought."""
+    from . import qwen
+
+    split = _ThinkSplit()
+    with qwen._SdAside():
+        qwen.SERVER.restart_if_changed(qwen._placement())
+        url = qwen.SERVER.ensure()
+    import requests
+
+    body = {"messages": messages, "max_tokens": max_tokens * (3 if think else 1),
+            "temperature": float(settings.opt("pv_chat_temperature") if temperature is None else temperature), "stream": True,
+            "chat_template_kwargs": {"enable_thinking": think}}
+    with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
+        if res.status_code != 200:
+            raise RuntimeError(f"the Qwen server answered {res.status_code}: {res.text[:300]}")
+        for line in res.iter_lines(decode_unicode=True):
+            if stop.is_set():
+                break
+            if not line or not line.startswith("data:"):
+                continue
+            data = line[5:].strip()
+            if data == "[DONE]":
+                break
+            try:
+                d = json.loads(data)["choices"][0].get("delta", {})
+            except Exception:
+                continue
+            qwen.SERVER.touch()
+            if d.get("reasoning_content"):  # a thinking model's reasoning, given apart by llama-server
+                thought.append(d["reasoning_content"])
+                yield {"thinking": d["reasoning_content"]}
+            for kind, piece in split.feed(d.get("content") or ""):  # or inside the answer, between <think> tags
+                into = thought if kind == "thinking" else text
+                if not "".join(into).strip():  # the blank lines around an empty <think></think>: not shown
+                    piece = piece.lstrip()
+                if piece:
+                    into.append(piece)
+                    yield {kind: piece}
+
+
 def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None):
     """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}.
 
@@ -443,43 +484,8 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
     def events():
         yield {"start": True, "left_out": left_out}
         text, thought, started = [], [], time.time()
-        split = _ThinkSplit()
         try:
-            with qwen._SdAside():
-                qwen.SERVER.restart_if_changed(qwen._placement())
-                url = qwen.SERVER.ensure()
-            import requests
-
-            think = bool(settings.opt("pv_chat_think"))
-            body = {"messages": messages, "max_tokens": max_tokens * (3 if think else 1),
-                    "temperature": float(settings.opt("pv_chat_temperature")), "stream": True,
-                    "chat_template_kwargs": {"enable_thinking": think}}
-            with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
-                if res.status_code != 200:
-                    raise RuntimeError(f"the Qwen server answered {res.status_code}: {res.text[:300]}")
-                for line in res.iter_lines(decode_unicode=True):
-                    if stop.is_set():
-                        break
-                    if not line or not line.startswith("data:"):
-                        continue
-                    data = line[5:].strip()
-                    if data == "[DONE]":
-                        break
-                    try:
-                        d = json.loads(data)["choices"][0].get("delta", {})
-                    except Exception:
-                        continue
-                    qwen.SERVER.touch()
-                    if d.get("reasoning_content"):  # a thinking model's reasoning, given apart by llama-server
-                        thought.append(d["reasoning_content"])
-                        yield {"thinking": d["reasoning_content"]}
-                    for kind, piece in split.feed(d.get("content") or ""):  # or inside the answer, between <think> tags
-                        into = thought if kind == "thinking" else text
-                        if not "".join(into).strip():  # the blank lines around an empty <think></think>: not shown
-                            piece = piece.lstrip()
-                        if piece:
-                            into.append(piece)
-                            yield {kind: piece}
+            yield from _stream(messages, max_tokens, bool(settings.opt("pv_chat_think")), stop, text, thought)
         except Exception as exc:
             if not text:
                 if branch:
@@ -535,6 +541,88 @@ class _ThinkSplit:
             self.buf = self.buf[at + len(tag):]
             self.inside = not self.inside
         return out
+
+
+# ------------------------------------------------------------------ help with your own message
+
+ENHANCE_SYSTEM = (
+    "You improve a message the user is about to send to an AI assistant inside an image-prompt tool (Stable Diffusion "
+    "WebUI). Rewrite their draft so the assistant understands it better and answers it better: clear, specific and "
+    "complete, in the same language and the same voice as the draft. Keep everything they ask for and every detail "
+    "they give; add only what sharpens the request (for an image or a prompt: subject, look, setting, lighting, mood, "
+    "style, framing; for a question: what they want back and in what form). Do not answer it. No preamble, no quotes, "
+    "no notes: write only the improved message."
+)
+WRITE_SYSTEM = (
+    "You write the user's next message in their conversation with an AI assistant inside an image-prompt tool "
+    "(Stable Diffusion WebUI). Write it as the user, in the first person, in the language the user writes in "
+    "(English when there is nothing to go by) and the way they write. One message that moves their work forward: a "
+    "variation, a detail, a fix, the next step, or a fresh idea when the conversation is new. When the user gives a "
+    "hint, follow it. Do not answer as the assistant. No preamble, no quotes, no notes: write only the message."
+)
+ASSIST_MODES = {"enhance": (ENHANCE_SYSTEM, 0.5), "write": (WRITE_SYSTEM, 0.9)}
+
+
+def _transcript(c, limit=12, chars=1500):
+    lines = []
+    for m in c["messages"][-limit:]:
+        words = m["text"] if len(m["text"]) <= chars else m["text"][:chars] + " […]"
+        names = ", ".join(f.get("name", "") for f in m.get("files") or [])
+        lines.append(("User" if m["role"] == "user" else "Assistant") + (f" [files: {names}]" if names else "") + ": " + words)
+    return "\n\n".join(lines)
+
+
+def tidy_draft(text):
+    """What the model wrote, as a message: no "Improved message:" before it, no quotes or code fence around it."""
+    text = str(text or "").strip()
+    text = re.sub(r"^(here(?: is|'s)[^\n:]*:|improved (?:message|draft|version)\s*:|message\s*:|user\s*:)\s*", "", text, flags=re.I)
+    if text.startswith("```") and text.endswith("```") and text.count("```") == 2:
+        text = text[3:-3].split("\n", 1)[-1] if "\n" in text[3:-3] else text[3:-3]
+    for a, b in (('"', '"'), ("“", "”"), ("«", "»")):
+        inner = text[1:-1]
+        if len(text) > 1 and text.startswith(a) and text.endswith(b) and a not in inner and b not in inner:
+            text = inner
+    return text.strip()
+
+
+def assist(cid, mode, draft="", context=""):
+    """Help with the message you are writing, not sent: "enhance" rewrites your draft, "write" writes one for you (your
+    draft, if any, as a hint). Events: {"start"}, {"delta"}..., then {"done", "text"} or {"error"}."""
+    if mode not in ASSIST_MODES:
+        raise store.VaultError("Enhance or write?")
+    draft = str(draft or "").strip()
+    if mode == "enhance" and not draft:
+        raise store.VaultError("Write a draft first: Enhance makes it better.")
+    system, temperature = ASSIST_MODES[mode]
+    with _lock:
+        c = _chats.get(str(cid or ""))
+        so_far = _transcript(c) if c else ""
+        stop = _stops[str(cid or "assist")] = threading.Event()
+    parts = []
+    if so_far:
+        parts.append("The conversation so far:\n\n" + so_far)
+    if context:
+        parts.append("The prompt the user is working on:\n" + str(context)[:4000])
+    if mode == "enhance":
+        parts.append("The user's draft, to improve:\n" + draft)
+    else:
+        parts.append(("The user's hint for the message: " + draft) if draft else "Write the user's next message.")
+    messages = [{"role": "system", "content": system}, {"role": "user", "content": "\n\n".join(parts)}]
+
+    def events():
+        yield {"start": True}
+        text, thought = [], []
+        try:
+            for ev in _stream(messages, 700, False, stop, text, thought, temperature):
+                if "delta" in ev:
+                    yield ev
+        except Exception as exc:
+            if not text:
+                yield {"error": f"Qwen: {exc}"}
+                return
+        yield {"done": True, "text": tidy_draft("".join(text)), "stopped": stop.is_set()}
+
+    return events()
 
 
 def stop(cid):

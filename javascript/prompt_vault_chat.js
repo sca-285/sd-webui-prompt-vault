@@ -55,6 +55,8 @@
         pending: null,              // what you just sent, until the server has it
         cut: -1,                    // while a message is edited or answered again: the messages before it are shown
         editing: null,              // {id, text}: your message being edited
+        assisting: '',              // 'enhance' | 'write' while Qwen writes into the box
+        undoDraft: null,            // the box before Enhance or Write for me
         draft: '',
         files: [],                  // [{kind, name, data, size}] waiting to be sent
         context: LS.get('context', 'none'),
@@ -197,6 +199,7 @@
         const files = C.files.map((f) => ({kind: f.kind, name: f.name, data: f.data}));
         C.pending = {role: 'user', text, files: C.files.map((f) => ({kind: f.kind, name: f.name, url: f.kind === 'image' ? f.data : ''}))};
         const keep = {draft: C.draft, files: C.files};
+        C.undoDraft = null;
         C.draft = '';
         C.files = [];
         const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText()});
@@ -205,7 +208,74 @@
         paint();
     }
 
-    const stop = () => { if (C.chat) call('/chat/stop', {id: C.chat.id}).catch(() => {}); };
+    const stop = () => { call('/chat/stop', {id: C.chat ? C.chat.id : 'assist'}).catch(() => {}); };
+
+    // the box, as Qwen writes into it: every window's, without painting the rest again
+    function paintDraft() {
+        for (const m of C.mounts) {
+            const box = m.querySelector('.pv-chat-input');
+            if (box) { box.value = C.draft; box.scrollTop = box.scrollHeight; }
+        }
+    }
+
+    // ✨ Enhance: Qwen rewrites your draft; ✍ Write for me: Qwen writes your next message (your draft as its hint).
+    // Nothing is sent: it lands in the box for you to read, change and send; ↩ Undo brings your words back.
+    async function assist(mode) {
+        if (C.busy) return;
+        const before = C.draft;
+        if (mode === 'enhance' && !before.trim()) { toast('Write a draft first: Enhance makes it better.', true); return; }
+        C.busy = true;
+        C.assisting = mode;
+        C.undoDraft = before;
+        C.draft = '';
+        paint();
+        let failed = '';
+        let got = null;
+        try {
+            const res = await fetch(root() + API + '/chat/assist', {method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: C.chat ? C.chat.id : '', mode, text: before, context: contextText()})});
+            if (!res.ok) {
+                let data = null;
+                try { data = await res.json(); } catch (e) { /* not json */ }
+                throw new Error((data && data.error) || ('HTTP ' + res.status));
+            }
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            for (;;) {
+                const {value, done} = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, {stream: true});
+                let nl;
+                while ((nl = buffer.indexOf('\n')) >= 0) {
+                    const line = buffer.slice(0, nl).trim();
+                    buffer = buffer.slice(nl + 1);
+                    if (!line) continue;
+                    const ev = JSON.parse(line);
+                    if (ev.delta) { C.draft += ev.delta; paintDraft(); }
+                    if (ev.error) failed = ev.error;
+                    if (ev.done) got = ev.text;
+                }
+            }
+        } catch (e) {
+            failed = e.message;
+        }
+        C.busy = false;
+        C.assisting = '';
+        if (got) C.draft = got;
+        if (failed || !C.draft.trim()) {
+            C.draft = before;
+            C.undoDraft = null;
+            if (failed) toast(failed, true);
+        }
+        paint();
+        for (const m of C.mounts) {
+            const box = m.querySelector('.pv-chat-input');
+            if (box && box.offsetParent) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+        }
+    }
+
+    const undoAssist = () => { if (C.undoDraft !== null) { C.draft = C.undoDraft; C.undoDraft = null; paint(); } };
     // a new answer to the message before this one; the earlier answer stays as a version (‹ 1/2 ›)
     async function again(m, at) {
         if (!C.chat || C.busy) return;
@@ -489,6 +559,7 @@
         const box = el('textarea', {class: 'pv-chat-input', rows: '2', spellcheck: 'true',
             placeholder: 'Write to Qwen… Enter sends, Shift+Enter a new line. Add images or .txt/.md with 📎, paste or drop them.'});
         box.value = C.draft;
+        if (C.assisting) box.readOnly = true;
         box.addEventListener('input', () => { C.draft = box.value; });
         box.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); C.draft = box.value; send(); }
@@ -501,14 +572,22 @@
             accept: 'image/png,image/jpeg,image/webp,.txt,.md,.markdown,text/plain,text/markdown', onchange: (e) => addFiles(e.target.files)});
         const ctx = el('select', {class: 'pv-chat-ctx', title: 'Read with your message: the prompt you are working on', onchange: (e) => { C.context = e.target.value; LS.set('context', C.context); }},
             CONTEXTS.map(([v, t]) => el('option', {value: v, text: '+ ' + t, selected: v === C.context})));
+        const helper = el('div', {class: 'pv-chat-assist'},
+            C.assisting ? el('span', {class: 'pv-chat-wait', text: C.assisting === 'enhance' ? 'Qwen is improving your draft…' : 'Qwen is writing for you…'})
+                : [button('✨ Enhance my draft', 'Qwen rewrites what you wrote: clearer, more specific, in your words and language. Not sent: read it, change it, send it',
+                    () => { C.draft = box.value; assist('enhance'); }, {disabled: C.busy}),
+                   button('✍ Write for me', 'Qwen writes your next message from the conversation (what is in the box is its hint). Not sent',
+                    () => { C.draft = box.value; assist('write'); }, {disabled: C.busy}),
+                   C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null]);
         return el('div', {class: 'pv-chat-compose'},
             files(C.files, true),
+            helper,
             box,
             el('div', {class: 'pv-chat-row'},
                 pickFile, button('📎', 'Add images (png, jpeg, webp) or text and Markdown files', () => pickFile.click()),
                 ctx,
                 el('span', {class: 'pv-chat-grow'}),
-                C.busy ? button('■ Stop', 'Stop the answer here', stop, {class: 'pv-chat-btn pv-chat-stop'})
+                C.busy ? button('■ Stop', C.assisting ? 'Stop writing here' : 'Stop the answer here', stop, {class: 'pv-chat-btn pv-chat-stop'})
                     : button('Send', 'Send (Enter)', () => { C.draft = box.value; send(); }, {class: 'pv-chat-btn pv-chat-send'})));
     }
 
@@ -522,7 +601,7 @@
                 el('div', {text: 'Talk with the Qwen model of the Vault tab: ideas, prompts, a picture to describe, a story to turn into prompts.'}),
                 el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'})) : null,
             msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant', i)),
-            C.busy ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
+            C.busy && !C.assisting ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
                 el('div', {class: 'pv-chat-who', text: 'Qwen'}),
                 el('div', {class: 'pv-chat-thought pv-chat-thinking-now', hidden: !C.thinking},
                     el('div', {class: 'pv-chat-thought-head', text: '💭 Thinking'}),

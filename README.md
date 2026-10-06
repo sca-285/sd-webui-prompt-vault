@@ -54,6 +54,10 @@ Qwen-VL and the WD14 tagger) in one tab.
 - **💬 Qwen Chat**, a small assistant on the Qwen model of the Vault tab: a **Chat** tab on Muse's
   card, and the same conversation in the Vault tab's *Qwen Chat* window. It talks like a chat model
   (it remembers the conversation, the answer appears as it is written, ■ stops it, ↻ asks again).
+  - **✨ Enhance my draft** and **✍ Write for me**, above the box: Qwen rewrites what you wrote
+    (clearer, more specific, in your words and language), or writes your next message from the
+    conversation (what is in the box is its hint). It lands in the box, not sent: read it, change it,
+    send it, or **↩ Undo**.
   - **Edit and versions**: ✎ Edit (or double-click) one of your messages and Qwen answers the new
     words; ↻ Again on any answer gives a new one. Nothing is lost: **‹ 2/3 ›** under a message goes
     back to an earlier version, with the conversation that followed it. Saved and exported with them.

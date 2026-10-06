@@ -211,6 +211,10 @@ def register(app):
     def chat_regenerate(body: dict = Body(...)):
         return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message")))
 
+    @app.post(f"{BASE}/chat/assist")
+    def chat_assist(body: dict = Body(...)):
+        return stream(lambda: chat.assist(body.get("id"), body.get("mode"), body.get("text"), body.get("context") or ""))
+
     @app.post(f"{BASE}/chat/edit")
     def chat_edit(body: dict = Body(...)):
         return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), edit=body.get("message")))

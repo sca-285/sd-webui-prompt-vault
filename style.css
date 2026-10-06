@@ -525,3 +525,6 @@ html body textarea.pv-chat-edit-box { width: 100%; box-sizing: border-box; resiz
     font: inherit; color: var(--body-text-color, inherit) !important; background: var(--input-background-fill, rgba(0, 0, 0, 0.25)) !important;
     border: 1px solid var(--input-border-color, rgba(127, 127, 127, 0.4)) !important; }
 .pv-chat-mine .pv-chat-text { cursor: text; }
+.pv-chat-assist { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 4px; }
+html body .pv-chat-assist .pv-chat-btn { padding: 2px 8px; font-size: 11.5px; }
+html body textarea.pv-chat-input[readonly] { opacity: 0.85; }
