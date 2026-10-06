@@ -221,6 +221,33 @@ shared.opts.pv_chat_think = False
 assert chat._tokens("Cô gái tóc đỏ đứng dưới mưa", []) > chat._tokens("The girl with red hair in rain", [])  # accents count more
 print("context meter ok")
 
+# presets: built in, yours, the default for new conversations
+from lib_vault import chat_presets
+P = B + "/presets"
+pr = c.get(P).json()
+assert [p["id"] for p in pr["builtin"]] == ["assistant", "tagger", "natural", "video", "director", "story"] and pr["default"] == "assistant"
+assert all(p["text"] and p["name"] and p["hint"] for p in pr["builtin"]) and "image-to-video" in chat_presets.find("video")["text"]
+assert "adult" in chat_presets.find("story")["text"]
+v = c.post(B + "/new", json={"preset": "video"}).json()["chat"]
+assert v["preset"] == "video" and v["system"] == chat_presets.find("video")["text"]
+assert c.post(B + "/new").json()["chat"]["preset"] == "assistant"
+got = c.post(P + "/save", json={"name": "Wan 2.2 motion", "text": "Only motion, 50 words."}).json()
+assert got["saved"] == "my-wan-2-2-motion" and got["mine"][0]["name"] == "Wan 2.2 motion"
+assert c.post(P + "/save", json={"name": "Wan 2.2 motion", "text": "Only motion, 60 words."}).json()["mine"][0]["text"].endswith("60 words.")
+assert c.post(P + "/default", json={"id": "my-wan-2-2-motion"}).json()["default"] == "my-wan-2-2-motion"
+n = c.post(B + "/new").json()["chat"]
+assert n["preset"] == "my-wan-2-2-motion" and n["system"] == "Only motion, 60 words."
+u = c.post(B + "/update", json={"id": n["id"], "system": "Only motion, 60 words. In Vietnamese.", "preset": "my-wan-2-2-motion"}).json()["chat"]
+assert u["preset"] == "" and u["system"].endswith("Vietnamese.")  # changed by hand: no preset any more
+assert c.post(P + "/delete", json={"id": "tagger"}).status_code == 400
+assert c.post(P + "/default", json={"id": "nope"}).status_code == 400
+after = c.post(P + "/delete", json={"id": "my-wan-2-2-motion"}).json()
+assert not after["mine"] and after["default"] == "assistant"
+assert c.get(B).json()["presets"]["builtin"][3]["id"] == "video"
+for x in (v, n):
+    c.post(B + "/delete", json={"id": x["id"]})
+print("presets ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))

@@ -235,8 +235,8 @@ def register():
         "pv_vlm_verbose": O(False, "Print the servers' own log to the console")
         .info("turn on when a server refuses to start"),
         "pv_chat_system": O("", "Qwen Chat: default system prompt", gr.Textbox, {"lines": 3})
-        .info("how the assistant behaves in a new conversation; each conversation can change its own. "
-              "Empty: a prompt-writing assistant for Stable Diffusion"),
+        .info("used when no preset is the default (★ in the chat's ⚙); each conversation can change its own. "
+              "Empty: the Assistant preset"),
         "pv_chat_max_tokens": O(1024, "Qwen Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
         "pv_chat_temperature": O(0.7, "Qwen Chat: temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05}),
         "pv_chat_think": O(False, "Qwen Chat: let a thinking model think first")

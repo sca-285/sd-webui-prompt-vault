@@ -70,7 +70,13 @@ Qwen-VL and the WD14 tagger) in one tab.
   - **Kept only while the WebUI runs**: closing its terminal ends every conversation. **💾 Save** keeps
     one (in `prompt_vault/chats/`, and as it goes on); 📂 opens a saved one; **⇩ .md / .json** export
     it; a JSON export can be imported again.
-  - **⚙ System prompt**, per conversation (the default is in Settings). What the assistant will write
+  - **Presets**, how the assistant behaves: 🎯 Assistant (prompts, fixes, negative prompts, translation,
+    settings help), 🏷️ Tagger (Danbooru tags only), ✍️ Natural prompt (sentences for Flux, SD3.5,
+    Qwen-Image), 🎬 Video motion (what moves in an img2vid clip, for Wan, Hunyuan, LTX, FramePack, with
+    a negative prompt), 🎨 Art director (concepts, character sheets, storyboards) and 📜 Story & roleplay.
+    Pick one under *Start as* in a new conversation, or in **⚙**; change its text there, **💾 Save as
+    preset** to keep yours, **★ Default** for new conversations.
+  - **⚙ System prompt**, per conversation. What the assistant will write
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
   - **Context**, under the box: how much of the model's context the conversation takes (an estimate),
     green, then amber from 75%, red when full. The context is Settings → Prompt Vault → *Context size*

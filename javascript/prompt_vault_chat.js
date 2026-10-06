@@ -137,9 +137,24 @@
         paint();
     }
 
-    async function newChat() {
+    // ------------------------------------------------------------------ presets: how the assistant behaves
+
+    const presets = () => (C.list && C.list.presets) || {builtin: [], mine: [], default: ''};
+    const presetOf = (id) => [...presets().builtin, ...presets().mine].find((p) => p.id === id) || null;
+    const presetLabel = (p) => (p ? `${p.icon || '⭐'} ${p.name}` : '✎ Custom');
+
+    // a preset for the conversation you are in (an empty one), or a new one with it
+    async function usePreset(id) {
+        const p = presetOf(id);
+        if (!p || C.busy) return;
+        if (C.chat && !C.chat.messages.length) await act('/chat/update', {id: C.chat.id, system: p.text, preset: p.id});
+        else await newChat(p.id);
+        toast(`${presetLabel(p)}: from the next message on`);
+    }
+
+    async function newChat(preset) {
         if (C.busy) return;
-        C.chat = (await call('/chat/new', {})).chat;
+        C.chat = (await call('/chat/new', typeof preset === 'string' ? {preset} : {})).chat;
         LS.set('id', C.chat.id);
         C.panel = '';
         C.leftOut = 0;
@@ -507,7 +522,8 @@
             {class: 'pv-chat-btn' + (c.saved_as ? ' pv-on' : '')}) : null,
             button('📂', 'Saved conversations; import a JSON one', () => { C.panel = C.panel === 'saved' ? '' : 'saved'; paint(); },
                 {class: 'pv-chat-btn' + (C.panel === 'saved' ? ' pv-on' : '')}),
-            c ? button('⚙', 'How the assistant behaves in this conversation (system prompt)', () => { C.panel = C.panel === 'system' ? '' : 'system'; paint(); },
+            c ? button('⚙ ' + ((presetOf(c.preset) || {}).icon || '✎'), `How the assistant behaves here: ${presetLabel(presetOf(c.preset))}. Presets and the system prompt`,
+                () => { C.panel = C.panel === 'system' ? '' : 'system'; paint(); },
                 {class: 'pv-chat-btn' + (C.panel === 'system' ? ' pv-on' : '')}) : null,
             c ? button('⇩ .md', 'Export as Markdown', () => exportChat('md')) : null,
             c ? button('⇩ .json', 'Export as JSON (can be imported again)', () => exportChat('json')) : null,
@@ -528,14 +544,46 @@
 
     function panelView() {
         if (C.panel === 'system' && C.chat) {
-            const box = el('textarea', {class: 'pv-chat-system', rows: '4', spellcheck: 'false'});
+            const pr = presets();
+            let chosen = C.chat.preset || '';
+            const box = el('textarea', {class: 'pv-chat-system', rows: '6', spellcheck: 'false'});
             box.value = C.chat.system || '';
+            const hint = el('div', {class: 'pv-chat-hint', text: (presetOf(chosen) || {}).hint || ''});
+            const opt = (p) => el('option', {value: p.id, text: presetLabel(p) + (p.id === pr.default ? '  ★' : ''), selected: p.id === chosen});
+            const pick = el('select', {class: 'pv-chat-preset', title: 'A preset fills the system prompt; you can still change it below', onchange: (e) => {
+                const p = presetOf(e.target.value);
+                if (!p) return;
+                chosen = p.id;
+                box.value = p.text;
+                hint.textContent = p.hint || '';
+            }},
+            !chosen ? el('option', {value: '', text: '✎ Custom (written by hand)', selected: true}) : null,
+            el('optgroup', {label: 'Built in'}, pr.builtin.map(opt)),
+            pr.mine.length ? el('optgroup', {label: 'My presets'}, pr.mine.map(opt)) : null);
+            const edited = () => { const p = presetOf(chosen); return !p || p.text.trim() !== box.value.trim(); };
             return el('div', {class: 'pv-chat-panel'},
-                el('div', {class: 'pv-chat-label', text: 'System prompt: how the assistant behaves in this conversation'}), box,
+                el('div', {class: 'pv-chat-row'}, el('span', {class: 'pv-chat-label', text: 'Preset'}), pick),
+                hint, box,
                 el('div', {class: 'pv-chat-row'},
-                    button('Keep', 'Use it from the next message on', () => act('/chat/update', {id: C.chat.id, system: box.value}, () => { C.panel = ''; toast('System prompt kept'); })),
-                    button('Default', 'The default from Settings', () => { box.value = C.list.system_default || ''; }),
-                    el('span', {class: 'pv-chat-hint', text: 'The model decides what it will write; a model that refuses needs another model, not another prompt.'})));
+                    button('Use', 'This system prompt, from the next message on', () => act('/chat/update', {id: C.chat.id, system: box.value, preset: chosen},
+                        () => { C.panel = ''; toast('System prompt in use'); }), {class: 'pv-chat-btn pv-chat-send'}),
+                    button('💾 Save as preset', 'Keep this system prompt as a preset of yours (same name: replaced)', async () => {
+                        const p = presetOf(chosen);
+                        const name = prompt('Name of your preset:', p && !pr.builtin.includes(p) ? p.name : '');
+                        if (!name) return;
+                        await act('/chat/presets/save', {name, text: box.value}, async (d) => {
+                            await act('/chat/update', {id: C.chat.id, system: box.value, preset: d.saved});
+                            toast(`Saved: ${name}`);
+                        });
+                    }),
+                    button('★ Default', 'New conversations start with this preset', () => {
+                        if (edited()) { toast('Save it as a preset first: ★ makes a preset the default', true); return; }
+                        act('/chat/presets/default', {id: chosen}, () => toast(`New conversations: ${presetLabel(presetOf(chosen))}`));
+                    }),
+                    pr.mine.some((p) => p.id === chosen) ? button('🗑', 'Delete this preset of yours', () => {
+                        if (confirm(`Delete the preset ${presetOf(chosen).name}?`)) act('/chat/presets/delete', {id: chosen});
+                    }) : null),
+                el('div', {class: 'pv-chat-hint', text: 'The model decides what it will write; a model that refuses needs another model, not another prompt.'}));
         }
         if (C.panel === 'saved') {
             const imp = el('input', {type: 'file', accept: '.json,application/json', class: 'pv-chat-hidden', onchange: async (e) => {
@@ -617,7 +665,12 @@
             !msgs.length && !C.busy ? el('div', {class: 'pv-chat-empty'},
                 el('strong', {text: 'Qwen Chat'}),
                 el('div', {text: 'Talk with the Qwen model of the Vault tab: ideas, prompts, a picture to describe, a story to turn into prompts.'}),
-                el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'})) : null,
+                el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'}),
+                presets().builtin.length ? el('div', {class: 'pv-chat-presets'},
+                    el('div', {class: 'pv-chat-label', text: 'Start as'}),
+                    el('div', {class: 'pv-chat-preset-chips'}, [...presets().builtin, ...presets().mine].map((p) =>
+                        el('button', {type: 'button', class: 'pv-chat-chip' + (c && c.preset === p.id ? ' pv-on' : ''), title: p.hint || p.text.slice(0, 200),
+                            text: presetLabel(p), onclick: () => usePreset(p.id)})))) : null) : null,
             msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant', i)),
             C.busy && !C.assisting ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
                 el('div', {class: 'pv-chat-who', text: 'Qwen'}),

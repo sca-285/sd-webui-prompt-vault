@@ -17,13 +17,9 @@ import threading
 import time
 import uuid
 
-from . import settings, store
+from . import chat_presets, settings, store
 
-DEFAULT_SYSTEM = (
-    "You are Qwen, a creative assistant inside Stable Diffusion WebUI. You help write image prompts and talk about "
-    "ideas, images, stories and anything else the user brings. Answer in the user's language. When you give an image "
-    "prompt, put it alone in a ``` code block, as comma-separated Danbooru-style tags unless the user asks for prose."
-)
+DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
 TEXT_LIMIT = 60000      # characters of one text file
 FILE_LIMIT = 8          # files on one message
 IMAGE_TYPES = ("image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp")
@@ -40,16 +36,20 @@ def chats_dir():
 
 
 def _system_default():
-    return str(settings.opt("pv_chat_system") or "").strip() or DEFAULT_SYSTEM
+    return chat_presets.default()[1]
 
 
 # ------------------------------------------------------------------ conversations
 
 
-def _blank(system=None):
+def _blank(system=None, preset=None):
     now = time.time()
+    if preset and system is None and chat_presets.find(preset):
+        system = chat_presets.find(preset)["text"]
+    elif system is None:
+        preset, system = chat_presets.default()
     return {"id": uuid.uuid4().hex[:12], "title": "New conversation", "created": now, "updated": now,
-            "system": (system if system is not None else _system_default()), "messages": [], "saved_as": ""}
+            "system": system, "preset": preset or "", "messages": [], "saved_as": ""}
 
 
 def _view(c):
@@ -95,7 +95,7 @@ def listing():
                               "count": len(head.get("messages") or [])})
             except Exception:
                 continue
-    return {"chats": live, "saved": saved, "system_default": _system_default()}
+    return {"chats": live, "saved": saved, "system_default": _system_default(), "presets": chat_presets.listing()}
 
 
 def get(cid):
@@ -103,9 +103,9 @@ def get(cid):
         return _view(_get(cid))
 
 
-def new(system=None):
+def new(system=None, preset=None):
     with _lock:
-        c = _blank(system)
+        c = _blank(system, preset)
         _chats[c["id"]] = c
         return _view(c)
 
@@ -117,13 +117,15 @@ def delete(cid):
     return listing()
 
 
-def update(cid, title=None, system=None):
+def update(cid, title=None, system=None, preset=None):
     with _lock:
         c = _get(cid)
         if title is not None and str(title).strip():
             c["title"] = str(title).strip()[:120]
         if system is not None:
             c["system"] = str(system)[:8000]
+            known = chat_presets.find(preset) if preset else None
+            c["preset"] = preset if known and known["text"].strip() == c["system"].strip() else ""  # changed by hand: no preset
         _touch(c)
         return _view(c)
 
@@ -225,6 +227,7 @@ def _from_data(data, saved_as=""):
         raise store.VaultError("That is not a Qwen Chat conversation.")
     c = _blank(str(data.get("system") or _system_default()))
     c["title"] = str(data.get("title") or "Conversation")[:120]
+    c["preset"] = str(data.get("preset") or "") if str(data.get("system") or "").strip() else c["preset"]
     c["created"] = float(data.get("created") or c["created"])
     c["messages"] = _messages(data["messages"], c["created"])
     c["saved_as"] = saved_as

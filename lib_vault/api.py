@@ -173,7 +173,7 @@ def register(app):
         return run(go)
 
     # ---------------------------------------------------------------- Qwen Chat
-    from . import chat
+    from . import chat, chat_presets
 
     def stream(make):
         """The model's answer as it comes: one JSON object a line."""
@@ -201,7 +201,7 @@ def register(app):
 
     @app.post(f"{BASE}/chat/new")
     def chat_new(body: dict = Body(None)):
-        return run(lambda: {"chat": chat.new((body or {}).get("system"))})
+        return run(lambda: {"chat": chat.new((body or {}).get("system"), (body or {}).get("preset"))})
 
     @app.post(f"{BASE}/chat/send")
     def chat_send(body: dict = Body(...)):
@@ -229,7 +229,23 @@ def register(app):
 
     @app.post(f"{BASE}/chat/update")
     def chat_update(body: dict = Body(...)):
-        return run(lambda: {"chat": chat.update(body.get("id"), body.get("title"), body.get("system"))})
+        return run(lambda: {"chat": chat.update(body.get("id"), body.get("title"), body.get("system"), body.get("preset"))})
+
+    @app.get(f"{BASE}/chat/presets")
+    def chat_presets_list():
+        return run(chat_presets.listing)
+
+    @app.post(f"{BASE}/chat/presets/save")
+    def chat_presets_save(body: dict = Body(...)):
+        return run(lambda: chat_presets.save(body.get("name"), body.get("text")))
+
+    @app.post(f"{BASE}/chat/presets/delete")
+    def chat_presets_delete(body: dict = Body(...)):
+        return run(lambda: chat_presets.delete(str(body.get("id") or "")))
+
+    @app.post(f"{BASE}/chat/presets/default")
+    def chat_presets_default(body: dict = Body(...)):
+        return run(lambda: chat_presets.set_default(str(body.get("id") or "")))
 
     @app.post(f"{BASE}/chat/remove-message")
     def chat_remove_message(body: dict = Body(...)):

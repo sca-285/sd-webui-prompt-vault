@@ -10,6 +10,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - A Chat tab on Muse's card, and the same conversation in a Qwen Chat window of the Vault tab: a small
   assistant on the Qwen model, answers streamed as they are written, Stop and Again.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
+- Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
+  roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
 - ✨ Enhance my draft and ✍ Write for me: Qwen improves what you are writing, or writes your next message from
   the conversation, into the box and not sent; ↩ Undo brings your words back.
 - Edit a message of yours (✎ or double-click) and Qwen answers it anew; ↻ Again on any answer. The earlier

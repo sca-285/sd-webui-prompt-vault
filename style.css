@@ -539,3 +539,13 @@ html body textarea.pv-chat-input[readonly] { opacity: 0.85; }
 .pv-ctx-high .pv-ctx-note { color: #f59e0b; }
 .pv-ctx-over .pv-ctx-note { color: #ef4444; }
 .pv-ctx-note { flex-basis: 100%; }
+.pv-chat-presets { margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pv-chat-preset-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+html body .pv-chat-chip { padding: 4px 10px; border-radius: 999px; font-size: 12px; cursor: pointer;
+    border: 1px solid var(--border-color-primary, rgba(127, 127, 127, 0.4)); background: var(--button-secondary-background-fill, rgba(127, 127, 127, 0.12));
+    color: var(--body-text-color, inherit); }
+html body .pv-chat-chip:hover, html body .pv-chat-chip.pv-on { border-color: #f97316; }
+html body select.pv-chat-preset { flex: 1; min-width: 0; padding: 4px 6px; border-radius: 6px; font: inherit; font-size: 12.5px;
+    color: var(--body-text-color, inherit) !important; background: var(--input-background-fill, rgba(0, 0, 0, 0.25)) !important;
+    border: 1px solid var(--input-border-color, rgba(127, 127, 127, 0.4)) !important; }
+.pv-chat-panel > .pv-chat-hint { flex: none; }
