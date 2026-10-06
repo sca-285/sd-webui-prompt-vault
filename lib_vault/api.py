@@ -231,6 +231,10 @@ def register(app):
     def chat_update(body: dict = Body(...)):
         return run(lambda: {"chat": chat.update(body.get("id"), body.get("title"), body.get("system"), body.get("preset"))})
 
+    @app.post(f"{BASE}/chat/banned")
+    def chat_banned(body: dict = Body(...)):
+        return run(lambda: chat.set_banned(body.get("text")))
+
     @app.get(f"{BASE}/chat/presets")
     def chat_presets_list():
         return run(chat_presets.listing)

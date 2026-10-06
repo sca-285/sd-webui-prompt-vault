@@ -269,7 +269,7 @@
                     const ev = JSON.parse(line);
                     if (ev.delta) { C.draft += ev.delta; paintDraft(); }
                     if (ev.error) failed = ev.error;
-                    if (ev.done) got = ev.text;
+                    if (ev.done) { got = ev.text; if (ev.banned_hits && ev.banned_hits.length) toast(`It used banned words anyway: ${ev.banned_hits.join(', ')}`, true); }
                 }
             }
         } catch (e) {
@@ -371,8 +371,15 @@
         let p = (block ? block[1] : text || '').trim();
         p = p.replace(/^\s*(positive( prompt)?|prompt)\s*:\s*/i, '');
         const cleaned = p.replace(MINOR, '').replace(/\s*,\s*(,\s*)+/g, ', ').replace(/^[\s,]+|[\s,]+$/g, '');
-        if (cleaned !== p) toast('Minor-related words left out');
-        return cleaned;
+        promptOf.note = cleaned !== p ? 'minor-related words left out' : '';
+        // a tag with a banned word or phrase in it stays out of the prompt
+        const ban = bannedWords().map((w) => new RegExp('(^|[^\\p{L}\\p{N}])' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[^\\p{L}\\p{N}])', 'iu'));
+        if (!ban.length) return cleaned;
+        const tags = cleaned.split(/\s*,\s*/);
+        const kept = tags.filter((t) => !ban.some((re) => re.test(t)));
+        const out = tags.length - kept.length;
+        if (out) promptOf.note = [promptOf.note, `${out} banned tag${out > 1 ? 's' : ''} left out`].filter(Boolean).join(', ');
+        return kept.join(', ');
     }
     function write(area, value) {
         if (!area) return false;
@@ -381,21 +388,24 @@
         else area.dispatchEvent(new Event('input', {bubbles: true}));
         return true;
     }
+    const bannedWords = () => String((C.list && C.list.banned) || '').split(/[\n,;]+/).map((w) => w.trim()).filter(Boolean);
+
     function useAnswer(m, where) {
         const p = promptOf(m.text);
         if (!p) return;
+        const note = promptOf.note && where !== 'copy' ? ` (${promptOf.note})` : '';
         if (where === 'copy') {
             navigator.clipboard.writeText(m.text).then(() => toast('Copied'), () => toast('The clipboard is blocked here', true));
         } else if (where === 'vault') {
-            if (write($('#pv_positive textarea'), p)) toast('In the Vault editor');
+            if (write($('#pv_positive textarea'), p)) toast('In the Vault editor' + note);
         } else if (where === 'txt2img' || where === 'img2img') {
             if (write($(`#${where}_prompt textarea`), p)) {
-                toast('In ' + where);
+                toast('In ' + where + note);
                 const go = window['switch_to_' + where];
                 if (typeof go === 'function') { try { go(); } catch (e) { /* a nicety */ } }
             }
         } else if (where === 'muse' && window.pvMuse && window.pvMuse.setOwn) {
-            window.pvMuse.setOwn(p).then(() => toast("Muse's Your prompt: Build around it with Enter there"));
+            window.pvMuse.setOwn(p).then(() => toast("Muse's Your prompt: Build around it with Enter there" + note));
         }
     }
 
@@ -492,6 +502,8 @@
                 button('→ Muse', "The prompt in it as Muse's Your prompt", () => useAnswer(m, 'muse')),
                 !C.busy && m.id ? button('↻ Again', 'A new answer; this one is kept as a version (‹ ›)', () => again(m, at)) : null,
                 m.stopped ? el('span', {class: 'pv-chat-meta', text: 'stopped'}) : null,
+                m.banned_hits && m.banned_hits.length ? el('span', {class: 'pv-chat-meta pv-chat-banned-hit', title: 'Banned words it used anyway (a phrase can only be asked to be avoided): ↻ Again for another answer',
+                    text: `⚠ ${m.banned_hits.join(', ')}`}) : null,
                 m.seconds ? el('span', {class: 'pv-chat-meta', text: `${m.seconds}s`}) : null);
         return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
             el('div', {class: 'pv-chat-who', text: mine ? 'You' : 'Qwen'}),
@@ -542,6 +554,28 @@
         } catch (e) { toast(e.message, true); }
     }
 
+    // 🚫 words Qwen must not write, in every conversation
+    function bannedView() {
+        const box = el('textarea', {class: 'pv-chat-system pv-chat-banned', rows: '3', spellcheck: 'false',
+            placeholder: 'One word or phrase a line, or comma-separated: tapestry, testament, shivers down her spine…'});
+        box.value = (C.list && C.list.banned) || '';
+        const count = el('span', {class: 'pv-chat-meta', text: `${bannedWords().length} banned`});
+        return el('div', {class: 'pv-chat-banned-box'},
+            el('div', {class: 'pv-chat-label', text: '🚫 Banned words (every conversation)'}),
+            box,
+            el('div', {class: 'pv-chat-row'},
+                button('Keep', 'Use these from the next answer on', () => act('/chat/banned', {text: box.value}, (d) => toast(`${d.words.length} banned words`)),
+                    {class: 'pv-chat-btn pv-chat-send'}),
+                button('＋ Common clichés', 'Add the words and phrases AI writing leans on (tapestry, testament, delve…)', () => {
+                    const have = new Set(box.value.split(/[\n,;]+/).map((w) => w.trim().toLowerCase()).filter(Boolean));
+                    const more = String((C.list && C.list.cliches) || '').split(/\s*,\s*/).filter((w) => w && !have.has(w.toLowerCase()));
+                    box.value = [box.value.trim(), more.join(', ')].filter(Boolean).join(box.value.trim() ? ',\n' : '');
+                }),
+                count),
+            el('div', {class: 'pv-chat-hint', text: 'A single word is blocked while Qwen writes; a phrase, or another form of a word, is asked to be avoided, '
+                + 'and ⚠ marks an answer that used one anyway. Tags with a banned word stay out of what → Vault, → txt2img and → Muse send.'}));
+    }
+
     function panelView() {
         if (C.panel === 'system' && C.chat) {
             const pr = presets();
@@ -583,7 +617,8 @@
                     pr.mine.some((p) => p.id === chosen) ? button('🗑', 'Delete this preset of yours', () => {
                         if (confirm(`Delete the preset ${presetOf(chosen).name}?`)) act('/chat/presets/delete', {id: chosen});
                     }) : null),
-                el('div', {class: 'pv-chat-hint', text: 'The model decides what it will write; a model that refuses needs another model, not another prompt.'}));
+                el('div', {class: 'pv-chat-hint', text: 'The model decides what it will write; a model that refuses needs another model, not another prompt.'}),
+                bannedView());
         }
         if (C.panel === 'saved') {
             const imp = el('input', {type: 'file', accept: '.json,application/json', class: 'pv-chat-hidden', onchange: async (e) => {

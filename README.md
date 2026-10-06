@@ -76,7 +76,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     a negative prompt), 🎨 Art director (concepts, character sheets, storyboards) and 📜 Story & roleplay.
     Pick one under *Start as* in a new conversation, or in **⚙**; change its text there, **💾 Save as
     preset** to keep yours, **★ Default** for new conversations.
-  - **⚙ System prompt**, per conversation. What the assistant will write
+  - **⚙ System prompt**, per conversation.
+  - **🚫 Banned words**, in ⚙, for every conversation: one word or phrase a line (＋ *Common clichés*
+    adds the words AI writing leans on: tapestry, testament, delve…). A single word is blocked while
+    Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that
+    used one anyway. Tags with a banned word stay out of what → Vault, → txt2img and → Muse send. What the assistant will write
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
   - **Context**, under the box: how much of the model's context the conversation takes (an estimate),
     green, then amber from 75%, red when full. The context is Settings → Prompt Vault → *Context size*

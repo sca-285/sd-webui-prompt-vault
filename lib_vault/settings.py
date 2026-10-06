@@ -70,6 +70,7 @@ DEFAULTS = {
     "pv_chat_max_tokens": 1024,
     "pv_chat_temperature": 0.7,
     "pv_chat_think": False,
+    "pv_chat_banned": "",
     # TIPO
     "pv_tipo_model": "TIPO-500M-ft (recommended)",
     "pv_tipo_model_path": "",
@@ -239,6 +240,9 @@ def register():
               "Empty: the Assistant preset"),
         "pv_chat_max_tokens": O(1024, "Qwen Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
         "pv_chat_temperature": O(0.7, "Qwen Chat: temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05}),
+        "pv_chat_banned": O("", "Qwen Chat: banned words", gr.Textbox, {"lines": 4})
+        .info("one word or phrase a line (or comma-separated): a single word is blocked while Qwen writes, a phrase is "
+              "asked to be avoided; banned tags are also left out of the prompts an answer sends on"),
         "pv_chat_think": O(False, "Qwen Chat: let a thinking model think first")
         .info("for models that reason before answering (Qwen3.5, Qwen3.8...): better answers, much slower. Qwen3-VL "
               "Instruct does not think either way. Captions and rewriting never think"),

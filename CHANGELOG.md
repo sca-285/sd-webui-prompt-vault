@@ -12,6 +12,11 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- Banned words, for every conversation: a single word blocked while Qwen writes, a phrase asked to be avoided,
+  an answer that used one marked ⚠, banned tags left out of the prompts an answer sends on; a list of common
+  clichés to start from.
+- Fixed: curly quotes, dashes and Vietnamese in answers came out as â€œ, Ã´ (the stream was read as Latin-1).
+  Conversations saved with them are repaired when opened or imported.
 - ✨ Enhance my draft and ✍ Write for me: Qwen improves what you are writing, or writes your next message from
   the conversation, into the box and not sent; ↩ Undo brings your words back.
 - Edit a message of yours (✎ or double-click) and Qwen answers it anew; ↻ Again on any answer. The earlier

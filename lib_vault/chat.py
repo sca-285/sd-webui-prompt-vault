@@ -95,7 +95,8 @@ def listing():
                               "count": len(head.get("messages") or [])})
             except Exception:
                 continue
-    return {"chats": live, "saved": saved, "system_default": _system_default(), "presets": chat_presets.listing()}
+    return {"chats": live, "saved": saved, "system_default": _system_default(), "presets": chat_presets.listing(),
+            "banned": str(settings.opt("pv_chat_banned") or ""), "cliches": CLICHES}
 
 
 def get(cid):
@@ -234,11 +235,23 @@ def _from_data(data, saved_as=""):
     return c
 
 
+def unmangle(text):
+    """UTF-8 that was read as Latin-1 (answers saved before 1.1.0's fix: â€œ for “, cÃ´ for cô), read again as UTF-8.
+    Text that is not that comes back as it was."""
+    text = str(text or "")
+    if not re.search("[\u00c2-\u00f4][\u0080-\u00bf]", text):
+        return text
+    try:
+        return text.encode("latin-1").decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return text
+
+
 def _messages(items, when):
     out = []
     for m in items if isinstance(items, list) else []:
         if isinstance(m, dict) and m.get("role") in ("user", "assistant"):
-            text = str(m.get("text") or "")
+            text = unmangle(m.get("text"))
             one = {"id": str(m.get("id") or uuid.uuid4().hex[:10]), "role": m["role"], "text": text,
                    "files": [f for f in (m.get("files") or []) if isinstance(f, dict)], "time": m.get("time") or when,
                    "tokens": int(m.get("tokens") or _tokens(text, m.get("files") or []))}
@@ -410,6 +423,77 @@ def _window(c, max_tokens=None):
     return kept, len(c["messages"]) - len(kept)
 
 
+# ------------------------------------------------------------------ banned words
+
+# a start for the Banned words box: the words and phrases AI writing leans on
+CLICHES = ("tapestry, testament, delve, intricate, palpable, ozone, ministrations, unspoken, kaleidoscope, symphony, "
+           "a mix of, barely above a whisper, shivers down her spine, sent shivers, eyes sparkled with, maybe, just maybe, "
+           "can't help but, a dance of, the air was thick with, mischievous glint, padded across the room")
+
+
+def banned():
+    """The banned words and phrases from Settings, each once."""
+    out, seen = [], set()
+    for part in re.split(r"[\n,;]+", str(settings.opt("pv_chat_banned") or "")):
+        word = part.strip()
+        if word and word.lower() not in seen:
+            seen.add(word.lower())
+            out.append(word)
+    return out[:300]
+
+
+def set_banned(text):
+    from . import qwen
+
+    qwen._set_opt("pv_chat_banned", str(text or "")[:20000])
+    return {"banned": str(settings.opt("pv_chat_banned") or ""), "words": banned()}
+
+
+_token_ids = {}  # (model, text) -> its tokens, from llama-server's /tokenize
+
+
+def _logit_bias(url, model, words):
+    """[[token id, false]] for each banned single word that is one token on its own (bare, after a space, in any of
+    its capitals): llama-server then never writes it. A word of several tokens is not blocked this way, since blocking
+    its pieces would block them in every other word too; it is only asked to be avoided."""
+    import requests
+
+    ids = set()
+    for word in words:
+        if re.search(r"\s", word):
+            continue
+        for v in {word, word.lower(), word.capitalize(), word.upper()}:
+            for text in (v, " " + v):
+                key = (model, text)
+                if key not in _token_ids:
+                    try:
+                        got = requests.post(f"{url}/tokenize", json={"content": text, "add_special": False}, timeout=5).json()
+                        _token_ids[key] = [t for t in got.get("tokens") or [] if isinstance(t, int)]
+                    except Exception:
+                        return [[i, False] for i in sorted(ids)]  # an old server without /tokenize: asked only
+                if len(_token_ids[key]) == 1:
+                    ids.add(_token_ids[key][0])
+    return [[i, False] for i in sorted(ids)]
+
+
+def _ask_to_avoid(messages, words):
+    """The banned words in the system prompt too: what blocking cannot catch (phrases, other forms) is asked."""
+    note = "Never use these words or phrases, in any form or language: " + "; ".join(words) + "."
+    out = [dict(m) for m in messages]
+    if out and out[0]["role"] == "system":
+        out[0]["content"] = f"{out[0]['content']}\n\n{note}"
+    else:
+        out.insert(0, {"role": "system", "content": note})
+    return out
+
+
+def banned_in(text, words=None):
+    """The banned words and phrases that are in a text anyway."""
+    low = str(text or "").lower()
+    return [w for w in (banned() if words is None else words)
+            if re.search(r"(?<!\w)" + re.escape(w.lower()) + r"(?!\w)", low)]
+
+
 def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
     """The model's answer as it comes: {"delta"} and {"thinking"} events; the pieces are kept in text and thought."""
     from . import qwen
@@ -420,12 +504,19 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
         url = qwen.SERVER.ensure()
     import requests
 
+    words = banned()
+    bias = _logit_bias(url, qwen.SERVER.model, words) if words else []
+    if words:
+        messages = _ask_to_avoid(messages, words)
     body = {"messages": messages, "max_tokens": max_tokens * (3 if think else 1),
             "temperature": float(settings.opt("pv_chat_temperature") if temperature is None else temperature), "stream": True,
             "chat_template_kwargs": {"enable_thinking": think}}
+    if bias:
+        body["logit_bias"] = bias
     with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
         if res.status_code != 200:
             raise RuntimeError(f"the Qwen server answered {res.status_code}: {res.text[:300]}")
+        res.encoding = "utf-8"  # llama-server sends UTF-8 without saying so; requests would read it as Latin-1
         for line in res.iter_lines(decode_unicode=True):
             if stop.is_set():
                 break
@@ -527,6 +618,9 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         if "".join(thought).strip():
             reply["thinking"] = "".join(thought).strip()
         reply["tokens"] = _tokens(answer, [])
+        hits = banned_in(answer)
+        if hits:
+            reply["banned_hits"] = hits
         with _lock:
             live = _chats.get(cid)
             if live is not None and answer:
@@ -643,7 +737,8 @@ def assist(cid, mode, draft="", context=""):
             if not text:
                 yield {"error": f"Qwen: {exc}"}
                 return
-        yield {"done": True, "text": tidy_draft("".join(text)), "stopped": stop.is_set()}
+        written = tidy_draft("".join(text))
+        yield {"done": True, "text": written, "stopped": stop.is_set(), "banned_hits": banned_in(written)}
 
     return events()
 

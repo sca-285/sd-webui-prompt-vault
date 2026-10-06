@@ -83,6 +83,20 @@ one = c.get(B + "/one", params={"id": cid}).json()["chat"]
 assert one["title"].startswith("a red-haired knight") and len(one["messages"]) == 2
 print("chat ok:", ev[-1]["message"]["text"])
 
+# what llama-server streams is UTF-8 with no charset said: curly quotes and Vietnamese come through whole
+u8 = c.post(B + "/new").json()["chat"]["id"]
+ev = send(u8, "“Come closer,” he said — the day’s cô gái tóc đỏ")
+assert "“Come closer,” he said — the day’s cô gái tóc đỏ" in ev[-1]["message"]["text"], ev[-1]["message"]["text"]
+c.post(B + "/delete", json={"id": u8})
+broken = "“Come closer,” he said. cô gái — day’s".encode("utf-8").decode("latin-1")
+assert chat.unmangle(broken) == "“Come closer,” he said. cô gái — day’s"
+for fine in ("“Come closer,” he said. cô gái", "café, naïve, Ünïcödé", "plain"):
+    assert chat.unmangle(fine) == fine
+imp = c.post(B + "/import", json={"data": {"title": "old", "messages": [{"role": "assistant", "text": broken}]}}).json()["chat"]
+assert imp["messages"][0]["text"].startswith("“Come closer,”"), imp["messages"][0]["text"]
+c.post(B + "/delete", json={"id": imp["id"]})
+print("utf-8 ok")
+
 # the newer flags were given; an old build is started without them
 assert "--no-kv-offload" in open(os.environ["FAKE_ARGS_LOG"]).read().splitlines()[-1]
 
@@ -247,6 +261,26 @@ assert c.get(B).json()["presets"]["builtin"][3]["id"] == "video"
 for x in (v, n):
     c.post(B + "/delete", json={"id": x["id"]})
 print("presets ok")
+
+# banned words: a one-token word blocked while Qwen writes, a phrase asked to be avoided, hits reported
+bw = c.post(B + "/banned", json={"text": "tapestry\nshivers down her spine, Kaleidoscope; tapestry"}).json()
+assert bw["words"] == ["tapestry", "shivers down her spine", "Kaleidoscope"], bw
+assert c.get(B).json()["banned"].startswith("tapestry") and "testament" in c.get(B).json()["cliches"]
+bc = c.post(B + "/new").json()["chat"]["id"]
+ev = send(bc, "a tapestry of light")
+t = ev[-1]["message"]["text"]
+# tapestry: one token, in 4 capitals x with and without a space (some the same) -> blocked; kaleidoscope: two tokens -> only asked
+assert " blocked=" in t and ev[-1]["message"]["banned_hits"] == ["tapestry"], ev[-1]["message"]
+assert chat._logit_bias("http://127.0.0.1:1", "none", ["shivers down"]) == []  # a phrase is never blocked token by token
+assert chat.banned_in("Shivers down her spine, a TAPESTRY.") == ["tapestry", "shivers down her spine"]
+assert chat.banned_in("tapestries") == []
+asked = chat._ask_to_avoid([{"role": "system", "content": "Be brief."}], chat.banned())
+assert asked[0]["content"].startswith("Be brief.") and "shivers down her spine" in asked[0]["content"]
+c.post(B + "/banned", json={"text": ""})
+ev = send(bc, "again, nothing banned")
+assert "blocked=" not in ev[-1]["message"]["text"] and "banned_hits" not in ev[-1]["message"]
+c.post(B + "/delete", json={"id": bc})
+print("banned words ok")
 
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
