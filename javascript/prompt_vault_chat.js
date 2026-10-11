@@ -60,6 +60,8 @@
         draft: '',
         files: [],                  // [{kind, name, data, size}] waiting to be sent
         context: LS.get('context', 'none'),
+        verify: LS.get('verify', false), // 🔎 draft, look it up, correct, then answer
+        step: '',                   // what Verify is doing
         leftOut: 0,
         status: '',
         panel: '',                  // '' | 'system' | 'saved'
@@ -107,7 +109,7 @@
                 const list = m.querySelector('.pv-chat-log');
                 const atEnd = list.scrollHeight - list.scrollTop - list.clientHeight < 60;
                 t.innerHTML = C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>'
-                    : `<span class="pv-chat-wait">${C.thinking ? 'thinking…' : 'reading…'}</span>`;
+                    : `<span class="pv-chat-wait">${esc(C.step || (C.thinking ? 'thinking…' : 'reading…'))}</span>`;
                 if (atEnd) list.scrollTop = list.scrollHeight;
             }
         });
@@ -165,6 +167,7 @@
         C.busy = true;
         C.stream = '';
         C.thinking = '';
+        C.step = '';
         paint();
         let failed = '';
         try {
@@ -190,6 +193,7 @@
                     if (ev.start) { C.leftOut = ev.left_out || 0; paint(); }
                     if (ev.delta) { C.stream += ev.delta; paintStream(); }
                     if (ev.thinking) { C.thinking += ev.thinking; paintStream(); }
+                    if (ev.step) { C.step = ev.step; paintStream(); }
                     if (ev.error) failed = ev.error;
                     if (ev.done && ev.status) C.status = ev.status;
                 }
@@ -200,6 +204,7 @@
         C.busy = false;
         C.stream = '';
         C.thinking = '';
+        C.step = '';
         if (failed) toast(failed, true);
         if (C.chat) await load(C.chat.id, true);
         await refresh();
@@ -217,7 +222,7 @@
         C.undoDraft = null;
         C.draft = '';
         C.files = [];
-        const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText()});
+        const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText(), verify: C.verify});
         if (!ok && C.pending) { C.draft = keep.draft; C.files = keep.files; }
         C.pending = null;
         paint();
@@ -296,7 +301,7 @@
         if (!C.chat || C.busy) return;
         C.editing = null;
         C.cut = at;
-        await stream('/chat/regenerate', {id: C.chat.id, message: m.id});
+        await stream('/chat/regenerate', {id: C.chat.id, message: m.id, verify: C.verify});
         C.cut = -1;
         paint();
     }
@@ -309,7 +314,7 @@
         if (text === m.text.trim()) { paint(); return; }
         C.cut = at;
         C.pending = {role: 'user', text, files: m.files || []};
-        await stream('/chat/edit', {id: C.chat.id, message: m.id, text});
+        await stream('/chat/edit', {id: C.chat.id, message: m.id, text, verify: C.verify});
         C.pending = null;
         C.cut = -1;
         paint();
@@ -459,6 +464,33 @@
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
     }
 
+    // [2] in a checked answer: a link to that source
+    function cite(htmlText, v) {
+        const sources = (v && v.sources) || [];
+        if (!sources.length) return htmlText;
+        return htmlText.replace(/\[(\d{1,2})\](?![^<]*<\/code>)/g, (all, n) => {
+            const x = sources[Number(n) - 1];
+            return x ? `<a class="pv-chat-cite" href="${esc(x.url).replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer" title="${esc(x.title).replace(/"/g, '&quot;')}">[${n}]</a>` : all;
+        });
+    }
+
+    // 🔎 what Verify did before the answer: what it looked up, what it found, the tags it fixed, the first draft
+    function checkedView(v) {
+        const sources = v.sources || [];
+        const tags = v.tags || [];
+        const label = [sources.length ? `${sources.length} source${sources.length > 1 ? 's' : ''}` : 'nothing found',
+            tags.length ? `${tags.length} tag${tags.length > 1 ? 's' : ''} fixed` : '', (v.problems || []).length ? 'with problems' : '']
+            .filter(Boolean).join(' · ');
+        return el('details', {class: 'pv-chat-thought pv-chat-checked'},
+            el('summary', {text: `🔎 Checked: ${label}`}),
+            (v.queries || []).length ? el('div', {class: 'pv-chat-meta', text: 'Looked up: ' + v.queries.join(' · ')}) : el('div', {class: 'pv-chat-meta', text: 'Nothing in the draft needed looking up'}),
+            sources.length ? el('ol', {class: 'pv-chat-sources'}, sources.map((x) => el('li', {},
+                el('a', {href: x.url, target: '_blank', rel: 'noopener noreferrer', text: x.title || x.url})))) : null,
+            tags.length ? el('div', {class: 'pv-chat-meta', text: 'Not Danbooru tags: ' + tags.map((t) => t.tag + (t.suggest && t.suggest.length ? ` → ${t.suggest.join(' / ')}` : '')).join('; ')}) : null,
+            (v.problems || []).length ? el('div', {class: 'pv-chat-meta pv-chat-banned-hit', text: 'Could not: ' + v.problems.join('; ')}) : null,
+            v.draft ? el('details', {class: 'pv-chat-draft'}, el('summary', {text: 'The first draft'}), el('div', {class: 'pv-chat-thought-text', text: v.draft})) : null);
+    }
+
     // ‹ 2/3 ›: the versions of a message, each with what followed it
     function versions(m) {
         if (!m.versions || m.versions < 2) return null;
@@ -508,10 +540,11 @@
         return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
             el('div', {class: 'pv-chat-who', text: mine ? 'You' : 'Qwen'}),
             files(m.files),
+            m.verify ? checkedView(m.verify) : null,
             m.thinking ? el('details', {class: 'pv-chat-thought'},
                 el('summary', {text: `💭 Thought (${m.thinking.split(/\s+/).length} words)`}),
                 el('div', {class: 'pv-chat-thought-text', text: m.thinking})) : null,
-            m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : md(m.text),
+            m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : cite(md(m.text), m.verify),
                 ondblclick: mine && m.id ? () => startEdit(m) : null}) : null,
             actions);
     }
@@ -661,7 +694,11 @@
                     () => { C.draft = box.value; assist('enhance'); }, {disabled: C.busy}),
                    button('✍ Write for me', 'Qwen writes your next message from the conversation (what is in the box is its hint). Not sent',
                     () => { C.draft = box.value; assist('write'); }, {disabled: C.busy}),
-                   C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null]);
+                   C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null,
+                   el('span', {class: 'pv-chat-grow'}),
+                   button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: Qwen drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'
+                    : 'Off. On: Qwen drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers',
+                    () => { C.verify = !C.verify; LS.set('verify', C.verify); paint(); }, {class: 'pv-chat-btn pv-chat-verify' + (C.verify ? ' pv-on' : '')})]);
         return el('div', {class: 'pv-chat-compose'},
             files(C.files, true),
             helper,
@@ -712,7 +749,7 @@
                 el('div', {class: 'pv-chat-thought pv-chat-thinking-now', hidden: !C.thinking},
                     el('div', {class: 'pv-chat-thought-head', text: '💭 Thinking'}),
                     el('div', {class: 'pv-chat-thought-text', text: C.thinking})),
-                el('div', {class: 'pv-chat-text', html: C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>' : '<span class="pv-chat-wait">thinking…</span>'})) : null);
+                el('div', {class: 'pv-chat-text', html: C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>' : `<span class="pv-chat-wait">${esc(C.step || 'thinking…')}</span>`})) : null);
         const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? 'Qwen: ' + C.status : '']
             .filter(Boolean).join(' · ');
         const body = el('div', {class: 'pv-chat' + (m.dataset.compact ? ' pv-chat-compact' : '')},

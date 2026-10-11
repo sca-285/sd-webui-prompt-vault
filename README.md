@@ -77,6 +77,13 @@ Qwen-VL and the WD14 tagger) in one tab.
     Pick one under *Start as* in a new conversation, or in **⚙**; change its text there, **💾 Save as
     preset** to keep yours, **★ Default** for new conversations.
   - **⚙ System prompt**, per conversation.
+  - **🔎 Verify**, above the box: before you see an answer, Qwen writes a draft, picks what in it could
+    be wrong or out of date, looks that up on the web (DuckDuckGo, or your own SearXNG; Wikipedia when
+    nothing comes back), checks the tags of its prompts on Danbooru, then writes the answer corrected,
+    citing its sources as [1], [2] (click to open). **🔎 Checked** under the answer shows what was looked
+    up, the sources, the tags it fixed and the first draft. Slower (two passes and the searches); only the
+    search words leave the computer. Settings → Prompt Vault: the search engine, SearXNG's address,
+    Danbooru on or off.
   - **🚫 Banned words**, in ⚙, for every conversation: one word or phrase a line (＋ *Common clichés*
     adds the words AI writing leans on: tapestry, testament, delve…). A single word is blocked while
     Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that

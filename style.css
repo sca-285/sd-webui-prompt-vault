@@ -552,3 +552,11 @@ html body select.pv-chat-preset { flex: 1; min-width: 0; padding: 4px 6px; borde
 .pv-chat-banned-box { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; padding-top: 8px; border-top: 1px dashed rgba(127, 127, 127, 0.35); }
 .pv-chat-banned-box > .pv-chat-hint { flex: none; }
 .pv-chat-banned-hit { color: #f59e0b; }
+.pv-chat-checked summary { color: #22c55e; opacity: 0.9; }
+.pv-chat-sources { margin: 4px 0 4px 18px; padding: 0; font-size: 12px; }
+.pv-chat-sources a { color: var(--link-text-color, #60a5fa); word-break: break-word; }
+.pv-chat-draft { margin-top: 4px; }
+.pv-chat-draft summary { opacity: 0.6; font-weight: 500; }
+html body .pv-chat-btn.pv-chat-verify.pv-on { border-color: #22c55e; color: #22c55e; }
+.pv-chat-cite { color: var(--link-text-color, #60a5fa); text-decoration: none; font-size: 0.85em; vertical-align: 1px; }
+html body select.pv-chat-ctx { max-width: 150px; min-width: 0; flex: 0 1 auto; }

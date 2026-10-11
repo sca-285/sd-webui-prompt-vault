@@ -282,6 +282,57 @@ assert "blocked=" not in ev[-1]["message"]["text"] and "banned_hits" not in ev[-
 c.post(B + "/delete", json={"id": bc})
 print("banned words ok")
 
+# Verify: a draft, looked up on the web and its tags on Danbooru, corrected, then the answer
+import fake_web
+web = fake_web.start()
+os.environ.update(PV_DDG_URL=web, PV_WIKIPEDIA_URL=web, PV_DANBOORU_URL=web)
+from lib_vault import websearch
+def ask(cid, text, verify=True, path="/send"):
+    with c.stream("POST", B + path, json={"id": cid, "text": text, "files": [], "context": "", "verify": verify}) as r:
+        assert r.status_code == 200, r.read()
+        return [json.loads(x) for x in r.iter_lines() if x]
+vc = c.post(B + "/new").json()["chat"]["id"]
+ev = ask(vc, "best sampler for illustrious xl")
+steps = [e["step"] for e in ev if "step" in e]
+assert steps[:2] == ["Writing a first draft…", "Choosing what to check…"] and steps[2].startswith("Searching: ") and steps[-1].startswith("Correcting"), steps
+m = ev[-1]["message"]
+v = m["verify"]
+assert v["queries"] and v["sources"][0] == {"n": 1, "title": f"Guide to {v['queries'][0]}", "url": "https://example.org/guide?x=1&y=2"}, v
+assert v["sources"][1]["title"] == "Second “page”" and len(v["sources"]) == 2 and v["draft"].startswith("messages=2")  # the advert left out
+assert m["text"].startswith("REVISED | [1] Guide to") and "Euler a, 28 steps & CFG 5" in m["text"] and not v["problems"], m["text"]
+assert "".join(e.get("delta", "") for e in ev).strip() == m["text"]  # only the corrected answer is streamed
+# a prompt with made-up tags: Danbooru says which do not exist, and what is close
+ev = ask(vc, "no check, just tags:\n```\n1girl, (red hair:1.2), glowing tapestry hair, sun dres, masterpiece, hatsune miku \\(cosplay\\)\n```")
+v = ev[-1]["message"]["verify"]
+assert not v["queries"] and [t["tag"] for t in v["tags"]] == ["glowing tapestry hair", "sun dres"], v
+assert v["tags"][0]["suggest"] == ["glowing_hair", "long_hair"] and v["tags"][1]["suggest"] == ["sundress"]
+assert "Not Danbooru tags: glowing tapestry hair (instead: glowing hair, long hair); sun dres (instead: sundress)" in ev[-1]["message"]["text"]
+# nothing to look up and nothing wrong: the draft is the answer, no second pass
+ev = ask(vc, "no check please")
+assert ev[-1]["message"]["text"].startswith("messages=") and not any(e.get("step", "").startswith("Correcting") for e in ev)
+# the search failing: Wikipedia instead; Off: nothing searched, still answers
+ev = ask(vc, "fail this one")
+v = ev[-1]["message"]["verify"]
+assert v["sources"][0]["title"] == "Illustrious XL" and v["problems"][0].startswith("DuckDuckGo"), v
+shared.opts.pv_search_engine = "Off"
+n = len(fake_web.seen)
+ev = ask(vc, "anything")
+assert not ev[-1]["message"]["verify"]["sources"] and len(fake_web.seen) == n and ev[-1]["done"]
+shared.opts.pv_search_engine = "SearXNG"; shared.opts.pv_searxng_url = web
+ev = ask(vc, "what is the answer")
+assert ev[-1]["message"]["verify"]["sources"][0]["url"] == "https://searx.example/one"
+shared.opts.pv_search_engine = "DuckDuckGo"
+# Again and edit can verify too; without Verify nothing is looked up
+again = ask(vc, "", path="/regenerate")
+assert again[-1]["message"]["verify"]["sources"]
+n = len(fake_web.seen)
+plain = ask(vc, "no verify", verify=False)
+assert "verify" not in plain[-1]["message"] and len(fake_web.seen) == n
+assert websearch.tag_name("(kaleidoscope:1.2)") == "kaleidoscope" and websearch.tag_name("best quality") == ""
+assert chat.code_tags("x ```\na, b, c\n``` y ```\nnot tags\n```") == ["a", "b", "c"]
+c.post(B + "/delete", json={"id": vc})
+print("verify ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))

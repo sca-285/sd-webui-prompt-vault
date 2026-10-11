@@ -17,7 +17,7 @@ import threading
 import time
 import uuid
 
-from . import chat_presets, settings, store
+from . import chat_presets, settings, store, websearch
 
 DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
 TEXT_LIMIT = 60000      # characters of one text file
@@ -407,9 +407,10 @@ def _context(c):
     return {"used": used, "room": max(0, _room(c)), "size": int(settings.opt("pv_vlm_context")), "reserve": _reserve()}
 
 
-def _window(c, max_tokens=None):
-    """The messages that fit in the context, the newest kept; how many older ones were left out."""
-    budget = _room(c)
+def _window(c, extra=0):
+    """The messages that fit in the context, the newest kept; how many older ones were left out. extra: tokens kept
+    free besides the answer's (Verify's draft and what it found)."""
+    budget = _room(c) - extra
     kept, used = [], 0
     for m in reversed(c["messages"]):
         need = m.get("tokens") or _tokens(m["text"], m.get("files"))
@@ -542,7 +543,130 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
                     yield {kind: piece}
 
 
-def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None):
+# ------------------------------------------------------------------ Verify: draft, look it up, correct, then answer
+
+VERIFY_ROOM = 2600  # tokens kept free for the draft and what was found
+PLAN_SYSTEM = (
+    "You check an answer before it is given. Read the user's message and the draft answer, and pick what in the draft "
+    "could be wrong, made up or out of date and can be checked on the web: names, numbers, dates, versions, model and "
+    "software settings, facts about people, places, works and events. Reply with JSON only, no other words: "
+    "{\"queries\": [\"...\"]} with at most 3 short web search queries in English, the most doubtful first. Reply "
+    "{\"queries\": []} when nothing needs checking: opinions, fiction, a plain prompt, small talk."
+)
+REVISE = (
+    "Before your answer reaches the user, it was checked. Below is what the web says about it, and which of its "
+    "tags are not Danbooru tags. Now write the answer the user will read: keep what is right, correct what the sources "
+    "contradict, drop what they show is made up, add what they add when it matters, replace a tag that does not exist "
+    "with a suggested one or leave it out. When the sources do not settle a point, say it is uncertain rather than "
+    "guess. Cite a source as [n] where you used it. Answer the user's last message directly, in the same language and "
+    "form as your draft; do not mention a draft, a check or this message.\n\n"
+)
+
+
+def _complete(messages, max_tokens):
+    """One answer, not streamed and without thinking: Verify's draft and its plan."""
+    from . import qwen
+
+    with qwen._SdAside():
+        qwen.SERVER.restart_if_changed(qwen._placement())
+        qwen.SERVER.ensure()
+    words = banned()
+    body = {"messages": _ask_to_avoid(messages, words) if words else messages, "max_tokens": max_tokens,
+            "temperature": float(settings.opt("pv_chat_temperature")), "stream": False,
+            "chat_template_kwargs": {"enable_thinking": False}}
+    answer = qwen.SERVER.post("/v1/chat/completions", body, timeout=600)
+    reply = answer["choices"][0]["message"]["content"]
+    if isinstance(reply, list):
+        reply = "".join(part.get("text", "") for part in reply if isinstance(part, dict))
+    return qwen.strip_thinking(str(reply or ""))
+
+
+def _words_of(content):
+    return content if isinstance(content, str) else " ".join(p.get("text", "") for p in content or [] if p.get("type") == "text")
+
+
+def code_tags(text):
+    """The tags of the prompts (code blocks of comma-separated words) in an answer."""
+    tags = []
+    for block in re.findall(r"```[\w-]*\n?(.*?)```", str(text or ""), re.S):
+        if block.count(",") < 2:
+            continue
+        for tag in re.split(r"[,\n]+", block):
+            tag = tag.strip()
+            if tag and tag not in tags:
+                tags.append(tag)
+    return tags[:80]
+
+
+def _queries(plan):
+    found = re.search(r"\{.*\}", plan or "", re.S)
+    try:
+        items = json.loads(found.group(0)).get("queries") if found else []
+    except Exception:
+        items = []
+    return [str(q).strip()[:120] for q in items or [] if str(q).strip()][:3]
+
+
+def _verify(messages, max_tokens, stop):
+    """Steps for the page while Qwen drafts, the draft is looked up and the tags are checked. Returns (the messages to
+    write the corrected answer from, or None when nothing was found to correct with, and what was done)."""
+    done = {"queries": [], "sources": [], "tags": [], "problems": []}
+    yield {"step": "Writing a first draft…"}
+    draft = _complete(messages, max_tokens)
+    done["draft"] = draft
+    if stop.is_set():
+        return None, done
+    yield {"step": "Choosing what to check…"}
+    question = _words_of(messages[-1]["content"]) if messages else ""
+    try:
+        done["queries"] = _queries(_complete([{"role": "system", "content": PLAN_SYSTEM},
+                                              {"role": "user", "content": f"The user's message:\n{question[:3000]}\n\nThe draft:\n{draft[:5000]}"}], 300))
+    except Exception as exc:
+        done["problems"].append(f"planning: {exc}")
+    sources, seen = [], set()
+    engine = str(settings.opt("pv_search_engine") or "DuckDuckGo")
+    for query in done["queries"]:
+        if stop.is_set() or engine == "Off":
+            break
+        yield {"step": f"Searching: {query}"}
+        found = []
+        try:
+            found = websearch.search(query, 3)
+        except Exception as exc:
+            done["problems"].append(f"{engine}: {exc}")
+        if not found:
+            try:
+                found = websearch.wikipedia(query, 2)
+            except Exception as exc:
+                done["problems"].append(f"Wikipedia: {exc}")
+        for item in found:
+            if item["url"] not in seen:
+                seen.add(item["url"])
+                sources.append(item)
+    sources = sources[:6]
+    tags = code_tags(draft) if settings.opt("pv_search_danbooru") else []
+    if tags and not stop.is_set():
+        yield {"step": f"Checking {len(tags)} tags on Danbooru…"}
+        try:
+            for tag, info in websearch.danbooru_tags(tags).items():
+                if not info["exists"]:
+                    done["tags"].append({"tag": tag, "suggest": info["suggest"]})
+        except Exception as exc:
+            done["problems"].append(f"Danbooru: {exc}")
+    done["sources"] = [{"n": i + 1, "title": x["title"][:150], "url": x["url"]} for i, x in enumerate(sources)]
+    if (not sources and not done["tags"]) or stop.is_set():
+        return None, done
+    found = "".join(f"[{i + 1}] {x['title']} ({x['url']})\n{x['text'][:500]}\n\n" for i, x in enumerate(sources))
+    if done["tags"]:
+        found += "Not Danbooru tags: " + "; ".join(
+            t["tag"] + (f" (instead: {', '.join(s.replace('_', ' ') for s in t['suggest'])})" if t["suggest"] else " (no close tag)")
+            for t in done["tags"]) + "\n"
+    yield {"step": "Correcting the answer with what was found…"}
+    return messages + [{"role": "assistant", "content": draft},
+                       {"role": "user", "content": REVISE + (found or "Nothing was found on the web.")}], done
+
+
+def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None, verify=False):
     """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}.
 
     regenerate: a new answer to the last message (again: to the one answered by that answer); edit: that message of
@@ -591,15 +715,23 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
-        window, left_out = _window(c)
+        window, left_out = _window(c, VERIFY_ROOM if verify else 0)
         messages = ([{"role": "system", "content": c["system"]}] if c["system"].strip() else []) + \
                    [{"role": m["role"], "content": _content(m)} for m in window]
 
     def events():
         yield {"start": True, "left_out": left_out}
         text, thought, started = [], [], time.time()
+        checked = None
         try:
-            yield from _stream(messages, max_tokens, bool(settings.opt("pv_chat_think")), stop, text, thought)
+            final = messages
+            if verify:
+                final, checked = yield from _verify(messages, max_tokens, stop)
+                if final is None:  # nothing found to correct with: the draft is the answer
+                    text.append(checked.get("draft", ""))
+                    yield {"delta": checked.get("draft", "")}
+            if final is not None:
+                yield from _stream(final, max_tokens, bool(settings.opt("pv_chat_think")), stop, text, thought)
         except Exception as exc:
             if not text:
                 if branch:
@@ -618,6 +750,8 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         if "".join(thought).strip():
             reply["thinking"] = "".join(thought).strip()
         reply["tokens"] = _tokens(answer, [])
+        if checked is not None:
+            reply["verify"] = checked
         hits = banned_in(answer)
         if hits:
             reply["banned_hits"] = hits

@@ -71,6 +71,9 @@ DEFAULTS = {
     "pv_chat_temperature": 0.7,
     "pv_chat_think": False,
     "pv_chat_banned": "",
+    "pv_search_engine": "DuckDuckGo",
+    "pv_searxng_url": "",
+    "pv_search_danbooru": True,
     # TIPO
     "pv_tipo_model": "TIPO-500M-ft (recommended)",
     "pv_tipo_model_path": "",
@@ -243,6 +246,12 @@ def register():
         "pv_chat_banned": O("", "Qwen Chat: banned words", gr.Textbox, {"lines": 4})
         .info("one word or phrase a line (or comma-separated): a single word is blocked while Qwen writes, a phrase is "
               "asked to be avoided; banned tags are also left out of the prompts an answer sends on"),
+        "pv_search_engine": O("DuckDuckGo", "Qwen Chat Verify: web search", gr.Radio, {"choices": ["DuckDuckGo", "SearXNG", "Off"]})
+        .info("what 🔎 Verify looks a draft up with; only the search words leave this computer. Wikipedia is asked when "
+              "it finds nothing"),
+        "pv_searxng_url": O("", "Qwen Chat Verify: your SearXNG's address").info("e.g. http://127.0.0.1:8888, with format: json "
+                                                                                  "allowed in its settings.yml"),
+        "pv_search_danbooru": O(True, "Qwen Chat Verify: check the tags of a prompt on Danbooru"),
         "pv_chat_think": O(False, "Qwen Chat: let a thinking model think first")
         .info("for models that reason before answering (Qwen3.5, Qwen3.8...): better answers, much slower. Qwen3-VL "
               "Instruct does not think either way. Captions and rewriting never think"),

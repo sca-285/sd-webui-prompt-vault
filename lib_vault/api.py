@@ -205,11 +205,12 @@ def register(app):
 
     @app.post(f"{BASE}/chat/send")
     def chat_send(body: dict = Body(...)):
-        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), body.get("context") or ""))
+        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), body.get("context") or "",
+                                        verify=bool(body.get("verify"))))
 
     @app.post(f"{BASE}/chat/regenerate")
     def chat_regenerate(body: dict = Body(...)):
-        return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message")))
+        return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message"), verify=bool(body.get("verify"))))
 
     @app.post(f"{BASE}/chat/assist")
     def chat_assist(body: dict = Body(...)):
@@ -217,7 +218,8 @@ def register(app):
 
     @app.post(f"{BASE}/chat/edit")
     def chat_edit(body: dict = Body(...)):
-        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), edit=body.get("message")))
+        return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), edit=body.get("message"),
+                                        verify=bool(body.get("verify"))))
 
     @app.post(f"{BASE}/chat/version")
     def chat_version(body: dict = Body(...)):

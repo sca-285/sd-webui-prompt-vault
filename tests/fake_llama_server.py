@@ -46,6 +46,11 @@ class H(BaseHTTPRequestHandler):
             answer = "<think>\n\n</think>\n\n" + answer
         elif tags:
             answer = f"<think>{reason}</think>" + answer
+        if "Reply with JSON only" in system:  # Verify's plan: what to look up
+            asked = words.split("The user's message:\n", 1)[-1].split("\n\n", 1)[0]
+            answer = json.dumps({"queries": [] if "no check" in asked else [asked[:60]]})
+        elif words.startswith("Before your answer reaches the user"):  # Verify's correction: what it was given
+            answer = "REVISED | " + words.split("\n\n", 1)[-1][:400]
         if not body.get("stream"):
             self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
             self.wfile.write(json.dumps({"choices": [{"message": {"content": answer}}]}).encode())

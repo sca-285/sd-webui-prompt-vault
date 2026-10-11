@@ -12,6 +12,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- 🔎 Verify: Qwen drafts, looks the draft up on the web (DuckDuckGo or SearXNG, Wikipedia as a fallback) and its
+  tags on Danbooru, then answers corrected, with clickable sources; what was checked is kept under the answer.
 - Banned words, for every conversation: a single word blocked while Qwen writes, a phrase asked to be avoided,
   an answer that used one marked ⚠, banned tags left out of the prompts an answer sends on; a list of common
   clichés to start from.
