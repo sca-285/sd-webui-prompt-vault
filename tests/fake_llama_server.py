@@ -37,7 +37,7 @@ class H(BaseHTTPRequestHandler):
         last = msgs[-1]["content"]
         words = last if isinstance(last, str) else " ".join(p.get("text", "") for p in last if p.get("type") == "text")
         system = next((m["content"] for m in msgs if m["role"] == "system"), "")
-        answer = f"messages={len(msgs)} images={images} system={len(system)}" + \
+        answer = f"messages={len(msgs)} images={images} system={len(system)} temp={body.get('temperature')} top_k={body.get('top_k')}" + \
             (f" blocked={len(body['logit_bias'])}" if body.get("logit_bias") else "") + f" | {words[:200]}"
         think = (body.get("chat_template_kwargs") or {}).get("enable_thinking")
         reason = f"the user wants {words[:40]}; a short answer will do"

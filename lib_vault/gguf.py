@@ -48,18 +48,23 @@ def _info(path, mtime):
         for _ in range(_read(f, "<Q")):
             key = _string(f)
             kind = _read(f, "<I")
-            wanted = key == "general.architecture" or key.endswith((".block_count", ".expert_count", ".context_length"))
+            wanted = key in ("general.architecture", "general.name", "general.basename", "general.size_label",
+                             "clip.projector_type", "clip.has_vision_encoder") \
+                or key.endswith((".block_count", ".expert_count", ".context_length"))
             value = _value(f, kind, wanted)
             if wanted:
                 out[key] = value
     arch = out.get("general.architecture", "")
     return {"arch": arch, "layers": int(out.get(f"{arch}.block_count") or 0), "experts": int(out.get(f"{arch}.expert_count") or 0),
-            "context": int(out.get(f"{arch}.context_length") or 0)}
+            "context": int(out.get(f"{arch}.context_length") or 0), "name": str(out.get("general.name") or ""),
+            "basename": str(out.get("general.basename") or ""), "size": str(out.get("general.size_label") or ""),
+            "projector": str(out.get("clip.projector_type") or "")}
 
 
 def info(path):
-    """{"arch", "layers", "experts", "context"}; zeros when the file cannot be read."""
+    """{"arch", "layers", "experts", "context", "name", "basename", "size", "projector"} (projector: a vision projector's
+    kind, e.g. gemma3, pixtral, glm4v, qwen3vl_merger); zeros and "" when the file cannot be read."""
     try:
         return dict(_info(os.path.abspath(path), os.path.getmtime(path)))
     except Exception:
-        return {"arch": "", "layers": 0, "experts": 0, "context": 0}
+        return {"arch": "", "layers": 0, "experts": 0, "context": 0, "name": "", "basename": "", "size": "", "projector": ""}

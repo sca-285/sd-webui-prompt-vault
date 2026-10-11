@@ -286,7 +286,7 @@ class LlamaServer:
 
 
 # flags of newer llama.cpp builds (memory placement); an older build is started without them
-NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe"}
+NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe", "--jinja"}
 
 
 def _terminate(proc):

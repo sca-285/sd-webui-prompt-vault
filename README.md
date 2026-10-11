@@ -283,9 +283,18 @@ recommended models:
 | TIPO | [TIPO-500M-ft-F16.gguf](https://huggingface.co/KBlueLeaf/TIPO-500M-ft/resolve/main/TIPO-500M-ft-F16.gguf) (~1 GB) | `models/prompt_vault/tipo/` |
 | llama-server (for TIPO and Qwen) | from [llama.cpp releases](https://github.com/ggml-org/llama.cpp/releases): the zip for your GPU, and for NVIDIA also the matching `cudart-…` zip | unzip both into one folder, e.g. `H:\AI\llama.cpp\`; paste the path of `llama-server.exe` in Settings |
 | Qwen-VL | two files of one size: `Qwen3VL-4B-Instruct-Q8_0.gguf` and `mmproj-Qwen3VL-4B-Instruct-F16.gguf` from [Qwen3-VL-4B-Instruct-GGUF](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct-GGUF/tree/main) | any folder, e.g. `models\VLM\`; paste both paths in Settings |
+| or another chat model | any .gguf llama.cpp runs: **Gemma 3**, **Mistral Small 3.x**, **GLM-4.x**, Llama, Phi, their abliterated versions; with its `mmproj-….gguf` to read images, or alone for words only | the same folder; pick it in Muse → ⚙ |
 
 Which zip fits your GPU, which Qwen size fits your VRAM, and how to check that it all
 works: **[SETUP_AI.md](SETUP_AI.md)**, sections 1 and 2.
+
+**Other families than Qwen.** The chat, Describe and the prompt tools run on whatever model is chosen:
+Qwen, Gemma, Mistral, GLM, Llama or Phi, told from what the .gguf says about itself (Muse's list shows the
+family before each name, the chat names it). Its vision projector is matched by family and size, never
+another family's; a model without one reads words only (no images, no Describe). *Sampling* in Muse → ⚙
+uses what the family is made for (Gemma 1.0, Mistral Small 0.15, GLM 0.6, Qwen 0.7, with their top-p and
+top-k), or your own temperature. llama-server is started with `--jinja`, so each model's own chat template
+is used.
 
 **Choosing the model on Muse's card.** Put the model's `.gguf` and its `mmproj-*.gguf` in
 `models/VLM` (a folder of their own inside it is fine), then **Muse → ⚙ Settings → Qwen model**:

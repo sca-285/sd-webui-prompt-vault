@@ -20,7 +20,7 @@ from . import VERSION, qwen, qwen_prompts, store, text, tipo, wd14
 from . import llama
 
 INTO = ["Replace", "Append"]
-READ_WITH = ["WD14 tags", "Qwen tags", "Qwen description", "WD14 tags + Qwen description"]
+READ_WITH = ["WD14 tags", "Model tags", "Model description", "WD14 tags + model description"]
 
 JS_PULL = """
 function(target, pos, neg) {
@@ -141,9 +141,9 @@ def build():
             tipo_note = gr.HTML("", elem_id="pv_tipo_note")
 
         # ============================================================ Qwen
-        with gr.Accordion("✍️ Rewrite with Qwen", open=False, elem_id="pv_qwen"):
-            gr.Markdown("Your Qwen-VL model rewrites the positive prompt. Settings → **Prompt Vault "
-                        "(Qwen / llama-server)**.", elem_classes=["pv-help"])
+        with gr.Accordion("✍️ Rewrite with the model", open=False, elem_id="pv_qwen"):
+            gr.Markdown("Your chat & vision model (Qwen, Gemma, Mistral, GLM…, chosen in Muse → ⚙) rewrites the "
+                        "positive prompt.", elem_classes=["pv-help"])
             qwen_task = gr.Radio(list(qwen_prompts.TEXT_TASKS), value="Tags → sentence", label="Task",
                                  elem_id="pv_qwen_task")
             qwen_instruction = gr.Textbox(label="Instruction", lines=1, visible=False, elem_id="pv_qwen_instruction",
@@ -153,13 +153,13 @@ def build():
             qwen_note = gr.HTML("", elem_id="pv_qwen_note")
 
         # ============================================================ chat
-        with gr.Accordion("💬 Qwen Chat", open=False, elem_id="pv_chat_acc"):
+        with gr.Accordion("💬 Chat", open=False, elem_id="pv_chat_acc"):
             gr.HTML("<div id='pv_chat_vault' class='pv-chat-host'></div>")
 
         # ============================================================ image
         with gr.Accordion("🏞️ Image → Prompt", open=False, elem_id="pv_image"):
-            gr.Markdown("WD14 gives exact Danbooru tags (anime, illustration; CPU, no VRAM). Qwen describes "
-                        "any image in words, photos too. Both together: WD14's tags steer Qwen's description.",
+            gr.Markdown("WD14 gives exact Danbooru tags (anime, illustration; CPU, no VRAM). The model (one with vision) describes "
+                        "any image in words, photos too. Both together: WD14's tags steer its description.",
                         elem_classes=["pv-help"])
             image = gr.Image(label="Image", type="pil", height=300, elem_id="pv_image_input")
             read_with = gr.Radio(READ_WITH, value="WD14 tags", label="Read with", elem_id="pv_read_with")
@@ -215,10 +215,10 @@ def build():
                     top = ", ".join(f"{t} {p:.0%}" for t, p in scored[:8])
                     notes.append(f"<span class='pv-scores'>{top}{' …' if len(scored) > 8 else ''}</span>")
                 result = tags
-            if how == "Qwen tags":
+            if how == "Model tags":
                 result, note = qwen.read_image(img, "tags")
                 notes.append(note)
-            elif "Qwen description" in how:
+            elif "description" in how:
                 desc, note = qwen.read_image(img, "description", hint_tags=tags)
                 notes.append(note)
                 result = f"{tags}, {desc}" if tags and desc else (desc or tags)

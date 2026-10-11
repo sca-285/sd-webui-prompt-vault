@@ -1,5 +1,5 @@
-// Prompt Vault: Qwen Chat. One conversation, shown in two places at once: the Chat tab of Muse's card and
-// the Qwen Chat window of the Vault tab. Conversations live in the WebUI (lib_vault/chat.py) until it stops,
+// Prompt Vault: the chat with the local model (Qwen, Gemma, Mistral, GLM…). One conversation, shown in two places at
+// once: the Chat tab of Muse's card and the Chat window of the Vault tab. Conversations live in the WebUI (lib_vault/chat.py) until it stops,
 // unless saved; this file only shows them and sends what you write.
 
 (() => {
@@ -55,7 +55,7 @@
         pending: null,              // what you just sent, until the server has it
         cut: -1,                    // while a message is edited or answered again: the messages before it are shown
         editing: null,              // {id, text}: your message being edited
-        assisting: '',              // 'enhance' | 'write' while Qwen writes into the box
+        assisting: '',              // 'enhance' | 'write' while the model writes into the box
         undoDraft: null,            // the box before Enhance or Write for me
         draft: '',
         files: [],                  // [{kind, name, data, size}] waiting to be sent
@@ -140,6 +140,9 @@
     }
 
     // ------------------------------------------------------------------ presets: how the assistant behaves
+
+    // who answers: the family of the model in use (Qwen, Gemma, Mistral, GLM…)
+    const who = () => (C.list && C.list.model_label) || 'Model';
 
     const presets = () => (C.list && C.list.presets) || {builtin: [], mine: [], default: ''};
     const presetOf = (id) => [...presets().builtin, ...presets().mine].find((p) => p.id === id) || null;
@@ -230,7 +233,7 @@
 
     const stop = () => { call('/chat/stop', {id: C.chat ? C.chat.id : 'assist'}).catch(() => {}); };
 
-    // the box, as Qwen writes into it: every window's, without painting the rest again
+    // the box, as the model writes into it: every window's, without painting the rest again
     function paintDraft() {
         for (const m of C.mounts) {
             const box = m.querySelector('.pv-chat-input');
@@ -238,7 +241,7 @@
         }
     }
 
-    // ✨ Enhance: Qwen rewrites your draft; ✍ Write for me: Qwen writes your next message (your draft as its hint).
+    // ✨ Enhance: the model rewrites your draft; ✍ Write for me: it writes your next message (your draft as its hint).
     // Nothing is sent: it lands in the box for you to read, change and send; ↩ Undo brings your words back.
     async function assist(mode) {
         if (C.busy) return;
@@ -513,7 +516,7 @@
             files(m.files),
             box,
             el('div', {class: 'pv-chat-actions'},
-                el('span', {class: 'pv-chat-meta', text: 'Qwen answers it anew; the earlier version is kept'}),
+                el('span', {class: 'pv-chat-meta', text: `${who()} answers it anew; the earlier version is kept`}),
                 button('Cancel', 'Keep it as it was (Esc)', () => { C.editing = null; paint(); }),
                 button('Send', 'Send the new words (Enter)', () => resend(m, at), {class: 'pv-chat-btn pv-chat-send'})));
     }
@@ -524,7 +527,7 @@
         const actions = mine
             ? el('div', {class: 'pv-chat-actions'},
                 versions(m),
-                C.busy || !m.id ? null : button('✎ Edit', 'Change these words; Qwen answers anew and the earlier version is kept (or double-click the message)', () => startEdit(m)),
+                C.busy || !m.id ? null : button('✎ Edit', 'Change these words; it is answered anew and the earlier version is kept (or double-click the message)', () => startEdit(m)),
                 C.busy || !m.id ? null : button('✕', 'Remove this message', () => act('/chat/remove-message', {id: C.chat.id, message: m.id})))
             : el('div', {class: 'pv-chat-actions'},
                 versions(m),
@@ -538,7 +541,7 @@
                     text: `⚠ ${m.banned_hits.join(', ')}`}) : null,
                 m.seconds ? el('span', {class: 'pv-chat-meta', text: `${m.seconds}s`}) : null);
         return el('div', {class: 'pv-chat-msg ' + (mine ? 'pv-chat-mine' : 'pv-chat-theirs')},
-            el('div', {class: 'pv-chat-who', text: mine ? 'You' : 'Qwen'}),
+            el('div', {class: 'pv-chat-who', text: mine ? 'You' : who()}),
             files(m.files),
             m.verify ? checkedView(m.verify) : null,
             m.thinking ? el('details', {class: 'pv-chat-thought'},
@@ -587,7 +590,7 @@
         } catch (e) { toast(e.message, true); }
     }
 
-    // 🚫 words Qwen must not write, in every conversation
+    // 🚫 words the model must not write, in every conversation
     function bannedView() {
         const box = el('textarea', {class: 'pv-chat-system pv-chat-banned', rows: '3', spellcheck: 'false',
             placeholder: 'One word or phrase a line, or comma-separated: tapestry, testament, shivers down her spine…'});
@@ -605,7 +608,7 @@
                     box.value = [box.value.trim(), more.join(', ')].filter(Boolean).join(box.value.trim() ? ',\n' : '');
                 }),
                 count),
-            el('div', {class: 'pv-chat-hint', text: 'A single word is blocked while Qwen writes; a phrase, or another form of a word, is asked to be avoided, '
+            el('div', {class: 'pv-chat-hint', text: 'A single word is blocked while the model writes; a phrase, or another form of a word, is asked to be avoided, '
                 + 'and ⚠ marks an answer that used one anyway. Tags with a banned word stay out of what → Vault, → txt2img and → Muse send.'}));
     }
 
@@ -673,7 +676,7 @@
 
     function composer() {
         const box = el('textarea', {class: 'pv-chat-input', rows: '2', spellcheck: 'true',
-            placeholder: 'Write to Qwen… Enter sends, Shift+Enter a new line. Add images or .txt/.md with 📎, paste or drop them.'});
+            placeholder: `Write to ${who()}… Enter sends, Shift+Enter a new line. Add ${C.list && C.list.vision === false ? '' : 'images or '}.txt/.md with 📎, paste or drop them.`});
         box.value = C.draft;
         if (C.assisting) box.readOnly = true;
         box.addEventListener('input', () => { C.draft = box.value; });
@@ -689,15 +692,15 @@
         const ctx = el('select', {class: 'pv-chat-ctx', title: 'Read with your message: the prompt you are working on', onchange: (e) => { C.context = e.target.value; LS.set('context', C.context); }},
             CONTEXTS.map(([v, t]) => el('option', {value: v, text: '+ ' + t, selected: v === C.context})));
         const helper = el('div', {class: 'pv-chat-assist'},
-            C.assisting ? el('span', {class: 'pv-chat-wait', text: C.assisting === 'enhance' ? 'Qwen is improving your draft…' : 'Qwen is writing for you…'})
-                : [button('✨ Enhance my draft', 'Qwen rewrites what you wrote: clearer, more specific, in your words and language. Not sent: read it, change it, send it',
+            C.assisting ? el('span', {class: 'pv-chat-wait', text: C.assisting === 'enhance' ? `${who()} is improving your draft…` : `${who()} is writing for you…`})
+                : [button('✨ Enhance my draft', 'The model rewrites what you wrote: clearer, more specific, in your words and language. Not sent: read it, change it, send it',
                     () => { C.draft = box.value; assist('enhance'); }, {disabled: C.busy}),
-                   button('✍ Write for me', 'Qwen writes your next message from the conversation (what is in the box is its hint). Not sent',
+                   button('✍ Write for me', 'The model writes your next message from the conversation (what is in the box is its hint). Not sent',
                     () => { C.draft = box.value; assist('write'); }, {disabled: C.busy}),
                    C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null,
                    el('span', {class: 'pv-chat-grow'}),
-                   button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: Qwen drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'
-                    : 'Off. On: Qwen drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers',
+                   button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'
+                    : 'Off. On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers',
                     () => { C.verify = !C.verify; LS.set('verify', C.verify); paint(); }, {class: 'pv-chat-btn pv-chat-verify' + (C.verify ? ' pv-on' : '')})]);
         return el('div', {class: 'pv-chat-compose'},
             files(C.files, true),
@@ -735,8 +738,8 @@
         if (C.pending) msgs.push(C.pending);
         const log = el('div', {class: 'pv-chat-log'},
             !msgs.length && !C.busy ? el('div', {class: 'pv-chat-empty'},
-                el('strong', {text: 'Qwen Chat'}),
-                el('div', {text: 'Talk with the Qwen model of the Vault tab: ideas, prompts, a picture to describe, a story to turn into prompts.'}),
+                el('strong', {text: C.list && C.list.model_name ? `Chat · ${C.list.model_name}` : 'Chat'}),
+                el('div', {text: `Talk with the local model (${who()}): ideas, prompts, ${C.list && C.list.vision === false ? '' : 'a picture to describe, '}a story to turn into prompts. Choose the model in Muse → ⚙.`}),
                 el('div', {text: 'This conversation lasts until the WebUI stops; 💾 Save keeps it. It is the same one here and in the Vault tab.'}),
                 presets().builtin.length ? el('div', {class: 'pv-chat-presets'},
                     el('div', {class: 'pv-chat-label', text: 'Start as'}),
@@ -745,12 +748,12 @@
                             text: presetLabel(p), onclick: () => usePreset(p.id)})))) : null) : null,
             msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant', i)),
             C.busy && !C.assisting ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
-                el('div', {class: 'pv-chat-who', text: 'Qwen'}),
+                el('div', {class: 'pv-chat-who', text: who()}),
                 el('div', {class: 'pv-chat-thought pv-chat-thinking-now', hidden: !C.thinking},
                     el('div', {class: 'pv-chat-thought-head', text: '💭 Thinking'}),
                     el('div', {class: 'pv-chat-thought-text', text: C.thinking})),
                 el('div', {class: 'pv-chat-text', html: C.stream ? md(C.stream) + '<span class="pv-chat-caret"></span>' : `<span class="pv-chat-wait">${esc(C.step || 'thinking…')}</span>`})) : null);
-        const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? 'Qwen: ' + C.status : '']
+        const foot = [C.leftOut ? `${C.leftOut} older message${C.leftOut > 1 ? 's are' : ' is'} beyond the model's context: not read` : '', C.status ? `${who()}: ` + C.status : '']
             .filter(Boolean).join(' · ');
         const body = el('div', {class: 'pv-chat' + (m.dataset.compact ? ' pv-chat-compact' : '')},
             head(), panelView(), log, composer(), contextMeter(), foot ? el('div', {class: 'pv-chat-status', text: foot}) : null);

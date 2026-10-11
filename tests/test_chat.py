@@ -10,14 +10,17 @@ from fastapi.testclient import TestClient
 tmp = tempfile.mkdtemp()
 
 
-def fake_gguf(path, layers, experts=0, size_mb=1):
+def fake_gguf(path, layers, experts=0, size_mb=1, arch="qwen3vl", name="", projector=""):
     def s(x):
         b = x.encode()
         return struct.pack("<Q", len(b)) + b
-    kv = [s("general.architecture") + struct.pack("<I", 8) + s("qwen3vl"),
+    kv = [s("general.architecture") + struct.pack("<I", 8) + s("clip" if projector else arch)]
+    kv += [s("general.name") + struct.pack("<I", 8) + s(name)] if name else []
+    kv += [s("clip.projector_type") + struct.pack("<I", 8) + s(projector)] if projector else []
+    kv += [
           s("tokenizer.ggml.scores") + struct.pack("<I", 9) + struct.pack("<IQ", 6, 3) + struct.pack("<3f", 1, 2, 3),
-          s("qwen3vl.block_count") + struct.pack("<I", 4) + struct.pack("<I", layers),
-          s("qwen3vl.expert_count") + struct.pack("<I", 4) + struct.pack("<I", experts)]
+          s(f"{arch}.block_count") + struct.pack("<I", 4) + struct.pack("<I", layers),
+          s(f"{arch}.expert_count") + struct.pack("<I", 4) + struct.pack("<I", experts)]
     with open(path, "wb") as f:
         f.write(b"GGUF" + struct.pack("<IQQ", 3, 0, len(kv)) + b"".join(kv))
         f.truncate(size_mb * 1024 * 1024)
@@ -25,8 +28,9 @@ def fake_gguf(path, layers, experts=0, size_mb=1):
 
 model, mmproj = os.path.join(tmp, "qwen.gguf"), os.path.join(tmp, "mmproj.gguf")
 fake_gguf(model, 36, size_mb=8)
-fake_gguf(mmproj, 1)
-assert gguf.info(model) == {"arch": "qwen3vl", "layers": 36, "experts": 0, "context": 0}, gguf.info(model)
+fake_gguf(mmproj, 1, projector="qwen3vl_merger")
+assert gguf.info(model) == {"arch": "qwen3vl", "layers": 36, "experts": 0, "context": 0, "name": "", "basename": "", "size": "",
+                            "projector": ""}, gguf.info(model)
 os.environ["FAKE_ARGS_LOG"] = os.path.join(tmp, "args.log")
 for k, v in {"pv_llama_server_path": os.path.abspath("tests/fake_llama_server.py"), "pv_vlm_model_path": model,
              "pv_vlm_mmproj_path": mmproj, "pv_vlm_unload_sd": False, "pv_vlm_idle_minutes": 0, "pv_vlm_context": 4096,
@@ -376,7 +380,7 @@ os.makedirs(os.path.join(vlm, "huihui-30b"), exist_ok=True)
 for name in ("Qwen3VL-4B-Instruct-Q8_0.gguf", "mmproj-Qwen3VL-4B-Instruct-F16.gguf", "Qwen3VL-8B-Instruct-Q6_K.gguf",
              "mmproj-Qwen3VL-8B-Instruct-F16.gguf", os.path.join("huihui-30b", "Huihui-Qwen3-VL-30B-A3B-Instruct-abliterated-Q4_K_M.gguf"),
              os.path.join("huihui-30b", "mmproj-F16.gguf")):
-    fake_gguf(os.path.join(vlm, name), 36)
+    fake_gguf(os.path.join(vlm, name), 36, projector="qwen3vl_merger" if "mmproj" in name else "")
 M = "/prompt-vault/api/qwen/models"
 lst = c.get(M).json()
 names = [m["name"] for m in lst["models"]]
@@ -402,10 +406,63 @@ assert not any("dflash" in m["name"] for m in got["models"]) and got["drafts"][0
 assert qwen.DRAFT.search("Qwen3.8-27B-MTP-Q8_0.gguf") and not qwen.DRAFT.search("Qwen3.8-27B-Q4_K_M.gguf")
 print("drafts ok")
 
+# other families: Gemma, Mistral, GLM with their projectors, and a model for words only
+from lib_vault import families
+first_model = c.get(M).json()["model"]
+fam = os.path.join(vlm, "families")
+os.makedirs(fam, exist_ok=True)
+for name, arch, title, proj in (("gemma-3-12b-it-abliterated.Q4_K_M.gguf", "gemma3", "Gemma 3 12b It Abliterated", ""),
+                                ("mmproj-gemma-3-12b-f16.gguf", "", "", "gemma3"),
+                                ("Mistral-Small-3.2-24B-Instruct-abliterated-Q4_K_M.gguf", "llama", "Mistral Small 3.2 24B Instruct", ""),
+                                ("mmproj-Mistral-Small-3.2-24B-f16.gguf", "", "", "pixtral"),
+                                ("GLM-4.1V-9B-Thinking-Q4_K_M.gguf", "glm4", "GLM 4.1V 9B Thinking", ""),
+                                ("mmproj-GLM-4.1V-9B-f16.gguf", "", "", "glm4v"),
+                                ("Mistral-Nemo-12B-Instruct-Q5_K_M.gguf", "llama", "Mistral Nemo Instruct 2407", "")):
+    fake_gguf(os.path.join(fam, name), 40, arch=arch or "qwen3vl", name=title, projector=proj)
+got = c.get(M).json()
+byname = {m["name"]: m for m in got["models"] + got["mmprojs"]}
+assert byname["gemma-3-12b-it-abliterated.Q4_K_M.gguf"]["family_label"] == "Gemma" and byname["mmproj-gemma-3-12b-f16.gguf"]["family"] == "gemma"
+assert byname["Mistral-Small-3.2-24B-Instruct-abliterated-Q4_K_M.gguf"]["family"] == "mistral"  # a "llama" inside, Mistral by name
+assert byname["mmproj-Mistral-Small-3.2-24B-f16.gguf"]["family"] == "mistral" and byname["GLM-4.1V-9B-Thinking-Q4_K_M.gguf"]["family"] == "glm"
+for model_name, proj in (("gemma-3-12b-it-abliterated.Q4_K_M.gguf", "mmproj-gemma-3-12b-f16.gguf"),
+                         ("Mistral-Small-3.2-24B-Instruct-abliterated-Q4_K_M.gguf", "mmproj-Mistral-Small-3.2-24B-f16.gguf"),
+                         ("GLM-4.1V-9B-Thinking-Q4_K_M.gguf", "mmproj-GLM-4.1V-9B-f16.gguf"),
+                         ("Mistral-Nemo-12B-Instruct-Q5_K_M.gguf", "")):  # no projector of its own: words only, never another's
+    chosen = c.post(M, json={"model": byname[model_name]["path"]}).json()
+    assert os.path.basename(chosen["mmproj"]) == proj and chosen["vision"] == bool(proj), (model_name, chosen["mmproj"])
+# Gemma: its recommended sampling, --jinja, its projector
+g = c.post(M, json={"model": byname["gemma-3-12b-it-abliterated.Q4_K_M.gguf"]["path"]}).json()
+assert g["family_label"] == "Gemma" and g["model_name"] == "Gemma 3 12b It Abliterated" and g["sampling"]["temperature"] == 1.0
+gc_ = c.post(B + "/new").json()["chat"]["id"]
+ev = send(gc_, "hello gemma")
+assert "temp=1.0 top_k=64" in ev[-1]["message"]["text"], ev[-1]["message"]["text"]
+argv = open(os.environ["FAKE_ARGS_LOG"]).read().splitlines()[-1]
+assert "--jinja" in argv and "mmproj-gemma-3-12b-f16.gguf" in argv, argv
+send(gc_, "this one", [{"kind": "image", "name": "red.png", "data": png}])
+# words only: no projector given to the server, images refused, the earlier one told about in words
+c.post(M, json={"model": byname["Mistral-Nemo-12B-Instruct-Q5_K_M.gguf"]["path"]})
+ev = send(gc_, "and now?")
+argv = open(os.environ["FAKE_ARGS_LOG"]).read().splitlines()[-1]
+assert "--mmproj" not in argv and "images=0" in ev[-1]["message"]["text"] and "temp=0.15" in ev[-1]["message"]["text"], (argv, ev[-1])
+r = c.post(B + "/send", json={"id": gc_, "text": "look", "files": [{"kind": "image", "name": "a.png", "data": png}]})
+assert r.status_code == 400 and "reads no images" in r.json()["error"]
+assert chat._content({"text": "hi", "files": [{"kind": "image", "name": "red.png", "url": "data:x"}]}, vision=False)[0]["text"].startswith("[an image, red.png")
+# my temperature instead of the family's
+shared.opts.pv_chat_sampling = "My temperature"
+assert "temp=0.7 top_k=None" in send(gc_, "mine")[-1]["message"]["text"]
+shared.opts.pv_chat_sampling = "Recommended for the model"
+# back to vision with the chooser's "none": words only on purpose
+c.post(M, json={"model": byname["gemma-3-12b-it-abliterated.Q4_K_M.gguf"]["path"]})
+assert c.post(M, json={"mmproj": ""}).json()["vision"] is False
+c.post(B + "/delete", json={"id": gc_})
+assert families._tell("graphic novel") == "" and families._tell("Phi-4-mini") == "phi" and families._tell("llama3") == "llama"
+c.post(M, json={"model": first_model})
+print("families ok")
+
 # folders on another drive: several for Qwen, one for Prompt Vault's own models
 other, third, own = (tempfile.mkdtemp(prefix=p) for p in ("drive-d-", "drive-e-", "pv-models-"))
 fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.Q5_K_M.gguf"), 36)
-fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.mmproj-f16.gguf"), 1)
+fake_gguf(os.path.join(other, "Far-Qwen3-VL-8B.mmproj-f16.gguf"), 1, projector="qwen3vl_merger")
 os.environ["PV_FAR"] = third
 F = "/prompt-vault/api/qwen/folders"
 got = c.post(F, json={"qwen_dirs": f'"{other}"; $PV_FAR', "models_dir": own}).json()

@@ -779,13 +779,13 @@
             onclick: () => { if (M.pane !== v) { M.pane = v; LS.set('pane', v); render(); } }});
         return el('div', {class: 'pv-muse-panes', role: 'tablist'},
             pick('ideas', 'Ideas', 'Prompt ideas from scenes'),
-            pick('chat', 'Chat', 'Talk with Qwen: the same conversation as in the Vault tab'));
+            pick('chat', 'Chat', 'Talk with the local model: the same conversation as in the Vault tab'));
     }
 
     function chatView() {
         const host = el('div', {class: 'pv-muse-body pv-muse-chat'});
         if (window.pvChat) setTimeout(() => window.pvChat.mount(host, {compact: true}), 0);
-        else host.append(el('div', {class: 'pv-muse-empty', text: 'Qwen Chat is not loaded: reload the page.'}));
+        else host.append(el('div', {class: 'pv-muse-empty', text: 'The chat is not loaded: reload the page.'}));
         return host;
     }
 
@@ -886,9 +886,9 @@
                     title: locks ? 'Same scene, the locked parts stay' : 'A new scene (Alt+M)'},
                 icon('roll'), M.busy === 'next' ? 'Thinking…' : (locks ? `New, keep ${locks} locked` : 'New idea')),
                 el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'arrange' ? TOOL_NAMES.arrange : 'Arrange', disabled: !!M.busy, onclick: () => tool('arrange'),
-                    title: s.arrange_with === 'qwen' ? 'Qwen puts the tags in order, merges duplicates, fixes spelling' : 'Puts the tags in order, from what your library knows of them (instant)'}),
+                    title: s.arrange_with === 'qwen' ? 'The model puts the tags in order, merges duplicates, fixes spelling' : 'Puts the tags in order, from what your library knows of them (instant)'}),
                 el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'describe' ? TOOL_NAMES.describe : 'Describe', disabled: !!M.busy, onclick: () => tool('describe'),
-                    title: s.describe_as === 'both' ? 'Qwen writes a paragraph from the tags and adds it after them' : 'Qwen turns the tags into a paragraph'}),
+                    title: s.describe_as === 'both' ? 'The model writes a paragraph from the tags and adds it after them' : 'The model turns the tags into a paragraph'}),
                 s.use_tipo ? el('button', {type: 'button', class: 'pv-btn', text: M.busy === 'tipo' ? TOOL_NAMES.tipo : 'TIPO', title: 'Expand with TIPO', disabled: !!M.busy, onclick: () => tool('tipo')}) : null,
                 iconButton('save', 'Save to the Vault\'s saved prompts', saveToVault),
                 iconButton('copy', 'Copy the prompt', () => {
@@ -998,9 +998,9 @@
                     + 'your model, sampler, size and negative prompt as they are there. img2img uses the input image you put there.'})),
             qwenSection(),
             section('Arrange & describe',
-                seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'Qwen']]),
+                seg('Arrange', 'arrange_with', [['library', 'Library (instant)'], ['qwen', 'The model']]),
                 seg('Describe', 'describe_as', [['both', 'Tags + text'], ['paragraph', 'Text only']]),
-                el('div', {class: 'pv-muse-hint', text: 'Qwen is the model of the Vault tab: Settings → Prompt Vault (Qwen / llama-server).'})),
+                el('div', {class: 'pv-muse-hint', text: 'The model is the chat & vision model chosen below (Qwen, Gemma, Mistral, GLM…), run by llama-server.'})),
             section('TIPO',
                 toggleSwitch('Show the TIPO button', s.use_tipo, (v) => patch({use_tipo: v}), 'expands an idea with the TIPO set up in the Vault tab'),
                 s.use_tipo ? seg('Output', 'tipo_output', [['Tags', 'Tags'], ['Natural language', 'Words'], ['Tags + natural language', 'Both']]) : null,
@@ -1040,7 +1040,7 @@
         const q = M.qwen;
         if (!q) {
             if (!M.qwenBusy) loadQwen();
-            return section('Qwen model', el('div', {class: 'pv-muse-hint', text: 'Looking for .gguf files…'}));
+            return section('Chat & vision model', el('div', {class: 'pv-muse-hint', text: 'Looking for .gguf files…'}));
         }
         const same = (a, b) => !!a && !!b && a.replace(/\\/g, '/').toLowerCase() === b.replace(/\\/g, '/').toLowerCase();
         const pick = (label, list, current, onchange, none) => {
@@ -1053,11 +1053,24 @@
                     el('option', {value: '', text: none, selected: !current}),
                     current && !known ? el('option', {value: current, text: current.split(/[\\/]/).pop() + ' (not in the folders below)', selected: true}) : null,
                     Object.entries(groups).map(([folder, ms]) => el('optgroup', {label: folder},
-                        ms.map((m) => el('option', {value: m.path, title: m.path, text: `${m.name} · ${m.gb >= 0.1 ? m.gb + ' GB' : 'small'}`, selected: same(m.path, current)}))))));
+                        ms.map((m) => el('option', {value: m.path, title: m.path, text: `${m.family_label ? m.family_label + ' · ' : ''}${m.name} · ${m.gb >= 0.1 ? m.gb + ' GB' : 'small'}`, selected: same(m.path, current)}))))));
         };
-        return section('Qwen model',
+        const smp = q.sampling || {};
+        const recommended = String(q.sampling_mode || '').startsWith('Recommended');
+        return section('Chat & vision model',
             pick('Model', q.models, q.model, (v) => loadQwen({model: v}), q.models.length ? '— choose a model —' : '— no .gguf found —'),
-            pick('Vision', q.mmprojs, q.mmproj, (v) => loadQwen({mmproj: v}), '— none: no images —'),
+            pick('Vision', q.mmprojs, q.mmproj, (v) => loadQwen({mmproj: v}), '— none: words only, no images —'),
+            q.model ? el('div', {class: 'pv-muse-hint', text: `${q.family_label || 'A family it does not name'} · ${q.vision ? 'reads images' : 'words only: no images, no Describe'}`
+                + (q.model_name ? ` · ${q.model_name}` : '')}) : null,
+            el('div', {class: 'pv-muse-field'},
+                el('span', {class: 'pv-muse-field-label', text: 'Sampling'}),
+                el('div', {class: 'pv-muse-seg'},
+                    ['Recommended for the model', 'My temperature'].map((v) => el('button', {type: 'button', class: 'pv-muse-segbtn' + ((v === 'My temperature') !== recommended ? ' pv-on' : ''),
+                        text: v === 'My temperature' ? 'Mine' : 'Model\'s', disabled: !!M.qwenBusy,
+                        title: v === 'My temperature' ? 'The temperature in Settings → Prompt Vault, for every model' : 'What the model\'s family is made for',
+                        onclick: () => loadQwen({sampling: v})})))),
+            el('div', {class: 'pv-muse-hint', text: `Sampling now: temperature ${smp.temperature}` + (smp.top_p !== undefined ? `, top-p ${smp.top_p}` : '')
+                + (smp.top_k !== undefined ? `, top-k ${smp.top_k}` : '')}),
             el('label', {class: 'pv-muse-field pv-muse-pick'},
                 el('span', {class: 'pv-muse-field-label', text: 'Lives in'}),
                 el('select', {class: 'pv-muse-select', disabled: !!M.qwenBusy, onchange: (e) => loadQwen({memory: e.target.value}),
@@ -1066,9 +1079,9 @@
                     'KV cache in RAM': 'GPU, the context in RAM', 'Low VRAM': 'Low VRAM: most in RAM', 'RAM only': 'RAM only (slow)'}[m] || m,
                 selected: m === q.memory})))),
             toggleSwitch('Let it think first', !!q.think, (v) => loadQwen({think: v}),
-                'Qwen Chat, with a model that reasons before answering (Qwen3.5, Qwen3.8…): better answers, much slower. Qwen3-VL Instruct does not think'),
+                'The chat, with a model that reasons before answering (Qwen3.5, Qwen3.8, GLM-4.5…): better answers, much slower. Others ignore it'),
             el('div', {class: 'pv-muse-field'},
-                el('span', {class: 'pv-muse-hint', text: q.running ? `Running: ${q.note || ''}` : 'Starts when Qwen is first used; a new choice applies at once.'}),
+                el('span', {class: 'pv-muse-hint', text: q.running ? `Running: ${q.note || ''}` : 'Starts when the model is first used; a new choice applies at once.'}),
                 el('button', {type: 'button', class: 'pv-btn', text: '⟳', title: 'Look for .gguf files again', disabled: !!M.qwenBusy, onclick: () => loadQwen()})),
             el('div', {class: 'pv-muse-hint', text: 'Looked in: ' + ((q.dirs || []).join(' · ') || 'models/VLM (not there yet)')}),
             foldersView(q));
@@ -1083,11 +1096,11 @@
         const save = () => loadQwen({__folders: true, qwen_dirs: qwenDirs.value, models_dir: ownDir.value});
         for (const box of [qwenDirs, ownDir]) box.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save(); } });
         return el('div', {class: 'pv-muse-folders'},
-            el('label', {class: 'pv-muse-field pv-muse-pick'}, el('span', {class: 'pv-muse-field-label', text: 'Qwen in'}), qwenDirs),
+            el('label', {class: 'pv-muse-field pv-muse-pick'}, el('span', {class: 'pv-muse-field-label', text: 'Models in'}), qwenDirs),
             el('label', {class: 'pv-muse-field pv-muse-pick'}, el('span', {class: 'pv-muse-field-label', text: 'WD14, TIPO'}), ownDir),
             (q.missing || []).length ? el('div', {class: 'pv-muse-hint pv-muse-warn', text: 'Not found: ' + q.missing.join('; ')}) : null,
             el('div', {class: 'pv-muse-field'},
-                el('span', {class: 'pv-muse-hint', text: 'Any drive. Several Qwen folders: separate them with ;. Moving the WD14 and TIPO '
+                el('span', {class: 'pv-muse-hint', text: 'Any drive. Several model folders: separate them with ;. Moving the WD14 and TIPO '
                     + 'models: move their folders (wd14, tipo) yourself, then set the new place here.'}),
                 el('button', {type: 'button', class: 'pv-btn', text: 'Save folders', disabled: !!M.qwenBusy, onclick: save})));
     }

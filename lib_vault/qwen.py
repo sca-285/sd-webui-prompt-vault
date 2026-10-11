@@ -14,18 +14,46 @@ import re
 import time
 
 from . import gguf, llama, settings, text, vram
+from . import families
 from . import qwen_prompts as prompts
 
 
 def _missing():
     problems = llama.server_missing()
-    for label, key in (("Qwen model .gguf", "pv_vlm_model_path"), ("mmproj .gguf", "pv_vlm_mmproj_path")):
-        value = settings.clean_path(settings.opt(key))
-        if not value:
-            problems.append(f"{label} is not set")
-        elif not os.path.isfile(value):
-            problems.append(f"{label} not found: {value}")
+    model = settings.clean_path(settings.opt("pv_vlm_model_path"))
+    if not model:
+        problems.append("the model .gguf is not set")
+    elif not os.path.isfile(model):
+        problems.append(f"model not found: {model}")
+    mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
+    if mmproj and not os.path.isfile(mmproj):  # none: a model for words only
+        problems.append(f"vision projector (mmproj) not found: {mmproj}")
     return problems
+
+
+def has_vision():
+    """Whether the model in use reads images: a vision projector (mmproj) is chosen for it."""
+    return bool(settings.clean_path(settings.opt("pv_vlm_mmproj_path")))
+
+
+NO_VISION = ("The model in use reads no images: choose its vision projector (mmproj) in Muse → ⚙ → Model, "
+             "or a model that comes with one.")
+
+
+def family():
+    """The family of the model in use: qwen, gemma, mistral, glm, llama, phi, or ""."""
+    return families.of_model(settings.clean_path(settings.opt("pv_vlm_model_path")))
+
+
+def sampling(temperature=None):
+    """The sampling to send: the model family's recommended one (Settings → Sampling), the temperature given by the
+    caller or Settings winning when it is set."""
+    out = families.sampling(family()) if str(settings.opt("pv_chat_sampling") or "").startswith("Recommended") else {}
+    if temperature is not None:
+        out["temperature"] = float(temperature)
+    elif not out:
+        out["temperature"] = float(settings.opt("pv_chat_temperature"))
+    return out
 
 
 MEMORY_MODES = ("Auto", "All on GPU", "KV cache in RAM", "Low VRAM", "RAM only")
@@ -94,12 +122,14 @@ def _memory_args(model, mmproj):
 def _model_args():
     model = settings.clean_path(settings.opt("pv_vlm_model_path"))
     mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
-    return ["-m", model, "--mmproj", mmproj, "-c", str(int(settings.opt("pv_vlm_context")))] + _memory_args(model, mmproj)
+    vision = ["--mmproj", mmproj] if mmproj else []
+    return ["-m", model, *vision, "--jinja", "-c", str(int(settings.opt("pv_vlm_context")))] + _memory_args(model, mmproj)
 
 
 def _placement():
     """What the server was started with that a change in Settings should restart it for."""
-    return (settings.clean_path(settings.opt("pv_vlm_model_path")), settings.opt("pv_vlm_memory"),
+    return (settings.clean_path(settings.opt("pv_vlm_model_path")), settings.clean_path(settings.opt("pv_vlm_mmproj_path")),
+            settings.opt("pv_vlm_memory"),
             float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")))
 
 
@@ -185,6 +215,8 @@ def read_image(image, mode="tags", hint_tags=""):
     """(text, note). mode: tags | description. hint_tags: WD14's tags, to steer a description."""
     if image is None:
         return "", "Load an image first."
+    if not has_vision():
+        return "", NO_VISION
     started = time.time()
     try:
         with _SdAside():
@@ -301,9 +333,13 @@ def models():
     mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
     for i in items:  # a speculative-decoding draft (DFlash, MTP, EAGLE) only speeds up its model: never one to pick
         i["draft"] = not i["mmproj"] and bool(DRAFT.search(i["name"]))
+        i["family"] = families.of_projector(i["path"]) if i["mmproj"] else families.of_model(i["path"])
+        i["family_label"] = families.label(i["family"])
     return {"models": [i for i in items if not i["mmproj"] and not i["draft"]], "mmprojs": [i for i in items if i["mmproj"]],
             "drafts": [i for i in items if i["draft"]],
-            "model": model, "mmproj": mmproj,
+            "model": model, "mmproj": mmproj, "family": family(), "family_label": families.label(family()),
+            "model_name": families.model_name(model) if model else "", "vision": bool(mmproj),
+            "sampling": sampling(), "sampling_mode": str(settings.opt("pv_chat_sampling") or ""),
             "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
             "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", ""),
             "think": bool(settings.opt("pv_chat_think")), "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
@@ -320,6 +356,7 @@ def mmproj_for(model_path, mmprojs):
         return ""
     folder = os.path.normcase(os.path.dirname(os.path.abspath(model_path)))
     mine = _tokens_of(model_path)
+    my_family = families.of_model(model_path)
     sizes = lambda tokens: {t for t in tokens if re.fullmatch(r"\d+(\.\d+)?b|a\d+b", t)}
     my_size = sizes(mine)
     best, score = "", None
@@ -329,10 +366,13 @@ def mmproj_for(model_path, mmprojs):
         if os.path.normcase(os.path.dirname(os.path.abspath(m["path"]))) == folder:
             s += 10  # beside the model: what its download came with
         if my_size and sizes(theirs) and not my_size & sizes(theirs):
-            s -= 20  # a 4B projector does not fit an 8B model
+            s -= 60  # a 4B projector does not fit an 8B model, nor Mistral Small's a Mistral Nemo
+        theirs_family = m.get("family") if "family" in m else families.of_projector(m["path"])
+        if my_family and theirs_family:
+            s += 30 if theirs_family == my_family else -100  # Gemma's projector never goes on Qwen
         if score is None or s > score:
             best, score = m["path"], s
-    return best
+    return best if score is not None and score > 0 else ""  # none fits: the model reads words only
 
 
 def _set_opt(key, value):
@@ -363,7 +403,7 @@ def set_folders(qwen_dirs=None, models_dir=None):
     return models()
 
 
-def choose(model=None, mmproj=None, memory=None, think=None):
+def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None):
     """Settings from Muse's card: the model and its projector (picked for it when not given), where it lives.
     The server starts again with them at its next use."""
     listing = models()
@@ -382,6 +422,10 @@ def choose(model=None, mmproj=None, memory=None, think=None):
         _set_opt("pv_vlm_mmproj_path", mmproj)
     if think is not None:
         _set_opt("pv_chat_think", bool(think))
+    if sampling_mode is not None:
+        if sampling_mode not in ("Recommended for the model", "My temperature"):
+            raise ValueError(f"Unknown sampling {sampling_mode!r}")
+        _set_opt("pv_chat_sampling", sampling_mode)
     if memory is not None:
         if memory not in MEMORY_MODES:
             raise ValueError(f"Unknown memory mode {memory!r}")

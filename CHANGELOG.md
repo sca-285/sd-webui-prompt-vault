@@ -12,6 +12,10 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- Other model families than Qwen: Gemma, Mistral, GLM, Llama, Phi, told from the .gguf itself and named in Muse's
+  list and the chat; a vision projector matched by family and size; a model without one runs for words only
+  (images refused with a reason); each family's recommended sampling, or your own temperature; llama-server
+  started with --jinja (left out for a build that does not know it).
 - 🔎 Verify: Qwen drafts, looks the draft up on the web (DuckDuckGo or SearXNG, Wikipedia as a fallback) and its
   tags on Danbooru, then answers corrected, with clickable sources; what was checked is kept under the answer.
 - Banned words, for every conversation: a single word blocked while Qwen writes, a phrase asked to be avoided,

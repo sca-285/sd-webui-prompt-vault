@@ -96,7 +96,16 @@ def listing():
             except Exception:
                 continue
     return {"chats": live, "saved": saved, "system_default": _system_default(), "presets": chat_presets.listing(),
-            "banned": str(settings.opt("pv_chat_banned") or ""), "cliches": CLICHES}
+            "banned": str(settings.opt("pv_chat_banned") or ""), "cliches": CLICHES, **_model_of()}
+
+
+def _model_of():
+    """Who answers, for the page: the family of the model in use (Qwen, Gemma, Mistral, GLM…), and whether it sees."""
+    from . import families, qwen
+
+    path = settings.clean_path(settings.opt("pv_vlm_model_path"))
+    return {"model_label": families.label(qwen.family()) or (families.model_name(path).split(" ")[0] if path else "") or "Model",
+            "model_name": families.model_name(path) if path else "", "vision": qwen.has_vision()}
 
 
 def get(cid):
@@ -372,11 +381,14 @@ def _tokens(text, files):
 # ------------------------------------------------------------------ talking
 
 
-def _content(m):
-    """A message as the model reads it: images as images, files as text, then the words."""
+def _content(m, vision=True):
+    """A message as the model reads it: images as images (as a note, for a model that reads no images), files as
+    text, then the words."""
     parts = []
     for f in m.get("files") or []:
-        if f.get("kind") == "image" and f.get("url"):
+        if f.get("kind") == "image" and f.get("url") and not vision:
+            parts.append({"type": "text", "text": f"[an image, {f.get('name')}: not shown, the model in use reads no images]"})
+        elif f.get("kind") == "image" and f.get("url"):
             parts.append({"type": "image_url", "image_url": {"url": f["url"]}})
         elif f.get("kind") == "text":
             note = " (cut: the file is longer)" if f.get("cut") else ""
@@ -509,9 +521,8 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
     bias = _logit_bias(url, qwen.SERVER.model, words) if words else []
     if words:
         messages = _ask_to_avoid(messages, words)
-    body = {"messages": messages, "max_tokens": max_tokens * (3 if think else 1),
-            "temperature": float(settings.opt("pv_chat_temperature") if temperature is None else temperature), "stream": True,
-            "chat_template_kwargs": {"enable_thinking": think}}
+    body = dict(qwen.sampling(temperature), messages=messages, max_tokens=max_tokens * (3 if think else 1), stream=True,
+                chat_template_kwargs={"enable_thinking": think})
     if bias:
         body["logit_bias"] = bias
     with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
@@ -571,9 +582,8 @@ def _complete(messages, max_tokens):
         qwen.SERVER.restart_if_changed(qwen._placement())
         qwen.SERVER.ensure()
     words = banned()
-    body = {"messages": _ask_to_avoid(messages, words) if words else messages, "max_tokens": max_tokens,
-            "temperature": float(settings.opt("pv_chat_temperature")), "stream": False,
-            "chat_template_kwargs": {"enable_thinking": False}}
+    body = dict(qwen.sampling(), messages=_ask_to_avoid(messages, words) if words else messages, max_tokens=max_tokens,
+                stream=False, chat_template_kwargs={"enable_thinking": False})
     answer = qwen.SERVER.post("/v1/chat/completions", body, timeout=600)
     reply = answer["choices"][0]["message"]["content"]
     if isinstance(reply, list):
@@ -674,6 +684,9 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
     from . import qwen
 
     branch = None  # (the versions put aside, the new version's number) for the answer to come
+    vision = qwen.has_vision()
+    if not vision and any(f.get("kind") == "image" for f in files or []):
+        raise store.VaultError(qwen.NO_VISION)
     with _lock:
         c = _get(cid)
         if regenerate:
@@ -717,7 +730,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
         window, left_out = _window(c, VERIFY_ROOM if verify else 0)
         messages = ([{"role": "system", "content": c["system"]}] if c["system"].strip() else []) + \
-                   [{"role": m["role"], "content": _content(m)} for m in window]
+                   [{"role": m["role"], "content": _content(m, vision)} for m in window]
 
     def events():
         yield {"start": True, "left_out": left_out}

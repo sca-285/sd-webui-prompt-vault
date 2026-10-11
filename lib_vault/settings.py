@@ -13,7 +13,7 @@ import re
 from modules import shared
 
 SECTION_MAIN = ("prompt_vault", "Prompt Vault")
-SECTION_QWEN = ("prompt_vault_vision", "Prompt Vault (Qwen / llama-server)")
+SECTION_QWEN = ("prompt_vault_vision", "Prompt Vault (LLM: Qwen, Gemma, Mistral, GLM… / llama-server)")
 SECTION_TIPO = ("prompt_vault_tipo", "Prompt Vault (TIPO)")
 SECTION_WD14 = ("prompt_vault_wd14", "Prompt Vault (WD14 tagger)")
 
@@ -71,6 +71,7 @@ DEFAULTS = {
     "pv_chat_temperature": 0.7,
     "pv_chat_think": False,
     "pv_chat_banned": "",
+    "pv_chat_sampling": "Recommended for the model",
     "pv_search_engine": "DuckDuckGo",
     "pv_searxng_url": "",
     "pv_search_danbooru": True,
@@ -195,21 +196,21 @@ def register():
     })
     add(SECTION_QWEN, {
         "pv_llama_server_path": O("", "llama-server executable", gr.Textbox)
-        .info(r"full path, e.g. H:\AI\llama.cpp\llama-server.exe. Used by Qwen and TIPO"),
+        .info(r"full path, e.g. H:\AI\llama.cpp\llama-server.exe. Used by the chat & vision model and TIPO"),
         "pv_llm_one_at_a_time": O(True, "Run one model at a time")
-        .info("starting Qwen stops TIPO and the other way round: less VRAM, a few seconds "
+        .info("starting the chat model stops TIPO and the other way round: less VRAM, a few seconds "
               "more when switching"),
-        "pv_vlm_models_dir": O("", "Folders of Qwen .gguf files (for the lists on Muse's card)", gr.Textbox)
+        "pv_vlm_models_dir": O("", "Folders of the model .gguf files (for the lists on Muse's card)", gr.Textbox)
         .info("one or more, separated by ; e.g. D:\\AI\\VLM; E:\\LLM. Also looked through: models/VLM, models/LLM and "
               "the qwen folder of Prompt Vault's models. Muse's settings choose the model and its projector from "
               "what is there; the two paths below are what was chosen"),
-        "pv_vlm_model_path": O("", "Qwen-VL model .gguf", gr.Textbox)
-        .info("e.g. Qwen3VL-4B-Instruct-Q8_0.gguf"),
+        "pv_vlm_model_path": O("", "Chat & vision model .gguf", gr.Textbox)
+        .info("Qwen, Gemma, Mistral, GLM… e.g. Qwen3VL-4B-Instruct-Q8_0.gguf; easier from Muse → ⚙"),
         "pv_vlm_mmproj_path": O("", "Vision projector (mmproj) .gguf", gr.Textbox)
         .info("the mmproj-*.gguf that ships beside the model; without it the model cannot see images"),
-        "pv_vlm_port": O(8079, "Port for the Qwen server", gr.Number, {"precision": 0})
+        "pv_vlm_port": O(8079, "Port for the chat model's server", gr.Number, {"precision": 0})
         .info("127.0.0.1 only. A busy port is skipped automatically"),
-        "pv_vlm_memory": O("Auto", "Where Qwen lives: VRAM or RAM", gr.Radio,
+        "pv_vlm_memory": O("Auto", "Where the chat model lives: VRAM or RAM", gr.Radio,
                            {"choices": ["Auto", "All on GPU", "KV cache in RAM", "Low VRAM", "RAM only"]})
         .info("Auto: as many layers on the GPU as fit in the free VRAM (less the reserve below), the rest in RAM. "
               "KV cache in RAM: the conversation's memory in RAM. Low VRAM: half the layers (or a MoE model's experts), "
@@ -223,7 +224,7 @@ def register():
         "pv_vlm_context": O(8192, "Context size", gr.Slider, {"minimum": 2048, "maximum": 32768, "step": 1024}),
         "pv_vlm_extra_args": O("", "Extra llama-server arguments", gr.Textbox)
         .info("appended as they are, e.g. -fa on --threads 8"),
-        "pv_vlm_idle_minutes": O(10, "Stop the Qwen server after this many idle minutes", gr.Slider,
+        "pv_vlm_idle_minutes": O(10, "Stop the chat model's server after this many idle minutes", gr.Slider,
                                  {"minimum": 0, "maximum": 120, "step": 1})
         .info("0 keeps it running until the WebUI closes"),
         "pv_vlm_startup_timeout": O(180, "Seconds to wait for a server to come up", gr.Slider,
@@ -234,25 +235,29 @@ def register():
                                {"minimum": 64, "maximum": 2048, "step": 32}),
         "pv_vlm_temperature": O(0.2, "Temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05})
         .info("low is right for captions; rewriting uses a little more"),
-        "pv_vlm_unload_sd": O(True, "Free the checkpoint's VRAM while Qwen runs")
+        "pv_vlm_unload_sd": O(True, "Free the checkpoint's VRAM while the chat model starts")
         .info("recommended below 16GB"),
         "pv_vlm_verbose": O(False, "Print the servers' own log to the console")
         .info("turn on when a server refuses to start"),
-        "pv_chat_system": O("", "Qwen Chat: default system prompt", gr.Textbox, {"lines": 3})
+        "pv_chat_system": O("", "Chat: default system prompt", gr.Textbox, {"lines": 3})
         .info("used when no preset is the default (★ in the chat's ⚙); each conversation can change its own. "
               "Empty: the Assistant preset"),
-        "pv_chat_max_tokens": O(1024, "Qwen Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
-        "pv_chat_temperature": O(0.7, "Qwen Chat: temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05}),
-        "pv_chat_banned": O("", "Qwen Chat: banned words", gr.Textbox, {"lines": 4})
-        .info("one word or phrase a line (or comma-separated): a single word is blocked while Qwen writes, a phrase is "
+        "pv_chat_max_tokens": O(1024, "Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
+        "pv_chat_temperature": O(0.7, "Chat: temperature", gr.Slider, {"minimum": 0.0, "maximum": 1.5, "step": 0.05}),
+        "pv_chat_banned": O("", "Chat: banned words", gr.Textbox, {"lines": 4})
+        .info("one word or phrase a line (or comma-separated): a single word is blocked while the model writes, a phrase is "
               "asked to be avoided; banned tags are also left out of the prompts an answer sends on"),
-        "pv_search_engine": O("DuckDuckGo", "Qwen Chat Verify: web search", gr.Radio, {"choices": ["DuckDuckGo", "SearXNG", "Off"]})
+        "pv_chat_sampling": O("Recommended for the model", "Chat: sampling", gr.Radio,
+                              {"choices": ["Recommended for the model", "My temperature"]})
+        .info("recommended: what the model's family is made for (Qwen 0.7, Gemma 1.0, Mistral Small 0.15, GLM 0.6, with "
+              "their top-p and top-k); mine: the temperature below for every model"),
+        "pv_search_engine": O("DuckDuckGo", "Chat Verify: web search", gr.Radio, {"choices": ["DuckDuckGo", "SearXNG", "Off"]})
         .info("what 🔎 Verify looks a draft up with; only the search words leave this computer. Wikipedia is asked when "
               "it finds nothing"),
-        "pv_searxng_url": O("", "Qwen Chat Verify: your SearXNG's address").info("e.g. http://127.0.0.1:8888, with format: json "
+        "pv_searxng_url": O("", "Chat Verify: your SearXNG's address").info("e.g. http://127.0.0.1:8888, with format: json "
                                                                                   "allowed in its settings.yml"),
-        "pv_search_danbooru": O(True, "Qwen Chat Verify: check the tags of a prompt on Danbooru"),
-        "pv_chat_think": O(False, "Qwen Chat: let a thinking model think first")
+        "pv_search_danbooru": O(True, "Chat Verify: check the tags of a prompt on Danbooru"),
+        "pv_chat_think": O(False, "Chat: let a thinking model think first")
         .info("for models that reason before answering (Qwen3.5, Qwen3.8...): better answers, much slower. Qwen3-VL "
               "Instruct does not think either way. Captions and rewriting never think"),
     })
