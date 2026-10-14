@@ -210,7 +210,16 @@ def register(app):
 
     @app.post(f"{BASE}/chat/regenerate")
     def chat_regenerate(body: dict = Body(...)):
-        return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message"), verify=bool(body.get("verify"))))
+        return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message"), verify=bool(body.get("verify")),
+                                        rewind=body.get("rewind")))
+
+    @app.post(f"{BASE}/chat/compact")
+    def chat_compact(body: dict = Body(...)):
+        return stream(lambda: chat.compact(body.get("id")))
+
+    @app.post(f"{BASE}/chat/wrap")
+    def chat_wrap(body: dict = Body(...)):
+        return stream(lambda: chat.wrap_up(body.get("id")))
 
     @app.post(f"{BASE}/chat/assist")
     def chat_assist(body: dict = Body(...)):

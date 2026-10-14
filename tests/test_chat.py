@@ -337,13 +337,82 @@ assert chat.code_tags("x ```\na, b, c\n``` y ```\nnot tags\n```") == ["a", "b", 
 c.post(B + "/delete", json={"id": vc})
 print("verify ok")
 
+# rewind: back to one of your messages, everything after it gone, a new answer
+rc = c.post(B + "/new").json()["chat"]["id"]
+for w in ("one", "two", "three"):
+    send(rc, w)
+before = c.get(B + "/one", params={"id": rc}).json()["chat"]["messages"]
+with c.stream("POST", B + "/regenerate", json={"id": rc, "rewind": before[2]["id"]}) as r:
+    ev = [json.loads(x) for x in r.iter_lines() if x]
+after = c.get(B + "/one", params={"id": rc}).json()["chat"]["messages"]
+assert [m["text"] for m in after[:3]] == ["one", before[1]["text"], "two"] and len(after) == 4, [m["text"] for m in after]
+assert "versions" not in after[3] and ev[-1]["done"]  # gone, not kept as another version
+assert c.post(B + "/regenerate", json={"id": rc, "rewind": after[3]["id"]}).status_code == 400
+print("rewind ok")
+
+# compact: the older part summed up and out of the model's memory, the last messages kept
+for w in ("four", "five"):
+    send(rc, w)
+def run(path, cid):
+    with c.stream("POST", B + path, json={"id": cid}) as r:
+        return [json.loads(x) for x in r.iter_lines() if x]
+ev = run("/compact", rc)
+done = ev[-1]["chat"]
+assert [e["step"] for e in ev if "step" in e][0].startswith("Summing up 4 earlier") and ev[-1]["done"], ev
+assert [m["text"] for m in done["messages"]][::2] == ["four", "five"] and len(done["archived"]) == 4 and done["summary"], done
+assert done["summary"].startswith("messages=2") and "User:\none" in done["summary"]  # what the model was given to sum up
+base_system = len(chat.system_of({"system": done["system"]}))
+ev = send(rc, "six")
+assert f"messages=6 " in ev[-1]["message"]["text"] and f"system={len(chat.system_of(done))}" in ev[-1]["message"]["text"]
+assert len(chat.system_of(done)) > base_system
+assert run("/compact", c.post(B + "/new").json()["chat"]["id"])[-1]["error"] == "Nothing to compact yet."
+md = c.get(B + "/export", params={"id": rc, "fmt": "md"}).json()["text"]
+assert "_4 earlier messages, compacted:_" in md and "## You\n\none" in md
+saved = c.post(B + "/save", json={"id": rc}).json()["chat"]["saved_as"]
+chat._chats.pop(rc)
+back = c.post(B + "/open", json={"name": saved}).json()["chat"]
+assert back["summary"] == done["summary"] and len(back["archived"]) == 4
+c.post(B + "/unsave", json={"id": back["id"]})
+print("compact ok")
+
+# wrap up: what it came to, and a fresh conversation that starts from it alone
+ev = run("/wrap", back["id"])
+fresh = ev[-1]["chat"]
+assert fresh["title"].endswith("(continued)") and fresh["summary"] and fresh["messages"][0]["text"].startswith("📝 **Wrap-up of")
+ev = send(fresh["id"], "go on")
+assert "messages=2 " in ev[-1]["message"]["text"] and f"system={len(chat.system_of(fresh))}" in ev[-1]["message"]["text"]
+assert len(c.get(B + "/one", params={"id": back["id"]}).json()["chat"]["messages"]) > 2  # the old one stays as it was
+print("wrap up ok")
+
+# nearly full: compacted by itself before the answer, nothing left out unread
+small = c.post(B + "/import", json={"data": {"title": "long", "messages": [
+    {"role": r_, "text": ("A long scene on a balcony at dusk, wind and city lights. " * 12)} for r_ in ["user", "assistant"] * 6]}}).json()["chat"]
+shared.opts.pv_vlm_context = 2048
+x = c.get(B + "/one", params={"id": small["id"]}).json()["chat"]["context"]
+assert x["used"] > x["room"] * 0.9, x
+ev = send(small["id"], "and now?")
+steps = [e["step"] for e in ev if "step" in e]
+assert steps and steps[0].startswith("Summing up") and ev[-1]["done"], ev[:3]
+after = c.get(B + "/one", params={"id": small["id"]}).json()["chat"]
+assert after["archived"] and after["summary"] and ev[1]["left_out"] == 0 if "left_out" in ev[1] else True
+shared.opts.pv_chat_autocompact = False
+small2 = c.post(B + "/import", json={"data": {"title": "long", "messages": [
+    {"role": r_, "text": ("A long scene. " * 50)} for r_ in ["user", "assistant"] * 6]}}).json()["chat"]
+ev = send(small2["id"], "and now?")
+assert not any("step" in e for e in ev) and ev[0]["left_out"] > 0  # off: the oldest are left out, as before
+shared.opts.pv_chat_autocompact = True
+shared.opts.pv_vlm_context = 8192
+for x_ in (rc, fresh["id"], small["id"], small2["id"]):
+    c.post(B + "/delete", json={"id": x_})
+print("auto compact ok")
+
 # keeping: save, export, open again, import
 saved = c.post(B + "/save", json={"id": cid}).json()["chat"]["saved_as"]
 assert saved and os.path.isfile(os.path.join(chat.chats_dir(), saved))
 lst = c.get(B).json()
 assert any(s["name"] == saved for s in lst["saved"]) and any(x["id"] == cid for x in lst["chats"])
 md = c.get(B + "/export", params={"id": cid, "fmt": "md"}).json()
-assert md["name"].endswith(".md") and "## You" in md["text"] and "## Qwen" in md["text"] and "[image: red.png]" in md["text"]
+assert md["name"].endswith(".md") and "## You" in md["text"] and "## Assistant" in md["text"] and "[image: red.png]" in md["text"]
 js = c.get(B + "/export", params={"id": cid, "fmt": "json"}).json()
 data = json.loads(js["text"])
 imp = c.post(B + "/import", json={"data": data}).json()["chat"]
@@ -358,11 +427,13 @@ c.post(B + "/unsave", json={"id": back["id"]})
 assert not os.path.isfile(os.path.join(chat.chats_dir(), saved))
 print("save, export, import ok")
 
-# a long conversation keeps within the context: the oldest messages are left out
+# a long conversation keeps within the context: with compacting off, the oldest messages are left out
+shared.opts.pv_chat_autocompact = False
 big = c.post(B + "/new").json()["chat"]["id"]
 for i in range(6):
     ev = send(big, f"part {i} " + "word " * 900)
 assert ev[0]["left_out"] > 0 and ev[-1]["done"], ev[0]
+shared.opts.pv_chat_autocompact = True
 print("context window ok: left out", ev[0]["left_out"])
 
 # an old llama.cpp without the memory flags

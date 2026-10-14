@@ -560,3 +560,6 @@ html body select.pv-chat-preset { flex: 1; min-width: 0; padding: 4px 6px; borde
 html body .pv-chat-btn.pv-chat-verify.pv-on { border-color: #22c55e; color: #22c55e; }
 .pv-chat-cite { color: var(--link-text-color, #60a5fa); text-decoration: none; font-size: 0.85em; vertical-align: 1px; }
 html body select.pv-chat-ctx { max-width: 150px; min-width: 0; flex: 0 1 auto; }
+html body .pv-chat-btn.pv-ctx-tool { padding: 1px 7px; font-size: 11px; }
+.pv-chat-compacted summary { color: #a78bfa; }
+.pv-chat-archived { font-size: 12px; opacity: 0.6; margin: 4px 0; white-space: pre-wrap; }

@@ -199,6 +199,7 @@
                     if (ev.step) { C.step = ev.step; paintStream(); }
                     if (ev.error) failed = ev.error;
                     if (ev.done && ev.status) C.status = ev.status;
+                    if (ev.done && ev.chat) { C.chat = ev.chat; LS.set('id', ev.chat.id); }
                 }
             }
         } catch (e) {
@@ -324,6 +325,29 @@
     }
 
     const version = (m, step) => { if (!C.busy) act('/chat/version', {id: C.chat.id, message: m.id, step}); };
+    // ⏪ back to one of your messages: all that came after it is gone (not kept as a version), and it is answered anew
+    async function rewind(m, at) {
+        if (!C.chat || C.busy) return;
+        const after = C.chat.messages.length - at - 1;
+        if (after && !confirm(`Rewind to here? The ${after} message${after > 1 ? 's' : ''} after it ${after > 1 ? 'are' : 'is'} removed for good, and it is answered anew.`)) return;
+        C.editing = null;
+        C.cut = at + 1;
+        await stream('/chat/regenerate', {id: C.chat.id, rewind: m.id, verify: C.verify});
+        C.cut = -1;
+        paint();
+    }
+
+    // 🗜 the older part summed up and out of the model's memory; 📝 a wrap-up and a fresh conversation from it
+    async function compactChat() {
+        if (!C.chat || C.busy) return;
+        if (await stream('/chat/compact', {id: C.chat.id})) toast(`Compacted: ${who()} keeps a summary of the earlier part`);
+    }
+    async function wrapUp() {
+        if (!C.chat || C.busy) return;
+        if (!confirm('Wrap up this conversation? A summary of it starts a new conversation with a clean memory; this one stays in the list.')) return;
+        await stream('/chat/wrap', {id: C.chat.id});
+    }
+
     const startEdit = (m) => { if (!C.busy) { C.editing = {id: m.id, text: m.text, focus: true}; paint(); } };
 
     async function act(path, body, then) {
@@ -528,6 +552,7 @@
             ? el('div', {class: 'pv-chat-actions'},
                 versions(m),
                 C.busy || !m.id ? null : button('✎ Edit', 'Change these words; it is answered anew and the earlier version is kept (or double-click the message)', () => startEdit(m)),
+                C.busy || !m.id ? null : button('⏪', 'Rewind to here: everything after this message is removed, and it is answered anew', () => rewind(m, at)),
                 C.busy || !m.id ? null : button('✕', 'Remove this message', () => act('/chat/remove-message', {id: C.chat.id, message: m.id})))
             : el('div', {class: 'pv-chat-actions'},
                 versions(m),
@@ -721,14 +746,20 @@
         if (!x || !C.chat.messages.length || !x.room) return null;
         const share = x.used / x.room;
         const level = share >= 1 ? 'pv-ctx-over' : share >= 0.75 ? 'pv-ctx-high' : '';
-        const note = share >= 1 ? 'full: the oldest messages are no longer read. 💾 Save it and start a new one, or raise Context size'
-            : share >= 0.75 ? 'nearly full: soon the oldest messages stop being read' : '';
+        const note = share >= 1 ? 'full: 🗜 Compact sums up the older part, 📝 Wrap up starts afresh from a summary'
+            : share >= 0.75 ? 'nearly full: it compacts by itself at 90% (Settings), or 🗜 Compact now' : '';
+        const canCompact = C.chat.messages.length >= 6 || share >= 0.5;
+        const canWrap = C.chat.messages.length >= 4 || !!C.chat.summary;
         return el('div', {class: 'pv-chat-ctx-meter ' + level,
             title: `Context size ${x.size} tokens (Settings → Prompt Vault → Context size): ${x.reserve} kept for the answer, ` +
                 `the rest for the conversation and its system prompt. Counts are estimates; an image is about its width × height / 1024.`},
             el('span', {class: 'pv-ctx-label', text: 'Context'}),
             el('span', {class: 'pv-ctx-bar'}, el('span', {class: 'pv-ctx-fill', style: `width:${Math.min(100, share * 100).toFixed(1)}%`})),
             el('span', {class: 'pv-ctx-num', text: `~${kTok(x.used)} / ${kTok(x.room)} tokens · ${Math.round(share * 100)}%`}),
+            canCompact ? button('🗜 Compact', 'Sum up the older part of the conversation and take it out of the model\'s memory; the last messages stay as they are',
+                compactChat, {class: 'pv-chat-btn pv-ctx-tool', disabled: C.busy}) : null,
+            canWrap ? button('📝 Wrap up', 'Write up what the conversation came to, and start a new one, with a clean memory, from that summary',
+                wrapUp, {class: 'pv-chat-btn pv-ctx-tool', disabled: C.busy}) : null,
             note ? el('span', {class: 'pv-ctx-note', text: note}) : null);
     }
 
@@ -746,6 +777,11 @@
                     el('div', {class: 'pv-chat-preset-chips'}, [...presets().builtin, ...presets().mine].map((p) =>
                         el('button', {type: 'button', class: 'pv-chat-chip' + (c && c.preset === p.id ? ' pv-on' : ''), title: p.hint || p.text.slice(0, 200),
                             text: presetLabel(p), onclick: () => usePreset(p.id)})))) : null) : null,
+            c && (c.summary || (c.archived || []).length) ? el('details', {class: 'pv-chat-thought pv-chat-compacted'},
+                el('summary', {text: `🗜 ${(c.archived || []).length} earlier message${(c.archived || []).length === 1 ? '' : 's'} compacted: what ${who()} keeps of them`}),
+                el('div', {class: 'pv-chat-thought-text', text: c.summary || ''}),
+                (c.archived || []).length ? el('details', {class: 'pv-chat-draft'}, el('summary', {text: 'The messages themselves (no longer read)'}),
+                    c.archived.map((m) => el('div', {class: 'pv-chat-archived'}, el('strong', {text: m.role === 'user' ? 'You: ' : `${who()}: `}), m.text))) : null) : null,
             msgs.map((x, i) => bubble(x, i === msgs.length - 1 && x.role === 'assistant', i)),
             C.busy && !C.assisting ? el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-streaming'},
                 el('div', {class: 'pv-chat-who', text: who()}),

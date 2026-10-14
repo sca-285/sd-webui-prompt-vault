@@ -12,6 +12,9 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- ⏪ Rewind on your messages: all after it removed, answered anew. 🗜 Compact: the older part summed up and out of
+  the model's memory, kept folded; by itself at 90% of the context. 📝 Wrap up: a write-up of the conversation that
+  starts a new one with a clean memory.
 - Fixed: Gemma and Mistral refused a conversation where an answer had failed or been removed ("Conversation roles
   must alternate"): your messages in a row are now joined into one turn, for every model. When llama-server cannot
   start, the first line says why (a llama.cpp older than the model, a projector that does not fit, too little VRAM,

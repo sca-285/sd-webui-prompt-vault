@@ -72,6 +72,7 @@ DEFAULTS = {
     "pv_chat_think": False,
     "pv_chat_banned": "",
     "pv_chat_sampling": "Recommended for the model",
+    "pv_chat_autocompact": True,
     "pv_search_engine": "DuckDuckGo",
     "pv_searxng_url": "",
     "pv_search_danbooru": True,
@@ -251,6 +252,8 @@ def register():
                               {"choices": ["Recommended for the model", "My temperature"]})
         .info("recommended: what the model's family is made for (Qwen 0.7, Gemma 1.0, Mistral Small 0.15, GLM 0.6, with "
               "their top-p and top-k); mine: the temperature below for every model"),
+        "pv_chat_autocompact": O(True, "Chat: compact by itself when the context is nearly full")
+        .info("the older part is summed up before the answer, instead of being left out unread; the last messages stay"),
         "pv_search_engine": O("DuckDuckGo", "Chat Verify: web search", gr.Radio, {"choices": ["DuckDuckGo", "SearXNG", "Off"]})
         .info("what 🔎 Verify looks a draft up with; only the search words leave this computer. Wikipedia is asked when "
               "it finds nothing"),

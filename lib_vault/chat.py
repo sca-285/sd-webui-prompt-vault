@@ -246,6 +246,8 @@ def _from_data(data, saved_as=""):
     c["preset"] = str(data.get("preset") or "") if str(data.get("system") or "").strip() else c["preset"]
     c["created"] = float(data.get("created") or c["created"])
     c["messages"] = _messages(data["messages"], c["created"])
+    c["archived"] = _messages(data.get("archived") or [], c["created"])
+    c["summary"] = unmangle(data.get("summary") or "")
     c["saved_as"] = saved_as
     return c
 
@@ -326,11 +328,15 @@ def export(cid, fmt="md"):
     base = _slug(c["title"])
     if fmt == "json":
         return {"name": base + ".json", "text": json.dumps(c, ensure_ascii=False, indent=1), "type": "application/json"}
-    out = [f"# {c['title']}", "", f"_{time.strftime('%Y-%m-%d %H:%M', time.localtime(c['created']))} · Qwen Chat (Prompt Vault)_", ""]
+    out = [f"# {c['title']}", "", f"_{time.strftime('%Y-%m-%d %H:%M', time.localtime(c['created']))} · Chat (Prompt Vault)_", ""]
     if c["system"]:
         out += ["> **System:** " + c["system"].replace("\n", "\n> "), ""]
-    for m in c["messages"]:
-        out.append("## " + ("You" if m["role"] == "user" else "Qwen"))
+    if c.get("archived"):
+        out += [f"_{len(c['archived'])} earlier messages, compacted:_", ""]
+    if c.get("summary"):
+        out += ["> **Summary of the earlier part:** " + c["summary"].replace("\n", "\n> "), ""]
+    for m in (c.get("archived") or []) + c["messages"]:
+        out.append("## " + ("You" if m["role"] == "user" else "Assistant"))
         for f in m.get("files") or []:
             out.append(f"*[{f.get('kind')}: {f.get('name')}]*")
         out += ["", m["text"], ""]
@@ -416,12 +422,21 @@ def _reserve():
 
 def _room(c):
     """Tokens the messages may take: the context, less the answer's share, the system prompt and a margin."""
-    return int(settings.opt("pv_vlm_context")) - _reserve() - _tokens(c["system"], []) - 64
+    return int(settings.opt("pv_vlm_context")) - _reserve() - _tokens(c["system"], []) - _tokens(c.get("summary") or "", []) - 64
+
+
+def system_of(c):
+    """The system prompt the model reads: the conversation's, and the summary of what was compacted."""
+    out = c["system"].strip()
+    if c.get("summary"):
+        out += ("\n\n" if out else "") + "Summary of the earlier part of this conversation (its messages are no longer shown " \
+               "to you; go on from it):\n" + c["summary"]
+    return out
 
 
 def _context(c):
     """How full the context is: {"used", "room", "size", "reserve"}, in tokens (estimated)."""
-    used = sum(m.get("tokens") or _tokens(m["text"], m.get("files")) for m in c["messages"])
+    used = sum(m.get("tokens") or _tokens(m["text"], m.get("files")) for m in c["messages"]) + _tokens(c.get("summary") or "", [])
     return {"used": used, "room": max(0, _room(c)), "size": int(settings.opt("pv_vlm_context")), "reserve": _reserve()}
 
 
@@ -709,7 +724,117 @@ def _verify(messages, max_tokens, stop):
                        {"role": "user", "content": REVISE + (found or "Nothing was found on the web.")}], done
 
 
-def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None, verify=False):
+# ------------------------------------------------------------------ compact and wrap up
+
+KEEP = 4         # messages kept as they are when the rest is compacted
+AUTO_AT = 0.9    # how full the context is when compacting happens by itself
+COMPACT_SYSTEM = (
+    "You condense a conversation between a user and an AI assistant so that it can go on without its messages. "
+    "Keep everything still needed: what the user wants and how (style, language, tone, explicitness, limits they set), "
+    "decisions made, characters and places with their fixed details, the latest version of every prompt or text worth "
+    "keeping (verbatim, each in a ``` code block), facts given, open questions and the next step. Drop small talk, "
+    "greetings and drafts that were replaced. Write compact notes in the conversation's language, no preamble."
+)
+WRAP_SYSTEM = (
+    "You wrap up a conversation between a user and an AI assistant, for the user, who starts a fresh one from it. "
+    "Write short sections with headings: what it was about and what was decided; the final prompts or texts, each "
+    "whole in a ``` code block; characters, settings and preferences to keep; what is left to do. In the user's "
+    "language, nothing invented, no preamble."
+)
+
+
+def _as_text(c, messages, chars):
+    """The conversation as a text to summarize, the newest kept when it is too long."""
+    lines = [f"Summary of what came before:\n{c['summary']}"] if c.get("summary") else []
+    for m in messages:
+        names = ", ".join(f.get("name", "") for f in m.get("files") or [])
+        lines.append(("User" if m["role"] == "user" else "Assistant") + (f" [files: {names}]" if names else "") + ":\n" + m["text"][:6000])
+    text = "\n\n".join(lines)
+    return text if len(text) <= chars else "[…]\n" + text[-chars:]
+
+
+def _compact(cid, stop, keep):
+    """Steps while the older messages are summed up; then they leave the conversation's memory (kept aside, shown
+    folded) and the summary goes with the system prompt."""
+    with _lock:
+        c = _get(cid)
+        msgs = c["messages"]
+        n = max(0, len(msgs) - keep)
+        while n < len(msgs) and msgs[n]["role"] == "assistant":
+            n += 1  # what is kept starts with one of your messages
+        old = list(msgs[:n])
+        if not old:
+            raise store.VaultError("Nothing to compact yet.")
+        text = _as_text(c, old, max(4000, int(_room(c) * 2.8)))
+        ids = [m["id"] for m in old]
+    yield {"step": f"Summing up {len(old)} earlier messages…"}
+    summary = _complete([{"role": "system", "content": COMPACT_SYSTEM}, {"role": "user", "content": text}], 1200).strip()
+    if not summary or stop.is_set():
+        raise store.VaultError("The summary came back empty.")
+    with _lock:
+        live = _get(cid)
+        if [m["id"] for m in live["messages"][:len(ids)]] != ids:
+            raise store.VaultError("The conversation changed meanwhile: compact again.")
+        live["archived"] = live.get("archived", []) + live["messages"][:len(ids)]
+        del live["messages"][:len(ids)]
+        live["summary"] = summary
+        _touch(live)
+    yield {"step": "Compacted"}
+
+
+def compact(cid, keep=KEEP):
+    """🗜 Compact: the older part summed up and out of the model's memory; the last few messages stay."""
+    stop = _stops[str(cid)] = threading.Event()
+
+    def events():
+        yield {"start": True}
+        try:
+            yield from _compact(cid, stop, keep)
+        except Exception as exc:
+            yield {"error": str(exc)}
+            return
+        with _lock:
+            yield {"done": True, "chat": _view(_get(cid))}
+
+    return events()
+
+
+def wrap_up(cid):
+    """📝 Wrap up: what the conversation came to, written out, and a fresh conversation that starts from it alone."""
+    with _lock:
+        c = _get(cid)
+        if not c["messages"] and not c.get("summary"):
+            raise store.VaultError("Nothing to wrap up yet.")
+        text = _as_text(c, c["messages"], max(4000, int(_room(c) * 2.8)))
+        system, preset, title = c["system"], c.get("preset", ""), c["title"]
+    stop = _stops[str(cid)] = threading.Event()
+
+    def events():
+        yield {"start": True}
+        yield {"step": "Wrapping up…"}
+        try:
+            wrap = _complete([{"role": "system", "content": WRAP_SYSTEM}, {"role": "user", "content": text}], 1500).strip()
+        except Exception as exc:
+            yield {"error": f"{_who()}: {exc}"}
+            return
+        if not wrap or stop.is_set():
+            yield {"error": "The wrap-up came back empty."}
+            return
+        with _lock:
+            fresh = _blank(system, preset or None)
+            fresh["title"] = (title[:100] + " (continued)")
+            fresh["summary"] = wrap
+            note = {"id": uuid.uuid4().hex[:10], "role": "assistant", "time": time.time(), "files": [],
+                    "text": f"📝 **Wrap-up of “{title}”**: the new conversation starts from this alone.\n\n{wrap}", "wrap_of": cid}
+            note["tokens"] = 0  # it is the summary, counted once
+            fresh["messages"].append(note)
+            _chats[fresh["id"]] = fresh
+            yield {"done": True, "chat": _view(fresh)}
+
+    return events()
+
+
+def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None, verify=False, rewind=None):
     """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}.
 
     regenerate: a new answer to the last message (again: to the one answered by that answer); edit: that message of
@@ -722,7 +847,13 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         raise store.VaultError(qwen.NO_VISION)
     with _lock:
         c = _get(cid)
-        if regenerate:
+        if regenerate and rewind:  # back to one of your messages: all after it is gone, and it is answered anew
+            i = _at(c, rewind)
+            if c["messages"][i]["role"] != "user":
+                raise store.VaultError("Rewind goes back to one of your messages.")
+            del c["messages"][i + 1:]
+            _touch(c)
+        elif regenerate:
             i = _at(c, again) if again else len(c["messages"])
             if not again and c["messages"] and c["messages"][-1]["role"] == "assistant":
                 i -= 1
@@ -761,11 +892,29 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
-        window, left_out = _window(c, VERIFY_ROOM if verify else 0)
-        messages = ([{"role": "system", "content": c["system"]}] if c["system"].strip() else []) + \
-                   [{"role": m["role"], "content": _content(m, vision)} for m in window]
+        extra = VERIFY_ROOM if verify else 0
+        full = _context(c)
+        auto = bool(settings.opt("pv_chat_autocompact")) and len(c["messages"]) > KEEP + 1 and \
+            full["used"] > (full["room"] - extra) * AUTO_AT
+
+    def prompt():
+        with _lock:
+            live = _get(cid)
+            window, left = _window(live, extra)
+            system = system_of(live)
+            return ([{"role": "system", "content": system}] if system else []) + \
+                [{"role": m["role"], "content": _content(m, vision)} for m in window], left
+
+    messages, left_out = prompt()
 
     def events():
+        nonlocal messages, left_out
+        if auto:  # nearly full: the older part summed up first, so nothing is silently left out
+            try:
+                yield from _compact(cid, stop, KEEP)
+                messages, left_out = prompt()
+            except Exception as exc:
+                yield {"step": f"Could not compact ({exc}); the oldest messages are left out instead"}
         yield {"start": True, "left_out": left_out}
         text, thought, started = [], [], time.time()
         checked = None
@@ -861,7 +1010,7 @@ ASSIST_MODES = {"enhance": (ENHANCE_SYSTEM, 0.5), "write": (WRITE_SYSTEM, 0.9)}
 
 
 def _transcript(c, limit=12, chars=1500):
-    lines = []
+    lines = [f"(Summary of the earlier part: {c['summary'][:3000]})"] if c.get("summary") else []
     for m in c["messages"][-limit:]:
         words = m["text"] if len(m["text"]) <= chars else m["text"][:chars] + " […]"
         names = ", ".join(f.get("name", "") for f in m.get("files") or [])

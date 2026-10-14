@@ -89,6 +89,13 @@ Qwen-VL and the WD14 tagger) in one tab.
     Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that
     used one anyway. Tags with a banned word stay out of what → Vault, → txt2img and → Muse send. What the assistant will write
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
+  - **⏪ Rewind** on one of your messages: everything after it is removed for good, and it is answered
+    anew (↻ Again keeps the earlier answer as a version; Rewind does not).
+  - **🗜 Compact** and **📝 Wrap up**, beside the Context meter: Compact sums up the older part of the
+    conversation and takes it out of the model's memory, the last messages staying as they are (the
+    summary and the old messages stay folded at the top). Wrap up writes out what the conversation came to
+    and opens a new conversation, with a clean memory, that starts from that alone. At 90% the
+    conversation compacts by itself before the answer (Settings → Prompt Vault, on unless turned off).
   - **Context**, under the box: how much of the model's context the conversation takes (an estimate),
     green, then amber from 75%, red when full. The context is Settings → Prompt Vault → *Context size*
     (8192 tokens unless changed), less what is kept for the answer (*longest answer*, three times that
