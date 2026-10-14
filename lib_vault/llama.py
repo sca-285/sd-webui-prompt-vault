@@ -184,7 +184,8 @@ class LlamaServer:
         while time.time() < deadline:
             if proc.poll() is not None:
                 tail = "\n".join(self.log[-12:])
-                raise RuntimeError(f"llama-server exited with code {proc.returncode} before it was ready.\n{tail}")
+                raise RuntimeError(explain("\n".join(self.log)) + f"llama-server exited with code {proc.returncode} before it "
+                                   f"was ready.\n{tail}")
             if _healthy(url):
                 break
             time.sleep(0.5)
@@ -287,6 +288,30 @@ class LlamaServer:
 
 # flags of newer llama.cpp builds (memory placement); an older build is started without them
 NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe", "--jinja"}
+
+
+# what llama-server says when it cannot start, and what to do about it
+WHY = (
+    (r"unknown model architecture: '?([\w.-]+)", "This llama.cpp does not know the model's architecture ({0}): it is "
+     "newer than the build. Download the latest llama.cpp release and point Settings → llama-server at it. "),
+    (r"(?:clip|mtmd|mmproj).*(?:failed|error)|failed to load (?:clip|mmproj|vision)", "The vision projector (mmproj) does not "
+     "fit this model or this llama.cpp: choose the one from the model's own download, or none (words only), in Muse → ⚙. "),
+    (r"out of memory|cudaMalloc failed|failed to allocate|ErrorOutOfDeviceMemory", "Not enough VRAM: choose Low VRAM or "
+     "RAM only for Lives in, or a smaller quant, in Muse → ⚙. "),
+    (r"invalid magic|not a gguf|failed to read magic|tensor .* has wrong shape|corrupted", "The .gguf file looks broken or "
+     "incomplete: download it again. "),
+    (r"error loading model|failed to load model", "llama-server could not load the model: an old llama.cpp for a new "
+     "model is the usual cause (download the latest release), or a broken download. "),
+)
+
+
+def explain(log):
+    """A first sentence for the person: why llama-server stopped, from its own log."""
+    for pattern, why in WHY:
+        found = re.search(pattern, log or "", re.I)
+        if found:
+            return why.format(*(g or "" for g in found.groups()))
+    return ""
 
 
 def _terminate(proc):

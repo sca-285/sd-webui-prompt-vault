@@ -99,6 +99,12 @@ def listing():
             "banned": str(settings.opt("pv_chat_banned") or ""), "cliches": CLICHES, **_model_of()}
 
 
+def _who():
+    from . import families, qwen
+
+    return families.label(qwen.family()) or "The model"
+
+
 def _model_of():
     """Who answers, for the page: the family of the model in use (Qwen, Gemma, Mistral, GLM…), and whether it sees."""
     from . import families, qwen
@@ -507,6 +513,32 @@ def banned_in(text, words=None):
             if re.search(r"(?<!\w)" + re.escape(w.lower()) + r"(?!\w)", low)]
 
 
+def _parts(content):
+    return [{"type": "text", "text": content}] if isinstance(content, str) else list(content or [])
+
+
+def turns(messages):
+    """The messages as every chat template takes them: one system prompt first, then user and assistant turns that
+    alternate and start with the user. Gemma's and Mistral's templates refuse anything else, and an answer that failed
+    or was removed leaves two of yours in a row: those are joined into one."""
+    system = [m["content"] for m in messages if m["role"] == "system" and m["content"]]
+    out = [{"role": "system", "content": "\n\n".join(_words_of(x) for x in system)}] if system else []
+    for m in messages:
+        if m["role"] == "system":
+            continue
+        if len(out) > (1 if system else 0) and out[-1]["role"] == m["role"]:
+            last = out[-1]
+            if isinstance(last["content"], str) and isinstance(m["content"], str):
+                last["content"] = f"{last['content']}\n\n{m['content']}"
+            else:
+                last["content"] = _parts(last["content"]) + [{"type": "text", "text": "\n\n"}] + _parts(m["content"])
+            continue
+        if m["role"] == "assistant" and len(out) == (1 if system else 0):
+            continue  # a conversation the model reads starts with the user
+        out.append({"role": m["role"], "content": m["content"]})
+    return out
+
+
 def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
     """The model's answer as it comes: {"delta"} and {"thinking"} events; the pieces are kept in text and thought."""
     from . import qwen
@@ -521,13 +553,14 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
     bias = _logit_bias(url, qwen.SERVER.model, words) if words else []
     if words:
         messages = _ask_to_avoid(messages, words)
+    messages = turns(messages)
     body = dict(qwen.sampling(temperature), messages=messages, max_tokens=max_tokens * (3 if think else 1), stream=True,
                 chat_template_kwargs={"enable_thinking": think})
     if bias:
         body["logit_bias"] = bias
     with requests.post(f"{url}/v1/chat/completions", json=body, stream=True, timeout=(10, 600)) as res:
         if res.status_code != 200:
-            raise RuntimeError(f"the Qwen server answered {res.status_code}: {res.text[:300]}")
+            raise RuntimeError(f"llama-server answered {res.status_code}: {res.text[:300]}")
         res.encoding = "utf-8"  # llama-server sends UTF-8 without saying so; requests would read it as Latin-1
         for line in res.iter_lines(decode_unicode=True):
             if stop.is_set():
@@ -582,7 +615,7 @@ def _complete(messages, max_tokens):
         qwen.SERVER.restart_if_changed(qwen._placement())
         qwen.SERVER.ensure()
     words = banned()
-    body = dict(qwen.sampling(), messages=_ask_to_avoid(messages, words) if words else messages, max_tokens=max_tokens,
+    body = dict(qwen.sampling(), messages=turns(_ask_to_avoid(messages, words) if words else messages), max_tokens=max_tokens,
                 stream=False, chat_template_kwargs={"enable_thinking": False})
     answer = qwen.SERVER.post("/v1/chat/completions", body, timeout=600)
     reply = answer["choices"][0]["message"]["content"]
@@ -751,7 +784,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                     with _lock:
                         if cid in _chats:
                             _unbranch(_chats[cid], branch[0])
-                yield {"error": f"Qwen: {exc}"}
+                yield {"error": f"{_who()}: {exc}"}
                 return
         answer = "".join(text).strip()
         if "</think>" in answer:  # a template that opens <think> itself: only the closing tag came back
@@ -882,7 +915,7 @@ def assist(cid, mode, draft="", context=""):
                     yield ev
         except Exception as exc:
             if not text:
-                yield {"error": f"Qwen: {exc}"}
+                yield {"error": f"{_who()}: {exc}"}
                 return
         written = tidy_draft("".join(text))
         yield {"done": True, "text": written, "stopped": stop.is_set(), "banned_hits": banned_in(written)}

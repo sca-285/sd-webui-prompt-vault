@@ -12,6 +12,10 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- Fixed: Gemma and Mistral refused a conversation where an answer had failed or been removed ("Conversation roles
+  must alternate"): your messages in a row are now joined into one turn, for every model. When llama-server cannot
+  start, the first line says why (a llama.cpp older than the model, a projector that does not fit, too little VRAM,
+  a broken download) and what to do; errors name the model in use, not Qwen.
 - Other model families than Qwen: Gemma, Mistral, GLM, Llama, Phi, told from the .gguf itself and named in Muse's
   list and the chat; a vision projector matched by family and size; a model without one runs for words only
   (images refused with a reason); each family's recommended sampling, or your own temperature; llama-server

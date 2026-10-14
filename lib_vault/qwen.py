@@ -166,7 +166,7 @@ def chat(content, *, max_tokens=None, temperature=None, timeout=300):
     try:
         reply = answer["choices"][0]["message"]["content"]
     except Exception:
-        raise RuntimeError(f"unexpected answer from the Qwen server: {str(answer)[:300]}") from None
+        raise RuntimeError(f"unexpected answer from llama-server: {str(answer)[:300]}") from None
     if isinstance(reply, list):
         reply = "".join(part.get("text", "") for part in reply if isinstance(part, dict))
     return strip_thinking(str(reply or ""))
@@ -234,7 +234,7 @@ def read_image(image, mode="tags", hint_tags=""):
         what = f"{len(text.split(result))} tags" if mode == "tags" else f"{len(result.split())} words"
         return result, f"Qwen: {what} from a {size[0]}x{size[1]} image in {time.time() - started:.1f}s"
     except Exception as exc:
-        return "", f"Qwen: {exc}"
+        return "", f"{families.label(family()) or 'The model'}: {exc}"
 
 
 def rewrite(prompt, task, instruction=""):
@@ -265,7 +265,7 @@ def rewrite(prompt, task, instruction=""):
                        max_tokens=max(int(settings.opt("pv_vlm_max_tokens")), 512),
                        temperature=max(float(settings.opt("pv_vlm_temperature")), 0.3))
     except Exception as exc:
-        return "", f"Qwen: {exc}"
+        return "", f"{families.label(family()) or 'The model'}: {exc}"
 
     if form == "tags":
         result = prompts.clean_tags(raw)

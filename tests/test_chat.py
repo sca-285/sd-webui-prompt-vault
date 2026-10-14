@@ -141,7 +141,7 @@ shared.opts.pv_chat_think = True
 for how in ("reasoning_content", "tags"):
     os.environ["FAKE_THINK"] = how
     qwen.SERVER.stop()
-    ev = send(cid, "think about a castle")
+    ev = send(c.post(B + "/new").json()["chat"]["id"], "think about a castle")
     thinking = "".join(e["thinking"] for e in ev if "thinking" in e)
     answer = "".join(e["delta"] for e in ev if "delta" in e)
     msg = ev[-1]["message"]
@@ -439,6 +439,29 @@ assert "temp=1.0 top_k=64" in ev[-1]["message"]["text"], ev[-1]["message"]["text
 argv = open(os.environ["FAKE_ARGS_LOG"]).read().splitlines()[-1]
 assert "--jinja" in argv and "mmproj-gemma-3-12b-f16.gguf" in argv, argv
 send(gc_, "this one", [{"kind": "image", "name": "red.png", "data": png}])
+# Gemma's template wants turns that alternate: an answer removed (or one that failed) leaves two of yours in a row
+msgs_now = c.get(B + "/one", params={"id": gc_}).json()["chat"]["messages"]
+c.post(B + "/remove-message", json={"id": gc_, "message": msgs_now[-1]["id"]})
+ev = send(gc_, "and again, after the answer was removed")
+assert ev[-1].get("done") and "messages=4" in ev[-1]["message"]["text"], ev[-1]  # system + you, Gemma, you (two merged)
+with c.stream("POST", B + "/assist", json={"id": gc_, "mode": "write", "text": ""}) as r:
+    assert json.loads(list(r.iter_lines())[-1]).get("done")
+print("alternating turns ok")
+# a llama.cpp older than the model: said so, with what to do
+g4 = os.path.join(fam, "gemma-4-26B-A4B-it-abliterated.Q4_K_M.gguf")
+fake_gguf(g4, 30, arch="gemma4", name="Gemma 4 26B A4B It Abliterated")
+c.post(M, json={"model": g4})
+os.environ["FAKE_OLD_ARCH"] = "1"
+ev = send(c.post(B + "/new").json()["chat"]["id"], "hello gemma 4")
+os.environ.pop("FAKE_OLD_ARCH")
+assert ev[-1]["error"].startswith("Gemma: This llama.cpp does not know the model's architecture (gemma4)"), ev[-1]
+assert "latest llama.cpp" in ev[-1]["error"]
+from lib_vault import llama
+assert llama.explain("ggml_cuda: cudaMalloc failed: out of memory").startswith("Not enough VRAM")
+assert llama.explain("clip_init: failed to load model 'mmproj-x.gguf'").startswith("The vision projector")
+assert llama.explain("all good") == ""
+c.post(M, json={"model": byname["gemma-3-12b-it-abliterated.Q4_K_M.gguf"]["path"]})
+print("startup errors explained ok")
 # words only: no projector given to the server, images refused, the earlier one told about in words
 c.post(M, json={"model": byname["Mistral-Nemo-12B-Instruct-Q5_K_M.gguf"]["path"]})
 ev = send(gc_, "and now?")

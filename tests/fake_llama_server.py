@@ -12,6 +12,12 @@ if os.environ.get("FAKE_OLD") and any(a in args for a in ("--no-kv-offload", "--
     print("error: invalid argument: --no-kv-offload", flush=True)
     sys.exit(1)
 port = int(args[args.index("--port") + 1])
+model = args[args.index("-m") + 1] if "-m" in args else ""
+# Gemma's and Mistral's chat templates refuse turns that do not alternate, as llama-server then does; Qwen's do not
+STRICT = any(w in os.path.basename(model).lower() for w in ("gemma", "mistral"))
+if "gemma-4" in os.path.basename(model).lower() and os.environ.get("FAKE_OLD_ARCH"):
+    print("llama_model_load: error loading model: error loading model architecture: unknown model architecture: 'gemma4'", flush=True)
+    sys.exit(1)
 with open(os.environ.get("FAKE_ARGS_LOG", os.devnull), "a") as f:
     f.write(" ".join(args) + "\n")
 
@@ -33,6 +39,13 @@ class H(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"tokens": tokens}).encode())
             return
         msgs = body["messages"]
+        roles = [m["role"] for m in msgs if m["role"] != "system"]
+        if STRICT and (any(m["role"] == "system" for m in msgs[1:]) or
+                       any(r != ("user" if i % 2 == 0 else "assistant") for i, r in enumerate(roles))):
+            self.send_response(500); self.send_header("Content-Type", "application/json"); self.end_headers()
+            self.wfile.write(json.dumps({"error": {"code": 500, "type": "server_error",
+                                                   "message": "Conversation roles must alternate user/assistant/user/assistant/..."}}).encode())
+            return
         images = sum(1 for m in msgs if isinstance(m["content"], list) for p in m["content"] if p.get("type") == "image_url")
         last = msgs[-1]["content"]
         words = last if isinstance(last, str) else " ".join(p.get("text", "") for p in last if p.get("type") == "text")
