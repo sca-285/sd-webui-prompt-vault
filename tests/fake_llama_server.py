@@ -40,6 +40,14 @@ class H(BaseHTTPRequestHandler):
             return
         msgs = body["messages"]
         roles = [m["role"] for m in msgs if m["role"] != "system"]
+        if os.environ.get("FAKE_BODY_LOG"):  # what each request asked, for the checks to read
+            with open(os.environ["FAKE_BODY_LOG"], "a", encoding="utf-8") as f:
+                f.write(json.dumps({"model": os.path.basename(model), "roles": [m["role"] for m in msgs],
+                                    "system": next((m["content"] for m in msgs if m["role"] == "system"), ""),
+                                    "images": sum(1 for m in msgs if isinstance(m["content"], list)
+                                                  for p in m["content"] if p.get("type") == "image_url"),
+                                    "temperature": body.get("temperature"), "stream": bool(body.get("stream")),
+                                    "kwargs": body.get("chat_template_kwargs")}, ensure_ascii=False) + "\n")
         if STRICT and (any(m["role"] == "system" for m in msgs[1:]) or
                        any(r != ("user" if i % 2 == 0 else "assistant") for i, r in enumerate(roles))):
             self.send_response(500); self.send_header("Content-Type", "application/json"); self.end_headers()

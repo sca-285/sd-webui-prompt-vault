@@ -12,6 +12,11 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- Fixed: Gemma, Mistral and GLM called themselves Qwen. The Assistant preset no longer names a model, and a system
+  prompt from before ("You are Qwen, …": old conversations, presets you saved, Settings) is told to the model in use
+  as itself. Describe's and Rewrite's notes and the server's log name the model in use. A check runs every feature
+  that asks the model (chat, Again, Edit, Rewind, Enhance, Write for me, Verify, banned words, thinking, Compact,
+  Wrap up, images, Describe, Rewrite) with Gemma, Mistral, GLM and a model for words only.
 - ⏪ Rewind on your messages: all after it removed, answered anew. 🗜 Compact: the older part summed up and out of
   the model's memory, kept folded; by itself at 90% of the context. 📝 Wrap up: a write-up of the conversation that
   starts a new one with a clean memory.

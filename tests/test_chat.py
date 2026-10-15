@@ -1,6 +1,6 @@
 """Qwen Chat with a stand-in llama-server (tests/fake_llama_server.py): conversations, files, streaming, stop,
 saving, exporting, importing; and where the model is placed (VRAM or RAM)."""
-import base64, io, json, os, struct, sys, tempfile, threading, time
+import base64, io, json, os, re, struct, sys, tempfile, threading, time
 sys.path.insert(0, os.environ["STUB"]); sys.path.insert(0, os.getcwd())
 from modules import shared
 from lib_vault import api, chat, gguf, llama, qwen
@@ -552,6 +552,74 @@ c.post(B + "/delete", json={"id": gc_})
 assert families._tell("graphic novel") == "" and families._tell("Phi-4-mini") == "phi" and families._tell("llama3") == "llama"
 c.post(M, json={"model": first_model})
 print("families ok")
+
+# every feature that asks the model, with each family: none fails, Gemma's and Mistral's strict templates are
+# satisfied, nobody but Qwen is told it is Qwen, images go only to a model that sees
+from PIL import Image as _Image
+log = os.path.join(tempfile.mkdtemp(prefix="bodies-"), "bodies.jsonl")
+os.environ["FAKE_BODY_LOG"] = log
+def stream_events(path, body):
+    with c.stream("POST", B + path, json=body) as r:
+        assert r.status_code == 200, (path, r.read())
+        return [json.loads(x) for x in r.iter_lines() if x]
+def exercise(model_path):
+    c.post(M, json={"model": model_path})
+    qwen.SERVER.stop()
+    open(log, "w").close()
+    vision = qwen.has_vision()
+    cid = c.post(B + "/new").json()["chat"]["id"]
+    c.post(B + "/update", json={"id": cid, "system": chat.OLD_ASSISTANT})  # a conversation from before: "You are Qwen"
+    evs = [send(cid, "hi there"), send(cid, "a castle at dusk"), stream_events("/regenerate", {"id": cid})]
+    first = c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"][0]
+    evs.append(stream_events("/edit", {"id": cid, "message": first["id"], "text": "hello again"}))
+    evs.append(send(cid, "three"))
+    two = c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"][2]
+    evs.append(stream_events("/regenerate", {"id": cid, "rewind": two["id"]}))
+    evs.append(stream_events("/assist", {"id": cid, "mode": "enhance", "text": "make it rain"}))
+    evs.append(stream_events("/assist", {"id": cid, "mode": "write", "text": ""}))
+    evs.append(stream_events("/send", {"id": cid, "text": "best sampler?", "files": [], "context": "", "verify": True}))
+    c.post(B + "/banned", json={"text": "tapestry"})
+    evs.append(send(cid, "a tapestry"))
+    c.post(B + "/banned", json={"text": ""})
+    shared.opts.pv_chat_think = True
+    evs.append(send(cid, "think first"))
+    shared.opts.pv_chat_think = False
+    for w in ("four", "five"):
+        evs.append(send(cid, w))
+    evs.append(stream_events("/compact", {"id": cid}))
+    evs.append(send(cid, "after compacting"))
+    wrapped = stream_events("/wrap", {"id": cid})
+    evs.append(wrapped)
+    evs.append(send(wrapped[-1]["chat"]["id"], "after the wrap-up"))
+    img = _Image.new("RGB", (64, 48), (200, 30, 30))
+    notes = [qwen.read_image(img, "tags")[1], qwen.read_image(img, "description")[1], qwen.rewrite("1girl, red hair", "Tags → sentence")[1]]
+    if vision:
+        evs.append(send(cid, "this", [{"kind": "image", "name": "red.png", "data": png}]))
+    errors = [e["error"] for ev in evs for e in ev if "error" in e]
+    bodies = [json.loads(x) for x in open(log, encoding="utf-8")]
+    return vision, errors, notes, bodies
+report = {}
+for name in ("gemma-3-12b-it-abliterated.Q4_K_M.gguf", "Mistral-Small-3.2-24B-Instruct-abliterated-Q4_K_M.gguf",
+             "GLM-4.1V-9B-Thinking-Q4_K_M.gguf", "Mistral-Nemo-12B-Instruct-Q5_K_M.gguf"):
+    vision, errors, notes, bodies = exercise(byname[name]["path"])
+    label = families.label(families.of_model(byname[name]["path"]))
+    assert not errors, (name, errors)
+    told_qwen = [b["system"][:80] for b in bodies if re.search(r"\b(You are|I am) Qwen\b", b["system"] or "")]
+    assert not told_qwen, (name, told_qwen)
+    assert any(f"You are {label}" in (b["system"] or "") for b in bodies), (name, "the old Assistant text names the model in use")
+    for b in bodies:  # one system prompt first, then turns that alternate, starting with the user
+        rest = [r_ for r_ in b["roles"] if r_ != "system"]
+        assert b["roles"].count("system") <= 1 and (not b["roles"] or b["roles"][0] in ("system", "user")), (name, b["roles"])
+        assert all(r_ == ("user" if i % 2 == 0 else "assistant") for i, r_ in enumerate(rest)), (name, b["roles"])
+    assert vision == any(b["images"] for b in bodies), (name, vision)  # images only to a model that sees
+    if vision:
+        assert all(not n.startswith(("Qwen", "The model:")) for n in notes) and notes[0].startswith(label), (name, notes)
+    else:
+        assert notes[0].startswith("The model in use reads no images") and not notes[2].startswith("The model in use"), (name, notes)
+    report[label + ("" if vision else " (words only)")] = len(bodies)
+os.environ.pop("FAKE_BODY_LOG")
+qwen.SERVER.stop()
+print("every feature with every family ok:", report)
 
 # folders on another drive: several for Qwen, one for Prompt Vault's own models
 other, third, own = (tempfile.mkdtemp(prefix=p) for p in ("drive-d-", "drive-e-", "pv-models-"))

@@ -17,7 +17,7 @@ BUILTIN = [
     {"id": "assistant", "icon": "🎯", "name": "Assistant",
      "hint": "Talk, write and fix prompts, negative prompts, translate, help with settings",
      "text": (
-         "You are Qwen, a creative assistant inside Stable Diffusion WebUI (Forge). You talk about ideas, images and "
+         "You are a creative assistant inside Stable Diffusion WebUI (Forge). You talk about ideas, images and "
          "stories, and you write image prompts: comma-separated Danbooru-style tags unless the user asks for prose. "
          "Order tags from the subject out: count and subject, looks, clothing, pose and action, setting, lighting, "
          "camera, style and quality. When the user brings a prompt, fix it: conflicting or repeated tags, the wrong "

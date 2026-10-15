@@ -31,6 +31,11 @@ def _missing():
     return problems
 
 
+def _label():
+    """The name of the model family in use, for notes: Qwen, Gemma, Mistral…"""
+    return families.label(family()) or "The model"
+
+
 def has_vision():
     """Whether the model in use reads images: a vision projector (mmproj) is chosen for it."""
     return bool(settings.clean_path(settings.opt("pv_vlm_mmproj_path")))
@@ -133,7 +138,7 @@ def _placement():
             float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")))
 
 
-SERVER = llama.LlamaServer("Qwen", "pv_vlm_port", "pv_vlm_idle_minutes", _model_args, _missing,
+SERVER = llama.LlamaServer("LLM", "pv_vlm_port", "pv_vlm_idle_minutes", _model_args, _missing,
                            "pv_vlm_extra_args", "pv_vlm_gpu_layers")
 
 
@@ -230,11 +235,11 @@ def read_image(image, mode="tags", hint_tags=""):
                         {"type": "text", "text": instruction}])
         result = prompts.clean_description(raw) if mode == "description" else prompts.clean_tags(raw)
         if not result.strip():
-            return "", f"Qwen answered, but nothing usable came back: {raw[:120]!r}"
+            return "", f"{_label()} answered, but nothing usable came back: {raw[:120]!r}"
         what = f"{len(text.split(result))} tags" if mode == "tags" else f"{len(result.split())} words"
-        return result, f"Qwen: {what} from a {size[0]}x{size[1]} image in {time.time() - started:.1f}s"
+        return result, f"{_label()}: {what} from a {size[0]}x{size[1]} image in {time.time() - started:.1f}s"
     except Exception as exc:
-        return "", f"{families.label(family()) or 'The model'}: {exc}"
+        return "", f"{_label()}: {exc}"
 
 
 def rewrite(prompt, task, instruction=""):
@@ -265,7 +270,7 @@ def rewrite(prompt, task, instruction=""):
                        max_tokens=max(int(settings.opt("pv_vlm_max_tokens")), 512),
                        temperature=max(float(settings.opt("pv_vlm_temperature")), 0.3))
     except Exception as exc:
-        return "", f"{families.label(family()) or 'The model'}: {exc}"
+        return "", f"{_label()}: {exc}"
 
     if form == "tags":
         result = prompts.clean_tags(raw)
@@ -274,10 +279,10 @@ def rewrite(prompt, task, instruction=""):
     else:
         result = prompts._strip_preamble(prompts._strip_wrapper(raw)).strip().strip('"')
     if not result:
-        return "", f"Qwen answered, but nothing usable came back: {raw[:120]!r}"
+        return "", f"{_label()} answered, but nothing usable came back: {raw[:120]!r}"
     if kept:
         result = f"{text.join(kept)}, {result}"
-    return result, f"Qwen: {task.lower()} in {time.time() - started:.1f}s"
+    return result, f"{_label()}: {task.lower()} in {time.time() - started:.1f}s"
 
 
 # ------------------------------------------------------------------ choosing the model from a list

@@ -20,6 +20,7 @@ import uuid
 from . import chat_presets, settings, store, websearch
 
 DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
+OLD_ASSISTANT = DEFAULT_SYSTEM.replace("You are a creative assistant", "You are Qwen, a creative assistant", 1)
 TEXT_LIMIT = 60000      # characters of one text file
 FILE_LIMIT = 8          # files on one message
 IMAGE_TYPES = ("image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp")
@@ -244,6 +245,8 @@ def _from_data(data, saved_as=""):
     c = _blank(str(data.get("system") or _system_default()))
     c["title"] = str(data.get("title") or "Conversation")[:120]
     c["preset"] = str(data.get("preset") or "") if str(data.get("system") or "").strip() else c["preset"]
+    if c["system"] == OLD_ASSISTANT:  # the Assistant preset as it was, naming Qwen
+        c["system"] = chat_presets.BUILTIN[0]["text"]
     c["created"] = float(data.get("created") or c["created"])
     c["messages"] = _messages(data["messages"], c["created"])
     c["archived"] = _messages(data.get("archived") or [], c["created"])
@@ -425,9 +428,21 @@ def _room(c):
     return int(settings.opt("pv_vlm_context")) - _reserve() - _tokens(c["system"], []) - _tokens(c.get("summary") or "", []) - 64
 
 
+def identity(text):
+    """A system prompt written when every model was Qwen ("You are Qwen, …": conversations, presets and Settings from
+    before) told to the model in use as itself, so Gemma does not call itself Qwen."""
+    from . import families, qwen
+
+    fam = qwen.family()
+    if fam == "qwen" or not re.search(r"\bQwen\b", text or ""):
+        return text
+    name = families.label(fam) or "an AI assistant"
+    return re.sub(r"\bYou are Qwen\b", f"You are {name}", re.sub(r"\bI am Qwen\b", f"I am {name}", text))
+
+
 def system_of(c):
     """The system prompt the model reads: the conversation's, and the summary of what was compacted."""
-    out = c["system"].strip()
+    out = identity(c["system"].strip())
     if c.get("summary"):
         out += ("\n\n" if out else "") + "Summary of the earlier part of this conversation (its messages are no longer shown " \
                "to you; go on from it):\n" + c["summary"]
