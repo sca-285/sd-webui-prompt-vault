@@ -6,3 +6,7 @@ import launch
 if not any(launch.is_installed(name) for name in
            ("onnxruntime", "onnxruntime-gpu", "onnxruntime-directml", "onnxruntime-silicon", "ort-nightly")):
     launch.run_pip("install onnxruntime", "Prompt Vault requirement: onnxruntime (WD14 tagger)")
+
+# Qwen Chat (any model) reads PDF files with pypdf
+if not launch.is_installed("pypdf"):
+    launch.run_pip("install pypdf", "Prompt Vault requirement: pypdf (PDF files in the chat)")

@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: "20"
       - name: Install
-        run: pip install fastapi httpx pillow requests
+        run: pip install fastapi httpx pillow requests pypdf
       - name: JavaScript parses
         run: for f in javascript/*.js; do node --check "$f"; done
       - name: Checks

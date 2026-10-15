@@ -21,7 +21,8 @@ from . import chat_presets, settings, store, websearch
 
 DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
 OLD_ASSISTANT = DEFAULT_SYSTEM.replace("You are a creative assistant", "You are Qwen, a creative assistant", 1)
-TEXT_LIMIT = 60000      # characters of one text file
+TEXT_LIMIT = 200000     # characters of one text file (then cut to what the model's context holds)
+PDF_IMAGES = 4          # pages of a scanned PDF shown as images to a model that sees
 FILE_LIMIT = 8          # files on one message
 IMAGE_TYPES = ("image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp")
 
@@ -369,17 +370,111 @@ def _text_file(name, content):
     return {"kind": "text", "name": name, "text": content[:TEXT_LIMIT], "cut": cut, "chars": len(content)}
 
 
-def read_files(files):
+def _json_file(name, content):
+    """A JSON file, laid out so the model reads its structure (kept as it came when it does not parse)."""
+    try:
+        content = json.dumps(json.loads(content), ensure_ascii=False, indent=1)
+    except Exception:
+        pass
+    return _text_file(name, content)
+
+
+def _pdf_reader():
+    try:
+        import pypdf
+
+        return pypdf
+    except BaseException:  # a broken cryptography package can make the import panic, not just fail
+        raise store.VaultError("Reading PDF files needs pypdf: restart the WebUI (Prompt Vault installs it), "
+                               "or run: pip install pypdf in the WebUI's venv.") from None
+
+
+def _pdf_file(name, data_url):
+    """A PDF: its text, page by page; a scanned one (no text) as the images of its first pages, for a model that sees."""
+    from . import qwen
+
+    head, _, b64 = str(data_url).partition(",")
+    if "pdf" not in head:
+        raise store.VaultError(f"{name}: not a PDF")
+    pypdf = _pdf_reader()
+    try:
+        reader = pypdf.PdfReader(io.BytesIO(base64.b64decode(b64)))
+        if reader.is_encrypted:
+            reader.decrypt("")
+        pages = []
+        for i, page in enumerate(reader.pages):
+            words = (page.extract_text() or "").strip()
+            if words:
+                pages.append(f"--- page {i + 1} ---\n{words}")
+    except store.VaultError:
+        raise
+    except Exception as exc:
+        raise store.VaultError(f"{name}: this PDF cannot be read ({exc})") from None
+    out = []
+    text = "\n\n".join(pages)
+    if len(text) >= 40 * max(1, len(reader.pages)) // 4:  # some text on most pages: read as text
+        item = _text_file(name, text)
+        item.update(kind="text", pdf=True, pages=len(reader.pages))
+        return [item]
+    if not qwen.has_vision():
+        raise store.VaultError(f"{name}: a scanned PDF (no text in it), and the model in use reads no images.")
+    from PIL import Image
+
+    for i, page in enumerate(reader.pages[:PDF_IMAGES]):
+        try:
+            biggest = max(page.images, key=lambda im: len(im.data)) if page.images else None
+            if biggest is None:
+                continue
+            image = Image.open(io.BytesIO(biggest.data))
+            image.load()
+        except Exception:
+            continue
+        url, size = qwen._encode(image, int(settings.opt("pv_vlm_max_image_side")))
+        out.append({"kind": "image", "name": f"{name} · page {i + 1}", "url": url, "w": size[0], "h": size[1]})
+    if not out:
+        raise store.VaultError(f"{name}: no text and no page images could be taken from this PDF.")
+    if len(reader.pages) > PDF_IMAGES:
+        out.append(_text_file(f"{name} (note)", f"A scanned PDF of {len(reader.pages)} pages: the first {len(out)} are shown as images."))
+    return out
+
+
+def _fit(files, chars):
+    """The text files of one message cut to what the model's context holds (the cut is told to the model)."""
+    texts = [f for f in files if f.get("kind") == "text"]
+    total = sum(len(f["text"]) for f in texts)
+    if total <= chars:
+        return files
+    for f in texts:
+        share = max(1000, int(chars * len(f["text"]) / total))
+        if len(f["text"]) > share:
+            f["text"], f["cut"] = f["text"][:share], True
+    return files
+
+
+def _file_room(c):
+    """Characters of attached text a message may bring: most of what the context has room for, some left for
+    the conversation itself."""
+    return max(4000, int(_room(c) * 0.75 * 3.0))
+
+
+def read_files(files, room_chars=None):
+    """What was attached to a message: images (png, jpeg, webp), PDF (its text, or a scanned one's pages as images),
+    JSON, text and Markdown; the text cut to what the model's context holds (room_chars)."""
     out = []
     for f in (files or [])[:FILE_LIMIT]:
         if not isinstance(f, dict):
             continue
         name = os.path.basename(str(f.get("name") or "file"))[:120]
-        if f.get("kind") == "image":
+        kind = f.get("kind")
+        if kind == "image":
             out.append(_image_file(name, f.get("data")))
+        elif kind == "pdf" or name.lower().endswith(".pdf"):
+            out += _pdf_file(name, f.get("data"))
+        elif name.lower().endswith(".json"):
+            out.append(_json_file(name, f.get("data")))
         else:
             out.append(_text_file(name, f.get("data")))
-    return out
+    return _fit(out, room_chars) if room_chars else out
 
 
 def _tokens(text, files):
@@ -406,7 +501,7 @@ def _content(m, vision=True):
         elif f.get("kind") == "image" and f.get("url"):
             parts.append({"type": "image_url", "image_url": {"url": f["url"]}})
         elif f.get("kind") == "text":
-            note = " (cut: the file is longer)" if f.get("cut") else ""
+            note = " (cut: the file is longer than the model can read at once; ask for a part)" if f.get("cut") else ""
             parts.append({"type": "text", "text": f"File {f.get('name')}{note}:\n```\n{f.get('text', '')}\n```"})
     words = m["text"]
     if m.get("context"):
@@ -883,7 +978,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             if old["role"] != "user":
                 raise store.VaultError("Only your own messages can be edited.")
             words = str(words or "").strip()
-            got = read_files(files) if files else old.get("files") or []
+            got = read_files(files, _file_room(c)) if files else old.get("files") or []
             if not words and not got:
                 raise store.VaultError("Write something, or add a file.")
             others, v = _branch(c, i)
@@ -894,7 +989,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         else:
             words = str(words or "").strip()
-            got = read_files(files)
+            got = read_files(files, _file_room(c))
             if not words and not got:
                 raise store.VaultError("Write something, or add a file.")
             msg = {"id": uuid.uuid4().hex[:10], "role": "user", "text": words, "files": got, "time": time.time(),

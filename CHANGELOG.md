@@ -12,6 +12,9 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- Files in the chat: PDF (its text page by page, or a scanned one's pages as images; pypdf is installed for it),
+  JSON laid out to be read, and 📎 offers them; attached text is cut to what the model's context holds instead of
+  overflowing it.
 - Fixed: Gemma, Mistral and GLM called themselves Qwen. The Assistant preset no longer names a model, and a system
   prompt from before ("You are Qwen, …": old conversations, presets you saved, Settings) is told to the model in use
   as itself. Describe's and Rewrite's notes and the server's log name the model in use. A check runs every feature

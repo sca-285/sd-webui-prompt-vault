@@ -384,11 +384,15 @@
                 if (file.size > 20 * 1024 * 1024) { toast(`${file.name}: too big (20 MB at most)`, true); continue; }
                 const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
                 C.files.push({kind: 'image', name: file.name || 'pasted image.png', data, size: file.size});
-            } else if (file.type.startsWith('text/') || TEXT_EXT.test(file.name)) {
+            } else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
+                if (file.size > 40 * 1024 * 1024) { toast(`${file.name}: too big (40 MB at most)`, true); continue; }
+                const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+                C.files.push({kind: 'pdf', name: file.name, data, size: file.size});
+            } else if (file.type.startsWith('text/') || file.type === 'application/json' || TEXT_EXT.test(file.name)) {
                 if (file.size > 2 * 1024 * 1024) { toast(`${file.name}: too big (2 MB at most)`, true); continue; }
                 C.files.push({kind: 'text', name: file.name, data: await file.text(), size: file.size});
             } else {
-                toast(`${file.name}: images (png, jpeg, webp) and text or Markdown files only`, true);
+                toast(`${file.name}: images (png, jpeg, webp), PDF, JSON, text and Markdown files only`, true);
             }
         }
         paint();
@@ -485,7 +489,7 @@
     function files(list, removable) {
         if (!list || !list.length) return null;
         return el('div', {class: 'pv-chat-files'}, list.map((f, i) => el('span', {class: 'pv-chat-file', title: f.name},
-            f.kind === 'image' && (f.url || f.data) ? el('img', {src: f.url || f.data, alt: f.name}) : el('span', {class: 'pv-chat-file-icon', text: '📄'}),
+            f.kind === 'image' && (f.url || f.data) ? el('img', {src: f.url || f.data, alt: f.name}) : el('span', {class: 'pv-chat-file-icon', text: f.kind === 'pdf' || f.pdf || /\.pdf/i.test(f.name) ? '📕' : /\.json$/i.test(f.name) ? '🧾' : '📄'}),
             el('span', {class: 'pv-chat-file-name', text: f.name}),
             removable ? el('button', {type: 'button', class: 'pv-chat-file-x', title: 'Remove', text: '✕',
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
@@ -713,7 +717,8 @@
             if (got.length) { e.preventDefault(); addFiles(got); }
         });
         const pickFile = el('input', {type: 'file', multiple: true, class: 'pv-chat-hidden',
-            accept: 'image/png,image/jpeg,image/webp,.txt,.md,.markdown,text/plain,text/markdown', onchange: (e) => addFiles(e.target.files)});
+            accept: 'image/png,image/jpeg,image/webp,.txt,.md,.markdown,.json,.csv,.pdf,text/plain,text/markdown,application/json,application/pdf',
+            onchange: (e) => addFiles(e.target.files)});
         const ctx = el('select', {class: 'pv-chat-ctx', title: 'Read with your message: the prompt you are working on', onchange: (e) => { C.context = e.target.value; LS.set('context', C.context); }},
             CONTEXTS.map(([v, t]) => el('option', {value: v, text: '+ ' + t, selected: v === C.context})));
         const helper = el('div', {class: 'pv-chat-assist'},
@@ -732,7 +737,7 @@
             helper,
             box,
             el('div', {class: 'pv-chat-row'},
-                pickFile, button('📎', 'Add images (png, jpeg, webp) or text and Markdown files', () => pickFile.click()),
+                pickFile, button('📎', 'Add images (png, jpeg, webp), PDF, JSON, text or Markdown files', () => pickFile.click()),
                 ctx,
                 el('span', {class: 'pv-chat-grow'}),
                 C.busy ? button('■ Stop', C.assisting ? 'Stop writing here' : 'Stop the answer here', stop, {class: 'pv-chat-btn pv-chat-stop'})

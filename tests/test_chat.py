@@ -116,6 +116,48 @@ msgs = c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"]
 assert msgs[2]["files"][0]["kind"] == "image" and msgs[2]["files"][0]["url"].startswith("data:image/jpeg")
 print("files ok")
 
+# PDF (text, or a scanned one's pages as images), JSON laid out, and text cut to what the context holds
+def text_pdf(pages):
+    objs, kids = [], []
+    font = 3 + 2 * len(pages)
+    for i, words in enumerate(pages):
+        stream = f"BT /F1 12 Tf 72 720 Td ({words}) Tj ET".encode()
+        kids.append(3 + 2 * i)
+        objs.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents {4 + 2 * i} 0 R /Resources << /Font << /F1 {font} 0 R >> >> >>".encode())
+        objs.append(b"<< /Length %d >>\nstream\n" % len(stream) + stream + b"\nendstream")
+    objs = [b"<< /Type /Catalog /Pages 2 0 R >>", f"<< /Type /Pages /Kids [{' '.join(f'{k} 0 R' for k in kids)}] /Count {len(kids)} >>".encode()] \
+        + objs + [b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"]
+    out, offsets = b"%PDF-1.4\n", []
+    for n, o in enumerate(objs, 1):
+        offsets.append(len(out))
+        out += f"{n} 0 obj\n".encode() + o + b"\nendobj\n"
+    xref = len(out)
+    out += f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode() + b"".join(f"{o:010d} 00000 n \n".encode() for o in offsets)
+    out += f"trailer << /Size {len(objs) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF".encode()
+    return "data:application/pdf;base64," + base64.b64encode(out).decode()
+got = chat.read_files([{"kind": "pdf", "name": "brief.pdf", "data": text_pdf(["A knight in silver armor at dawn", "The castle burns behind her"])}])
+assert got[0]["kind"] == "text" and got[0]["pdf"] and got[0]["pages"] == 2, got
+assert "--- page 1 ---\nA knight in silver armor at dawn" in got[0]["text"] and "--- page 2 ---\nThe castle burns" in got[0]["text"]
+buf = io.BytesIO()
+Image.new("RGB", (300, 200), (20, 120, 200)).save(buf, "PDF")
+scanned = "data:application/pdf;base64," + base64.b64encode(buf.getvalue()).decode()
+got = chat.read_files([{"kind": "pdf", "name": "scan.pdf", "data": scanned}])
+assert got[0]["kind"] == "image" and got[0]["name"] == "scan.pdf · page 1" and got[0]["url"].startswith("data:image/jpeg"), got
+got = chat.read_files([{"kind": "text", "name": "card.json", "data": '{"name":"Aiko","hair":"red","tags":["1girl","sundress"]}'}])
+assert got[0]["text"].startswith('{\n "name": "Aiko"'), got[0]["text"]
+assert chat.read_files([{"kind": "text", "name": "broken.json", "data": "{not json"}])[0]["text"] == "{not json"
+got = chat.read_files([{"kind": "text", "name": "novel.md", "data": "word " * 50000}, {"kind": "text", "name": "notes.txt", "data": "note " * 1000}], 20000)
+assert got[0]["cut"] and len(got[0]["text"]) + len(got[1]["text"]) <= 21000 and len(got[1]["text"]) >= 1000, [len(f["text"]) for f in got]
+pdfc = c.post(B + "/new").json()["chat"]["id"]
+ev = send(pdfc, "what is this about?", [{"kind": "pdf", "name": "brief.pdf", "data": text_pdf(["A knight in silver armor at dawn"])}])
+assert ev[-1]["done"] and "File brief.pdf" in ev[-1]["message"]["text"], ev[-1]  # the model was given its text
+msg = c.get(B + "/one", params={"id": pdfc}).json()["chat"]["messages"][0]
+assert msg["files"][0]["name"] == "brief.pdf" and msg["files"][0]["pdf"]
+r = c.post(B + "/send", json={"id": pdfc, "text": "x", "files": [{"kind": "pdf", "name": "bad.pdf", "data": "data:application/pdf;base64,bm90IGEgcGRm"}]})
+assert r.status_code == 400 and "cannot be read" in r.json()["error"], r.json()
+c.post(B + "/delete", json={"id": pdfc})
+print("pdf, json, long text ok")
+
 # again: the last answer replaced
 ev = send(cid, "", path="/regenerate")
 assert ev[-1]["done"] and len(c.get(B + "/one", params={"id": cid}).json()["chat"]["messages"]) == 4
