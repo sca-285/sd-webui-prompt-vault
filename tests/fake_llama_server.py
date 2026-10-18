@@ -11,6 +11,9 @@ args = sys.argv[1:]
 if os.environ.get("FAKE_OLD") and any(a in args for a in ("--no-kv-offload", "--no-mmproj-offload", "--cpu-moe")):
     print("error: invalid argument: --no-kv-offload", flush=True)
     sys.exit(1)
+if os.environ.get("FAKE_OLD_FA") and "-fa" in args and args[args.index("-fa") + 1] in ("on", "off", "auto"):
+    print(f"error: invalid argument: {args[args.index('-fa') + 1]}", flush=True)  # -fa took no value before mid 2025
+    sys.exit(1)
 port = int(args[args.index("--port") + 1])
 model = args[args.index("-m") + 1] if "-m" in args else ""
 # Gemma's and Mistral's chat templates refuse turns that do not alternate, as llama-server then does; Qwen's do not

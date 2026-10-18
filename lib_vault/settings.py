@@ -59,6 +59,7 @@ DEFAULTS = {
     "pv_vlm_context": 8192,
     "pv_vlm_kv_type": "f16",
     "pv_vlm_rope": "Auto",
+    "pv_vlm_flash": "Auto",
     "pv_vlm_extra_args": "",
     "pv_vlm_idle_minutes": 10,
     "pv_vlm_startup_timeout": 180,
@@ -243,8 +244,11 @@ def register():
               "Past what the model was trained for, see RoPE below"),
         "pv_vlm_kv_type": O("f16", "Context: KV cache type", gr.Radio, {"choices": ["f16", "q8_0", "q4_0"]})
         .info("the context's memory: f16 exact; q8_0 half the memory with no loss you can see (good for 32K and more); "
-              "q4_0 a quarter, some loss. Needs flash attention, which recent llama.cpp turns on by itself (else add -fa on "
-              "to the extra arguments)"),
+              "q4_0 a quarter, some loss. Needs flash attention (below)"),
+        "pv_vlm_flash": O("Auto", "Context: flash attention", gr.Radio, {"choices": ["Auto", "On", "Off"]})
+        .info("less VRAM for a long context and faster. Auto: llama-server's own choice (recent builds turn it on where "
+              "the GPU supports it), on for a q8_0 or q4_0 cache. Off if a model answers garbage with it (an old GPU or "
+              "build). Older llama.cpp builds are given -fa the older way by themselves"),
         "pv_vlm_rope": O("Auto", "Context: past what the model was trained for (RoPE scaling)", gr.Radio, {"choices": ["Auto", "Off"]})
         .info("Auto: a context longer than the model's own is stretched with YaRN (e.g. Qwen3 from 32K to 128K); Off: the "
               "context is held to the model's own. Gemma 3, Mistral Small 3 and GLM-4 are trained for 128K and never need it"),

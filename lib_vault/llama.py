@@ -161,8 +161,19 @@ class LlamaServer:
         try:
             return self._launch(argv, port, model_args)
         except RuntimeError as exc:
+            if not re.search(REFUSED, str(exc), re.I):
+                raise
+            older = _old_flash(argv)
+            if older != argv:  # a build from before -fa took on/off/auto: -fa alone is on, nothing is off
+                self.say("this llama-server takes -fa without on or off: starting it the older way")
+                try:
+                    return self._launch(older, port, model_args)
+                except RuntimeError as again:
+                    if not re.search(REFUSED, str(again), re.I):
+                        raise
+                    argv = older
             newer = [a for a in argv if a in NEWER_FLAGS]
-            if not newer or not re.search(r"invalid argument|unknown argument|error: unrecognized|usage:", str(exc), re.I):
+            if not newer:
                 raise
             self.say(f"this llama-server does not know {' '.join(newer)}: starting it without (update llama.cpp to keep "
                      "more of the model in RAM)")
@@ -287,13 +298,31 @@ class LlamaServer:
 
 
 # flags of newer llama.cpp builds (memory placement); an older build is started without them
+REFUSED = r"invalid argument|unknown argument|error: unrecognized|usage:"
+
+
+def _old_flash(argv):
+    """argv for a llama-server from before -fa took a value (mid 2025): -fa on becomes -fa, -fa off|auto goes."""
+    out, i = [], 0
+    while i < len(argv):
+        if argv[i] in ("-fa", "--flash-attn") and i + 1 < len(argv) and argv[i + 1] in ("on", "off", "auto"):
+            if argv[i + 1] == "on":
+                out.append("-fa")
+            i += 2
+            continue
+        out.append(argv[i])
+        i += 1
+    return out
+
+
 NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe", "--jinja"}
 
 
 # what llama-server says when it cannot start, and what to do about it
 WHY = (
-    (r"V cache quantization requires flash|quantized V cache .*flash", "A q8_0 or q4_0 KV cache needs flash attention: add "
-     "-fa on to Settings → extra llama-server arguments, update llama.cpp, or set the KV cache back to f16 in Muse → ⚙. "),
+    (r"V cache quantization requires flash|quantized V cache .*flash", "A q8_0 or q4_0 KV cache needs flash attention, "
+     "which this GPU or llama.cpp build does not do: set Flash attention to On (or update llama.cpp), or the KV cache "
+     "back to f16, in Muse → ⚙. "),
     (r"unknown model architecture: '?([\w.-]+)", "This llama.cpp does not know the model's architecture ({0}): it is "
      "newer than the build. Download the latest llama.cpp release and point Settings → llama-server at it. "),
     (r"(?:clip|mtmd|mmproj).*(?:failed|error)|failed to load (?:clip|mmproj|vision)", "The vision projector (mmproj) does not "

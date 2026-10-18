@@ -12,6 +12,9 @@ What happens when a conversation outgrows it, from the cheapest to the best:
 
 The context's length and memory:
 - KV cache type: the cache in f16 (exact), q8_0 (half the memory, no loss you can see) or q4_0 (a quarter, some loss).
+- Flash attention: the attention worked out in tiles, never the whole table at once: less VRAM for a long context,
+  faster, and needed for a q8_0 or q4_0 cache. Auto leaves it to llama-server (recent builds turn it on where the
+  GPU supports it) and turns it on for a quantized cache; On and Off decide.
 - RoPE: a context longer than the model was trained for is stretched with YaRN (Auto), else held to what it was
   trained for (Off). A model whose file already says how it is scaled is never stretched again.
 - Sliding-window attention (Gemma 2 and 3) and hybrid models (Qwen3.5, Qwen3-Next) keep a full cache in only some of
@@ -27,6 +30,7 @@ from . import gguf, settings
 KV_TYPES = ("f16", "q8_0", "q4_0")
 KV_BYTES = {"f16": 2.0, "q8_0": 34 / 32, "q4_0": 18 / 32}  # bytes per number, with the block scales
 ROPE_MODES = ("Auto", "Off")
+FLASH_MODES = ("Auto", "On", "Off")
 SLIDE = 0.7       # when the window must move, it moves until the messages take this much of the room
 MARGIN = 64       # tokens kept free besides the answer's, for the template's own words
 # layers that keep only a window of the context (sliding-window attention): the share of them, by architecture
@@ -79,12 +83,29 @@ def rope_args(path=None):
     return ["--rope-scaling", "yarn", "--rope-scale", f"{factor:g}", "--yarn-orig-ctx", str(native)]
 
 
+def flash():
+    value = str(settings.opt("pv_vlm_flash") or "Auto")
+    return value if value in FLASH_MODES else "Auto"
+
+
+def flash_args():
+    """-fa on|off, or nothing: Auto with an f16 cache leaves it to llama-server; a -fa of your own in the extra
+    arguments wins."""
+    extra = str(settings.opt("pv_vlm_extra_args") or "").split()
+    if "-fa" in extra or "--flash-attn" in extra:
+        return []
+    mode = flash()
+    if mode == "On" or (mode == "Auto" and kv_type() != "f16"):
+        return ["-fa", "on"]
+    return ["-fa", "off"] if mode == "Off" else []
+
+
 def server_args(path=None):
-    """llama-server's flags for the context: its length, the cache's type, the stretching."""
+    """llama-server's flags for the context: its length, the cache's type, flash attention, the stretching."""
     out = ["-c", str(size(path))]
     if kv_type() != "f16":
         out += ["-ctk", kv_type(), "-ctv", kv_type()]
-    return out + rope_args(path)
+    return out + flash_args() + rope_args(path)
 
 
 def kv_per_token(info, cache=None):
@@ -124,9 +145,9 @@ def kv_gb(path=None, ctx=None, cache=None):
 
 
 def describe(path=None):
-    """For Muse's model section: {"size", "trained", "kv_gb", "kv_type", "rope"}."""
+    """For Muse's model section: {"size", "trained", "kv_gb", "kv_type", "flash", "rope"}."""
     args = rope_args(path)
-    return {"size": size(path), "trained": trained(path), "kv_gb": round(kv_gb(path), 2), "kv_type": kv_type(),
+    return {"size": size(path), "trained": trained(path), "kv_gb": round(kv_gb(path), 2), "kv_type": kv_type(), "flash": flash(),
             "rope": f"YaRN ×{args[3]}" if args else ("held to the model's own" if size(path) < int(settings.opt("pv_vlm_context")) else "")}
 
 

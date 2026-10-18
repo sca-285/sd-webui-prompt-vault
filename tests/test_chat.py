@@ -61,9 +61,9 @@ fake_gguf(hy, 48, arch="qwen35", extra={"qwen35.embedding_length": 4096, "qwen35
 assert abs(context.kv_gb(hy, 8192, "f16") - 12 * 4 * 256 * 2 * 8192 / GB) < 0.001
 assert context.kv_gb(model, 8192, "f16") == 8192 / 1024 * 0.14  # a file that does not say: the rule of thumb
 shared.opts.pv_vlm_context = 131072; shared.opts.pv_vlm_rope = "Auto"; shared.opts.pv_vlm_kv_type = "q8_0"
-assert context.server_args(q3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0", "--rope-scaling", "yarn", "--rope-scale", "3.2",
+assert context.server_args(q3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0", "-fa", "on", "--rope-scaling", "yarn", "--rope-scale", "3.2",
                                    "--yarn-orig-ctx", "40960"], context.server_args(q3)
-assert context.server_args(g3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0"]  # trained for 128K already
+assert context.server_args(g3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0", "-fa", "on"]  # trained for 128K already
 shared.opts.pv_vlm_rope = "Off"
 assert context.server_args(q3)[:2] == ["-c", "40960"] and "--rope-scaling" not in context.server_args(q3)
 assert context.describe(q3)["rope"] == "held to the model's own"
@@ -73,6 +73,17 @@ shared.opts.pv_vlm_rope = "Auto"; shared.opts.pv_vlm_context = 32768
 assert context.rope_args(scaled) == [] and context.rope_args(q3) == []
 shared.opts.pv_vlm_context = 4096; shared.opts.pv_vlm_kv_type = "f16"
 assert context.server_args(model) == ["-c", "4096"]
+# flash attention: Auto leaves it to the server unless the cache is quantized; On, Off; a -fa of your own wins
+shared.opts.pv_vlm_kv_type = "q4_0"
+assert context.server_args(model) == ["-c", "4096", "-ctk", "q4_0", "-ctv", "q4_0", "-fa", "on"]
+shared.opts.pv_vlm_kv_type = "f16"; shared.opts.pv_vlm_flash = "On"
+assert context.flash_args() == ["-fa", "on"]
+shared.opts.pv_vlm_flash = "Off"
+assert context.flash_args() == ["-fa", "off"]
+shared.opts.pv_vlm_extra_args = "--threads 8 -fa"
+assert context.flash_args() == []
+shared.opts.pv_vlm_extra_args = ""; shared.opts.pv_vlm_flash = "Auto"
+assert llama._old_flash(["x", "-fa", "on", "-c", "1"]) == ["x", "-fa", "-c", "1"] and llama._old_flash(["-fa", "off", "y"]) == ["y"]
 # the window: all that fits; when it moves, it moves far, and then stays put while the rest fits (the server's cache)
 shared.opts.pv_chat_max_tokens = 1024; shared.opts.pv_chat_think = False
 conv = {"system": "", "messages": [{"id": f"m{i}", "role": "user" if i % 2 == 0 else "assistant", "text": "", "tokens": 400} for i in range(6)]}
@@ -568,6 +579,14 @@ assert ev[0]["left_out"] > 0 and ev[-1]["done"], ev[0]
 shared.opts.pv_chat_autocompact = True
 print("context window ok: left out", ev[0]["left_out"])
 
+# an older llama-server, before -fa took on/off: started with -fa alone
+shared.opts.pv_vlm_flash = "On"
+os.environ["FAKE_OLD_FA"] = "1"
+qwen.SERVER.stop()
+ev = send(big, "flash")
+last = open(os.environ["FAKE_ARGS_LOG"]).read().splitlines()[-1].split()
+assert ev[-1]["done"] and "-fa" in last and last[last.index("-fa") + 1] not in ("on", "off", "auto"), last
+os.environ.pop("FAKE_OLD_FA"); shared.opts.pv_vlm_flash = "Auto"
 # an old llama.cpp without the memory flags
 qwen.SERVER.stop()
 os.environ["FAKE_OLD"] = "1"

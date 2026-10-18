@@ -342,8 +342,11 @@ older one is started without them, and the console says so.
   from the model's own file: its layers and attention heads, Gemma's sliding-window layers (which keep
   only the last 1024 tokens), hybrid models such as Qwen3.5 (only some layers keep a cache).
 - **KV cache**: *f16* exact; *q8_0* half the memory with no loss you can see, the one to pick for a long
-  context; *q4_0* a quarter, some loss. A quantized cache needs flash attention: recent llama.cpp turns
-  it on by itself, an older one needs `-fa on` in the extra arguments (the error says so).
+  context; *q4_0* a quarter, some loss. A quantized cache needs flash attention (next).
+- **Flash attn**: attention worked out in tiles instead of one big table: less VRAM for a long context,
+  faster. *Auto* leaves it to llama-server (recent builds turn it on where the GPU supports it) and turns
+  it on for a q8_0 or q4_0 cache; *On* always; *Off* if a model answers garbage with it (an old GPU or
+  build). A llama.cpp from before mid 2025 takes `-fa` without on/off: it is started that way by itself.
 - **RoPE**: a context longer than the model was trained for. *Auto* stretches it with YaRN (Qwen3: 32K or
   40K trained, 128K stretched), *Off* holds the context to what the model was trained for. Gemma 3,
   Mistral Small 3 and GLM-4 are trained for 128K and never need it; a file that says it is stretched

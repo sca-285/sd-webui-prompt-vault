@@ -136,7 +136,7 @@ def _placement():
     return (settings.clean_path(settings.opt("pv_vlm_model_path")), settings.clean_path(settings.opt("pv_vlm_mmproj_path")),
             settings.opt("pv_vlm_memory"),
             float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")),
-            context.kv_type(), str(settings.opt("pv_vlm_rope")))
+            context.kv_type(), str(settings.opt("pv_vlm_rope")), context.flash())
 
 
 SERVER = llama.LlamaServer("LLM", "pv_vlm_port", "pv_vlm_idle_minutes", _model_args, _missing,
@@ -432,7 +432,7 @@ def set_folders(qwen_dirs=None, models_dir=None):
 CONTEXT_SIZES = (4096, 8192, 12288, 16384, 24576, 32768, 49152, 65536, 98304, 131072)
 
 
-def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None, ctx=None, kv_type=None, rope=None):
+def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None, ctx=None, kv_type=None, rope=None, flash=None):
     """Settings from Muse's card: the model and its projector (picked for it when not given), where it lives.
     The server starts again with them at its next use."""
     listing = models()
@@ -464,6 +464,10 @@ def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None,
         if kv_type not in context.KV_TYPES:
             raise ValueError(f"Unknown KV cache type {kv_type!r}")
         _set_opt("pv_vlm_kv_type", kv_type)
+    if flash is not None:
+        if flash not in context.FLASH_MODES:
+            raise ValueError(f"Unknown flash attention mode {flash!r}")
+        _set_opt("pv_vlm_flash", flash)
     if rope is not None:
         if rope not in context.ROPE_MODES:
             raise ValueError(f"Unknown RoPE mode {rope!r}")
