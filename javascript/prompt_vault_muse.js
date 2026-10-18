@@ -1256,6 +1256,7 @@
             await patch({fixed_prompt: value, prompt_mode: 'around'});
             if (M.open) { M.pane = 'ideas'; LS.set('pane', 'ideas'); render(); }
         },
+        openSettings: () => { openPanel(true); M.view = 'settings'; M.qwen = null; render(); },
     };
 
     async function boot() {

@@ -12,6 +12,10 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 - Images (png, jpeg, webp) and text or Markdown files on a message; paste or drop them.
 - Presets for the system prompt: Assistant, Tagger, Natural prompt, Video motion (img2vid), Art director, Story &
   roleplay; pick one under Start as or in ⚙, save your own, make one the default for new conversations.
+- The Vault tab in two columns: the editor, Workspace (Pull / Send / Clear on one line) and the TIPO / Rewrite /
+  Image tabs on the left; Chat and Saved prompts on the right, as tall as the window and following the page. Rewrite
+  for the negative prompt too; an emoji picker in the chat (and emoji the model suggests); ⚙ Muse from the Vault's
+  chat. One height and spacing for the buttons; the chat's Send in the theme's primary colour.
 - Files in the chat: PDF (its text page by page, or a scanned one's pages as images; pypdf is installed for it),
   JSON laid out to be read, and 📎 offers them; attached text is cut to what the model's context holds instead of
   overflowing it.

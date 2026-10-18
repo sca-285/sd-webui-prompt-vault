@@ -242,6 +242,24 @@ def read_image(image, mode="tags", hint_tags=""):
         return "", f"{_label()}: {exc}"
 
 
+def emojis(hint: str) -> list:
+    """A few emoji characters for a short description. Empty if the model has nothing usable."""
+    hint = " ".join((hint or "").split()).strip()
+    if not hint:
+        return []
+    raw = chat("Reply with only 6 emoji that match this, separated by spaces, and no words: " + hint[:120],
+               max_tokens=40, temperature=0.9)
+    found = re.findall(r"(?:[\U0001F1E6-\U0001F1FF]{2}|[\U0001F300-\U0001FAFF\u2600-\u27BF]"
+                       r"(?:\uFE0F|\u200D|[\U0001F3FB-\U0001F3FF]|[\U0001F1E6-\U0001F1FF])*)", raw)
+    out = []
+    for item in found:
+        if item not in out:
+            out.append(item)
+        if len(out) == 8:
+            break
+    return out
+
+
 def rewrite(prompt, task, instruction=""):
     """(text, note): one of prompts.TEXT_TASKS applied to prompt."""
     prompt = (prompt or "").strip()

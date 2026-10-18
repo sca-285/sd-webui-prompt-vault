@@ -122,6 +122,112 @@ html body .pv-cat-vault { color: var(--color-accent, #7c5cff); opacity: 0.9; }
 html body .pv-check { margin-top: 6px; }
 #pv_editor_tools { margin: 4px 0; }
 
+/* ---- the Vault tab: the editor and its tools on the left, the chat and saved prompts on the right ---- */
+#pv_top { display: flex !important; flex-wrap: nowrap !important; align-items: flex-start !important; gap: 16px !important; }
+#pv_editor_col { flex: 1 1 auto !important; min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
+#pv_editor_col > * { margin: 0 !important; }
+#pv_side {
+    flex: 0 0 380px !important; width: 380px !important; min-width: 320px !important; max-width: 420px !important;
+    position: sticky; top: 8px; align-self: flex-start !important;
+}
+#pv_side_tabs > .tab-nav { margin-bottom: 8px; }
+#pv_side_tabs .tabitem > div {
+    padding: 10px !important; border: 1px solid var(--border-color-primary) !important; border-radius: 10px !important;
+    background: var(--block-background-fill) !important;
+}
+#pv_side_tabs .tabitem { padding: 0 !important; border: 0 !important; background: transparent !important; }
+#pv_side_tabs .tabitem > div { gap: 8px !important; }
+#pv_side_tabs .gradio-html.padded { padding: 0 !important; border: 0 !important; background: transparent !important; }
+#pv_chat_vault.pv-chat-host { height: clamp(480px, calc(100vh - 290px), 880px); min-height: 0; }
+#pv_saved { max-height: calc(100vh - 230px); overflow: auto; }
+
+/* the editor's tool buttons: one row, one height */
+#pv_editor_tools { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; min-height: 34px; }
+#pv_editor_tools .pv-toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; }
+#pv_editor_tools button {
+    height: 32px !important; min-height: 32px !important; margin: 0 !important; padding: 0 12px !important;
+    display: inline-flex !important; align-items: center !important; gap: 6px; white-space: nowrap; line-height: 1;
+}
+
+/* Workspace: the two places and Pull / Send / Clear, on one line */
+#pv_io_row {
+    display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 8px !important;
+    padding: 8px 10px !important; border: 1px solid var(--border-color-primary) !important; border-radius: 10px !important;
+    background: var(--block-background-fill) !important;
+}
+#pv_io_row > .form, #pv_io_row > .form > * {
+    flex: 0 1 auto !important; width: auto !important; min-width: 0 !important; margin: 0 !important;
+    border: 0 !important; background: transparent !important; box-shadow: none !important; padding: 0 !important;
+}
+#pv_target { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; padding: 0 !important; }
+#pv_target > span { margin: 0 !important; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.65; white-space: nowrap; }
+#pv_target > .wrap:first-child:empty { display: none !important; }
+#pv_target .wrap { display: inline-flex !important; flex-wrap: nowrap !important; gap: 0 !important; padding: 2px !important;
+    border-radius: 9px !important; background: var(--background-fill-primary, rgba(0, 0, 0, 0.2)) !important; }
+#pv_target label {
+    position: relative; margin: 0 !important; height: 30px !important; min-height: 30px !important; padding: 0 14px !important;
+    display: inline-flex !important; align-items: center !important; border: 0 !important; border-radius: 7px !important;
+    background: transparent !important; box-shadow: none !important; cursor: pointer; white-space: nowrap; font-size: 13px;
+}
+#pv_target label input { position: absolute !important; opacity: 0 !important; width: 1px !important; height: 1px !important; margin: 0 !important; }
+#pv_target label span { margin: 0 !important; }
+#pv_target label.selected {
+    background: var(--button-primary-background-fill) !important; color: var(--button-primary-text-color, #fff) !important; font-weight: 600;
+}
+#pv_io_row > button {
+    flex: 0 0 auto !important; width: auto !important; min-width: 0 !important; margin: 0 !important;
+    height: 34px !important; min-height: 34px !important; max-height: 34px !important; padding: 0 14px !important;
+    border-radius: 8px !important; white-space: nowrap; font-size: 13.5px !important;
+}
+#pv_io_row > #pv_pull { margin-left: auto !important; }
+
+/* TIPO / Rewrite / Image: tabs over one card */
+#pv_tools {
+    gap: 0 !important; border: 1px solid var(--border-color-primary) !important; border-radius: 10px !important;
+    background: var(--block-background-fill) !important; overflow: hidden;
+}
+#pv_tool_rail { padding: 0 !important; margin: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+#pv_tool_rail > span, #pv_tool_rail > .wrap:first-child:empty { display: none !important; }
+#pv_tool_rail .wrap { display: flex !important; flex-wrap: nowrap !important; gap: 0 !important; width: 100% !important;
+    border: 0 !important; border-bottom: 1px solid var(--border-color-primary) !important; background: transparent !important; padding: 0 !important; }
+#pv_tool_rail label {
+    position: relative; flex: 1 1 0 !important; margin: 0 !important; height: 40px !important; padding: 0 8px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    border: 0 !important; border-bottom: 2px solid transparent !important; border-radius: 0 !important;
+    background: transparent !important; box-shadow: none !important; cursor: pointer; font-size: 13.5px; opacity: 0.7;
+}
+#pv_tool_rail label:hover { opacity: 1; }
+#pv_tool_rail label input { position: absolute !important; opacity: 0 !important; width: 1px !important; height: 1px !important; margin: 0 !important; }
+#pv_tool_rail label span { margin: 0 !important; }
+#pv_tool_rail label.selected { opacity: 1; font-weight: 600; border-bottom-color: var(--pv-muse-accent) !important; }
+#pv_tool_pane { min-width: 0; background: transparent !important; border: 0 !important; padding: 0 !important; gap: 0 !important; }
+#pv_tipo, #pv_qwen, #pv_image { padding: 12px 14px 14px !important; border: 0 !important; background: transparent !important; gap: 10px !important; }
+#pv_tipo > *, #pv_qwen > *, #pv_image > * { border: 0 !important; }
+
+.pv-emoji-pop {
+    position: absolute; z-index: 40; bottom: 100%; left: 0; margin-bottom: 6px; width: 320px;
+    padding: 8px; border-radius: 10px; border: 1px solid var(--border-color-primary);
+    background: var(--block-background-fill, #1c1c1c); color: var(--body-text-color, #eee);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.pv-emoji-scroll { max-height: 240px; overflow-y: auto; }
+.pv-emoji-label { margin: 6px 2px 2px; font-size: 11px; opacity: 0.55; }
+.pv-emoji-grid { display: flex; flex-wrap: wrap; gap: 2px; }
+.pv-emoji-grid button {
+    width: 30px; height: 30px; padding: 0; border: 0; border-radius: 6px;
+    background: transparent; color: inherit; font-size: 18px; cursor: pointer; min-height: 0;
+}
+.pv-emoji-grid button:hover { background: var(--button-secondary-background-fill); }
+.pv-emoji-make { display: flex; gap: 6px; margin-top: 8px; }
+.pv-emoji-make input {
+    flex: 1; min-width: 0; height: 32px; padding: 0 8px; border-radius: 8px;
+    border: 1px solid var(--border-color-primary);
+    background: var(--input-background-fill, #111) !important;
+    color: var(--body-text-color, #eee) !important;
+}
+.pv-emoji-make .pv-chat-btn { flex: none; }
+.pv-chat-emoji-wrap { position: relative; display: inline-flex; }
+
 #pv_toast {
     position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); z-index: 10001;
     padding: 9px 16px; border-radius: 20px; font-size: 0.9em; opacity: 0; pointer-events: none;
@@ -131,8 +237,12 @@ html body .pv-check { margin-top: 6px; }
 #pv_toast.pv-show { opacity: 1; transform: translateX(-50%) translateY(0); }
 #pv_toast.pv-bad { background: var(--error-background-fill, #c33); color: var(--error-text-color, #fff); }
 
-#pv_io_row button, #pv_tipo button, #pv_qwen button, #pv_image button, #pv_saved_acc button, #pv_ai_row button { min-height: 36px; }
+#pv_tipo button, #pv_qwen button, #pv_image button, #pv_side button, #pv_ai_row button { min-height: 36px; }
 
+@media (max-width: 900px) {
+    #pv_top { flex-wrap: wrap !important; }
+    #pv_side { flex: 1 1 100% !important; width: 100% !important; max-width: none !important; }
+}
 @media (max-width: 640px) {
     html body .pv-groups { grid-template-columns: 1fr; padding: 4px 8px 10px; }
     html body .pv-entry { flex-wrap: wrap; }
@@ -141,7 +251,7 @@ html body .pv-check { margin-top: 6px; }
 /* ------------------------------------------------------------------ Muse: the floating idea button, on every tab */
 
 html body #pv_muse_fab {
-    --pv-muse-accent: var(--color-accent, var(--button-primary-background-fill, #7c5cff));
+    --pv-muse-accent: var(--button-primary-border-color, var(--color-accent, #7c5cff));
     position: fixed; z-index: 900; width: 52px; height: 52px; padding: 0; margin: 0;
     border: none; border-radius: 50%; cursor: pointer; touch-action: none; user-select: none;
     background: var(--block-background-fill, #1f1f1f); color: var(--body-text-color);
@@ -183,7 +293,7 @@ html body .pv-muse-icon { width: 18px; height: 18px; fill: none; stroke: current
 
 /* the panel */
 html body #pv_muse_panel {
-    --pv-muse-accent: var(--color-accent, var(--button-primary-background-fill, #7c5cff));
+    --pv-muse-accent: var(--button-primary-border-color, var(--color-accent, #7c5cff));
     position: fixed; z-index: 901; width: min(380px, calc(100vw - 16px)); max-height: min(700px, calc(100vh - 16px));
     display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;
     border: 1px solid var(--border-color-primary); border-radius: 14px;
@@ -438,7 +548,7 @@ html body #pv_muse_panel .pv-muse-pane.pv-on { opacity: 1; border-bottom-color: 
 #pv_muse_panel .pv-muse-chat { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; padding: 8px 12px 10px; }
 .pv-chat-host { height: 620px; display: flex; flex-direction: column; }
 .pv-chat { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
-.pv-chat.pv-chat-drop { outline: 2px dashed var(--pv-muse-accent, #f97316); outline-offset: 4px; }
+.pv-chat.pv-chat-drop { outline: 2px dashed var(--pv-muse-accent); outline-offset: 4px; }
 .pv-chat-head, .pv-chat-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 html body .pv-chat .pv-chat-pick, html body .pv-chat .pv-chat-ctx {
     flex: 1 1 140px; min-width: 0; height: auto; margin: 0; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border-color-primary);
@@ -452,15 +562,19 @@ html body .pv-chat-btn {
 }
 html body .pv-chat-btn:hover:not(:disabled) { filter: brightness(1.15); }
 html body .pv-chat-btn:disabled { opacity: 0.45; cursor: default; }
-html body .pv-chat-btn.pv-on { border-color: var(--pv-muse-accent, #f97316); color: var(--pv-muse-accent, #f97316); }
+html body .pv-chat-btn.pv-on { border-color: var(--pv-muse-accent); color: var(--pv-muse-accent); }
 html body .pv-chat .pv-chat-btn.pv-chat-send, html body .pv-chat .pv-chat-btn.pv-chat-stop {
-    padding: 6px 18px; font-weight: 600; background: var(--pv-muse-accent, #f97316) !important; color: #fff !important; border-color: transparent;
+    padding: 6px 18px; font-weight: 600; border-color: transparent;
+    background: var(--button-primary-background-fill, var(--pv-muse-accent)) !important; color: var(--button-primary-text-color, #fff) !important;
+}
+html body .pv-chat .pv-chat-btn.pv-chat-send:hover:not(:disabled) {
+    filter: none; background: var(--button-primary-background-fill-hover, var(--button-primary-background-fill, var(--pv-muse-accent))) !important;
 }
 html body .pv-chat .pv-chat-btn.pv-chat-stop { background: #dc2626 !important; }
 .pv-chat-log { flex: 1; min-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px 2px; }
-.pv-chat-empty { margin: auto; max-width: 420px; text-align: center; opacity: 0.75; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; }
+.pv-chat-empty { margin: 12px auto auto; max-width: 420px; text-align: center; opacity: 0.75; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; }
 .pv-chat-msg { max-width: 92%; padding: 8px 12px; border-radius: 12px; line-height: 1.5; overflow-wrap: anywhere; }
-.pv-chat-mine { align-self: flex-end; background: color-mix(in srgb, var(--pv-muse-accent, #f97316) 18%, transparent); border-bottom-right-radius: 4px; }
+.pv-chat-mine { align-self: flex-end; background: color-mix(in srgb, var(--pv-muse-accent) 18%, transparent); border-bottom-right-radius: 4px; }
 .pv-chat-theirs { align-self: flex-start; background: var(--block-background-fill, rgba(127, 127, 127, 0.1)); border: 1px solid var(--border-color-primary);
     border-bottom-left-radius: 4px; }
 .pv-chat-who { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.55; margin-bottom: 3px; }
@@ -489,7 +603,7 @@ html body .pv-chat .pv-chat-input, html body .pv-chat .pv-chat-system {
     border: 1px solid var(--border-color-primary); background: var(--input-background-fill, var(--block-background-fill));
     color: var(--body-text-color); font: inherit; font-size: 14px; line-height: 1.45;
 }
-html body .pv-chat .pv-chat-input:focus { outline: none; border-color: var(--pv-muse-accent, #f97316); }
+html body .pv-chat .pv-chat-input:focus { outline: none; border-color: var(--pv-muse-accent); }
 .pv-chat-grow { flex: 1; }
 .pv-chat-hidden { display: none; }
 .pv-chat-panel { display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 10px; border: 1px solid var(--border-color-primary); }
@@ -544,7 +658,7 @@ html body textarea.pv-chat-input[readonly] { opacity: 0.85; }
 html body .pv-chat-chip { padding: 4px 10px; border-radius: 999px; font-size: 12px; cursor: pointer;
     border: 1px solid var(--border-color-primary, rgba(127, 127, 127, 0.4)); background: var(--button-secondary-background-fill, rgba(127, 127, 127, 0.12));
     color: var(--body-text-color, inherit); }
-html body .pv-chat-chip:hover, html body .pv-chat-chip.pv-on { border-color: #f97316; }
+html body .pv-chat-chip:hover, html body .pv-chat-chip.pv-on { border-color: var(--pv-muse-accent); }
 html body select.pv-chat-preset { flex: 1; min-width: 0; padding: 4px 6px; border-radius: 6px; font: inherit; font-size: 12.5px;
     color: var(--body-text-color, inherit) !important; background: var(--input-background-fill, rgba(0, 0, 0, 0.25)) !important;
     border: 1px solid var(--input-border-color, rgba(127, 127, 127, 0.4)) !important; }
@@ -563,3 +677,6 @@ html body select.pv-chat-ctx { max-width: 150px; min-width: 0; flex: 0 1 auto; }
 html body .pv-chat-btn.pv-ctx-tool { padding: 1px 7px; font-size: 11px; }
 .pv-chat-compacted summary { color: #a78bfa; }
 .pv-chat-archived { font-size: 12px; opacity: 0.6; margin: 4px 0; white-space: pre-wrap; }
+
+/* on Muse's own card its settings are the ⚙ above: no second way there */
+#pv_muse_panel .pv-chat-to-muse { display: none !important; }

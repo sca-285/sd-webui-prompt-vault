@@ -269,6 +269,9 @@ chat._stream = real
 asked = seen[0][1]["content"]
 assert seen[0][0]["content"] == chat.ENHANCE_SYSTEM and asked.endswith("make her look sad pls") and "1girl, red hair" in asked
 assert asked.startswith("The conversation so far:") and "User: a red-haired knight" in asked, asked[:300]
+r = c.post(B + "/emoji", json={"hint": "sad cat in the rain"})
+assert r.status_code == 200 and isinstance(r.json()["emoji"], list), r.text  # the fake answers words: no emoji
+assert c.post(B + "/emoji", json={"hint": ""}).json()["emoji"] == []
 print("assist ok")
 
 # how full the context is, and what is kept for the answer (three times as much when the model thinks first)

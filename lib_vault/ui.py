@@ -107,81 +107,83 @@ def _copyable(**kwargs):
 
 def build():
     with gr.Blocks(analytics_enabled=False) as tab:
-        # ============================================================ editor
-        with gr.Group(elem_id="pv_editor"):
-            positive = _copyable(label="Positive", lines=4, elem_id="pv_positive",
-                                 placeholder="Type, pick tags from the library below, or pull from txt2img")
-            negative = _copyable(label="Negative", lines=2, elem_id="pv_negative",
-                                 placeholder="Negative prompt; tags of the Negative categories land here")
-        gr.HTML("<div id='pv_editor_tools'></div>")
-        with gr.Row(elem_id="pv_io_row", equal_height=True):
-            target = gr.Radio(["txt2img", "img2img"], value="txt2img", label="Workspace", elem_id="pv_target",
-                              scale=2)
-            pull = gr.Button("📥 Pull from workspace", elem_id="pv_pull", scale=1)
-            send = gr.Button("📤 Send to workspace", variant="primary", elem_id="pv_send", scale=1)
-            clear = gr.Button("🧹 Clear", elem_id="pv_clear", scale=1)
+        with gr.Row(elem_id="pv_top"):
+            with gr.Column(scale=3, elem_id="pv_editor_col"):
+                with gr.Group(elem_id="pv_editor"):
+                    positive = _copyable(label="Positive", lines=4, elem_id="pv_positive",
+                                         placeholder="Type, pick tags from the library below, or pull from txt2img")
+                    negative = _copyable(label="Negative", lines=2, elem_id="pv_negative",
+                                         placeholder="Negative prompt; tags of the Negative categories land here")
+                gr.HTML("<div id='pv_editor_tools'></div>")
+                with gr.Row(elem_id="pv_io_row"):
+                    target = gr.Radio(["txt2img", "img2img"], value="txt2img", label="Workspace",
+                                      elem_id="pv_target", scale=0, min_width=220)
+                    pull = gr.Button("📥 Pull", elem_id="pv_pull", scale=0, min_width=0)
+                    send = gr.Button("📤 Send", variant="primary", elem_id="pv_send", scale=0, min_width=0)
+                    clear = gr.Button("🧹 Clear", elem_id="pv_clear", scale=0, min_width=0)
+                with gr.Column(elem_id="pv_tools"):
+                    tool = gr.Radio(["TIPO", "Rewrite", "Image"], value="TIPO", show_label=False,
+                                    elem_id="pv_tool_rail")
+                    with gr.Column(elem_id="pv_tool_pane"):
+                        with gr.Group(visible=True, elem_id="pv_tipo") as tipo_pane:
+                            gr.Markdown("Turns a few tags or a short idea into a full prompt. Runs on this machine; the model "
+                                        "(0.4-2 GB) downloads on first use. Settings → **Prompt Vault (TIPO)**.",
+                                        elem_classes=["pv-help"])
+                            tipo_output = gr.Radio(tipo.OUTPUTS, value="Tags + natural language", label="Output",
+                                                   elem_id="pv_tipo_output")
+                            tipo_length = gr.Radio(tipo.LENGTHS, value="long", label="Length", elem_id="pv_tipo_length")
+                            tipo_ban = gr.Textbox(label="Never add", placeholder="e.g. text, watermark, *hat (wildcards work)",
+                                                  lines=1, elem_id="pv_tipo_ban")
+                            with gr.Row():
+                                tipo_seed = gr.Number(value=-1, precision=0, label="Seed (-1: random)", elem_id="pv_tipo_seed")
+                                tipo_temp = gr.Slider(0.1, 1.5, value=0.35, step=0.05, label="Temperature",
+                                                      elem_id="pv_tipo_temp")
+                            tipo_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_tipo_into",
+                                                 info="TIPO keeps your own tags, so Replace does not lose anything")
+                            tipo_btn = gr.Button("🌱 Expand the positive prompt", variant="primary", elem_id="pv_tipo_run")
+                            tipo_note = gr.HTML("", elem_id="pv_tipo_note")
 
-        # ============================================================ TIPO
-        with gr.Accordion("🌱 Expand with TIPO", open=False, elem_id="pv_tipo"):
-            gr.Markdown("Turns a few tags or a short idea into a full prompt. Runs on this machine; the model "
-                        "(0.4-2 GB) downloads on first use. Settings → **Prompt Vault (TIPO)**.",
-                        elem_classes=["pv-help"])
-            tipo_output = gr.Radio(tipo.OUTPUTS, value="Tags + natural language", label="Output",
-                                   elem_id="pv_tipo_output")
-            tipo_length = gr.Radio(tipo.LENGTHS, value="long", label="Length", elem_id="pv_tipo_length")
-            tipo_ban = gr.Textbox(label="Never add", placeholder="e.g. text, watermark, *hat (wildcards work)",
-                                  lines=1, elem_id="pv_tipo_ban")
-            with gr.Row():
-                tipo_seed = gr.Number(value=-1, precision=0, label="Seed (-1: random)", elem_id="pv_tipo_seed")
-                tipo_temp = gr.Slider(0.1, 1.5, value=0.35, step=0.05, label="Temperature",
-                                      elem_id="pv_tipo_temp")
-            tipo_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_tipo_into",
-                                 info="TIPO keeps your own tags, so Replace does not lose anything")
-            tipo_btn = gr.Button("🌱 Expand the positive prompt", variant="primary", elem_id="pv_tipo_run")
-            tipo_note = gr.HTML("", elem_id="pv_tipo_note")
+                        with gr.Group(visible=False, elem_id="pv_qwen") as qwen_pane:
+                            gr.Markdown("Your chat & vision model (Qwen, Gemma, Mistral, GLM…, chosen in Muse → ⚙) rewrites "
+                                        "the positive or the negative prompt.", elem_classes=["pv-help"])
+                            qwen_task = gr.Radio(list(qwen_prompts.TEXT_TASKS), value="Tags → sentence", label="Task",
+                                                 elem_id="pv_qwen_task")
+                            qwen_instruction = gr.Textbox(label="Instruction", lines=1, visible=False, elem_id="pv_qwen_instruction",
+                                                          placeholder="e.g. make it night time, keep the character")
+                            qwen_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_qwen_into")
+                            with gr.Row():
+                                qwen_btn = gr.Button("✍️ Rewrite the positive prompt", variant="primary", elem_id="pv_qwen_run")
+                                qwen_neg_btn = gr.Button("✍️ Rewrite the negative prompt", elem_id="pv_qwen_neg")
+                            qwen_note = gr.HTML("", elem_id="pv_qwen_note")
 
-        # ============================================================ Qwen
-        with gr.Accordion("✍️ Rewrite with the model", open=False, elem_id="pv_qwen"):
-            gr.Markdown("Your chat & vision model (Qwen, Gemma, Mistral, GLM…, chosen in Muse → ⚙) rewrites the "
-                        "positive prompt.", elem_classes=["pv-help"])
-            qwen_task = gr.Radio(list(qwen_prompts.TEXT_TASKS), value="Tags → sentence", label="Task",
-                                 elem_id="pv_qwen_task")
-            qwen_instruction = gr.Textbox(label="Instruction", lines=1, visible=False, elem_id="pv_qwen_instruction",
-                                          placeholder="e.g. make it night time, keep the character")
-            qwen_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_qwen_into")
-            qwen_btn = gr.Button("✍️ Rewrite the positive prompt", variant="primary", elem_id="pv_qwen_run")
-            qwen_note = gr.HTML("", elem_id="pv_qwen_note")
+                        with gr.Group(visible=False, elem_id="pv_image") as image_pane:
+                            gr.Markdown("WD14 gives exact Danbooru tags (anime, illustration; CPU, no VRAM). The model (one with vision) describes "
+                                        "any image in words, photos too. Both together: WD14's tags steer its description.",
+                                        elem_classes=["pv-help"])
+                            image = gr.Image(label="Image", type="pil", height=300, elem_id="pv_image_input")
+                            read_with = gr.Radio(READ_WITH, value="WD14 tags", label="Read with", elem_id="pv_read_with")
+                            with gr.Column():
+                                wd_general = gr.Slider(0.1, 0.95, value=0.35, step=0.01, label="WD14 tag threshold",
+                                                       elem_id="pv_wd_general")
+                                wd_character = gr.Slider(0.1, 0.99, value=0.85, step=0.01, label="WD14 character threshold",
+                                                         elem_id="pv_wd_character")
+                            wd_rating = gr.Checkbox(False, label="Add the rating tag (general, sensitive...)", elem_id="pv_wd_rating")
+                            image_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_image_into")
+                            read_btn = gr.Button("🔎 Read the image", variant="primary", elem_id="pv_read")
+                            info_btn = gr.Button("🧾 Use the prompt saved in the image", elem_id="pv_png_info")
+                            image_note = gr.HTML("", elem_id="pv_image_note")
 
-        # ============================================================ chat
-        with gr.Accordion("💬 Chat", open=False, elem_id="pv_chat_acc"):
-            gr.HTML("<div id='pv_chat_vault' class='pv-chat-host'></div>")
-
-        # ============================================================ image
-        with gr.Accordion("🏞️ Image → Prompt", open=False, elem_id="pv_image"):
-            gr.Markdown("WD14 gives exact Danbooru tags (anime, illustration; CPU, no VRAM). The model (one with vision) describes "
-                        "any image in words, photos too. Both together: WD14's tags steer its description.",
-                        elem_classes=["pv-help"])
-            image = gr.Image(label="Image", type="pil", height=300, elem_id="pv_image_input")
-            read_with = gr.Radio(READ_WITH, value="WD14 tags", label="Read with", elem_id="pv_read_with")
-            with gr.Row():
-                wd_general = gr.Slider(0.1, 0.95, value=0.35, step=0.01, label="WD14 tag threshold",
-                                       elem_id="pv_wd_general")
-                wd_character = gr.Slider(0.1, 0.99, value=0.85, step=0.01, label="WD14 character threshold",
-                                         elem_id="pv_wd_character")
-            wd_rating = gr.Checkbox(False, label="Add the rating tag (general, sensitive...)", elem_id="pv_wd_rating")
-            image_into = gr.Radio(INTO, value="Replace", label="Into the editor", elem_id="pv_image_into")
-            read_btn = gr.Button("🔎 Read the image", variant="primary", elem_id="pv_read")
-            info_btn = gr.Button("🧾 Use the prompt saved in the image", elem_id="pv_png_info")
-            image_note = gr.HTML("", elem_id="pv_image_note")
-
-        # ============================================================ saved / history
-        with gr.Accordion("📚 Saved prompts & history", open=False, elem_id="pv_saved_acc"):
-            with gr.Row(equal_height=True):
-                save_name = gr.Textbox(label="Name", lines=1, scale=3, elem_id="pv_save_name",
-                                       placeholder="Saving under an existing name updates it")
-                save_btn = gr.Button("📌 Save the editor", variant="primary", scale=1, elem_id="pv_save")
-            save_note = gr.HTML("")
-            gr.HTML("<div id='pv_saved'></div>")
+            with gr.Column(scale=2, elem_id="pv_side"):
+                with gr.Tabs(elem_id="pv_side_tabs"):
+                    with gr.Tab("💬 Chat"):
+                        gr.HTML("<div id='pv_chat_vault' class='pv-chat-host'></div>")
+                    with gr.Tab("📚 Saved"):
+                        with gr.Row(equal_height=True):
+                            save_name = gr.Textbox(label="Name", lines=1, scale=3, elem_id="pv_save_name",
+                                                   placeholder="Saving under an existing name updates it")
+                            save_btn = gr.Button("📌 Save the editor", variant="primary", scale=1, elem_id="pv_save")
+                        save_note = gr.HTML("")
+                        gr.HTML("<div id='pv_saved'></div>")
 
         # ============================================================ library
         gr.HTML("<div id='pv_library'><div class='pv-loading'>Loading the library…</div></div>")
@@ -202,6 +204,15 @@ def build():
         def run_qwen(pos, task, instruction, into):
             result, note = qwen.rewrite(pos, task, instruction)
             return (text.merge(pos, result, into) if result else pos), _note(note)
+
+        def run_qwen_neg(neg, task, instruction, into):
+            result, note = qwen.rewrite(neg, task, instruction)
+            return (text.merge(neg, result, into) if result else neg), _note(note)
+
+        def show_tool(name):
+            return (gr.update(visible=name == "TIPO"),
+                    gr.update(visible=name == "Rewrite"),
+                    gr.update(visible=name == "Image"))
 
         def run_read(img, how, general, character, rating, pos, into):
             if img is None:
@@ -257,12 +268,15 @@ def build():
         send.click(None, _js=JS_SEND, inputs=[target, positive, negative], outputs=[target, positive, negative])
         clear.click(lambda: ("", ""), outputs=[positive, negative])
 
+        tool.change(show_tool, inputs=[tool], outputs=[tipo_pane, qwen_pane, image_pane])
         tipo_btn.click(run_tipo, inputs=[positive, tipo_output, tipo_length, tipo_ban, tipo_seed, tipo_temp,
                                          tipo_into], outputs=[positive, tipo_note])
         qwen_task.change(lambda t: gr.update(visible=t == "Follow my instruction"), inputs=[qwen_task],
                          outputs=[qwen_instruction])
         qwen_btn.click(run_qwen, inputs=[positive, qwen_task, qwen_instruction, qwen_into],
                        outputs=[positive, qwen_note])
+        qwen_neg_btn.click(run_qwen_neg, inputs=[negative, qwen_task, qwen_instruction, qwen_into],
+                           outputs=[negative, qwen_note])
         read_btn.click(run_read, inputs=[image, read_with, wd_general, wd_character, wd_rating, positive, image_into],
                        outputs=[positive, image_note])
         info_btn.click(use_info, inputs=[image], outputs=[positive, negative, image_note])

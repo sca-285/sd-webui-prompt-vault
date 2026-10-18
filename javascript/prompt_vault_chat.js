@@ -593,6 +593,10 @@
         el('option', {value: '__new', text: '＋ New conversation'}));
         return el('div', {class: 'pv-chat-head'}, pick,
             button('＋', 'New conversation', newChat, {disabled: C.busy}),
+            button('⚙ Muse', 'Open Muse settings: the model, vision, memory, sampling', () => {
+                if (window.pvMuse && window.pvMuse.openSettings) window.pvMuse.openSettings();
+                else toast('Muse is not loaded', true);
+            }, {class: 'pv-chat-btn pv-chat-to-muse'}),
             c ? button(c.saved_as ? '💾 Saved' : '💾 Save', c.saved_as ? `Kept in prompt_vault/chats/${c.saved_as}, and as it goes on. Click: not kept any more`
                 : 'Keep it: saved in prompt_vault/chats/ (otherwise it is gone when the WebUI stops)',
             () => act(c.saved_as ? '/chat/unsave' : '/chat/save', {id: c.id}, () => toast(c.saved_as ? 'Not kept any more' : 'Saved')),
@@ -703,6 +707,60 @@
         return null;
     }
 
+    const EMOJI = {
+        'Faces': '😀😁😂🤣😃😄😅😆😉😊😋😎😍😘🥰😗😙😚🙂🤗🤩🤔🤨😐😑😶🙄😏😣😥😮🤐😯😪😫🥱😴😌😛😜😝🤤😒😓😔😕🙃🤑😲☹️🙁😖😞😟😤😢😭😦😧😨😩🤯😬😰😱🥵🥶😳🤪😵🥴😠😡🤬😷🤒🤕🤢🤮🤧😇🥳🥺🤠🤡🤥🤫🤭🧐🤓😈👿💀☠️👻👽🤖💩',
+        'Hands': '👍👎👏🙌👐🤲🤝🤞✌️🤟🤘👌🤌🤏👈👉👆👇☝️👋🤚🖐️✋🖖👊✊🤛🤜💪🙏',
+        'Hearts': '❤️🧡💛💚💙💜🖤🤍🤎💔❣️💕💞💓💗💖💘💝💋😻',
+        'Marks': '✨🔥⭐🌟💫⚡💥💯✅❌⚠️❗❓‼️⁉️💡📌📍🎯🎉🎊🎁🏆🥇🎵🎶🔔💬💭💤🌀🆗🆕🆙🆒',
+        'Nature': '☀️🌤️⛅🌥️☁️🌦️🌧️⛈️🌩️🌨️❄️☃️🌬️💨🌈🌙⭐🌸🌺🌻🌹🌷🍀🍁🍂🍃🌿🌱🌵🌴🌳🌲',
+        'Animals': '🐱🐶🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐸🐵🙈🙉🙊🐔🐧🐦🐤🦆🦅🦉🦇🐺🐗🐴🦄🐝🐛🦋🐌🐞',
+        'Food': '🍎🍊🍋🍌🍉🍇🍓🫐🍒🍑🥭🍍🥝🍅🥑🥦🥕🌽🍞🧀🍖🍗🍔🍟🍕🌭🌮🍣🍪🍩🍰☕🍵🍺',
+        'Objects': '📷🎨🖌️✏️📝📚🔖📎📁💻📱⌨️🖱️🎮🎲🧩🔮💎💍👑🎀👓🕶️⌚⏰🔑🔒🧲💊💉',
+    };
+
+    function insertAt(box, text) {
+        const a = box.selectionStart == null ? box.value.length : box.selectionStart;
+        const b = box.selectionEnd == null ? a : box.selectionEnd;
+        box.value = box.value.slice(0, a) + text + box.value.slice(b);
+        const at = a + text.length;
+        box.setSelectionRange(at, at);
+        C.draft = box.value;
+        box.focus();
+    }
+
+    function emojiButton(box) {
+        let pop = null;
+        const wrap = el('span', {class: 'pv-emoji-wrap pv-chat-emoji-wrap'});
+        const btn = button('😊', 'Insert an emoji, or ask the model for one', () => {
+            if (pop) { pop.remove(); pop = null; return; }
+            const made = el('div', {class: 'pv-emoji-grid'});
+            const hint = el('input', {type: 'text', placeholder: 'sad cat, rain, fire…', spellcheck: 'false'});
+            const chars = (s) => (typeof Intl !== 'undefined' && Intl.Segmenter)
+                ? [...new Intl.Segmenter().segment(s)].map((x) => x.segment)
+                : [...s];
+            const scroll = el('div', {class: 'pv-emoji-scroll'}, Object.entries(EMOJI).map(([name, set]) => el('div', {},
+                el('div', {class: 'pv-emoji-label', text: name}),
+                el('div', {class: 'pv-emoji-grid'}, chars(set).map((ch) => button(ch, ch, () => insertAt(box, ch)))))));
+            const make = button('Make', 'Ask the model for emoji that match this', async () => {
+                const text = hint.value.trim();
+                if (!text) { hint.focus(); return; }
+                make.disabled = true;
+                try {
+                    const data = await call('/chat/emoji', {hint: text});
+                    made.replaceChildren(...(data.emoji || []).map((ch) => button(ch, ch, () => insertAt(box, ch))));
+                    if (!data.emoji || !data.emoji.length) toast('No emoji came back', true);
+                } catch (e) { toast(e.message, true); }
+                make.disabled = false;
+            });
+            pop = el('div', {class: 'pv-emoji-pop'},
+                scroll, el('div', {class: 'pv-emoji-make'}, hint, make), made);
+            wrap.append(pop);
+            hint.focus();
+        });
+        wrap.append(btn);
+        return wrap;
+    }
+
     function composer() {
         const box = el('textarea', {class: 'pv-chat-input', rows: '2', spellcheck: 'true',
             placeholder: `Write to ${who()}… Enter sends, Shift+Enter a new line. Add ${C.list && C.list.vision === false ? '' : 'images or '}.txt/.md with 📎, paste or drop them.`});
@@ -719,6 +777,7 @@
         const pickFile = el('input', {type: 'file', multiple: true, class: 'pv-chat-hidden',
             accept: 'image/png,image/jpeg,image/webp,.txt,.md,.markdown,.json,.csv,.pdf,text/plain,text/markdown,application/json,application/pdf',
             onchange: (e) => addFiles(e.target.files)});
+        const emoji = emojiButton(box);
         const ctx = el('select', {class: 'pv-chat-ctx', title: 'Read with your message: the prompt you are working on', onchange: (e) => { C.context = e.target.value; LS.set('context', C.context); }},
             CONTEXTS.map(([v, t]) => el('option', {value: v, text: '+ ' + t, selected: v === C.context})));
         const helper = el('div', {class: 'pv-chat-assist'},
@@ -738,6 +797,7 @@
             box,
             el('div', {class: 'pv-chat-row'},
                 pickFile, button('📎', 'Add images (png, jpeg, webp), PDF, JSON, text or Markdown files', () => pickFile.click()),
+                emoji,
                 ctx,
                 el('span', {class: 'pv-chat-grow'}),
                 C.busy ? button('■ Stop', C.assisting ? 'Stop writing here' : 'Stop the answer here', stop, {class: 'pv-chat-btn pv-chat-stop'})

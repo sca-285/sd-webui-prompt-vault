@@ -79,9 +79,12 @@
         if (!tabButton) { toast('The Prompt Vault tab is not on the page', true); return; }
         tabButton.click();
         await wait(150);
-        const acc = $('#pv_image');
-        const head = acc && acc.querySelector('.label-wrap');
-        if (head && !head.classList.contains('open')) { head.click(); await wait(250); }
+        const rail = $('#pv_tool_rail');
+        const imageOpt = rail && [...rail.querySelectorAll('label, input, button')].find((n) =>
+            (n.value === 'Image') || ((n.textContent || '').trim() === 'Image'));
+        if (imageOpt) { imageOpt.click(); await wait(250); }
+        const pane = $('#pv_image');
+        if (!pane) { toast('Image → Prompt is not ready: open it once and try again', true); return; }
         const clear = $('#pv_image_input button[aria-label="Clear"], #pv_image_input button[title="Clear"]');
         if (clear) { clear.click(); await wait(250); }
         const input = $('#pv_image_input input[type="file"]');
@@ -90,7 +93,7 @@
         dt.items.add(file);
         input.files = dt.files;
         input.dispatchEvent(new Event('change', {bubbles: true}));
-        acc.scrollIntoView({behavior: 'smooth', block: 'start'});
+        pane.scrollIntoView({behavior: 'smooth', block: 'start'});
         toast('In Image → Prompt: read it, or use the prompt saved in it');
     }
 

@@ -221,6 +221,15 @@ def register(app):
     def chat_wrap(body: dict = Body(...)):
         return stream(lambda: chat.wrap_up(body.get("id")))
 
+    @app.post(f"{BASE}/chat/emoji")
+    def chat_emoji(body: dict = Body(...)):
+        from . import qwen
+
+        def go():
+            return {"emoji": qwen.emojis(body.get("hint") or "")}
+
+        return run(go)
+
     @app.post(f"{BASE}/chat/assist")
     def chat_assist(body: dict = Body(...)):
         return stream(lambda: chat.assist(body.get("id"), body.get("mode"), body.get("text"), body.get("context") or ""))
