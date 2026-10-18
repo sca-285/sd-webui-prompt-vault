@@ -381,7 +381,7 @@
         for (const file of [...list]) {
             if (C.files.length >= 8) { toast('Eight files at most on one message', true); break; }
             if (file.type.startsWith('image/')) {
-                if (file.size > 20 * 1024 * 1024) { toast(`${file.name}: too big (20 MB at most)`, true); continue; }
+                if (file.size > 100 * 1024 * 1024) { toast(`${file.name}: too big (100 MB at most)`, true); continue; }
                 const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
                 C.files.push({kind: 'image', name: file.name || 'pasted image.png', data, size: file.size});
             } else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
@@ -490,7 +490,8 @@
         if (!list || !list.length) return null;
         return el('div', {class: 'pv-chat-files'}, list.map((f, i) => el('span', {class: 'pv-chat-file', title: f.name},
             f.kind === 'image' && (f.url || f.data) ? el('img', {src: f.url || f.data, alt: f.name}) : el('span', {class: 'pv-chat-file-icon', text: f.kind === 'pdf' || f.pdf || /\.pdf/i.test(f.name) ? '📕' : /\.json$/i.test(f.name) ? '🧾' : '📄'}),
-            el('span', {class: 'pv-chat-file-name', text: f.name}),
+            el('span', {class: 'pv-chat-file-name', text: f.name + (f.pages ? ` · ${f.pages} pages` : '') + (f.notes ? ' · read' : ''),
+                title: f.chars ? `${f.name}: ${f.chars.toLocaleString()} characters` + (f.notes ? ', read as a whole once (notes kept)' : '') : f.name}),
             removable ? el('button', {type: 'button', class: 'pv-chat-file-x', title: 'Remove', text: '✕',
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
     }

@@ -6,6 +6,12 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
 ## Unreleased
 
+### Long files in the chat
+- A PDF or text file is kept whole (about 1000 pages, 100 MB): each turn the model reads the pages asked for
+  by number and the pages most about the question, with their numbers, instead of the start cut to fit.
+- A question about the whole document reads it part by part first and keeps notes on every part, once.
+- The page is no longer sent the files' text with every refresh.
+
 ### Chat context, its memory and stretching it
 - Muse → ⚙: Context up to 128K, the KV cache in f16, q8_0 or q4_0, flash attention (Auto, On, Off; an older
   llama.cpp gets the older -fa by itself), and RoPE (YaRN past what the model was

@@ -209,8 +209,8 @@ assert got[0]["kind"] == "image" and got[0]["name"] == "scan.pdf · page 1" and 
 got = chat.read_files([{"kind": "text", "name": "card.json", "data": '{"name":"Aiko","hair":"red","tags":["1girl","sundress"]}'}])
 assert got[0]["text"].startswith('{\n "name": "Aiko"'), got[0]["text"]
 assert chat.read_files([{"kind": "text", "name": "broken.json", "data": "{not json"}])[0]["text"] == "{not json"
-got = chat.read_files([{"kind": "text", "name": "novel.md", "data": "word " * 50000}, {"kind": "text", "name": "notes.txt", "data": "note " * 1000}], 20000)
-assert got[0]["cut"] and len(got[0]["text"]) + len(got[1]["text"]) <= 21000 and len(got[1]["text"]) >= 1000, [len(f["text"]) for f in got]
+got = chat.read_files([{"kind": "text", "name": "novel.md", "data": "word " * 50000}])
+assert not got[0]["cut"] and len(got[0]["text"]) == 250000  # kept whole: what the model reads is chosen each turn
 pdfc = c.post(B + "/new").json()["chat"]["id"]
 ev = send(pdfc, "what is this about?", [{"kind": "pdf", "name": "brief.pdf", "data": text_pdf(["A knight in silver armor at dawn"])}])
 assert ev[-1]["done"] and "File brief.pdf" in ev[-1]["message"]["text"], ev[-1]  # the model was given its text
@@ -220,6 +220,46 @@ r = c.post(B + "/send", json={"id": pdfc, "text": "x", "files": [{"kind": "pdf",
 assert r.status_code == 400 and "cannot be read" in r.json()["error"], r.json()
 c.post(B + "/delete", json={"id": pdfc})
 print("pdf, json, long text ok")
+
+# a PDF of 150 pages: kept whole; the model reads the pages on the question, the pages asked for by number, and for
+# a question about all of it, notes on every part (written once)
+from lib_vault import docs
+book = [f"Page {n}: notes on castle walls, moats and gate towers of the old kingdom, chapter {n // 10}." for n in range(1, 151)]
+book[96] = "Page 97: the dragon is named Vermithrax and sleeps under the bell tower."
+prompt_log = os.path.join(tmp, "prompt.json")
+os.environ["FAKE_PROMPT_LOG"] = prompt_log
+qwen.SERVER.stop()  # started again with the log
+def read_prompt():
+    msgs = json.load(open(prompt_log, encoding="utf-8"))
+    return "\n".join(p["text"] if isinstance(p, dict) else str(p) for m in msgs
+                     for p in (m["content"] if isinstance(m["content"], list) else [m["content"]]) if not isinstance(p, dict) or "text" in p)
+bc = c.post(B + "/new").json()["chat"]["id"]
+ev = send(bc, "what is the dragon named?", [{"kind": "pdf", "name": "kingdom.pdf", "data": text_pdf(book)}])
+seen_text = read_prompt()
+room = chat._file_room(chat._chats[bc])
+assert ev[-1]["done"] and "--- page 97 ---\nPage 97: the dragon is named Vermithrax" in seen_text, seen_text[:500]
+assert "[150 pages, too long to read at once" in seen_text and len(seen_text) < room + 1500, (len(seen_text), room)
+shown = c.get(B + "/one", params={"id": bc}).json()["chat"]["messages"][0]["files"][0]
+assert shown["pages"] == 150 and "text" not in shown and shown["chars"] > 10000 and not shown["notes"], shown  # the page gets no text
+full = chat._chats[bc]["messages"][0]["files"][0]
+assert len(full["text"]) == shown["chars"] and "Page 150:" in full["text"]
+assert chat._chats[bc]["messages"][0]["tokens"] < chat._tokens("", [full])  # counted as what the model reads of it
+ev = send(bc, "now read pages 140-142 for me")
+seen_text = read_prompt()
+assert all(f"--- page {n} ---" in seen_text for n in (140, 141, 142)), seen_text[:300]
+assert docs.asked_pages("trang 3 đến 5, page 9") == [3, 4, 5, 9] and docs.wants_whole("tóm tắt cả tài liệu này")
+ev = send(bc, "summarize the whole document")
+steps = [e["step"] for e in ev if "step" in e]
+assert steps and steps[0].startswith("Reading kingdom.pdf: page 1–") and steps[-1].endswith("…") and ev[-1]["done"], steps
+assert "of 1)" not in steps[0] and len(steps) >= 2, steps
+seen_text = read_prompt()
+assert "Notes on the whole document:" in seen_text and "- page 1–" in seen_text
+assert c.get(B + "/one", params={"id": bc}).json()["chat"]["messages"][0]["files"][0]["notes"]
+ev = send(bc, "and the main points again?")  # read once: not again
+assert not [e for e in ev if "step" in e] and ev[-1]["done"]
+os.environ.pop("FAKE_PROMPT_LOG")
+c.post(B + "/delete", json={"id": bc})
+print("long pdf ok")
 
 # again: the last answer replaced
 ev = send(cid, "", path="/regenerate")

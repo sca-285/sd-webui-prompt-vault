@@ -43,6 +43,9 @@ class H(BaseHTTPRequestHandler):
             return
         msgs = body["messages"]
         roles = [m["role"] for m in msgs if m["role"] != "system"]
+        if os.environ.get("FAKE_PROMPT_LOG"):  # the last request's messages, whole
+            with open(os.environ["FAKE_PROMPT_LOG"], "w", encoding="utf-8") as f:
+                json.dump(msgs, f, ensure_ascii=False)
         if os.environ.get("FAKE_BODY_LOG"):  # what each request asked, for the checks to read
             with open(os.environ["FAKE_BODY_LOG"], "a", encoding="utf-8") as f:
                 f.write(json.dumps({"model": os.path.basename(model), "roles": [m["role"] for m in msgs],

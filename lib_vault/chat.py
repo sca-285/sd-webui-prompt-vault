@@ -17,13 +17,13 @@ import threading
 import time
 import uuid
 
-from . import chat_presets, settings, store
+from . import chat_presets, docs, settings, store
 from . import context as ctx  # (send() takes a "context" of its own: the prompt being worked on)
 from . import verify as verify_mod
 
 DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
 OLD_ASSISTANT = DEFAULT_SYSTEM.replace("You are a creative assistant", "You are Qwen, a creative assistant", 1)
-TEXT_LIMIT = 200000     # characters of one text file (then cut to what the model's context holds)
+TEXT_LIMIT = 3000000    # characters of one text file (about 1000 pages); the model reads what fits (docs.py)
 PDF_IMAGES = 4          # pages of a scanned PDF shown as images to a model that sees
 FILE_LIMIT = 8          # files on one message
 IMAGE_TYPES = ("image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp")
@@ -67,6 +67,9 @@ def _view(c):
 
 def _shown(m):
     out = {k: v for k, v in m.items() if k != "others"}
+    if any(f.get("kind") == "text" for f in m.get("files") or []):  # a 500-page PDF's text stays here
+        out["files"] = [dict({k: v for k, v in f.items() if k not in ("text", "digest")}, chars=len(f.get("text") or ""),
+                             notes=bool(f.get("digest"))) if f.get("kind") == "text" else f for f in m["files"]]
     if m.get("others"):
         order = sorted([m.get("v", 0)] + [t[0].get("v", 0) for t in m["others"]])
         out["versions"], out["version"] = len(order), order.index(m.get("v", 0)) + 1
@@ -440,28 +443,15 @@ def _pdf_file(name, data_url):
     return out
 
 
-def _fit(files, chars):
-    """The text files of one message cut to what the model's context holds (the cut is told to the model)."""
-    texts = [f for f in files if f.get("kind") == "text"]
-    total = sum(len(f["text"]) for f in texts)
-    if total <= chars:
-        return files
-    for f in texts:
-        share = max(1000, int(chars * len(f["text"]) / total))
-        if len(f["text"]) > share:
-            f["text"], f["cut"] = f["text"][:share], True
-    return files
-
-
 def _file_room(c):
     """Characters of attached text a message may bring: most of what the context has room for, some left for
     the conversation itself."""
     return max(4000, int(ctx.room(c) * 0.75 * 3.0))
 
 
-def read_files(files, room_chars=None):
+def read_files(files):
     """What was attached to a message: images (png, jpeg, webp), PDF (its text, or a scanned one's pages as images),
-    JSON, text and Markdown; the text cut to what the model's context holds (room_chars)."""
+    JSON, text and Markdown. Kept whole; what the model reads of a long one each turn is chosen then (docs.py)."""
     out = []
     for f in (files or [])[:FILE_LIMIT]:
         if not isinstance(f, dict):
@@ -476,35 +466,41 @@ def read_files(files, room_chars=None):
             out.append(_json_file(name, f.get("data")))
         else:
             out.append(_text_file(name, f.get("data")))
-    return _fit(out, room_chars) if room_chars else out
+    return out
 
 
-def _tokens(text, files):
+def _tokens(text, files, file_chars=None):
     """A rough count, to keep a conversation within the model's context: English runs about 3.2 characters a token,
     Vietnamese, Chinese and the like fewer (their accented and non-Latin letters count double)."""
     text = text or ""
     wide = sum(1 for ch in text if ord(ch) > 127)
     n = (len(text) - wide) / 3.2 + wide / 1.6
+    texts = 0
     for f in files or []:
-        n += (f.get("w", 1024) * f.get("h", 1024) / 1024) if f.get("kind") == "image" else len(f.get("text") or "") / 3.2
+        if f.get("kind") == "image":
+            n += f.get("w", 1024) * f.get("h", 1024) / 1024
+        else:
+            texts += len(f.get("text") or "")
+    n += min(texts, file_chars or texts) / 3.2  # a long file: what of it the model is given (file_chars at most)
     return int(n) + 8
 
 
 # ------------------------------------------------------------------ talking
 
 
-def _content(m, vision=True):
+def _content(m, vision=True, views=None):
     """A message as the model reads it: images as images (as a note, for a model that reads no images), files as
-    text, then the words."""
+    text (views: what is read of a long one, by (message id, file index)), then the words."""
     parts = []
-    for f in m.get("files") or []:
+    for i, f in enumerate(m.get("files") or []):
         if f.get("kind") == "image" and f.get("url") and not vision:
             parts.append({"type": "text", "text": f"[an image, {f.get('name')}: not shown, the model in use reads no images]"})
         elif f.get("kind") == "image" and f.get("url"):
             parts.append({"type": "image_url", "image_url": {"url": f["url"]}})
         elif f.get("kind") == "text":
             note = " (cut: the file is longer than the model can read at once; ask for a part)" if f.get("cut") else ""
-            parts.append({"type": "text", "text": f"File {f.get('name')}{note}:\n```\n{f.get('text', '')}\n```"})
+            text = (views or {}).get((m["id"], i), f.get("text", ""))
+            parts.append({"type": "text", "text": f"File {f.get('name')}{note}:\n```\n{text}\n```"})
     words = m["text"]
     if m.get("context"):
         words = f"{m['context']}\n\n{words}" if words else m["context"]
@@ -731,6 +727,9 @@ def _as_text(c, messages, chars):
     for m in messages:
         names = ", ".join(f.get("name", "") for f in m.get("files") or [])
         lines.append(("User" if m["role"] == "user" else "Assistant") + (f" [files: {names}]" if names else "") + ":\n" + m["text"][:6000])
+        for f in m.get("files") or []:  # a long file read as a whole: its notes go into the summary too
+            if f.get("digest"):
+                lines.append(f"Notes on {f.get('name')}:\n" + "\n".join(f"- {d['label']}: {d['text']}" for d in f["digest"])[:4000])
     text = "\n\n".join(lines)
     return text if len(text) <= chars else "[…]\n" + text[-chars:]
 
@@ -850,23 +849,23 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             if old["role"] != "user":
                 raise store.VaultError("Only your own messages can be edited.")
             words = str(words or "").strip()
-            got = read_files(files, _file_room(c)) if files else old.get("files") or []
+            got = read_files(files) if files else old.get("files") or []
             if not words and not got:
                 raise store.VaultError("Write something, or add a file.")
             others, v = _branch(c, i)
             msg = {"id": uuid.uuid4().hex[:10], "role": "user", "text": words, "files": got, "time": time.time(),
                    "context": old.get("context", ""), "v": v, "others": others}
-            msg["tokens"] = _tokens(words + msg["context"], got)
+            msg["tokens"] = _tokens(words + msg["context"], got, _file_room(c))
             c["messages"].append(msg)
             _touch(c)
         else:
             words = str(words or "").strip()
-            got = read_files(files, _file_room(c))
+            got = read_files(files)
             if not words and not got:
                 raise store.VaultError("Write something, or add a file.")
             msg = {"id": uuid.uuid4().hex[:10], "role": "user", "text": words, "files": got, "time": time.time(),
                    "context": str(context or "")[:6000]}
-            msg["tokens"] = _tokens(words + msg["context"], got)
+            msg["tokens"] = _tokens(words + msg["context"], got, _file_room(c))
             c["messages"].append(msg)
             if c["title"] == "New conversation":
                 first = words or (got[0]["name"] if got else "")
@@ -879,13 +878,17 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         auto = bool(settings.opt("pv_chat_autocompact")) and len(c["messages"]) > KEEP + 1 and \
             full["used"] > (full["room"] - extra) * AUTO_AT
 
+    def asked(window):
+        return next((m["text"] for m in reversed(window) if m["role"] == "user"), "")
+
     def prompt():
         with _lock:
             live = _get(cid)
             window, left = ctx.window(live, extra)
             system = system_of(live)
+            views = docs.views(window, asked(window), _file_room(live))
             return ([{"role": "system", "content": system}] if system else []) + \
-                [{"role": m["role"], "content": _content(m, vision)} for m in window], left
+                [{"role": m["role"], "content": _content(m, vision, views)} for m in window], left
 
     messages, left_out = prompt()
 
@@ -897,6 +900,19 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                 messages, left_out = prompt()
             except Exception as exc:
                 yield {"step": f"Could not compact ({exc}); the oldest messages are left out instead"}
+        with _lock:  # a question about the whole of a long file: it is read part by part first, once
+            live = _get(cid)
+            window = ctx.window(live, extra)[0]
+            todo, room = docs.needs_digest(window, asked(window), _file_room(live)), int(_file_room(live) * 0.6)
+        try:
+            for f in todo:
+                yield from docs.digest(f, room, _complete, stop)
+            if todo:
+                with _lock:
+                    _touch(_get(cid))
+                messages, left_out = prompt()
+        except Exception as exc:
+            yield {"step": f"Could not read the whole file ({exc}); answering from the pages on the question"}
         yield {"start": True, "left_out": left_out}
         text, thought, started = [], [], time.time()
         checked = None

@@ -63,8 +63,14 @@ Qwen-VL and the WD14 tagger) in one tab.
     back to an earlier version, with the conversation that followed it. Saved and exported with them.
   - **Files**: images (png, jpeg, webp) are shown to a model that sees; **PDF** files are read page by
     page (a scanned PDF, with no text in it, is shown as the images of its first pages); **JSON**, text
-    and Markdown files are read into the conversation. Add them with 📎, paste them or drop them. A file
-    longer than the model's context holds is cut to fit, and the model is told it was cut.
+    and Markdown files are read into the conversation. Add them with 📎, paste them or drop them (100 MB
+    at most). **A long file** (a PDF of hundreds of pages, about 1000 at most) is kept whole, and each turn
+    the model reads what fits in its context: all of it when it fits, else the pages you ask for by number
+    ("page 57", "pages 10-14", "trang 12") and the pages most about your question, with their page
+    numbers. A question about the whole of it ("summarize", "the main points", "tóm tắt"…) first has it
+    read part by part, each part summed up into notes (once; the file's chip then says *read*), and the
+    answer comes from those notes and the pages on the question. The bigger the Context in Muse → ⚙,
+    the more pages at once and the fewer parts.
   - **The prompt you work on**, read with your message when you choose it: Muse's idea, the Vault
     editor or txt2img's prompt ("make it rainy and at night").
   - **An answer, put to use**: Copy, → Vault, → txt2img, → Muse (as *Your prompt*, to build an idea
