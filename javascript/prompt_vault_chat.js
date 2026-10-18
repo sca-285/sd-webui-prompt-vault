@@ -491,7 +491,7 @@
         if (!list || !list.length) return null;
         return el('div', {class: 'pv-chat-files'}, list.map((f, i) => el('span', {class: 'pv-chat-file', title: f.name},
             f.kind === 'image' && (f.url || f.data) ? el('img', {src: f.url || f.data, alt: f.name}) : el('span', {class: 'pv-chat-file-icon', text: f.kind === 'pdf' || f.pdf || /\.pdf/i.test(f.name) ? '📕' : /\.json$/i.test(f.name) ? '🧾' : '📄'}),
-            el('span', {class: 'pv-chat-file-name', text: f.name + (f.pages ? ` · ${f.pages} pages` : '') + (f.notes ? ' · read' : ''),
+            el('span', {class: 'pv-chat-file-name', text: f.name + (f.pages ? ` · ${f.pages} pages` : '') + (f.unread ? ` · ${f.unread} scanned to read` : f.ocr_pages ? ' · OCR' : '') + (f.notes ? ' · read' : ''),
                 title: f.chars ? `${f.name}: ${f.chars.toLocaleString()} characters` + (f.notes ? ', read as a whole once (notes kept)' : '') : f.name}),
             removable ? el('button', {type: 'button', class: 'pv-chat-file-x', title: 'Remove', text: '✕',
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));

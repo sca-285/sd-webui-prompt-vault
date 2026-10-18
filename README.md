@@ -62,7 +62,7 @@ Qwen-VL and the WD14 tagger) in one tab.
     words; ↻ Again on any answer gives a new one. Nothing is lost: **‹ 2/3 ›** under a message goes
     back to an earlier version, with the conversation that followed it. Saved and exported with them.
   - **Files**: images (png, jpeg, webp) are shown to a model that sees; **PDF** files are read page by
-    page (a scanned PDF, with no text in it, is shown as the images of its first pages); **JSON**, text
+    page; **JSON**, text
     and Markdown files are read into the conversation. Add them with 📎, paste them or drop them (100 MB
     at most). **A long file** (a PDF of hundreds of pages, about 1000 at most) is kept whole, and each turn
     the model reads what fits in its context: all of it when it fits, else the pages you ask for by number
@@ -71,6 +71,14 @@ Qwen-VL and the WD14 tagger) in one tab.
     read part by part, each part summed up into notes (once; the file's chip then says *read*), and the
     answer comes from those notes and the pages on the question. The bigger the Context in Muse → ⚙,
     the more pages at once and the fewer parts.
+  - **Scanned PDFs (OCR)**: a page with no text in it (a scan, a photo of a page) is read by the model in
+    use when it sees (a vision projector is chosen in Muse → ⚙): page by page before the answer, every
+    letter and accent as printed, tables as rows, *Reading the scan of book.pdf: page 12 (12 of 80)…*.
+    A PDF with text and scanned pages mixed is read the same way, only its scanned pages by the model.
+    ⏹ Stop keeps what was read and the rest is read with the next message; once all is read the PDF
+    itself is no longer kept, only its text, which then works like any long file. A few seconds to a
+    minute a page, depending on the model. Off in Settings → Prompt Vault: then a scanned PDF is shown as
+    the images of its first pages.
   - **The prompt you work on**, read with your message when you choose it: Muse's idea, the Vault
     editor or txt2img's prompt ("make it rainy and at night").
   - **An answer, put to use**: Copy, → Vault, → txt2img, → Muse (as *Your prompt*, to build an idea

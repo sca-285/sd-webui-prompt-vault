@@ -3,7 +3,7 @@ saving, exporting, importing; and where the model is placed (VRAM or RAM)."""
 import base64, io, json, os, re, struct, sys, tempfile, threading, time
 sys.path.insert(0, os.environ["STUB"]); sys.path.insert(0, os.getcwd())
 from modules import shared
-from lib_vault import api, chat, context, gguf, llama, qwen, verify
+from lib_vault import api, chat, context, docs, gguf, llama, qwen, verify
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -204,8 +204,12 @@ assert "--- page 1 ---\nA knight in silver armor at dawn" in got[0]["text"] and 
 buf = io.BytesIO()
 Image.new("RGB", (300, 200), (20, 120, 200)).save(buf, "PDF")
 scanned = "data:application/pdf;base64," + base64.b64encode(buf.getvalue()).decode()
+got = chat.read_files([{"kind": "pdf", "name": "scan.pdf", "data": scanned}])  # with a model that sees: read by it (OCR)
+assert got[0]["kind"] == "text" and got[0]["ocr"]["todo"] == [1] and got[0]["text"] == "--- page 1 ---\n" + docs.UNREAD, got[0]["text"]
+shared.opts.pv_chat_ocr = False  # no OCR: the first pages as images
 got = chat.read_files([{"kind": "pdf", "name": "scan.pdf", "data": scanned}])
 assert got[0]["kind"] == "image" and got[0]["name"] == "scan.pdf · page 1" and got[0]["url"].startswith("data:image/jpeg"), got
+shared.opts.pv_chat_ocr = True
 got = chat.read_files([{"kind": "text", "name": "card.json", "data": '{"name":"Aiko","hair":"red","tags":["1girl","sundress"]}'}])
 assert got[0]["text"].startswith('{\n "name": "Aiko"'), got[0]["text"]
 assert chat.read_files([{"kind": "text", "name": "broken.json", "data": "{not json"}])[0]["text"] == "{not json"
@@ -220,6 +224,41 @@ r = c.post(B + "/send", json={"id": pdfc, "text": "x", "files": [{"kind": "pdf",
 assert r.status_code == 400 and "cannot be read" in r.json()["error"], r.json()
 c.post(B + "/delete", json={"id": pdfc})
 print("pdf, json, long text ok")
+
+# scanned pages: read by the vision model before the answer, page by page; a PDF with text and scanned pages mixed;
+# stopped half way, the rest is read with the next message
+import pypdf
+def scan_pdf(n):
+    pages = [Image.new("RGB", (400, 560), (30 * i, 90, 160)) for i in range(n)]
+    buf = io.BytesIO()
+    pages[0].save(buf, "PDF", save_all=True, append_images=pages[1:])
+    return buf.getvalue()
+writer = pypdf.PdfWriter()
+for part in (base64.b64decode(text_pdf(["Chapter one: a knight in silver armor at dawn"]).split(",", 1)[1]), scan_pdf(2)):
+    for page in pypdf.PdfReader(io.BytesIO(part)).pages:
+        writer.add_page(page)
+mixed = io.BytesIO(); writer.write(mixed)
+mixed_url = "data:application/pdf;base64," + base64.b64encode(mixed.getvalue()).decode()
+f = chat.read_files([{"kind": "pdf", "name": "mixed.pdf", "data": mixed_url}])[0]
+assert f["pages"] == 3 and f["ocr"]["todo"] == [2, 3] and "Chapter one: a knight" in f["text"], f["text"]
+stop_now = threading.Event()
+steps = chat._ocr(f, stop_now)
+assert next(steps)["step"] == "Reading the scan of mixed.pdf: page 2 (1 of 2)…"
+stop_now.set()
+assert list(steps) == [] and f["ocr"]["todo"] == [3] and f["ocr_pages"] == 1  # stopped: page 2 read, 3 left
+assert "images=1" in docs.parts(f)[1][1] and docs.parts(f)[2][1] == docs.UNREAD, docs.parts(f)
+oc = c.post(B + "/new").json()["chat"]["id"]
+ev = send(oc, "what is on these pages?", [{"kind": "pdf", "name": "scan.pdf", "data": "data:application/pdf;base64," + base64.b64encode(scan_pdf(3)).decode()}])
+steps = [e["step"] for e in ev if "step" in e]
+assert steps == [f"Reading the scan of scan.pdf: page {n} ({n} of 3)…" for n in (1, 2, 3)] and ev[-1]["done"], steps
+shown = c.get(B + "/one", params={"id": oc}).json()["chat"]["messages"][0]["files"][0]
+assert shown["unread"] == 0 and shown["ocr_pages"] == 3 and "ocr" not in shown, shown
+inner = chat._chats[oc]["messages"][0]["files"][0]
+assert "ocr" not in inner and docs.UNREAD not in inner["text"] and inner["text"].count("Transcribe this page.") == 3, inner["text"][:300]
+ev = send(oc, "and page 2?")
+assert not [e for e in ev if "step" in e]  # read once
+c.post(B + "/delete", json={"id": oc})
+print("ocr ok")
 
 # a PDF of 150 pages: kept whole; the model reads the pages on the question, the pages asked for by number, and for
 # a question about all of it, notes on every part (written once)

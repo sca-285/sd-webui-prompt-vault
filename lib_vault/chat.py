@@ -68,8 +68,9 @@ def _view(c):
 def _shown(m):
     out = {k: v for k, v in m.items() if k != "others"}
     if any(f.get("kind") == "text" for f in m.get("files") or []):  # a 500-page PDF's text stays here
-        out["files"] = [dict({k: v for k, v in f.items() if k not in ("text", "digest")}, chars=len(f.get("text") or ""),
-                             notes=bool(f.get("digest"))) if f.get("kind") == "text" else f for f in m["files"]]
+        out["files"] = [dict({k: v for k, v in f.items() if k not in ("text", "digest", "ocr")}, chars=len(f.get("text") or ""),
+                             notes=bool(f.get("digest")), unread=len((f.get("ocr") or {}).get("todo") or []))
+                        if f.get("kind") == "text" else f for f in m["files"]]
     if m.get("others"):
         order = sorted([m.get("v", 0)] + [t[0].get("v", 0) for t in m["others"]])
         out["versions"], out["version"] = len(order), order.index(m.get("v", 0)) + 1
@@ -394,8 +395,25 @@ def _pdf_reader():
                                "or run: pip install pypdf in the WebUI's venv.") from None
 
 
+def _page_image(page):
+    """The picture a scanned page is: its biggest image (a scanner puts the page in one), or None."""
+    from PIL import Image
+
+    try:
+        biggest = max(page.images, key=lambda im: len(im.data)) if page.images else None
+        if biggest is None:
+            return None
+        image = Image.open(io.BytesIO(biggest.data))
+        image.load()
+        return image
+    except Exception:
+        return None
+
+
 def _pdf_file(name, data_url):
-    """A PDF: its text, page by page; a scanned one (no text) as the images of its first pages, for a model that sees."""
+    """A PDF: its text, page by page. A page with no text (scanned) is read by the vision model, its words
+    put in place of the page (OCR, on the next answer: docs.UNREAD until then); without OCR or a model that sees,
+    a scanned PDF is shown as the images of its first pages."""
     from . import qwen
 
     head, _, b64 = str(data_url).partition(",")
@@ -406,41 +424,94 @@ def _pdf_file(name, data_url):
         reader = pypdf.PdfReader(io.BytesIO(base64.b64decode(b64)))
         if reader.is_encrypted:
             reader.decrypt("")
-        pages = []
+        pages, scanned = [], []
         for i, page in enumerate(reader.pages):
             words = (page.extract_text() or "").strip()
-            if words:
+            if len(words) < 20 and page.images:  # a scanned page (a page number or a stamp is not its text)
+                scanned.append(i + 1)
+                pages.append(f"--- page {i + 1} ---\n{docs.UNREAD}")
+            elif words:
                 pages.append(f"--- page {i + 1} ---\n{words}")
     except store.VaultError:
         raise
     except Exception as exc:
         raise store.VaultError(f"{name}: this PDF cannot be read ({exc})") from None
-    out = []
-    text = "\n\n".join(pages)
-    if len(text) >= 40 * max(1, len(reader.pages)) // 4:  # some text on most pages: read as text
-        item = _text_file(name, text)
-        item.update(kind="text", pdf=True, pages=len(reader.pages))
+    total = len(reader.pages)
+    ocr = bool(settings.opt("pv_chat_ocr")) and qwen.has_vision()
+    if scanned and ocr:
+        item = _text_file(name, "\n\n".join(pages))
+        item.update(pdf=True, pages=total, ocr={"todo": scanned[:docs.OCR_LIMIT], "data": b64})
+        return [item]
+    texts = [p for p in pages if not p.endswith(docs.UNREAD)]
+    if texts and len(texts) * 2 >= total:  # text on most pages: read as text, the scanned ones said to be unread
+        item = _text_file(name, "\n\n".join(p if not p.endswith(docs.UNREAD) else p.replace(docs.UNREAD, "[a scanned page: not read]")
+                                             for p in pages))
+        item.update(pdf=True, pages=total)
         return [item]
     if not qwen.has_vision():
-        raise store.VaultError(f"{name}: a scanned PDF (no text in it), and the model in use reads no images.")
-    from PIL import Image
-
+        raise store.VaultError(f"{name}: a scanned PDF (no text in it), and the model in use reads no images: choose "
+                               "one with a vision projector in Muse → ⚙ to read it.")
+    out = []
     for i, page in enumerate(reader.pages[:PDF_IMAGES]):
-        try:
-            biggest = max(page.images, key=lambda im: len(im.data)) if page.images else None
-            if biggest is None:
-                continue
-            image = Image.open(io.BytesIO(biggest.data))
-            image.load()
-        except Exception:
+        image = _page_image(page)
+        if image is None:
             continue
         url, size = qwen._encode(image, int(settings.opt("pv_vlm_max_image_side")))
         out.append({"kind": "image", "name": f"{name} · page {i + 1}", "url": url, "w": size[0], "h": size[1]})
     if not out:
         raise store.VaultError(f"{name}: no text and no page images could be taken from this PDF.")
-    if len(reader.pages) > PDF_IMAGES:
-        out.append(_text_file(f"{name} (note)", f"A scanned PDF of {len(reader.pages)} pages: the first {len(out)} are shown as images."))
+    if total > PDF_IMAGES:
+        out.append(_text_file(f"{name} (note)", f"A scanned PDF of {total} pages: the first {len(out)} are shown as images."))
     return out
+
+
+OCR_SYSTEM = (
+    "You transcribe a scanned page. Write out all the text on it exactly as printed, in its own language and "
+    "spelling with every accent, in reading order: headings, paragraphs, lists, captions, footnotes. Keep the "
+    "paragraphs and line breaks that matter; a table as rows with | between cells. Write [illegible] for what cannot "
+    "be read and [figure: a few words] for a picture or chart. Nothing else: no comments, no translation."
+)
+
+
+def _read_scan(image):
+    """One scanned page's words, from the vision model."""
+    from . import qwen
+
+    url, _size = qwen._encode(image, max(1400, int(settings.opt("pv_vlm_max_image_side"))))
+    with qwen._SdAside():
+        qwen.SERVER.restart_if_changed(qwen._placement())
+        qwen.SERVER.ensure()
+    body = dict(messages=[{"role": "system", "content": OCR_SYSTEM},
+                          {"role": "user", "content": [{"type": "image_url", "image_url": {"url": url}},
+                                                       {"type": "text", "text": "Transcribe this page."}]}],
+                temperature=0.0, max_tokens=2500, stream=False, chat_template_kwargs={"enable_thinking": False})
+    reply = qwen.SERVER.post("/v1/chat/completions", dict(body, messages=turns(body["messages"])), timeout=600)
+    text = reply["choices"][0]["message"]["content"]
+    if isinstance(text, list):
+        text = "".join(part.get("text", "") for part in text if isinstance(part, dict))
+    return qwen.strip_thinking(str(text or "")).strip()
+
+
+def _ocr(f, stop):
+    """The scanned pages of a PDF read, one after another (steps for the page); stopped, it goes on next time."""
+    pypdf = _pdf_reader()
+    reader = pypdf.PdfReader(io.BytesIO(base64.b64decode(f["ocr"]["data"])))
+    if reader.is_encrypted:
+        reader.decrypt("")
+    todo = f["ocr"]["todo"]
+    total, done = len(todo), 0
+    for n in list(todo):
+        if stop.is_set():
+            break
+        done += 1
+        yield {"step": f"Reading the scan of {f.get('name')}: page {n} ({done} of {total})…"}
+        image = _page_image(reader.pages[n - 1])
+        words = _read_scan(image) if image is not None else ""
+        f["text"] = docs.set_page(f["text"], n, words or "[nothing could be read on this page]")
+        todo.remove(n)
+    f["ocr_pages"] = f.get("ocr_pages", 0) + done
+    if not todo:
+        f.pop("ocr", None)  # all read: the PDF itself is no longer kept
 
 
 def _file_room(c):
@@ -902,6 +973,18 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                 messages, left_out = prompt()
             except Exception as exc:
                 yield {"step": f"Could not compact ({exc}); the oldest messages are left out instead"}
+        with _lock:  # scanned pages of a PDF: read by the vision model first (stopped, it goes on next time)
+            window = ctx.window(_get(cid), extra)[0]
+            scans = [f for m in window for f in m.get("files") or [] if (f.get("ocr") or {}).get("todo")]
+        try:
+            for f in scans:
+                yield from _ocr(f, stop)
+            if scans:
+                with _lock:
+                    _touch(_get(cid))
+                messages, left_out = prompt()
+        except Exception as exc:
+            yield {"step": f"Could not read the scanned pages ({_who()}: {exc}); answering without them"}
         with _lock:  # a question about the whole of a long file: it is read part by part first, once
             live = _get(cid)
             window = ctx.window(live, extra)[0]

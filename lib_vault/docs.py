@@ -14,6 +14,8 @@ import re
 
 from . import websearch
 
+UNREAD = "[a scanned page: read on the next answer]"
+OCR_LIMIT = 1000    # scanned pages read at most, from one PDF
 CHUNK = 1800        # characters of one part of a file that is not split in pages
 PAGE = re.compile(r"^--- page (\d+) ---\n", re.M)
 WHOLE = re.compile(
@@ -53,6 +55,12 @@ def parts(f):
     if chunk.strip():
         out.append((f"part {n + 1}", chunk.strip()))
     return out
+
+
+def set_page(text, n, words):
+    """The text of a PDF with page n's words put in place."""
+    return re.sub(rf"(^--- page {n} ---\n).*?(?=\n\n--- page \d+ ---\n|\Z)", lambda m: m.group(1) + words, text,
+                  count=1, flags=re.M | re.S)
 
 
 def wants_whole(question):

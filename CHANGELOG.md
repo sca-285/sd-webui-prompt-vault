@@ -16,6 +16,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
   the pages' own pictures, SearXNG), fetched and shrunk here, logos, icons and repeats left out.
 
 ### Long files in the chat
+- OCR: the scanned pages of a PDF (alone or mixed with text pages) read by the vision model before the
+  answer, page by page, stopped and resumed with the next message; then the PDF is not kept, only its text.
 - A PDF or text file is kept whole (about 1000 pages, 100 MB): each turn the model reads the pages asked for
   by number and the pages most about the question, with their numbers, instead of the start cut to fit.
 - A question about the whole document reads it part by part first and keeps notes on every part, once.

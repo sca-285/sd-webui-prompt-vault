@@ -76,6 +76,7 @@ DEFAULTS = {
     "pv_chat_banned": "",
     "pv_chat_sampling": "Recommended for the model",
     "pv_chat_autocompact": True,
+    "pv_chat_ocr": True,
     "pv_search_engine": "Auto",
     "pv_searxng_url": "",
     "pv_brave_key": "",
@@ -272,6 +273,10 @@ def register():
         "pv_chat_think": O(False, "Chat: let a thinking model think first")
         .info("for models that reason before answering (Qwen3.5, Qwen3.8...): better answers, much slower. Qwen3-VL "
               "Instruct does not think either way. Captions and rewriting never think"),
+        "pv_chat_ocr": O(True, "Chat: read scanned PDFs (OCR) with the vision model")
+        .info("a page with no text in it is read by the model in use, when it sees (an mmproj is chosen), before the "
+              "next answer; a few seconds to a minute a page. Stop, and it goes on with the next message. Off: the "
+              "first pages shown as images"),
         "pv_chat_autocompact": O(True, "Chat: compact by itself when the context is nearly full")
         .info("the older part is summed up before the answer, instead of being left out unread; the last messages stay"),
         "pv_chat_banned": O("", "Chat: banned words", gr.Textbox, {"lines": 4})
