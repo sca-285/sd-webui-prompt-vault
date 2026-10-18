@@ -145,6 +145,7 @@
     const who = () => (C.list && C.list.model_label) || 'Model';
 
     const presets = () => (C.list && C.list.presets) || {builtin: [], mine: [], default: ''};
+    const searching = () => !!(C.chat && (presetOf(C.chat.preset) || {}).search);
     const presetOf = (id) => [...presets().builtin, ...presets().mine].find((p) => p.id === id) || null;
     const presetLabel = (p) => (p ? `${p.icon || '⭐'} ${p.name}` : '✎ Custom');
 
@@ -514,7 +515,7 @@
             tags.length ? `${tags.length} tag${tags.length > 1 ? 's' : ''} fixed` : '', (v.problems || []).length ? 'with problems' : '']
             .filter(Boolean).join(' · ');
         return el('details', {class: 'pv-chat-thought pv-chat-checked'},
-            el('summary', {text: `🔎 Checked: ${label}`}),
+            el('summary', {text: `${v.mode === 'search' ? '🌐 Searched' : '🔎 Checked'}: ${label}`}),
             (v.queries || []).length || (v.models || []).length
                 ? el('div', {class: 'pv-chat-meta', text: 'Looked up: ' + (v.queries || []).concat((v.models || []).map((x) => x + ' (Civitai)')).join(' · ')})
                 : el('div', {class: 'pv-chat-meta', text: 'Nothing in the draft needed looking up'}),
@@ -791,7 +792,9 @@
                     () => { C.draft = box.value; assist('write'); }, {disabled: C.busy}),
                    C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null,
                    el('span', {class: 'pv-chat-grow'}),
-                   button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'
+                   searching() ? el('span', {class: 'pv-chat-btn pv-chat-verify pv-on', text: '🌐 Searches every message',
+                        title: 'The Web search preset: each message is searched on the web first, and answered from what was found. Another preset in ⚙ to stop'})
+                   : button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'
                     : 'Off. On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers',
                     () => { C.verify = !C.verify; LS.set('verify', C.verify); paint(); }, {class: 'pv-chat-btn pv-chat-verify' + (C.verify ? ' pv-on' : '')})]);
         return el('div', {class: 'pv-chat-compose'},

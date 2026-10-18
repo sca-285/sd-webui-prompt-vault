@@ -82,6 +82,23 @@ class H(BaseHTTPRequestHandler):
         self.send(404, "text/plain", "no")
 
 
+    def do_POST(self):
+        url = urllib.parse.urlparse(self.path)
+        body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")
+        seen.append((url.path, body))
+        host = "http://" + self.headers.get("Host", "")
+        if url.path == "/search":  # Tavily: results with the passages of their pages on the query
+            if self.headers.get("Authorization") != "Bearer tavily-key":
+                return self.send(401, "application/json", '{"detail": {"error": "Unauthorized"}}')
+            q = body.get("query", "")
+            passage = (f"Tavily passage on {q}: Illustrious XL v2.0 was released in 2025; the model card recommends "
+                       "Euler a, 28 steps and CFG 5 to 6, with a resolution near one megapixel. ") * 3
+            return self.send(200, "application/json", json.dumps({"query": q, "answer": None, "results": [
+                {"title": f"Tavily on {q}", "url": f"{host}/page/tavily-one", "content": passage, "score": 0.9},
+                {"title": "Short one", "url": f"{host}/page/guide?x=1&y=2", "content": "too short", "score": 0.4}]}))
+        self.send(404, "text/plain", "no")
+
+
 def start():
     server = ThreadingHTTPServer(("127.0.0.1", 0), H)
     threading.Thread(target=server.serve_forever, daemon=True).start()

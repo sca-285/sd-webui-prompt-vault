@@ -79,6 +79,7 @@ DEFAULTS = {
     "pv_search_engine": "Auto",
     "pv_searxng_url": "",
     "pv_brave_key": "",
+    "pv_tavily_key": "",
     "pv_search_read_pages": True,
     "pv_search_civitai": True,
     "pv_search_danbooru": True,
@@ -276,10 +277,14 @@ def register():
         .info("one word or phrase a line (or comma-separated): a single word is blocked while the model writes, a phrase is "
               "asked to be avoided; banned tags are also left out of the prompts an answer sends on"),
         "pv_search_engine": O("Auto", "Chat Verify: web search", gr.Radio,
-                              {"choices": ["Auto", "SearXNG", "Brave", "DuckDuckGo", "Off"]})
-        .info("what 🔎 Verify looks a draft up with. Auto: your SearXNG if its address is set, then Brave if it has a "
-              "key, then DuckDuckGo (its HTML page, then its lite page when one asks for a captcha); Wikipedia when "
-              "all find nothing. Only the search words and the pages read leave this computer"),
+                              {"choices": ["Auto", "Tavily", "SearXNG", "Brave", "DuckDuckGo", "Off"]})
+        .info("what 🔎 Verify and the 🌐 Web search preset search with. Auto: Tavily if it has a key, then your SearXNG "
+              "if its address is set, then Brave if it has a key, then DuckDuckGo (its HTML page, then its lite page "
+              "when one asks for a captcha); Wikipedia when all find nothing. Only the search words and the pages read "
+              "leave this computer"),
+        "pv_tavily_key": O("", "Chat Verify: Tavily API key").info(
+            "the best results: a search made for AI, each result with the passages of its page on the question. Free "
+            "plan at app.tavily.com (1000 credits a month; a search here takes 2)"),
         "pv_searxng_url": O("", "Chat Verify: your SearXNG's address").info("e.g. http://127.0.0.1:8888, with format: json "
                                                                                   "allowed in its settings.yml"),
         "pv_brave_key": O("", "Chat Verify: Brave Search API key").info(

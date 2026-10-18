@@ -89,7 +89,9 @@ Qwen-VL and the WD14 tagger) in one tab.
     could be wrong or out of date (and which checkpoints or LoRAs it names), looks that up, then writes the
     answer corrected, citing its sources as [1], [2] (click to open). Where the sources and the draft
     disagree, the sources win. It looks things up on:
-    - **the web**: *Auto* tries your own SearXNG if you set its address, then Brave Search if you give it
+    - **the web**: *Auto* tries **Tavily** first if you give it a key (a search made for AI: each result
+      comes with the passages of its page on the question; free plan, 1000 credits a month, 2 a search),
+      then your own SearXNG if you set its address, then Brave Search if you give it
       a key (free plan, 2000 searches a month), then DuckDuckGo, then DuckDuckGo's lite page when the
       first asks for a captcha (it does to bots, often); Wikipedia when nothing comes back. A source that
       blocks is named under **Could not**.
@@ -103,6 +105,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     sources, the tags it fixed and the first draft. Slower (two passes, the searches and the pages); only
     the search words, the model names and the pages read leave the computer. Settings → Prompt Vault:
     the search engine, SearXNG's address, Brave's key, reading pages, Civitai and Danbooru on or off.
+  - **🌐 Web search** preset: a search engine that answers. Every message is searched first (the plan
+    sees the conversation, so "and its sampler?" is searched in full, with the year for what changes),
+    the best pages are read, and the answer comes from them with [n] sources and the useful links at the
+    end. No draft first, so it is quicker than Verify. **💬 General assistant** is for anything, not
+    only images; **🌍 Translator** translates both ways (Vietnamese and English unless you name another).
   - **🚫 Banned words**, in ⚙, for every conversation: one word or phrase a line (＋ *Common clichés*
     adds the words AI writing leans on: tapestry, testament, delve…). A single word is blocked while
     Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that

@@ -6,6 +6,13 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
 ## Unreleased
 
+### Search
+- Tavily as a search engine (first in Auto with a key): results with their pages' passages on the question.
+- The search plan sees the end of the conversation and today's date: follow-ups searched in full, the year
+  added for what changes, a query in the user's language for a local subject.
+- Presets: 🌐 Web search (every message searched first, answered with sources), 💬 General assistant,
+  🌍 Translator.
+
 ### Long files in the chat
 - A PDF or text file is kept whole (about 1000 pages, 100 MB): each turn the model reads the pages asked for
   by number and the pages most about the question, with their numbers, instead of the start cut to fit.

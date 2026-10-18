@@ -1,8 +1,9 @@
-"""Looking things up for the chat's Verify: the web (your SearXNG, Brave Search with a key, DuckDuckGo), the pages
+"""Looking things up for the chat's Verify and Search: the web (Tavily or Brave Search with a key, your SearXNG,
+DuckDuckGo), the pages
 themselves (read, and their passages on the point picked out), Civitai for checkpoints and LoRAs, Wikipedia, and
 Danbooru for whether a tag exists. Only search words, model names and tag names leave the computer, and the pages read.
 
-Each source can be pointed elsewhere (PV_DDG_URL, PV_DDG_LITE_URL, PV_BRAVE_URL, PV_CIVITAI_URL, PV_WIKIPEDIA_URL,
+Each source can be pointed elsewhere (PV_TAVILY_URL, PV_DDG_URL, PV_DDG_LITE_URL, PV_BRAVE_URL, PV_CIVITAI_URL, PV_WIKIPEDIA_URL,
 PV_DANBOORU_URL), which the checks use."""
 
 from __future__ import annotations
@@ -15,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from . import settings
 
-ENGINES = ("Auto", "SearXNG", "Brave", "DuckDuckGo", "Off")
+ENGINES = ("Auto", "Tavily", "SearXNG", "Brave", "DuckDuckGo", "Off")
 AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 TIMEOUT = 12
 PAGE_BYTES = 2 * 1024 * 1024
@@ -35,6 +36,18 @@ def _get(url, params=None, json_answer=True, headers=None):
     res.raise_for_status()
     res.encoding = res.encoding if "charset" in res.headers.get("Content-Type", "") else "utf-8"
     return res.json() if json_answer else res.text
+
+
+def _post(url, body, headers=None):
+    import requests
+
+    res = requests.post(url, json=body, timeout=TIMEOUT + 18, headers=dict({"User-Agent": AGENT}, **(headers or {})))
+    if res.status_code in (401, 403):
+        raise RuntimeError(f"refused the key (HTTP {res.status_code})")
+    if res.status_code in (429, 432, 433):
+        raise Blocked(f"out of searches for now (HTTP {res.status_code})")
+    res.raise_for_status()
+    return res.json()
 
 
 def _text(fragment):
@@ -97,6 +110,24 @@ def _duckduckgo_lite(query, n):
     return out
 
 
+def _tavily(query, n):
+    """Tavily: a search made for language models. Its results come with the passages of each page on the query, so
+    they count as read."""
+    key = str(settings.opt("pv_tavily_key") or "").strip()
+    if not key:
+        raise RuntimeError("no Tavily key in Settings")
+    base = os.environ.get("PV_TAVILY_URL", "https://api.tavily.com").rstrip("/")
+    data = _post(f"{base}/search", {"query": query, "search_depth": "advanced", "max_results": n, "chunks_per_source": 3,
+                                    "include_answer": False, "include_raw_content": False},
+                 headers={"Authorization": f"Bearer {key}"})
+    out = []
+    for r in (data.get("results") or [])[:n]:
+        text = _text(r.get("content"))
+        if r.get("url"):
+            out.append({"title": _text(r.get("title")) or r["url"], "url": r["url"], "text": text[:2000], "read": len(text) > 300})
+    return out
+
+
 def _brave(query, n):
     key = str(settings.opt("pv_brave_key") or "").strip()
     if not key:
@@ -125,7 +156,7 @@ def wikipedia(query, n=2):
             for p in data.get("pages") or []]
 
 
-ENGINE_FUNCS = {"SearXNG": _searxng, "Brave": _brave, "DuckDuckGo": _duckduckgo, "DuckDuckGo lite": _duckduckgo_lite}
+ENGINE_FUNCS = {"Tavily": _tavily, "SearXNG": _searxng, "Brave": _brave, "DuckDuckGo": _duckduckgo, "DuckDuckGo lite": _duckduckgo_lite}
 
 
 def _chain():
@@ -135,6 +166,8 @@ def _chain():
         return []
     if engine == "Auto":
         chain = []
+        if str(settings.opt("pv_tavily_key") or "").strip():
+            chain.append("Tavily")
         if str(settings.opt("pv_searxng_url") or "").strip():
             chain.append("SearXNG")
         if str(settings.opt("pv_brave_key") or "").strip():
@@ -235,18 +268,24 @@ def passages(text, words, n=3, size=700):
     return [paras[i] for i in best]
 
 
+def to_read(results, pages=3):
+    """Which of the results get their page opened: the first ones not already read (Tavily's are)."""
+    return [i for i, r in enumerate(results) if not r.get("read")][:pages]
+
+
 def read_results(results, words, pages=3, chars=1400):
     """The results with the passages of their pages on the point (in parallel); a page that cannot be read keeps its
     search snippet."""
-    top = results[:pages]
-    with ThreadPoolExecutor(max_workers=max(1, len(top))) as pool:
-        texts = list(pool.map(lambda r: read_page(r["url"]), top))
-    out = []
-    for r, text in zip(top, texts):
+    todo = to_read(results, pages)
+    if not todo:
+        return results
+    with ThreadPoolExecutor(max_workers=len(todo)) as pool:
+        texts = list(pool.map(lambda i: read_page(results[i]["url"]), todo))
+    out = list(results)
+    for i, text in zip(todo, texts):
         picked = passages(text, words) if text else []
-        body = " … ".join(picked)[:chars] if picked else r.get("text", "")
-        out.append(dict(r, text=body, read=bool(picked)))
-    return out + results[pages:]
+        out[i] = dict(results[i], text=" … ".join(picked)[:chars] if picked else results[i].get("text", ""), read=bool(picked))
+    return out
 
 
 # ------------------------------------------------------------------ Civitai

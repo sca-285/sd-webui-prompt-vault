@@ -391,7 +391,9 @@ print("context meter ok")
 from lib_vault import chat_presets
 P = B + "/presets"
 pr = c.get(P).json()
-assert [p["id"] for p in pr["builtin"]] == ["assistant", "tagger", "natural", "video", "director", "story"] and pr["default"] == "assistant"
+assert [p["id"] for p in pr["builtin"]] == ["assistant", "general", "search", "translator", "tagger", "natural", "video", "director", "story"] \
+    and pr["default"] == "assistant"
+assert [p["id"] for p in pr["builtin"] if p.get("search")] == ["search"]
 assert all(p["text"] and p["name"] and p["hint"] for p in pr["builtin"]) and "image-to-video" in chat_presets.find("video")["text"]
 assert "adult" in chat_presets.find("story")["text"]
 v = c.post(B + "/new", json={"preset": "video"}).json()["chat"]
@@ -409,7 +411,7 @@ assert c.post(P + "/delete", json={"id": "tagger"}).status_code == 400
 assert c.post(P + "/default", json={"id": "nope"}).status_code == 400
 after = c.post(P + "/delete", json={"id": "my-wan-2-2-motion"}).json()
 assert not after["mine"] and after["default"] == "assistant"
-assert c.get(B).json()["presets"]["builtin"][3]["id"] == "video"
+assert c.get(B).json()["presets"]["builtin"][6]["id"] == "video"
 for x in (v, n):
     c.post(B + "/delete", json={"id": x["id"]})
 print("presets ok")
@@ -437,7 +439,9 @@ print("banned words ok")
 # Verify: a draft, looked up on the web and its tags on Danbooru, corrected, then the answer
 import fake_web
 web = fake_web.start()
-os.environ.update(PV_DDG_URL=web, PV_DDG_LITE_URL=web, PV_BRAVE_URL=web, PV_CIVITAI_URL=web, PV_WIKIPEDIA_URL=web, PV_DANBOORU_URL=web)
+def seen_tavily(i):
+    return [b for p, b in fake_web.seen if p == "/search" and "query" in b][i]
+os.environ.update(PV_TAVILY_URL=web, PV_DDG_URL=web, PV_DDG_LITE_URL=web, PV_BRAVE_URL=web, PV_CIVITAI_URL=web, PV_WIKIPEDIA_URL=web, PV_DANBOORU_URL=web)
 from lib_vault import websearch
 def ask(cid, text, verify=True, path="/send"):
     with c.stream("POST", B + path, json={"id": cid, "text": text, "files": [], "context": "", "verify": verify}) as r:
@@ -502,6 +506,43 @@ shared.opts.pv_brave_key = "wrong"
 found, problems = websearch.search_all("x")
 assert found[0]["engine"] == "DuckDuckGo" and problems[0].startswith("Brave: 401"), problems
 shared.opts.pv_brave_key = ""
+# Tavily, first in Auto when it has a key: its results come with their passages, so its pages are not opened again
+shared.opts.pv_tavily_key = "tavily-key"
+found, problems = websearch.search_all("illustrious xl cfg")
+assert found[0]["engine"] == "Tavily" and found[0]["read"] and not found[1]["read"] and not problems, found
+assert seen_tavily(-1)["search_depth"] == "advanced" and seen_tavily(-1)["chunks_per_source"] == 3
+n = len(fake_web.seen)
+ev = ask(vc, "best cfg for illustrious xl")
+v = ev[-1]["message"]["verify"]
+assert v["sources"][0]["title"] == "Tavily on best cfg for illustrious xl" and v["sources"][0]["read"], v
+assert "Reading 1 pages…" in [e.get("step") for e in ev]  # only the short one is opened
+assert [p for p, _ in fake_web.seen[n:] if p.startswith("/page/")] == ["/page/guide"]
+shared.opts.pv_tavily_key = "wrong"
+found, problems = websearch.search_all("x")
+assert found[0]["engine"] == "DuckDuckGo" and problems[0] == "Tavily: refused the key (HTTP 401)", problems
+# the Web search preset: every message searched first, answered from the results (no draft), follow-ups too
+shared.opts.pv_tavily_key = "tavily-key"
+sc = c.post(B + "/new", json={"preset": "search"}).json()["chat"]
+assert sc["preset"] == "search"
+qwen.SERVER.stop(); os.environ["FAKE_PROMPT_LOG"] = os.path.join(tmp, "search-prompt.json")
+ev = ask(sc["id"], "latest illustrious xl version", verify=False)
+steps = [e["step"] for e in ev if "step" in e]
+assert steps == ["Choosing what to search…", "Searching: latest illustrious xl version", "Reading 1 pages…", "Answering from what was found…"], steps
+m = ev[-1]["message"]
+assert m["verify"]["mode"] == "search" and "draft" not in m["verify"] and m["verify"]["sources"][0]["read"], m["verify"]
+sent = json.load(open(os.environ["FAKE_PROMPT_LOG"], encoding="utf-8"))
+last = sent[-1]["content"]
+assert sent[-1]["role"] == "user" and last.startswith("latest illustrious xl version\n\n[Web search results for this message"), last[:200]
+assert "[1] Tavily on latest illustrious xl version" in last and "Tavily passage" in last
+assert sent[0]["role"] == "system" and "web search assistant" in sent[0]["content"]
+ev = ask(sc["id"], "and its recommended sampler?", verify=False)  # the plan sees the conversation before
+assert ev[-1]["message"]["verify"]["queries"] and ev[-1]["done"]
+os.environ.pop("FAKE_PROMPT_LOG")
+assert verify._conversation([{"role": "system", "content": "s"}, {"role": "user", "content": "illustrious xl?"},
+                             {"role": "assistant", "content": "v2.0"}, {"role": "user", "content": "its sampler?"}]) \
+    == "User: illustrious xl?\nAssistant: v2.0"; qwen.SERVER.stop()
+shared.opts.pv_tavily_key = ""
+c.post(B + "/delete", json={"id": sc["id"]})
 shared.opts.pv_search_read_pages = False
 ev = ask(vc, "best sampler for illustrious xl")
 assert not ev[-1]["message"]["verify"]["sources"][0]["read"] and "Use Euler a, 28 steps &amp; CFG 5" not in ev[-1]["message"]["text"]

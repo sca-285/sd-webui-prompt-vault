@@ -873,7 +873,9 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
-        extra = verify_mod.ROOM if verify else 0
+        preset = chat_presets.find(c.get("preset") or "")
+        search = bool(preset and preset.get("search"))  # the Web search preset: the web first, for every message
+        extra = verify_mod.ROOM if verify or search else 0
         full = ctx.usage(c)
         auto = bool(settings.opt("pv_chat_autocompact")) and len(c["messages"]) > KEEP + 1 and \
             full["used"] > (full["room"] - extra) * AUTO_AT
@@ -918,7 +920,9 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         checked = None
         try:
             final = messages
-            if verify:
+            if search:
+                final, checked = yield from verify_mod.run(messages, max_tokens, stop, search_first=True)
+            elif verify:
                 final, checked = yield from verify_mod.run(messages, max_tokens, stop)
                 if final is None:  # nothing found to correct with: the draft is the answer
                     text.append(checked.get("draft", ""))
