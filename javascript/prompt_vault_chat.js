@@ -514,9 +514,11 @@
             .filter(Boolean).join(' · ');
         return el('details', {class: 'pv-chat-thought pv-chat-checked'},
             el('summary', {text: `🔎 Checked: ${label}`}),
-            (v.queries || []).length ? el('div', {class: 'pv-chat-meta', text: 'Looked up: ' + v.queries.join(' · ')}) : el('div', {class: 'pv-chat-meta', text: 'Nothing in the draft needed looking up'}),
-            sources.length ? el('ol', {class: 'pv-chat-sources'}, sources.map((x) => el('li', {},
-                el('a', {href: x.url, target: '_blank', rel: 'noopener noreferrer', text: x.title || x.url})))) : null,
+            (v.queries || []).length || (v.models || []).length
+                ? el('div', {class: 'pv-chat-meta', text: 'Looked up: ' + (v.queries || []).concat((v.models || []).map((x) => x + ' (Civitai)')).join(' · ')})
+                : el('div', {class: 'pv-chat-meta', text: 'Nothing in the draft needed looking up'}),
+            sources.length ? el('ol', {class: 'pv-chat-sources'}, sources.map((x) => el('li', {title: x.read ? 'read: the parts of this page on the question' : 'the search snippet only'},
+                el('a', {href: x.url, target: '_blank', rel: 'noopener noreferrer', text: (x.read ? '📖 ' : '') + (x.title || x.url)})))) : null,
             tags.length ? el('div', {class: 'pv-chat-meta', text: 'Not Danbooru tags: ' + tags.map((t) => t.tag + (t.suggest && t.suggest.length ? ` → ${t.suggest.join(' / ')}` : '')).join('; ')}) : null,
             (v.problems || []).length ? el('div', {class: 'pv-chat-meta pv-chat-banned-hit', text: 'Could not: ' + v.problems.join('; ')}) : null,
             v.draft ? el('details', {class: 'pv-chat-draft'}, el('summary', {text: 'The first draft'}), el('div', {class: 'pv-chat-thought-text', text: v.draft})) : null);

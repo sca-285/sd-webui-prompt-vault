@@ -4,6 +4,16 @@ Prompt Vault follows [semantic versioning](https://semver.org): a new major vers
 the library or saved-prompt files, a minor one adds features, a patch fixes them.
 Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
+## Unreleased
+
+### Chat Verify, looking things up properly
+- Search engines one after another (*Auto*): your SearXNG, Brave Search with a free key, DuckDuckGo, then
+  DuckDuckGo's lite page when the first asks for a captcha; Wikipedia last. A blocked source is named.
+- The top 3 pages are read and their passages on the question kept, instead of one-line snippets.
+- Checkpoints and LoRAs looked up on Civitai (kind, base model, trigger words, what the page says).
+- A question of fact is searched even when the model plans nothing; the sources win over the draft.
+- Settings: Brave Search key, read pages, Civitai.
+
 ## 1.1.0 (2026-10-05)
 
 ### Qwen Chat

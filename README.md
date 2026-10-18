@@ -79,13 +79,24 @@ Qwen-VL and the WD14 tagger) in one tab.
     Pick one under *Start as* in a new conversation, or in **⚙**; change its text there, **💾 Save as
     preset** to keep yours, **★ Default** for new conversations.
   - **⚙ System prompt**, per conversation.
-  - **🔎 Verify**, above the box: before you see an answer, Qwen writes a draft, picks what in it could
-    be wrong or out of date, looks that up on the web (DuckDuckGo, or your own SearXNG; Wikipedia when
-    nothing comes back), checks the tags of its prompts on Danbooru, then writes the answer corrected,
-    citing its sources as [1], [2] (click to open). **🔎 Checked** under the answer shows what was looked
-    up, the sources, the tags it fixed and the first draft. Slower (two passes and the searches); only the
-    search words leave the computer. Settings → Prompt Vault: the search engine, SearXNG's address,
-    Danbooru on or off.
+  - **🔎 Verify**, above the box: before you see an answer, the model writes a draft, picks what in it
+    could be wrong or out of date (and which checkpoints or LoRAs it names), looks that up, then writes the
+    answer corrected, citing its sources as [1], [2] (click to open). Where the sources and the draft
+    disagree, the sources win. It looks things up on:
+    - **the web**: *Auto* tries your own SearXNG if you set its address, then Brave Search if you give it
+      a key (free plan, 2000 searches a month), then DuckDuckGo, then DuckDuckGo's lite page when the
+      first asks for a captcha (it does to bots, often); Wikipedia when nothing comes back. A source that
+      blocks is named under **Could not**.
+    - **the pages themselves**: the top 3 results are opened and only their parts about the question are
+      kept, not menus or scripts (📖 in the list); the rest give their one-line snippet.
+    - **Civitai**, for a checkpoint or LoRA: its kind, base model, trigger words and what its page says.
+    - **Danbooru**, for the tags of its prompts: the ones that do not exist, and what is close.
+
+    A question of fact (numbers, versions, models, samplers, CFG, "which", "how many"…) is searched even
+    when a small model plans nothing. **🔎 Checked** under the answer shows what was looked up, the
+    sources, the tags it fixed and the first draft. Slower (two passes, the searches and the pages); only
+    the search words, the model names and the pages read leave the computer. Settings → Prompt Vault:
+    the search engine, SearXNG's address, Brave's key, reading pages, Civitai and Danbooru on or off.
   - **🚫 Banned words**, in ⚙, for every conversation: one word or phrase a line (＋ *Common clichés*
     adds the words AI writing leans on: tapestry, testament, delve…). A single word is blocked while
     Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that

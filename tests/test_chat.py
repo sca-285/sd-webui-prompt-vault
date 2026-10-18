@@ -334,7 +334,7 @@ print("banned words ok")
 # Verify: a draft, looked up on the web and its tags on Danbooru, corrected, then the answer
 import fake_web
 web = fake_web.start()
-os.environ.update(PV_DDG_URL=web, PV_WIKIPEDIA_URL=web, PV_DANBOORU_URL=web)
+os.environ.update(PV_DDG_URL=web, PV_DDG_LITE_URL=web, PV_BRAVE_URL=web, PV_CIVITAI_URL=web, PV_WIKIPEDIA_URL=web, PV_DANBOORU_URL=web)
 from lib_vault import websearch
 def ask(cid, text, verify=True, path="/send"):
     with c.stream("POST", B + path, json={"id": cid, "text": text, "files": [], "context": "", "verify": verify}) as r:
@@ -343,13 +343,32 @@ def ask(cid, text, verify=True, path="/send"):
 vc = c.post(B + "/new").json()["chat"]["id"]
 ev = ask(vc, "best sampler for illustrious xl")
 steps = [e["step"] for e in ev if "step" in e]
-assert steps[:2] == ["Writing a first draft…", "Choosing what to check…"] and steps[2].startswith("Searching: ") and steps[-1].startswith("Correcting"), steps
+assert steps[:3] == ["Writing a first draft…", "Choosing what to check…", "Searching: best sampler for illustrious xl"], steps
+assert steps[3] == "Reading 2 pages…" and steps[-1].startswith("Correcting"), steps
 m = ev[-1]["message"]
 v = m["verify"]
-assert v["queries"] and v["sources"][0] == {"n": 1, "title": f"Guide to {v['queries'][0]}", "url": "https://example.org/guide?x=1&y=2"}, v
-assert v["sources"][1]["title"] == "Second “page”" and len(v["sources"]) == 2 and v["draft"].startswith("messages=2")  # the advert left out
-assert m["text"].startswith("REVISED | [1] Guide to") and "Euler a, 28 steps & CFG 5" in m["text"] and not v["problems"], m["text"]
+assert v["sources"][0] == {"n": 1, "title": "Guide to best sampler for illustrious xl", "url": web + "/page/guide?x=1&y=2", "read": True}, v
+assert v["sources"][1]["title"] == "Second “page”" and not v["sources"][1]["read"] and len(v["sources"]) == 2  # the advert left out
+assert v["draft"].startswith("messages=2") and not v["problems"], v
+# the page was read: the passage on the point, not its menu, scripts or the snippet
+assert m["text"].startswith("REVISED | [1] Guide to") and "Euler a with 28 steps and CFG 5" in m["text"], m["text"]
+assert "Sampler menu" not in m["text"] and "tracking" not in m["text"] and "Paragraph 3 " not in m["text"]
 assert "".join(e.get("delta", "") for e in ev).strip() == m["text"]  # only the corrected answer is streamed
+# a checkpoint named: Civitai's page of it too
+ev = ask(vc, "which checkpoint is Illustrious XL based on")
+v = ev[-1]["message"]["verify"]
+assert v["models"] == ["Illustrious XL"] and "Looking up Illustrious XL on Civitai…" in [e.get("step") for e in ev], v
+civ = next(x for x in v["sources"] if "Civitai" in x["title"])
+assert civ["url"] == "https://civitai.com/models/795765" and civ["read"]
+civ_text = websearch.civitai("Illustrious XL")[0]["text"]
+assert civ_text.startswith("Checkpoint · base model Illustrious · version v2.0 · trigger words: masterpiece, best quality. Use CFG 5"), civ_text
+# a small model planning nothing for a question of fact: the question itself is searched
+ev = ask(vc, "lazy: what CFG for Pony v6")
+assert ev[-1]["message"]["verify"]["queries"] == ["lazy: what CFG for Pony v6"] and ev[-1]["message"]["verify"]["sources"]
+# DuckDuckGo asking for a captcha: its lite page instead, and said so (the page has nothing on "captcha": its snippet)
+ev = ask(vc, "captcha me")
+v = ev[-1]["message"]["verify"]
+assert v["sources"][0]["title"] == "Lite guide" and not v["sources"][0]["read"] and "captcha" in v["problems"][0], v
 # a prompt with made-up tags: Danbooru says which do not exist, and what is close
 ev = ask(vc, "no check, just tags:\n```\n1girl, (red hair:1.2), glowing tapestry hair, sun dres, masterpiece, hatsune miku \\(cosplay\\)\n```")
 v = ev[-1]["message"]["verify"]
@@ -370,13 +389,29 @@ assert not ev[-1]["message"]["verify"]["sources"] and len(fake_web.seen) == n an
 shared.opts.pv_search_engine = "SearXNG"; shared.opts.pv_searxng_url = web
 ev = ask(vc, "what is the answer")
 assert ev[-1]["message"]["verify"]["sources"][0]["url"] == "https://searx.example/one"
-shared.opts.pv_search_engine = "DuckDuckGo"
+# Auto: SearXNG when set, else Brave with a key, else DuckDuckGo
+shared.opts.pv_search_engine = "Auto"
+assert websearch.search_all("x")[0][0]["engine"] == "SearXNG"
+shared.opts.pv_searxng_url = ""; shared.opts.pv_brave_key = "brave-key"
+found, problems = websearch.search_all("x")
+assert found[0]["engine"] == "Brave" and found[0]["title"] == "From Brave" and not problems
+shared.opts.pv_brave_key = "wrong"
+found, problems = websearch.search_all("x")
+assert found[0]["engine"] == "DuckDuckGo" and problems[0].startswith("Brave: 401"), problems
+shared.opts.pv_brave_key = ""
+shared.opts.pv_search_read_pages = False
+ev = ask(vc, "best sampler for illustrious xl")
+assert not ev[-1]["message"]["verify"]["sources"][0]["read"] and "Use Euler a, 28 steps &amp; CFG 5" not in ev[-1]["message"]["text"]
+assert "Use Euler a, 28 steps & CFG 5" in ev[-1]["message"]["text"]  # the snippet only
+shared.opts.pv_search_read_pages = True
 # Again and edit can verify too; without Verify nothing is looked up
 again = ask(vc, "", path="/regenerate")
 assert again[-1]["message"]["verify"]["sources"]
 n = len(fake_web.seen)
 plain = ask(vc, "no verify", verify=False)
 assert "verify" not in plain[-1]["message"] and len(fake_web.seen) == n
+assert websearch.passages("a\nb sampler cfg\nc", ["sampler", "cfg"], size=3) == ["b sampler cfg"]
+assert "x" not in websearch.page_text("<nav>x</nav><p>kept</p>") and websearch.page_text("<nav>x</nav><p>kept</p>") == "kept"
 assert websearch.tag_name("(kaleidoscope:1.2)") == "kaleidoscope" and websearch.tag_name("best quality") == ""
 assert chat.code_tags("x ```\na, b, c\n``` y ```\nnot tags\n```") == ["a", "b", "c"]
 c.post(B + "/delete", json={"id": vc})

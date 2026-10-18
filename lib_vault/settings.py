@@ -73,8 +73,11 @@ DEFAULTS = {
     "pv_chat_banned": "",
     "pv_chat_sampling": "Recommended for the model",
     "pv_chat_autocompact": True,
-    "pv_search_engine": "DuckDuckGo",
+    "pv_search_engine": "Auto",
     "pv_searxng_url": "",
+    "pv_brave_key": "",
+    "pv_search_read_pages": True,
+    "pv_search_civitai": True,
     "pv_search_danbooru": True,
     # TIPO
     "pv_tipo_model": "TIPO-500M-ft (recommended)",
@@ -254,11 +257,21 @@ def register():
               "their top-p and top-k); mine: the temperature below for every model"),
         "pv_chat_autocompact": O(True, "Chat: compact by itself when the context is nearly full")
         .info("the older part is summed up before the answer, instead of being left out unread; the last messages stay"),
-        "pv_search_engine": O("DuckDuckGo", "Chat Verify: web search", gr.Radio, {"choices": ["DuckDuckGo", "SearXNG", "Off"]})
-        .info("what 🔎 Verify looks a draft up with; only the search words leave this computer. Wikipedia is asked when "
-              "it finds nothing"),
+        "pv_search_engine": O("Auto", "Chat Verify: web search", gr.Radio,
+                              {"choices": ["Auto", "SearXNG", "Brave", "DuckDuckGo", "Off"]})
+        .info("what 🔎 Verify looks a draft up with. Auto: your SearXNG if its address is set, then Brave if it has a "
+              "key, then DuckDuckGo (its HTML page, then its lite page when one asks for a captcha); Wikipedia when "
+              "all find nothing. Only the search words and the pages read leave this computer"),
         "pv_searxng_url": O("", "Chat Verify: your SearXNG's address").info("e.g. http://127.0.0.1:8888, with format: json "
                                                                                   "allowed in its settings.yml"),
+        "pv_brave_key": O("", "Chat Verify: Brave Search API key").info(
+            "free plan at api-dashboard.search.brave.com (2000 searches a month); steadier than DuckDuckGo, which "
+            "blocks often"),
+        "pv_search_read_pages": O(True, "Chat Verify: open the best pages and read them")
+        .info("the parts of the top 3 pages that are about the question, not just the search's one-line snippets; "
+              "a few seconds more"),
+        "pv_search_civitai": O(True, "Chat Verify: look checkpoints and LoRAs up on Civitai")
+        .info("kind, base model, trigger words and what the model's page says"),
         "pv_search_danbooru": O(True, "Chat Verify: check the tags of a prompt on Danbooru"),
         "pv_chat_think": O(False, "Chat: let a thinking model think first")
         .info("for models that reason before answering (Qwen3.5, Qwen3.8...): better answers, much slower. Qwen3-VL "
