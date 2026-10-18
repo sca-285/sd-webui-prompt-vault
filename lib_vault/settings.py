@@ -82,6 +82,7 @@ DEFAULTS = {
     "pv_tavily_key": "",
     "pv_search_read_pages": True,
     "pv_search_civitai": True,
+    "pv_search_pictures": True,
     "pv_search_danbooru": True,
     # TIPO
     "pv_tipo_model": "TIPO-500M-ft (recommended)",
@@ -296,6 +297,9 @@ def register():
         "pv_search_civitai": O(True, "Chat Verify: look checkpoints and LoRAs up on Civitai")
         .info("kind, base model, trigger words and what the model's page says"),
         "pv_search_danbooru": O(True, "Chat Verify: check the tags of a prompt on Danbooru"),
+        "pv_search_pictures": O(True, "Chat Verify: show pictures of what an answer is about")
+        .info("with 🌐 Web search, 2 or 3 pictures of the person, place or thing asked about (also with 🔎 Verify when "
+              "the message asks for pictures); from Tavily, Wikipedia, the pages read and your SearXNG"),
     })
     add(SECTION_TIPO, {
         "pv_tipo_model": O("TIPO-500M-ft (recommended)", "TIPO model", gr.Dropdown,

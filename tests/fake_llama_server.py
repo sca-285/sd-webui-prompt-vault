@@ -77,7 +77,8 @@ class H(BaseHTTPRequestHandler):
             asked = words.split("The user's message:\n", 1)[-1].split("\n\n", 1)[0]
             lazy = "no check" in asked or asked.startswith("lazy")  # a small model planning nothing
             answer = json.dumps({"queries": [] if lazy else [asked[:60]],
-                                 "models": ["Illustrious XL"] if "checkpoint" in asked and not lazy else []})
+                                 "models": ["Illustrious XL"] if "checkpoint" in asked and not lazy else [],
+                                 "pictures": asked.replace("who is ", "")[:60] if "who is" in asked else ""})
         elif words.startswith("Before your answer reaches the user"):  # Verify's correction: what it was given
             answer = "REVISED | " + words.split("\n\n", 1)[-1][:400]
         if not body.get("stream"):

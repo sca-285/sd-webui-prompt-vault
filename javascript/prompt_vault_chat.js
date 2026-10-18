@@ -497,6 +497,16 @@
                 onclick: () => { C.files.splice(i, 1); paint(); }}) : null)));
     }
 
+    // pictures found with an answer (🌐 Web search): each opens the page it came from
+    function pictures(list) {
+        if (!list || !list.length) return null;
+        const site = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+        return el('div', {class: 'pv-chat-pictures'}, list.map((p) => el('a', {class: 'pv-chat-picture', href: p.page || p.src,
+            target: '_blank', rel: 'noopener noreferrer', title: (p.title ? p.title + ' · ' : '') + (p.page || p.src)},
+            el('img', {src: p.url, alt: p.title || 'picture', loading: 'lazy'}),
+            el('span', {class: 'pv-chat-picture-from', text: site(p.page || p.src)}))));
+    }
+
     // [2] in a checked answer: a link to that source
     function cite(htmlText, v) {
         const sources = (v && v.sources) || [];
@@ -582,6 +592,7 @@
                 el('div', {class: 'pv-chat-thought-text', text: m.thinking})) : null,
             m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : cite(md(m.text), m.verify),
                 ondblclick: mine && m.id ? () => startEdit(m) : null}) : null,
+            pictures(m.pictures),
             actions);
     }
 

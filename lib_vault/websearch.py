@@ -118,13 +118,17 @@ def _tavily(query, n):
         raise RuntimeError("no Tavily key in Settings")
     base = os.environ.get("PV_TAVILY_URL", "https://api.tavily.com").rstrip("/")
     data = _post(f"{base}/search", {"query": query, "search_depth": "advanced", "max_results": n, "chunks_per_source": 3,
-                                    "include_answer": False, "include_raw_content": False},
+                                    "include_answer": False, "include_raw_content": False, "include_images": True,
+                                    "include_image_descriptions": True},
                  headers={"Authorization": f"Bearer {key}"})
     out = []
     for r in (data.get("results") or [])[:n]:
         text = _text(r.get("content"))
         if r.get("url"):
             out.append({"title": _text(r.get("title")) or r["url"], "url": r["url"], "text": text[:2000], "read": len(text) > 300})
+    if out:  # the pictures Tavily found for the query as a whole ride on its first result
+        out[0]["images"] = [{"url": i, "title": ""} if isinstance(i, str) else {"url": i.get("url"), "title": _text(i.get("description"))}
+                            for i in data.get("images") or [] if i]
     return out
 
 
@@ -215,23 +219,40 @@ def page_text(markup):
     return "\n".join(ln for ln in lines if len(ln) > 1)
 
 
-def read_page(url):
-    """A web page's readable text, or "" (not a page, too big, or not answering in time)."""
+_OG_IMAGE = re.compile(r"<meta[^>]+(?:property|name)=[\"'](?:og:image|twitter:image)(?::src)?[\"'][^>]*>", re.I)
+
+
+def og_image(markup, url):
+    """The picture a page shows for itself when shared (og:image, twitter:image), as a full address, or ""."""
+    found = _OG_IMAGE.search(markup or "")
+    content = re.search(r"content=[\"']([^\"']+)", found.group(0), re.I) if found else None
+    return urllib.parse.urljoin(url, html.unescape(content.group(1))) if content else ""
+
+
+def read_page(url, with_image=False):
+    """A web page's readable text, or "" (not a page, too big, or not answering in time); with_image: (text, the
+    page's own picture)."""
+    text, image = _read_page(url)
+    return (text, image) if with_image else text
+
+
+def _read_page(url):
     import requests
 
     try:
         with requests.get(url, timeout=(6, 10), stream=True, headers={"User-Agent": AGENT, "Accept": "text/html,*/*;q=0.5"}) as res:
             if res.status_code != 200 or "html" not in res.headers.get("Content-Type", "html"):
-                return ""
+                return "", ""
             data = b""
             for chunk in res.iter_content(65536):
                 data += chunk
                 if len(data) > PAGE_BYTES:
                     break
             encoding = res.encoding if "charset" in res.headers.get("Content-Type", "") else "utf-8"
-        return page_text(data.decode(encoding or "utf-8", "replace"))
+        markup = data.decode(encoding or "utf-8", "replace")
+        return page_text(markup), og_image(markup, url)
     except Exception:
-        return ""
+        return "", ""
 
 
 _STOP = set("a an the of to in on for and or with is are was were be by at as it its this that what which who how why when "
@@ -280,12 +301,113 @@ def read_results(results, words, pages=3, chars=1400):
     if not todo:
         return results
     with ThreadPoolExecutor(max_workers=len(todo)) as pool:
-        texts = list(pool.map(lambda i: read_page(results[i]["url"]), todo))
+        texts = list(pool.map(lambda i: read_page(results[i]["url"], with_image=True), todo))
     out = list(results)
-    for i, text in zip(todo, texts):
+    for i, (text, image) in zip(todo, texts):
         picked = passages(text, words) if text else []
         out[i] = dict(results[i], text=" … ".join(picked)[:chars] if picked else results[i].get("text", ""), read=bool(picked))
+        if image:
+            out[i]["image"] = image
     return out
+
+
+# ------------------------------------------------------------------ pictures
+
+IMAGE_BYTES = 8 * 1024 * 1024
+IMAGE_SIDE = 640
+JUNK = re.compile(r"logo|icon|sprite|favicon|avatar|banner|placeholder|blank|pixel|badge|button|\.svg(\?|$)|\.gif(\?|$)", re.I)
+
+
+def _bigger_thumb(url):
+    """A Wikimedia thumbnail's address for a bigger one: .../60px-Name.jpg -> .../640px-Name.jpg."""
+    return re.sub(r"/(\d+)px-([^/]+)$", lambda m: f"/{max(int(m.group(1)), IMAGE_SIDE)}px-{m.group(2)}", url)
+
+
+def _wikipedia_pictures(query):
+    base = os.environ.get("PV_WIKIPEDIA_URL", "https://en.wikipedia.org").rstrip("/")
+    data = _get(f"{base}/w/rest.php/v1/search/page", {"q": query, "limit": 1})
+    out = []
+    for p in data.get("pages") or []:
+        thumb = (p.get("thumbnail") or {}).get("url") or ""
+        if thumb:
+            out.append({"url": _bigger_thumb("https:" + thumb if thumb.startswith("//") else thumb), "title": p.get("title") or "",
+                        "page": f"{base}/wiki/{urllib.parse.quote(p.get('key') or p.get('title') or '')}"})
+    return out
+
+
+def _searxng_pictures(query):
+    base = str(settings.opt("pv_searxng_url") or "").strip().rstrip("/")
+    if not base:
+        return []
+    data = _get(f"{base}/search", {"q": query, "format": "json", "categories": "images", "safesearch": 0})
+    return [{"url": r.get("img_src"), "title": r.get("title") or "", "page": r.get("url") or ""}
+            for r in (data.get("results") or [])[:6] if r.get("img_src")]
+
+
+def _picture(item):
+    """A found picture fetched and made small: {"url": data URL, "src", "page", "title", "w", "h"}, or None (not a
+    picture, too small to be more than an icon, too big, not answering)."""
+    import base64
+    import io
+
+    import requests
+    from PIL import Image
+
+    try:
+        with requests.get(item["url"], timeout=(6, 10), stream=True, headers={"User-Agent": AGENT, "Accept": "image/*"}) as res:
+            if res.status_code != 200 or not res.headers.get("Content-Type", "image/").startswith("image/"):
+                return None
+            data = b""
+            for chunk in res.iter_content(65536):
+                data += chunk
+                if len(data) > IMAGE_BYTES:
+                    return None
+        image = Image.open(io.BytesIO(data))
+        image.load()
+        if min(image.size) < 160 or max(image.size) / max(1, min(image.size)) > 3:  # icons, strips, banners
+            return None
+        image = image.convert("RGB")
+        image.thumbnail((IMAGE_SIDE, IMAGE_SIDE))
+        small = list(image.convert("L").resize((8, 8)).getdata())  # the same picture at two addresses: told apart by this
+        mean = sum(small) / 64
+        out = io.BytesIO()
+        image.save(out, "JPEG", quality=85)
+    except Exception:
+        return None
+    return {"url": "data:image/jpeg;base64," + base64.b64encode(out.getvalue()).decode("ascii"), "src": item["url"],
+            "page": item.get("page") or "", "title": (item.get("title") or "")[:200], "w": image.width, "h": image.height,
+            "hash": "".join("1" if v > mean else "0" for v in small)}
+
+
+def pictures(query, results, n=3):
+    """([pictures], [problems]): up to n pictures of what the query is about, from Tavily's pictures for it,
+    Wikipedia's picture of its subject, the pictures of the pages read, your SearXNG's image search; fetched and
+    shrunk here, so they show even where a site forbids showing them elsewhere."""
+    found, problems = [], []
+    for r in results:
+        found += [dict(i, page=i.get("page") or r["url"]) for i in r.get("images") or [] if i.get("url")]
+    for name, source in (("Wikipedia", _wikipedia_pictures), ("SearXNG", _searxng_pictures)):
+        try:
+            found += source(query)
+        except Exception as exc:
+            problems.append(f"{name} pictures: {exc}")
+    found += [{"url": r["image"], "title": r.get("title") or "", "page": r["url"]} for r in results if r.get("image")]
+    seen, todo = set(), []
+    for item in found:
+        if item["url"] not in seen and not JUNK.search(item["url"]):
+            seen.add(item["url"])
+            todo.append(item)
+    if not todo:
+        return [], problems
+    with ThreadPoolExecutor(max_workers=min(8, len(todo))) as pool:
+        got = [p for p in pool.map(_picture, todo[:10]) if p]
+    out = []
+    for p in got:
+        if all(sum(a != b for a, b in zip(p["hash"], q["hash"])) > 6 for q in out):
+            out.append(p)
+    for p in out:
+        p.pop("hash")
+    return out[:n], problems
 
 
 # ------------------------------------------------------------------ Civitai

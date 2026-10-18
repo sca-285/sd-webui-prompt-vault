@@ -21,13 +21,15 @@ PLAN_SYSTEM = (
     "maybe a draft answer to it. Pick what needs looking up: in a draft, what could be wrong, made up or out of date "
     "(names, numbers, dates, versions, model and software settings, facts about people, places, works and events); "
     "with no draft, what the user's message asks. Reply with JSON only, no other words: "
-    "{\"queries\": [\"...\"], \"models\": [\"...\"]}. queries: at most 3 web search queries, the most important "
+    "{\"queries\": [\"...\"], \"models\": [\"...\"], \"pictures\": \"...\"}. queries: at most 3 web search queries, the most important "
     "first, each about one point, written as a person would type them into a search engine, with the names spelled "
     "out and what the conversation refers to made explicit (\"Illustrious XL recommended CFG\", not \"best "
     "settings for it\"). In English, plus one in the user's language when the subject is local to it. Add the year "
     "for anything that changes over time (latest, newest, price, release, version). models: at most 2 names of "
     "checkpoints or LoRAs to look up on Civitai, as they are called (\"Illustrious XL\", \"Pony Diffusion V6 XL\"). "
-    "Leave both empty when nothing needs looking up: opinions, fiction, a plain prompt, small talk."
+    "pictures: when the message is about a person, place, thing, creature, artwork or event that pictures would "
+    "show well, a short image search for it (\"Henry Cavill\", \"Hagia Sophia interior\"); else \"\". Leave all "
+    "empty when nothing needs looking up: opinions, fiction, a plain prompt, small talk."
 )
 REVISE = (
     "Before your answer reaches the user, it was checked. Below is what the web says about it (passages of the pages "
@@ -44,6 +46,9 @@ FOUND = (
     "they do not answer the question, say so and say what they do show; never make up facts, numbers or links that "
     "are not in them. Do not mention this note.]\n\n"
 )
+# a message that asks for pictures in so many words
+ASKS_PICTURES = re.compile(r"\b(pictures?|photos?|pics?|show me|what does .* look like)\b|"  # not "image": every prompt is one
+                           r"hình ảnh|(?<!\w)ảnh(?! hưởng)(?!\w)|cho (tôi |mình |em )?xem|trông (như thế nào|ra sao)|mặt mũi", re.I)
 # signs that a question asks for facts, so it is looked up even when a small model plans nothing
 FACTUAL = re.compile(
     r"\d|\b(v\d|xl|sdxl|sd ?1\.5|flux|pony|illustrious|noobai|lora|lycoris|checkpoint|model|sampler|scheduler|cfg|"
@@ -65,7 +70,7 @@ def code_tags(text):
 
 
 def _plan(plan):
-    """(queries, models) from the plan's JSON."""
+    """(queries, models, a search for pictures or "") from the plan's JSON."""
     found = re.search(r"\{.*\}", plan or "", re.S)
     try:
         data = json.loads(found.group(0)) if found else {}
@@ -74,7 +79,8 @@ def _plan(plan):
     def clean(items, n):
         items = items if isinstance(items, list) else []
         return [str(q).strip()[:120] for q in items if str(q).strip()][:n]
-    return clean(data.get("queries"), 3), clean(data.get("models"), 2)
+    pictures = data.get("pictures")
+    return clean(data.get("queries"), 3), clean(data.get("models"), 2), str(pictures if isinstance(pictures, str) else "").strip()[:120]
 
 
 def _question_query(question):
@@ -103,6 +109,15 @@ def _with_results(messages, found):
     return messages[:-1] + [last]
 
 
+def _shown_pictures(pictures):
+    """What the model is told of the pictures shown beside its answer, so it neither describes nor invents them."""
+    if not pictures:
+        return ""
+    return (f"\n{len(pictures)} pictures found for this are shown to the user beside your answer, from: "
+            + "; ".join(p["title"] or p["page"] or p["src"] for p in pictures)
+            + ". Do not put pictures, image links or Markdown images in your answer, and do not describe them.\n")
+
+
 def run(messages, max_tokens, stop, search_first=False):
     """Steps for the page while the web is searched. Verify: the model drafts, the draft is looked up (the web, the
     pages read, Civitai) and its tags checked; returns (the messages to write the corrected answer from, or None when
@@ -123,13 +138,14 @@ def run(messages, max_tokens, stop, search_first=False):
     today = time.strftime("%Y-%m-%d")
     before = _conversation(messages)
     try:
-        done["queries"], done["models"] = _plan(chat._complete(
+        done["queries"], done["models"], picture_query = _plan(chat._complete(
             [{"role": "system", "content": PLAN_SYSTEM},
              {"role": "user", "content": f"Today: {today}\n\n"
                                          + (f"The conversation so far:\n{before}\n\n" if before else "")
                                          + f"The user's message:\n{question[:3000]}\n\n"
                                          + (f"The draft:\n{draft[:5000]}" if draft else "No draft: plan from the message.")}], 300))
     except Exception as exc:
+        picture_query = ""
         done["problems"].append(f"planning: {exc}")
     if not done["queries"] and (search_first or not done["models"]):
         fallback = _question_query(question) if not search_first else re.sub(r"\s+", " ", question).strip()[:160]
@@ -175,6 +191,13 @@ def run(messages, max_tokens, stop, search_first=False):
                 keep(websearch.civitai(name, 2))
             except Exception as exc:
                 done["problems"].append(f"Civitai: {exc}")
+    asked = bool(ASKS_PICTURES.search(question))
+    if searching and settings.opt("pv_search_pictures") and (search_first or asked) and (picture_query or asked) \
+            and not stop.is_set():
+        yield {"step": "Finding pictures…"}
+        pics, problems = websearch.pictures(picture_query or (done["queries"] or [question])[0], found_web)
+        done["pictures"] = pics
+        done["problems"] += [p for p in problems if p not in done["problems"]]
     sources = sorted(sources, key=lambda x: not x.get("read"))[:8]  # pages actually read before bare snippets
     tags = code_tags(draft) if draft and settings.opt("pv_search_danbooru") else []
     if tags and not stop.is_set():
@@ -193,7 +216,8 @@ def run(messages, max_tokens, stop, search_first=False):
         if stop.is_set():
             return messages, done
         yield {"step": "Answering from what was found…" if sources else "Nothing found: answering without sources…"}
-        return _with_results(messages, FOUND.format(today=today) + (found or "Nothing was found on the web.")), done
+        return _with_results(messages, FOUND.format(today=today) + (found or "Nothing was found on the web.")
+                             + _shown_pictures(done.get("pictures"))), done
     if (not sources and not done["tags"]) or stop.is_set():
         return None, done
     if done["tags"]:
@@ -202,4 +226,5 @@ def run(messages, max_tokens, stop, search_first=False):
             for t in done["tags"]) + "\n"
     yield {"step": "Correcting the answer with what was found…"}
     return messages + [{"role": "assistant", "content": draft},
-                       {"role": "user", "content": REVISE + (found or "Nothing was found on the web.")}], done
+                       {"role": "user", "content": REVISE + (found or "Nothing was found on the web.")
+                        + _shown_pictures(done.get("pictures"))}], done

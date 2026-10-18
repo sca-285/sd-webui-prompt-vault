@@ -948,6 +948,8 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             reply["thinking"] = "".join(thought).strip()
         reply["tokens"] = _tokens(answer, [])
         if checked is not None:
+            if checked.get("pictures"):  # found with the answer: shown beside it
+                reply["pictures"] = checked.pop("pictures")
             reply["verify"] = checked
         hits = banned_in(answer)
         if hits:

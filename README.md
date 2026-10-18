@@ -108,7 +108,12 @@ Qwen-VL and the WD14 tagger) in one tab.
   - **🌐 Web search** preset: a search engine that answers. Every message is searched first (the plan
     sees the conversation, so "and its sampler?" is searched in full, with the year for what changes),
     the best pages are read, and the answer comes from them with [n] sources and the useful links at the
-    end. No draft first, so it is quicker than Verify. **💬 General assistant** is for anything, not
+    end. No draft first, so it is quicker than Verify. When the message is about a person, place, thing or
+    event, **2 or 3 pictures** of it show under the answer (from Tavily, Wikipedia, the pages read and your
+    SearXNG; logos, icons and the same picture twice left out), each opening the page it came from. They
+    are fetched and made small here, so they show even from sites that forbid showing them elsewhere, and
+    stay with the conversation. With 🔎 Verify, pictures come when the message asks for them ("show me",
+    "photos of", "cho mình xem ảnh…"). Off in Settings → Prompt Vault. **💬 General assistant** is for anything, not
     only images; **🌍 Translator** translates both ways (Vietnamese and English unless you name another).
   - **🚫 Banned words**, in ⚙, for every conversation: one word or phrase a line (＋ *Common clichés*
     adds the words AI writing leans on: tapestry, testament, delve…). A single word is blocked while

@@ -592,6 +592,13 @@ html body .pv-chat-actions .pv-chat-btn { padding: 2px 7px; font-size: 11.5px; }
 .pv-chat-mine .pv-chat-actions { justify-content: flex-end; }
 .pv-chat-meta { font-size: 11px; opacity: 0.55; }
 .pv-chat-files { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.pv-chat-pictures { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin: 8px 0 2px; max-width: 520px; }
+.pv-chat-picture { position: relative; display: block; border-radius: 8px; overflow: hidden; aspect-ratio: 3 / 4;
+    background: var(--block-background-fill, rgba(127, 127, 127, .12)); border: 1px solid var(--border-color-primary, rgba(127, 127, 127, .25)); }
+.pv-chat-picture img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s; }
+.pv-chat-picture:hover img { transform: scale(1.04); }
+.pv-chat-picture-from { position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 6px; font-size: 10.5px; color: #fff;
+    background: linear-gradient(transparent, rgba(0, 0, 0, .7)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pv-chat-file { display: inline-flex; align-items: center; gap: 6px; max-width: 220px; padding: 3px 6px; border-radius: 8px;
     border: 1px solid var(--border-color-primary); font-size: 12px; }
 .pv-chat-file img { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; }

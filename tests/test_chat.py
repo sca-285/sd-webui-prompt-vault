@@ -537,10 +537,34 @@ assert "[1] Tavily on latest illustrious xl version" in last and "Tavily passage
 assert sent[0]["role"] == "system" and "web search assistant" in sent[0]["content"]
 ev = ask(sc["id"], "and its recommended sampler?", verify=False)  # the plan sees the conversation before
 assert ev[-1]["message"]["verify"]["queries"] and ev[-1]["done"]
-os.environ.pop("FAKE_PROMPT_LOG")
 assert verify._conversation([{"role": "system", "content": "s"}, {"role": "user", "content": "illustrious xl?"},
                              {"role": "assistant", "content": "v2.0"}, {"role": "user", "content": "its sampler?"}]) \
-    == "User: illustrious xl?\nAssistant: v2.0"; qwen.SERVER.stop()
+    == "User: illustrious xl?\nAssistant: v2.0"
+# pictures of who or what the message is about: Tavily's, Wikipedia's (a bigger thumbnail), the pages'; a logo, an
+# icon-sized one and the same picture twice left out; the model told they are shown, not to make up its own
+ev = ask(sc["id"], "who is Henry Cavill", verify=False)
+assert "Finding pictures…" in [e.get("step") for e in ev], ev
+m = ev[-1]["message"]
+pics = m["pictures"]
+assert [p["src"].rsplit("/", 1)[-1] for p in pics] == ["cavill-1.png", "640px-same-b.png"], [p["src"] for p in pics]
+assert pics[0]["url"].startswith("data:image/jpeg;base64,") and pics[0]["title"] == "Henry Cavill at a premiere"
+assert max(pics[0]["w"], pics[0]["h"]) == 640 and pics[1]["page"].endswith("/wiki/Illustrious_XL") and "pictures" not in m["verify"]
+last = json.load(open(os.environ["FAKE_PROMPT_LOG"], encoding="utf-8"))[-1]["content"]
+assert "2 pictures found for this are shown to the user beside your answer" in last and "do not describe them" in last
+assert c.get(B + "/one", params={"id": sc["id"]}).json()["chat"]["messages"][-1]["pictures"][0]["src"].endswith("cavill-1.png")
+# Verify: pictures only when the message asks for them in so many words
+ev = ask(vc, "who is Henry Cavill")
+assert "pictures" not in ev[-1]["message"] and "Finding pictures…" not in [e.get("step") for e in ev]
+ev = ask(vc, "cho mình xem ảnh Henry Cavill")
+assert len(ev[-1]["message"]["pictures"]) == 2
+assert not verify.ASKS_PICTURES.search("ảnh hưởng của CFG") and not verify.ASKS_PICTURES.search("image prompt for a cat")
+shared.opts.pv_search_pictures = False
+ev = ask(sc["id"], "who is Henry Cavill", verify=False)
+assert "pictures" not in ev[-1]["message"]
+shared.opts.pv_search_pictures = True
+assert websearch._bigger_thumb("https://up.org/thumb/a/ab/X.jpg/60px-X.jpg") == "https://up.org/thumb/a/ab/X.jpg/640px-X.jpg"
+assert websearch.og_image('<meta property="og:image" content="/a.jpg">', "https://s.org/p/q") == "https://s.org/a.jpg"
+os.environ.pop("FAKE_PROMPT_LOG"); qwen.SERVER.stop()
 shared.opts.pv_tavily_key = ""
 c.post(B + "/delete", json={"id": sc["id"]})
 shared.opts.pv_search_read_pages = False

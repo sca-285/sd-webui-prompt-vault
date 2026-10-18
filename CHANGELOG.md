@@ -12,6 +12,8 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
   added for what changes, a query in the user's language for a local subject.
 - Presets: 🌐 Web search (every message searched first, answered with sources), 💬 General assistant,
   🌍 Translator.
+- Pictures: 🌐 Web search shows 2 or 3 pictures of the person, place or thing asked about (Tavily, Wikipedia,
+  the pages' own pictures, SearXNG), fetched and shrunk here, logos, icons and repeats left out.
 
 ### Long files in the chat
 - A PDF or text file is kept whole (about 1000 pages, 100 MB): each turn the model reads the pages asked for
