@@ -1078,6 +1078,7 @@
                 (q.memory_modes || []).map((m) => el('option', {value: m, text: {Auto: 'Auto: VRAM as fits, the rest in RAM', 'All on GPU': 'All on the GPU',
                     'KV cache in RAM': 'GPU, the context in RAM', 'Low VRAM': 'Low VRAM: most in RAM', 'RAM only': 'RAM only (slow)'}[m] || m,
                 selected: m === q.memory})))),
+            contextView(q),
             toggleSwitch('Let it think first', !!q.think, (v) => loadQwen({think: v}),
                 'The chat, with a model that reasons before answering (Qwen3.5, Qwen3.8, GLM-4.5…): better answers, much slower. Others ignore it'),
             el('div', {class: 'pv-muse-field'},
@@ -1085,6 +1086,37 @@
                 el('button', {type: 'button', class: 'pv-btn', text: '⟳', title: 'Look for .gguf files again', disabled: !!M.qwenBusy, onclick: () => loadQwen()})),
             el('div', {class: 'pv-muse-hint', text: 'Looked in: ' + ((q.dirs || []).join(' · ') || 'models/VLM (not there yet)')}),
             foldersView(q));
+    }
+
+    // the context: how long, its memory (the KV cache) in what precision, and whether it may be stretched past what
+    // the model was trained for (RoPE scaling, YaRN)
+    function contextView(q) {
+        const k = (n) => n >= 1024 ? `${Math.round(n / 1024)}K` : String(n);
+        const ctx = q.context || {};
+        const sizes = (q.context_sizes || []).slice();
+        if (q.context_setting && !sizes.includes(q.context_setting)) sizes.push(q.context_setting), sizes.sort((a, b) => a - b);
+        const seg = (label, values, current, names, tips, onpick) => el('div', {class: 'pv-muse-field'},
+            el('span', {class: 'pv-muse-field-label', text: label}),
+            el('div', {class: 'pv-muse-seg'}, values.map((v, i) => el('button', {type: 'button', class: 'pv-muse-segbtn' + (v === current ? ' pv-on' : ''),
+                text: names[i], title: tips[i], disabled: !!M.qwenBusy, onclick: () => onpick(v)}))));
+        const parts = [];
+        if (ctx.size) parts.push(`${k(ctx.size)} tokens`);
+        if (ctx.kv_gb !== undefined) parts.push(`its memory ≈ ${ctx.kv_gb} GB (${ctx.kv_type})`);
+        if (ctx.trained) parts.push(`the model was trained for ${k(ctx.trained)}`);
+        if (ctx.rope) parts.push(ctx.rope);
+        return el('div', {class: 'pv-muse-context'},
+            el('label', {class: 'pv-muse-field pv-muse-pick'},
+                el('span', {class: 'pv-muse-field-label', text: 'Context'}),
+                el('select', {class: 'pv-muse-select', disabled: !!M.qwenBusy, onchange: (e) => loadQwen({context: Number(e.target.value)}),
+                    title: 'How much of the conversation the model holds at once. Longer: more memory, slower to read a long conversation'},
+                sizes.map((n) => el('option', {value: n, text: `${k(n)} tokens` + (ctx.trained && n > ctx.trained ? ' (longer than trained)' : ''), selected: n === q.context_setting})))),
+            seg('KV cache', q.kv_types || ['f16', 'q8_0', 'q4_0'], ctx.kv_type || 'f16', ['f16', 'q8_0', 'q4_0'],
+                ['Exact: the most memory', 'Half the memory, no loss you can see (recommended for long contexts)', 'A quarter of the memory, some loss'],
+                (v) => loadQwen({kv_type: v})),
+            seg('RoPE', ['Auto', 'Off'], q.rope || 'Auto', ['Auto: YaRN past trained', 'Off: hold to trained'],
+                ['A context longer than the model was trained for is stretched with YaRN', 'The context is held to what the model was trained for'],
+                (v) => loadQwen({rope: v})),
+            parts.length ? el('div', {class: 'pv-muse-hint', text: parts.join(' · ')}) : null);
     }
 
     // where the models are: Qwen's .gguf files (one or more folders, any drive), and Prompt Vault's own (WD14, TIPO)

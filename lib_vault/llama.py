@@ -292,6 +292,8 @@ NEWER_FLAGS = {"--no-kv-offload", "--no-mmproj-offload", "--cpu-moe", "--jinja"}
 
 # what llama-server says when it cannot start, and what to do about it
 WHY = (
+    (r"V cache quantization requires flash|quantized V cache .*flash", "A q8_0 or q4_0 KV cache needs flash attention: add "
+     "-fa on to Settings → extra llama-server arguments, update llama.cpp, or set the KV cache back to f16 in Muse → ⚙. "),
     (r"unknown model architecture: '?([\w.-]+)", "This llama.cpp does not know the model's architecture ({0}): it is "
      "newer than the build. Download the latest llama.cpp release and point Settings → llama-server at it. "),
     (r"(?:clip|mtmd|mmproj).*(?:failed|error)|failed to load (?:clip|mmproj|vision)", "The vision projector (mmproj) does not "

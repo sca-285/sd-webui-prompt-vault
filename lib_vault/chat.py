@@ -17,7 +17,9 @@ import threading
 import time
 import uuid
 
-from . import chat_presets, settings, store, websearch
+from . import chat_presets, settings, store
+from . import context as ctx  # (send() takes a "context" of its own: the prompt being worked on)
+from . import verify as verify_mod
 
 DEFAULT_SYSTEM = chat_presets.BUILTIN[0]["text"]
 OLD_ASSISTANT = DEFAULT_SYSTEM.replace("You are a creative assistant", "You are Qwen, a creative assistant", 1)
@@ -59,7 +61,7 @@ def _view(c):
     ("version" of "versions"); the other versions stay here."""
     out = dict(c)
     out["messages"] = [_shown(m) for m in c["messages"]]
-    out["context"] = _context(c)
+    out["context"] = ctx.usage(c)
     return out
 
 
@@ -454,7 +456,7 @@ def _fit(files, chars):
 def _file_room(c):
     """Characters of attached text a message may bring: most of what the context has room for, some left for
     the conversation itself."""
-    return max(4000, int(_room(c) * 0.75 * 3.0))
+    return max(4000, int(ctx.room(c) * 0.75 * 3.0))
 
 
 def read_files(files, room_chars=None):
@@ -513,16 +515,6 @@ def _content(m, vision=True):
     return parts
 
 
-def _reserve():
-    """Tokens kept free for the answer: the longest answer, three times that when the model thinks first."""
-    return int(settings.opt("pv_chat_max_tokens")) * (3 if settings.opt("pv_chat_think") else 1)
-
-
-def _room(c):
-    """Tokens the messages may take: the context, less the answer's share, the system prompt and a margin."""
-    return int(settings.opt("pv_vlm_context")) - _reserve() - _tokens(c["system"], []) - _tokens(c.get("summary") or "", []) - 64
-
-
 def identity(text):
     """A system prompt written when every model was Qwen ("You are Qwen, …": conversations, presets and Settings from
     before) told to the model in use as itself, so Gemma does not call itself Qwen."""
@@ -542,29 +534,6 @@ def system_of(c):
         out += ("\n\n" if out else "") + "Summary of the earlier part of this conversation (its messages are no longer shown " \
                "to you; go on from it):\n" + c["summary"]
     return out
-
-
-def _context(c):
-    """How full the context is: {"used", "room", "size", "reserve"}, in tokens (estimated)."""
-    used = sum(m.get("tokens") or _tokens(m["text"], m.get("files")) for m in c["messages"]) + _tokens(c.get("summary") or "", [])
-    return {"used": used, "room": max(0, _room(c)), "size": int(settings.opt("pv_vlm_context")), "reserve": _reserve()}
-
-
-def _window(c, extra=0):
-    """The messages that fit in the context, the newest kept; how many older ones were left out. extra: tokens kept
-    free besides the answer's (Verify's draft and what it found)."""
-    budget = _room(c) - extra
-    kept, used = [], 0
-    for m in reversed(c["messages"]):
-        need = m.get("tokens") or _tokens(m["text"], m.get("files"))
-        if kept and used + need > budget:
-            break
-        kept.append(m)
-        used += need
-    kept.reverse()
-    while kept and kept[0]["role"] == "assistant":  # a conversation the model reads starts with the user
-        kept.pop(0)
-    return kept, len(c["messages"]) - len(kept)
 
 
 # ------------------------------------------------------------------ banned words
@@ -680,6 +649,7 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
         messages = _ask_to_avoid(messages, words)
     messages = turns(messages)
     body = dict(qwen.sampling(temperature), messages=messages, max_tokens=max_tokens * (3 if think else 1), stream=True,
+                cache_prompt=True,
                 chat_template_kwargs={"enable_thinking": think})
     if bias:
         body["logit_bias"] = bias
@@ -712,34 +682,7 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
                     yield {kind: piece}
 
 
-# ------------------------------------------------------------------ Verify: draft, look it up, correct, then answer
-
-VERIFY_ROOM = 3600  # tokens kept free for the draft and what was found
-EVIDENCE = 7000    # characters of what was found that go to the model
-PLAN_SYSTEM = (
-    "You check an answer before it is given. Read the user's message and the draft answer, and pick what in the draft "
-    "could be wrong, made up or out of date and can be checked on the web: names, numbers, dates, versions, model and "
-    "software settings, facts about people, places, works and events. Reply with JSON only, no other words: "
-    "{\"queries\": [\"...\"], \"models\": [\"...\"]}. queries: at most 3 short web search queries in English, the "
-    "most doubtful first, each about one point and with the names spelled out (\"Illustrious XL recommended CFG\", "
-    "not \"best settings\"). models: at most 2 names of checkpoints or LoRAs to look up on Civitai, as they are called "
-    "(\"Illustrious XL\", \"Pony Diffusion V6 XL\"). Leave both empty when nothing needs checking: opinions, fiction, "
-    "a plain prompt, small talk."
-)
-REVISE = (
-    "Before your answer reaches the user, it was checked. Below is what the web says about it (passages of the pages "
-    "themselves, and Civitai's pages of the models), and which of its tags are not Danbooru tags. Now write the answer "
-    "the user will read. Where the sources and your answer disagree, the sources win: correct the point, and drop "
-    "what they show is made up. Keep what they confirm or do not touch, add what they add when it matters, replace a "
-    "tag that does not exist with a suggested one or leave it out. When the sources do not settle a point, say it is "
-    "uncertain rather than guess. Cite a source as [n] where you used it. Answer the user's last message directly, in "
-    "the same language and form as your draft; do not mention a draft, a check or this message.\n\n"
-)
-# signs that a question asks for facts, so it is looked up even when a small model plans nothing
-FACTUAL = re.compile(
-    r"\d|\b(v\d|xl|sdxl|sd ?1\.5|flux|pony|illustrious|noobai|lora|lycoris|checkpoint|model|sampler|scheduler|cfg|"
-    r"steps|denois\w*|upscal\w*|hires|controlnet|vae|version|release\w*|who|what|which|when|where|how many|how much|"
-    r"latest|newest|recommend\w*|best|vs|versus|difference)\b", re.I)
+# ------------------------------------------------------------------ one answer, not streamed
 
 
 def _complete(messages, max_tokens):
@@ -751,7 +694,7 @@ def _complete(messages, max_tokens):
         qwen.SERVER.ensure()
     words = banned()
     body = dict(qwen.sampling(), messages=turns(_ask_to_avoid(messages, words) if words else messages), max_tokens=max_tokens,
-                stream=False, chat_template_kwargs={"enable_thinking": False})
+                stream=False, cache_prompt=True, chat_template_kwargs={"enable_thinking": False})
     answer = qwen.SERVER.post("/v1/chat/completions", body, timeout=600)
     reply = answer["choices"][0]["message"]["content"]
     if isinstance(reply, list):
@@ -762,124 +705,6 @@ def _complete(messages, max_tokens):
 def _words_of(content):
     return content if isinstance(content, str) else " ".join(p.get("text", "") for p in content or [] if p.get("type") == "text")
 
-
-def code_tags(text):
-    """The tags of the prompts (code blocks of comma-separated words) in an answer."""
-    tags = []
-    for block in re.findall(r"```[\w-]*\n?(.*?)```", str(text or ""), re.S):
-        if block.count(",") < 2:
-            continue
-        for tag in re.split(r"[,\n]+", block):
-            tag = tag.strip()
-            if tag and tag not in tags:
-                tags.append(tag)
-    return tags[:80]
-
-
-def _plan(plan):
-    """(queries, models) from the plan's JSON."""
-    found = re.search(r"\{.*\}", plan or "", re.S)
-    try:
-        data = json.loads(found.group(0)) if found else {}
-    except Exception:
-        data = {}
-    def clean(items, n):
-        items = items if isinstance(items, list) else []
-        return [str(q).strip()[:120] for q in items if str(q).strip()][:n]
-    return clean(data.get("queries"), 3), clean(data.get("models"), 2)
-
-
-def _question_query(question):
-    """The question itself as a search, when it asks for facts: its first line, without greetings and markup."""
-    line = re.sub(r"```.*?```", " ", question or "", flags=re.S)
-    line = re.sub(r"\s+", " ", line).strip()
-    return line[:120] if line and FACTUAL.search(line) and len(line.split()) >= 2 else ""
-
-
-def _verify(messages, max_tokens, stop):
-    """Steps for the page while the model drafts, the draft is looked up (the web, the pages read, Civitai) and the tags
-    are checked. Returns (the messages to write the corrected answer from, or None when nothing was found to correct
-    with, and what was done)."""
-    done = {"queries": [], "models": [], "sources": [], "tags": [], "problems": []}
-    yield {"step": "Writing a first draft…"}
-    draft = _complete(messages, max_tokens)
-    done["draft"] = draft
-    if stop.is_set():
-        return None, done
-    yield {"step": "Choosing what to check…"}
-    question = _words_of(messages[-1]["content"]) if messages else ""
-    try:
-        done["queries"], done["models"] = _plan(_complete(
-            [{"role": "system", "content": PLAN_SYSTEM},
-             {"role": "user", "content": f"The user's message:\n{question[:3000]}\n\nThe draft:\n{draft[:5000]}"}], 300))
-    except Exception as exc:
-        done["problems"].append(f"planning: {exc}")
-    if not done["queries"] and not done["models"]:
-        fallback = _question_query(question)
-        if fallback:
-            done["queries"] = [fallback]
-    searching = str(settings.opt("pv_search_engine") or "Auto") != "Off"
-    sources, seen, words = [], set(), websearch.terms(question, *done["queries"])
-
-    def keep(items):
-        for item in items:
-            if item.get("url") and item["url"] not in seen:
-                seen.add(item["url"])
-                sources.append(item)
-
-    found_web = []
-    for query in done["queries"] if searching else []:
-        if stop.is_set():
-            break
-        yield {"step": f"Searching: {query}"}
-        found, problems = websearch.search_all(query, 5)
-        done["problems"] += [p for p in problems if p not in done["problems"]]
-        if not found:
-            try:
-                found = websearch.wikipedia(query, 2)
-            except Exception as exc:
-                done["problems"].append(f"Wikipedia: {exc}")
-        found_web += [dict(f, rank=i) for i, f in enumerate(found) if f.get("url") not in {x.get("url") for x in found_web}]
-    if found_web and settings.opt("pv_search_read_pages") and not stop.is_set():
-        found_web.sort(key=lambda f: f["rank"])  # the best result of each search first, then the rest
-        yield {"step": f"Reading {min(3, len(found_web))} pages…"}
-        try:
-            found_web = websearch.read_results(found_web, words, pages=3)
-        except Exception as exc:
-            done["problems"].append(f"reading pages: {exc}")
-    keep(found_web)
-    if searching and settings.opt("pv_search_civitai"):
-        for name in done["models"]:
-            if stop.is_set():
-                break
-            yield {"step": f"Looking up {name} on Civitai…"}
-            try:
-                keep(websearch.civitai(name, 2))
-            except Exception as exc:
-                done["problems"].append(f"Civitai: {exc}")
-    sources = sorted(sources, key=lambda x: not x.get("read"))[:8]  # pages actually read before bare snippets
-    tags = code_tags(draft) if settings.opt("pv_search_danbooru") else []
-    if tags and not stop.is_set():
-        yield {"step": f"Checking {len(tags)} tags on Danbooru…"}
-        try:
-            for tag, info in websearch.danbooru_tags(tags).items():
-                if not info["exists"]:
-                    done["tags"].append({"tag": tag, "suggest": info["suggest"]})
-        except Exception as exc:
-            done["problems"].append(f"Danbooru: {exc}")
-    done["sources"] = [{"n": i + 1, "title": x["title"][:150], "url": x["url"], "read": bool(x.get("read"))}
-                       for i, x in enumerate(sources)]
-    if (not sources and not done["tags"]) or stop.is_set():
-        return None, done
-    share = EVIDENCE // max(1, len(sources))
-    found = "".join(f"[{i + 1}] {x['title']} ({x['url']})\n{x['text'][:max(share, 400)]}\n\n" for i, x in enumerate(sources))[:EVIDENCE]
-    if done["tags"]:
-        found += "Not Danbooru tags: " + "; ".join(
-            t["tag"] + (f" (instead: {', '.join(s.replace('_', ' ') for s in t['suggest'])})" if t["suggest"] else " (no close tag)")
-            for t in done["tags"]) + "\n"
-    yield {"step": "Correcting the answer with what was found…"}
-    return messages + [{"role": "assistant", "content": draft},
-                       {"role": "user", "content": REVISE + (found or "Nothing was found on the web.")}], done
 
 # ------------------------------------------------------------------ compact and wrap up
 
@@ -922,7 +747,7 @@ def _compact(cid, stop, keep):
         old = list(msgs[:n])
         if not old:
             raise store.VaultError("Nothing to compact yet.")
-        text = _as_text(c, old, max(4000, int(_room(c) * 2.8)))
+        text = _as_text(c, old, max(4000, int(ctx.room(c) * 2.8)))
         ids = [m["id"] for m in old]
     yield {"step": f"Summing up {len(old)} earlier messages…"}
     summary = _complete([{"role": "system", "content": COMPACT_SYSTEM}, {"role": "user", "content": text}], 1200).strip()
@@ -962,7 +787,7 @@ def wrap_up(cid):
         c = _get(cid)
         if not c["messages"] and not c.get("summary"):
             raise store.VaultError("Nothing to wrap up yet.")
-        text = _as_text(c, c["messages"], max(4000, int(_room(c) * 2.8)))
+        text = _as_text(c, c["messages"], max(4000, int(ctx.room(c) * 2.8)))
         system, preset, title = c["system"], c.get("preset", ""), c["title"]
     stop = _stops[str(cid)] = threading.Event()
 
@@ -1049,15 +874,15 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
         max_tokens = int(settings.opt("pv_chat_max_tokens"))
-        extra = VERIFY_ROOM if verify else 0
-        full = _context(c)
+        extra = verify_mod.ROOM if verify else 0
+        full = ctx.usage(c)
         auto = bool(settings.opt("pv_chat_autocompact")) and len(c["messages"]) > KEEP + 1 and \
             full["used"] > (full["room"] - extra) * AUTO_AT
 
     def prompt():
         with _lock:
             live = _get(cid)
-            window, left = _window(live, extra)
+            window, left = ctx.window(live, extra)
             system = system_of(live)
             return ([{"role": "system", "content": system}] if system else []) + \
                 [{"role": m["role"], "content": _content(m, vision)} for m in window], left
@@ -1078,7 +903,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         try:
             final = messages
             if verify:
-                final, checked = yield from _verify(messages, max_tokens, stop)
+                final, checked = yield from verify_mod.run(messages, max_tokens, stop)
                 if final is None:  # nothing found to correct with: the draft is the answer
                     text.append(checked.get("draft", ""))
                     yield {"delta": checked.get("draft", "")}

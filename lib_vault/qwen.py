@@ -13,7 +13,7 @@ import os
 import re
 import time
 
-from . import gguf, llama, settings, text, vram
+from . import context, gguf, llama, settings, text, vram
 from . import families
 from . import qwen_prompts as prompts
 
@@ -106,7 +106,7 @@ def _memory_args(model, mmproj):
     if free is None or not size:
         MEMORY["note"] = f"{layers_opt} layers on the GPU (free VRAM unknown)"
         return ["-ngl", str(layers_opt)]
-    context_gb = int(settings.opt("pv_vlm_context")) / 1024 * 0.14
+    context_gb = context.kv_gb(model)
     budget = free - float(settings.opt("pv_vlm_vram_reserve")) - 0.6
     if budget >= size + mm_size + context_gb:
         MEMORY["note"] = f"all on the GPU ({free:.1f} GB free)"
@@ -128,14 +128,15 @@ def _model_args():
     model = settings.clean_path(settings.opt("pv_vlm_model_path"))
     mmproj = settings.clean_path(settings.opt("pv_vlm_mmproj_path"))
     vision = ["--mmproj", mmproj] if mmproj else []
-    return ["-m", model, *vision, "--jinja", "-c", str(int(settings.opt("pv_vlm_context")))] + _memory_args(model, mmproj)
+    return ["-m", model, *vision, "--jinja", *context.server_args(model)] + _memory_args(model, mmproj)
 
 
 def _placement():
     """What the server was started with that a change in Settings should restart it for."""
     return (settings.clean_path(settings.opt("pv_vlm_model_path")), settings.clean_path(settings.opt("pv_vlm_mmproj_path")),
             settings.opt("pv_vlm_memory"),
-            float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")))
+            float(settings.opt("pv_vlm_vram_reserve")), int(settings.opt("pv_vlm_gpu_layers")), int(settings.opt("pv_vlm_context")),
+            context.kv_type(), str(settings.opt("pv_vlm_rope")))
 
 
 SERVER = llama.LlamaServer("LLM", "pv_vlm_port", "pv_vlm_idle_minutes", _model_args, _missing,
@@ -363,6 +364,8 @@ def models():
             "model": model, "mmproj": mmproj, "family": family(), "family_label": families.label(family()),
             "model_name": families.model_name(model) if model else "", "vision": bool(mmproj),
             "sampling": sampling(), "sampling_mode": str(settings.opt("pv_chat_sampling") or ""),
+            "context": context.describe(model) if model else {}, "context_setting": int(settings.opt("pv_vlm_context")),
+            "context_sizes": list(CONTEXT_SIZES), "kv_types": list(context.KV_TYPES), "rope": str(settings.opt("pv_vlm_rope") or "Auto"),
             "memory": settings.opt("pv_vlm_memory") if settings.opt("pv_vlm_memory") in MEMORY_MODES else "Auto",
             "memory_modes": list(MEMORY_MODES), "dirs": _model_dirs(), "running": SERVER.running(), "note": MEMORY.get("note", ""),
             "think": bool(settings.opt("pv_chat_think")), "qwen_dirs": str(settings.opt("pv_vlm_models_dir") or ""), "models_dir": str(settings.opt("pv_models_dir") or ""),
@@ -426,7 +429,10 @@ def set_folders(qwen_dirs=None, models_dir=None):
     return models()
 
 
-def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None):
+CONTEXT_SIZES = (4096, 8192, 12288, 16384, 24576, 32768, 49152, 65536, 98304, 131072)
+
+
+def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None, ctx=None, kv_type=None, rope=None):
     """Settings from Muse's card: the model and its projector (picked for it when not given), where it lives.
     The server starts again with them at its next use."""
     listing = models()
@@ -449,6 +455,19 @@ def choose(model=None, mmproj=None, memory=None, think=None, sampling_mode=None)
         if sampling_mode not in ("Recommended for the model", "My temperature"):
             raise ValueError(f"Unknown sampling {sampling_mode!r}")
         _set_opt("pv_chat_sampling", sampling_mode)
+    if ctx is not None:
+        ctx = int(ctx)
+        if not 2048 <= ctx <= 131072:
+            raise ValueError("The context goes from 2048 to 131072 tokens.")
+        _set_opt("pv_vlm_context", ctx)
+    if kv_type is not None:
+        if kv_type not in context.KV_TYPES:
+            raise ValueError(f"Unknown KV cache type {kv_type!r}")
+        _set_opt("pv_vlm_kv_type", kv_type)
+    if rope is not None:
+        if rope not in context.ROPE_MODES:
+            raise ValueError(f"Unknown RoPE mode {rope!r}")
+        _set_opt("pv_vlm_rope", rope)
     if memory is not None:
         if memory not in MEMORY_MODES:
             raise ValueError(f"Unknown memory mode {memory!r}")

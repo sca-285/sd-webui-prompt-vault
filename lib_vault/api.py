@@ -156,7 +156,8 @@ def register(app):
 
         def go():
             try:
-                return qwen.choose(body.get("model"), body.get("mmproj"), body.get("memory"), body.get("think"), body.get("sampling"))
+                return qwen.choose(body.get("model"), body.get("mmproj"), body.get("memory"), body.get("think"), body.get("sampling"),
+                                   body.get("context"), body.get("kv_type"), body.get("rope"))
             except ValueError as exc:
                 raise store.VaultError(str(exc))
         return run(go)

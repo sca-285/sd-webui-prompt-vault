@@ -6,6 +6,15 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
 ## Unreleased
 
+### Chat context, its memory and stretching it
+- Muse → ⚙: Context up to 128K, the KV cache in f16, q8_0 or q4_0, and RoPE (YaRN past what the model was
+  trained for, or held to it). The memory the context takes is worked out from the model's file (layers,
+  KV heads, Gemma's sliding window, hybrid models) and shown, and Auto placement uses it.
+- The window of messages moves in steps and asks llama-server to keep its cache, so a long conversation is
+  not read again in full every turn.
+- Code: the context in `context.py`, Verify in `verify.py`; Settings → Prompt Vault grouped as Server,
+  Model, Memory, Context, Captions, Chat, Verify.
+
 ### Chat Verify, looking things up properly
 - Search engines one after another (*Auto*): your SearXNG, Brave Search with a free key, DuckDuckGo, then
   DuckDuckGo's lite page when the first asks for a captcha; Wikipedia last. A blocked source is named.

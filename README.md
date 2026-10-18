@@ -110,10 +110,11 @@ Qwen-VL and the WD14 tagger) in one tab.
     and opens a new conversation, with a clean memory, that starts from that alone. At 90% the
     conversation compacts by itself before the answer (Settings → Prompt Vault, on unless turned off).
   - **Context**, under the box: how much of the model's context the conversation takes (an estimate),
-    green, then amber from 75%, red when full. The context is Settings → Prompt Vault → *Context size*
-    (8192 tokens unless changed), less what is kept for the answer (*longest answer*, three times that
-    when the model thinks first). When it is full the oldest messages are left out, and the card says
-    how many: 💾 Save and start a new conversation, or raise Context size.
+    green, then amber from 75%, red when full. The context is Muse → ⚙ → *Context* (8192 tokens unless
+    changed), less what is kept for the answer (*longest answer*, three times that when the model thinks
+    first). With auto-compact off, when it is full the oldest messages are left out, and the card says
+    how many. They are left out in steps, not one a turn, so the start of what the model reads stays the
+    same and llama-server answers from its cache instead of reading the whole conversation again.
   - **Thinking models** (Qwen3.5, Qwen3.8 27B…): with *Let it think first* on (Muse → ⚙ → Qwen model),
     the reasoning streams in a dim box and folds into **💭 Thought** above the answer; it never gets into
     the answer, a copy or a prompt. Off, such a model answers at once. Qwen3-VL Instruct does not think.
@@ -335,6 +336,21 @@ Stable Diffusion (4 GB by default), and the rest in RAM; **KV cache in RAM** kee
 memory in RAM; **Low VRAM** puts half the layers (or a mixture-of-experts model's experts), the context
 and the vision part in RAM; **RAM only** uses no VRAM at all (slow). These need a recent llama.cpp; an
 older one is started without them, and the console says so.
+
+**Context, its memory, and stretching it.** Muse → ⚙ under *Lives in*:
+- **Context**: 4K to 128K tokens. The line below says what its memory (the KV cache) takes, worked out
+  from the model's own file: its layers and attention heads, Gemma's sliding-window layers (which keep
+  only the last 1024 tokens), hybrid models such as Qwen3.5 (only some layers keep a cache).
+- **KV cache**: *f16* exact; *q8_0* half the memory with no loss you can see, the one to pick for a long
+  context; *q4_0* a quarter, some loss. A quantized cache needs flash attention: recent llama.cpp turns
+  it on by itself, an older one needs `-fa on` in the extra arguments (the error says so).
+- **RoPE**: a context longer than the model was trained for. *Auto* stretches it with YaRN (Qwen3: 32K or
+  40K trained, 128K stretched), *Off* holds the context to what the model was trained for. Gemma 3,
+  Mistral Small 3 and GLM-4 are trained for 128K and never need it; a file that says it is stretched
+  already is never stretched again. YaRN costs a little quality on short texts, so stretch only when
+  the conversations are that long.
+
+llama-server's own *context shift* is never needed: every request leaves room for its answer.
 
 Keep the file names as they download. Then check the model choices in **Settings →
 Prompt Vault (WD14 tagger)**, **(TIPO)** and **(Qwen / llama-server)**.

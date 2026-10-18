@@ -3,14 +3,14 @@ saving, exporting, importing; and where the model is placed (VRAM or RAM)."""
 import base64, io, json, os, re, struct, sys, tempfile, threading, time
 sys.path.insert(0, os.environ["STUB"]); sys.path.insert(0, os.getcwd())
 from modules import shared
-from lib_vault import api, chat, gguf, llama, qwen
+from lib_vault import api, chat, context, gguf, llama, qwen, verify
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 tmp = tempfile.mkdtemp()
 
 
-def fake_gguf(path, layers, experts=0, size_mb=1, arch="qwen3vl", name="", projector=""):
+def fake_gguf(path, layers, experts=0, size_mb=1, arch="qwen3vl", name="", projector="", extra=None):
     def s(x):
         b = x.encode()
         return struct.pack("<Q", len(b)) + b
@@ -21,6 +21,10 @@ def fake_gguf(path, layers, experts=0, size_mb=1, arch="qwen3vl", name="", proje
           s("tokenizer.ggml.scores") + struct.pack("<I", 9) + struct.pack("<IQ", 6, 3) + struct.pack("<3f", 1, 2, 3),
           s(f"{arch}.block_count") + struct.pack("<I", 4) + struct.pack("<I", layers),
           s(f"{arch}.expert_count") + struct.pack("<I", 4) + struct.pack("<I", experts)]
+    for key, value in (extra or {}).items():  # numbers as uint32, words as strings, floats as float32
+        kind, packed = (8, s(value)) if isinstance(value, str) else (6, struct.pack("<f", value)) if isinstance(value, float) \
+            else (4, struct.pack("<I", value))
+        kv.append(s(key) + struct.pack("<I", kind) + packed)
     with open(path, "wb") as f:
         f.write(b"GGUF" + struct.pack("<IQQ", 3, 0, len(kv)) + b"".join(kv))
         f.truncate(size_mb * 1024 * 1024)
@@ -30,14 +34,62 @@ model, mmproj = os.path.join(tmp, "qwen.gguf"), os.path.join(tmp, "mmproj.gguf")
 fake_gguf(model, 36, size_mb=8)
 fake_gguf(mmproj, 1, projector="qwen3vl_merger")
 assert gguf.info(model) == {"arch": "qwen3vl", "layers": 36, "experts": 0, "context": 0, "name": "", "basename": "", "size": "",
-                            "projector": ""}, gguf.info(model)
+                            "projector": "", "attention": {}}, gguf.info(model)
 os.environ["FAKE_ARGS_LOG"] = os.path.join(tmp, "args.log")
 for k, v in {"pv_llama_server_path": os.path.abspath("tests/fake_llama_server.py"), "pv_vlm_model_path": model,
              "pv_vlm_mmproj_path": mmproj, "pv_vlm_unload_sd": False, "pv_vlm_idle_minutes": 0, "pv_vlm_context": 4096,
              "pv_vlm_memory": "All on GPU", "pv_vlm_port": 18079}.items():
     setattr(shared.opts, k, v)
 
-# ---- where the model goes
+# ---- the context: its memory (KV cache), stretching it past what the model was trained for, the window
+GB = 1024 ** 3
+q3 = os.path.join(tmp, "Qwen3-32B-Q4_K_M.gguf")  # Qwen3-32B's shape: 64 layers, 8 KV heads of 128, trained for 40K
+fake_gguf(q3, 64, arch="qwen3", extra={"qwen3.context_length": 40960, "qwen3.embedding_length": 5120, "qwen3.attention.head_count": 64,
+                                       "qwen3.attention.head_count_kv": 8, "qwen3.attention.key_length": 128, "qwen3.attention.value_length": 128})
+assert gguf.info(q3)["attention"]["attention.head_count_kv"] == 8 and gguf.info(q3)["context"] == 40960
+assert abs(context.kv_gb(q3, 32768, "f16") - 8.0) < 0.01  # 256 KB a token
+assert abs(context.kv_gb(q3, 32768, "q8_0") - 4.25) < 0.01 and abs(context.kv_gb(q3, 32768, "q4_0") - 2.25) < 0.01
+g3 = os.path.join(tmp, "gemma-3-27b-it.gguf")  # Gemma 3: 5 layers in 6 keep only the last 1024 tokens
+fake_gguf(g3, 62, arch="gemma3", extra={"gemma3.context_length": 131072, "gemma3.embedding_length": 5376, "gemma3.attention.head_count": 32,
+                                        "gemma3.attention.head_count_kv": 16, "gemma3.attention.key_length": 128,
+                                        "gemma3.attention.value_length": 128, "gemma3.attention.sliding_window": 1024})
+full = 62 * 16 * 256 * 2
+assert abs(context.kv_gb(g3, 32768, "f16") - (full / 6 * 32768 + full * 5 / 6 * 1024) / GB) < 0.001, context.kv_gb(g3, 32768, "f16")
+hy = os.path.join(tmp, "Qwen3.5-hybrid.gguf")  # a hybrid: one layer in 4 attends
+fake_gguf(hy, 48, arch="qwen35", extra={"qwen35.embedding_length": 4096, "qwen35.attention.head_count": 32,
+                                       "qwen35.attention.head_count_kv": 4, "qwen35.full_attention_interval": 4})
+assert abs(context.kv_gb(hy, 8192, "f16") - 12 * 4 * 256 * 2 * 8192 / GB) < 0.001
+assert context.kv_gb(model, 8192, "f16") == 8192 / 1024 * 0.14  # a file that does not say: the rule of thumb
+shared.opts.pv_vlm_context = 131072; shared.opts.pv_vlm_rope = "Auto"; shared.opts.pv_vlm_kv_type = "q8_0"
+assert context.server_args(q3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0", "--rope-scaling", "yarn", "--rope-scale", "3.2",
+                                   "--yarn-orig-ctx", "40960"], context.server_args(q3)
+assert context.server_args(g3) == ["-c", "131072", "-ctk", "q8_0", "-ctv", "q8_0"]  # trained for 128K already
+shared.opts.pv_vlm_rope = "Off"
+assert context.server_args(q3)[:2] == ["-c", "40960"] and "--rope-scaling" not in context.server_args(q3)
+assert context.describe(q3)["rope"] == "held to the model's own"
+scaled = os.path.join(tmp, "Qwen3-yarn.gguf")  # the file says it is stretched already: never again
+fake_gguf(scaled, 64, arch="qwen3", extra={"qwen3.context_length": 131072, "qwen3.rope.scaling.type": "yarn", "qwen3.rope.scaling.factor": 4.0})
+shared.opts.pv_vlm_rope = "Auto"; shared.opts.pv_vlm_context = 32768
+assert context.rope_args(scaled) == [] and context.rope_args(q3) == []
+shared.opts.pv_vlm_context = 4096; shared.opts.pv_vlm_kv_type = "f16"
+assert context.server_args(model) == ["-c", "4096"]
+# the window: all that fits; when it moves, it moves far, and then stays put while the rest fits (the server's cache)
+shared.opts.pv_chat_max_tokens = 1024; shared.opts.pv_chat_think = False
+conv = {"system": "", "messages": [{"id": f"m{i}", "role": "user" if i % 2 == 0 else "assistant", "text": "", "tokens": 400} for i in range(6)]}
+assert context.window(conv) == (conv["messages"], 0) and "start" not in conv  # 2400 of 3008: all
+conv["messages"] += [{"id": f"m{i}", "role": "user" if i % 2 == 0 else "assistant", "text": "", "tokens": 400} for i in range(6, 10)]
+kept, left = context.window(conv)
+assert left == 6 and kept[0]["id"] == "m6" and conv["start"] == "m6", (left, conv.get("start"))  # down to 70%, from a message of yours
+conv["messages"] += [{"id": f"m{i}", "role": "user" if i % 2 == 0 else "assistant", "text": "", "tokens": 400} for i in range(10, 12)]
+assert context.window(conv)[0][0]["id"] == "m6"  # the same start: the cache of it is used again
+conv["messages"] += [{"id": f"m{i}", "role": "user" if i % 2 == 0 else "assistant", "text": "", "tokens": 400} for i in range(12, 14)]
+assert context.window(conv)[0][0]["id"] == "m10" and conv["start"] == "m10"
+del conv["messages"][2:]
+assert context.window(conv) == (conv["messages"], 0) and "start" not in conv  # all fits again: from the first
+assert llama.explain("V cache quantization requires flash_attn").startswith("A q8_0 or q4_0 KV cache needs flash attention")
+print("context ok")
+
+
 GB = 1024 ** 3
 def placed(mode, free=None, size_gb=None):
     shared.opts.pv_vlm_memory = mode
@@ -413,7 +465,7 @@ assert "verify" not in plain[-1]["message"] and len(fake_web.seen) == n
 assert websearch.passages("a\nb sampler cfg\nc", ["sampler", "cfg"], size=3) == ["b sampler cfg"]
 assert "x" not in websearch.page_text("<nav>x</nav><p>kept</p>") and websearch.page_text("<nav>x</nav><p>kept</p>") == "kept"
 assert websearch.tag_name("(kaleidoscope:1.2)") == "kaleidoscope" and websearch.tag_name("best quality") == ""
-assert chat.code_tags("x ```\na, b, c\n``` y ```\nnot tags\n```") == ["a", "b", "c"]
+assert verify.code_tags("x ```\na, b, c\n``` y ```\nnot tags\n```") == ["a", "b", "c"]
 c.post(B + "/delete", json={"id": vc})
 print("verify ok")
 

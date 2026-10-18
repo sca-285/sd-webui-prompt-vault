@@ -1,5 +1,6 @@
-"""What a .gguf file says about itself: how many layers, how many experts. Read from its header only,
-so a 20 GB model takes a few milliseconds; used to put as much of Qwen on the GPU as fits, the rest in RAM."""
+"""What a .gguf file says about itself: how many layers, how many experts, how its attention is shaped. Read from
+its header only, so a 20 GB model takes a few milliseconds; used to put as much of the model on the GPU as fits,
+the rest in RAM, and to size its context."""
 
 from __future__ import annotations
 
@@ -50,7 +51,10 @@ def _info(path, mtime):
             kind = _read(f, "<I")
             wanted = key in ("general.architecture", "general.name", "general.basename", "general.size_label",
                              "clip.projector_type", "clip.has_vision_encoder") \
-                or key.endswith((".block_count", ".expert_count", ".context_length"))
+                or key.endswith((".block_count", ".expert_count", ".context_length", ".embedding_length",
+                                 ".attention.head_count", ".attention.head_count_kv", ".attention.key_length",
+                                 ".attention.value_length", ".attention.sliding_window", ".full_attention_interval",
+                                 ".rope.scaling.type", ".rope.scaling.factor", ".rope.scaling.original_context_length"))
             value = _value(f, kind, wanted)
             if wanted:
                 out[key] = value
@@ -58,13 +62,18 @@ def _info(path, mtime):
     return {"arch": arch, "layers": int(out.get(f"{arch}.block_count") or 0), "experts": int(out.get(f"{arch}.expert_count") or 0),
             "context": int(out.get(f"{arch}.context_length") or 0), "name": str(out.get("general.name") or ""),
             "basename": str(out.get("general.basename") or ""), "size": str(out.get("general.size_label") or ""),
-            "projector": str(out.get("clip.projector_type") or "")}
+            "projector": str(out.get("clip.projector_type") or ""),
+            # for the size of the context's memory (the KV cache) and whether it may be stretched (RoPE scaling)
+            "attention": {k[len(arch) + 1:]: v for k, v in out.items() if arch and k.startswith(arch + ".")
+                          and not k.endswith((".block_count", ".expert_count", ".context_length"))}}
 
 
 def info(path):
     """{"arch", "layers", "experts", "context", "name", "basename", "size", "projector"} (projector: a vision projector's
-    kind, e.g. gemma3, pixtral, glm4v, qwen3vl_merger); zeros and "" when the file cannot be read."""
+    kind, e.g. gemma3, pixtral, glm4v, qwen3vl_merger); "attention": the rest of what the model says of itself
+    (embedding_length, attention.head_count_kv, rope.scaling.type…). Zeros and "" when the file cannot be read."""
     try:
         return dict(_info(os.path.abspath(path), os.path.getmtime(path)))
     except Exception:
-        return {"arch": "", "layers": 0, "experts": 0, "context": 0, "name": "", "basename": "", "size": "", "projector": ""}
+        return {"arch": "", "layers": 0, "experts": 0, "context": 0, "name": "", "basename": "", "size": "", "projector": "",
+                "attention": {}}
