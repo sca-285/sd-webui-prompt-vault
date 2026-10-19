@@ -61,6 +61,8 @@
         files: [],                  // [{kind, name, data, size}] waiting to be sent
         context: LS.get('context', 'none'),
         verify: LS.get('verify', false), // 🔎 draft, look it up, correct, then answer
+        length: LS.get('length', 0),    // 📏 how long an answer may be: 0 Settings' longest answer, -1 Max, else tokens
+        prefix: '',                     // ⏩ Continue: the answer carried on, shown before what streams in
         step: '',                   // what Verify is doing
         leftOut: 0,
         status: '',
@@ -169,7 +171,7 @@
 
     async function stream(path, body) {
         C.busy = true;
-        C.stream = '';
+        C.stream = C.prefix || '';
         C.thinking = '';
         C.step = '';
         paint();
@@ -227,7 +229,7 @@
         C.undoDraft = null;
         C.draft = '';
         C.files = [];
-        const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText(), verify: C.verify});
+        const ok = await stream('/chat/send', {id: C.chat.id, text, files, context: contextText(), verify: C.verify, length: C.length});
         if (!ok && C.pending) { C.draft = keep.draft; C.files = keep.files; }
         C.pending = null;
         paint();
@@ -306,7 +308,7 @@
         if (!C.chat || C.busy) return;
         C.editing = null;
         C.cut = at;
-        await stream('/chat/regenerate', {id: C.chat.id, message: m.id, verify: C.verify});
+        await stream('/chat/regenerate', {id: C.chat.id, message: m.id, verify: C.verify, length: C.length});
         C.cut = -1;
         paint();
     }
@@ -319,7 +321,7 @@
         if (text === m.text.trim()) { paint(); return; }
         C.cut = at;
         C.pending = {role: 'user', text, files: m.files || []};
-        await stream('/chat/edit', {id: C.chat.id, message: m.id, text, verify: C.verify});
+        await stream('/chat/edit', {id: C.chat.id, message: m.id, text, verify: C.verify, length: C.length});
         C.pending = null;
         C.cut = -1;
         paint();
@@ -333,7 +335,7 @@
         if (after && !confirm(`Rewind to here? The ${after} message${after > 1 ? 's' : ''} after it ${after > 1 ? 'are' : 'is'} removed for good, and it is answered anew.`)) return;
         C.editing = null;
         C.cut = at + 1;
-        await stream('/chat/regenerate', {id: C.chat.id, rewind: m.id, verify: C.verify});
+        await stream('/chat/regenerate', {id: C.chat.id, rewind: m.id, verify: C.verify, length: C.length});
         C.cut = -1;
         paint();
     }
@@ -350,6 +352,36 @@
     }
 
     const startEdit = (m) => { if (!C.busy) { C.editing = {id: m.id, text: m.text, focus: true}; paint(); } };
+
+    // ⏩ the last answer carried on where it stopped (cut at its length, stopped, or changed by hand to lead it)
+    async function carryOn(m, at) {
+        if (!C.chat || C.busy) return;
+        C.editing = null;
+        C.cut = at;
+        C.prefix = m.text;
+        await stream('/chat/continue', {id: C.chat.id, message: m.id, length: C.length});
+        C.prefix = '';
+        C.cut = -1;
+        paint();
+    }
+
+    // ✎ an answer changed by hand: the model reads it as it now is; ↩ Original brings back what it wrote
+    function saveReply(m) {
+        const text = ((C.editing && C.editing.text) || '').trim();
+        C.editing = null;
+        if (!text || text === m.text.trim()) { paint(); return; }
+        act('/chat/edit-reply', {id: C.chat.id, message: m.id, text});
+    }
+
+    // 📏 how long the next answers may be
+    const LENGTHS = [[0, 'Usual length'], [2048, '2K tokens'], [4096, '4K tokens'], [8192, '8K tokens'], [16384, '16K tokens'],
+        [32768, '32K tokens'], [-1, 'Max: all the context has left']];
+    function lengthPick() {
+        return el('select', {class: 'pv-chat-length', disabled: C.busy,
+            title: "How long the next answers may be. Usual: Settings' longest answer. A longer one leaves less room for the earlier messages; Max takes all the context has left",
+            onchange: (e) => { C.length = Number(e.target.value); LS.set('length', C.length); }},
+            LENGTHS.map(([v, label]) => el('option', {value: v, text: '📏 ' + label, selected: v === C.length})));
+    }
 
     async function act(path, body, then) {
         try {
@@ -563,9 +595,26 @@
                 button('Send', 'Send the new words (Enter)', () => resend(m, at), {class: 'pv-chat-btn pv-chat-send'})));
     }
 
+    function replyEditor(m) {
+        const box = el('textarea', {class: 'pv-chat-edit-box pv-chat-edit-reply', rows: String(Math.min(18, Math.max(4, m.text.split('\n').length + 1))), spellcheck: 'true'});
+        box.value = C.editing.text;
+        box.addEventListener('input', () => { C.editing.text = box.value; });
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveReply(m); }
+            if (e.key === 'Escape') { e.stopPropagation(); C.editing = null; paint(); }
+        });
+        return el('div', {class: 'pv-chat-msg pv-chat-theirs pv-chat-editing'},
+            el('div', {class: 'pv-chat-who', text: `${who()} · editing`}),
+            box,
+            el('div', {class: 'pv-chat-actions'},
+                el('span', {class: 'pv-chat-meta', text: `${who()} reads it as you leave it; what it wrote is kept (↩ Original). Cut it short and ⏩ Continue to lead it`}),
+                button('Cancel', 'Keep it as it was (Esc)', () => { C.editing = null; paint(); }),
+                button('Save', 'Save the answer (Ctrl+Enter)', () => saveReply(m), {class: 'pv-chat-btn pv-chat-send'})));
+    }
+
     function bubble(m, last, at) {
         const mine = m.role === 'user';
-        if (mine && C.editing && C.editing.id === m.id && !C.busy) return editor(m, at);
+        if (C.editing && C.editing.id === m.id && !C.busy) return mine ? editor(m, at) : replyEditor(m);
         const actions = mine
             ? el('div', {class: 'pv-chat-actions'},
                 versions(m),
@@ -579,6 +628,12 @@
                 button('→ txt2img', 'The prompt in it into txt2img', () => useAnswer(m, 'txt2img')),
                 button('→ Muse', "The prompt in it as Muse's Your prompt", () => useAnswer(m, 'muse')),
                 !C.busy && m.id ? button('↻ Again', 'A new answer; this one is kept as a version (‹ ›)', () => again(m, at)) : null,
+                !C.busy && m.id ? button('✎', 'Change this answer by hand: the model reads it as you leave it (or double-click it)', () => startEdit(m)) : null,
+                !C.busy && m.id && last ? button('⏩ Continue', m.cut ? 'It was cut at its length: carry it on where it stopped' : 'Carry this answer on where it stops',
+                    () => carryOn(m, at), {class: 'pv-chat-btn' + (m.cut ? ' pv-on' : '')}) : null,
+                !C.busy && m.unedited ? button('↩ Original', 'Back to the answer as the model wrote it', () => act('/chat/edit-reply', {id: C.chat.id, message: m.id, restore: true})) : null,
+                m.cut ? el('span', {class: 'pv-chat-meta pv-chat-banned-hit', title: 'The answer reached its length (📏 under the box, or Settings → longest answer)', text: 'cut at its length'}) : null,
+                m.edited ? el('span', {class: 'pv-chat-meta', text: 'edited'}) : null,
                 m.stopped ? el('span', {class: 'pv-chat-meta', text: 'stopped'}) : null,
                 m.banned_hits && m.banned_hits.length ? el('span', {class: 'pv-chat-meta pv-chat-banned-hit', title: 'Banned words it used anyway (a phrase can only be asked to be avoided): ↻ Again for another answer',
                     text: `⚠ ${m.banned_hits.join(', ')}`}) : null,
@@ -591,7 +646,7 @@
                 el('summary', {text: `💭 Thought (${m.thinking.split(/\s+/).length} words)`}),
                 el('div', {class: 'pv-chat-thought-text', text: m.thinking})) : null,
             m.text ? el('div', {class: 'pv-chat-text', html: mine ? esc(m.text).replace(/\n/g, '<br>') : cite(md(m.text), m.verify),
-                ondblclick: mine && m.id ? () => startEdit(m) : null}) : null,
+                ondblclick: m.id && !C.busy ? () => startEdit(m) : null}) : null,
             pictures(m.pictures),
             actions);
     }
@@ -803,6 +858,7 @@
                     () => { C.draft = box.value; assist('write'); }, {disabled: C.busy}),
                    C.undoDraft !== null && !C.busy ? button('↩ Undo', 'Back to what you had written', undoAssist) : null,
                    el('span', {class: 'pv-chat-grow'}),
+                   lengthPick(),
                    searching() ? el('span', {class: 'pv-chat-btn pv-chat-verify pv-on', text: '🌐 Searches every message',
                         title: 'The Web search preset: each message is searched on the web first, and answered from what was found. Another preset in ⚙ to stop'})
                    : button(C.verify ? '🔎 Verify: on' : '🔎 Verify', C.verify ? 'On: the model drafts, looks the draft up on the web (and its tags on Danbooru), corrects it, then answers. Slower. Click: off'

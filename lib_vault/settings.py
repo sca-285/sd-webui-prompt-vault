@@ -264,7 +264,9 @@ def register():
         "pv_chat_system": O("", "Chat: default system prompt", gr.Textbox, {"lines": 3})
         .info("used when no preset is the default (★ in the chat's ⚙); each conversation can change its own. "
               "Empty: the Assistant preset"),
-        "pv_chat_max_tokens": O(1024, "Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 8192, "step": 64}),
+        "pv_chat_max_tokens": O(1024, "Chat: longest answer (tokens)", gr.Slider, {"minimum": 128, "maximum": 32768, "step": 64})
+        .info("the usual one; 📏 under the chat box gives one answer more (up to all the context has left), and ⏩ "
+              "Continue carries on an answer that was cut"),
         "pv_chat_sampling": O("Recommended for the model", "Chat: sampling", gr.Radio,
                               {"choices": ["Recommended for the model", "My temperature"]})
         .info("recommended: what the model's family is made for (Qwen 0.7, Gemma 1.0, Mistral Small 0.15, GLM 0.6, with "

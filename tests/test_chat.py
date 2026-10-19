@@ -3,7 +3,7 @@ saving, exporting, importing; and where the model is placed (VRAM or RAM)."""
 import base64, io, json, os, re, struct, sys, tempfile, threading, time
 sys.path.insert(0, os.environ["STUB"]); sys.path.insert(0, os.getcwd())
 from modules import shared
-from lib_vault import api, chat, context, docs, gguf, llama, qwen, verify
+from lib_vault import api, chat, chat_presets, context, docs, gguf, llama, qwen, verify
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -430,10 +430,12 @@ print("context meter ok")
 from lib_vault import chat_presets
 P = B + "/presets"
 pr = c.get(P).json()
-assert [p["id"] for p in pr["builtin"]] == ["assistant", "general", "search", "translator", "tagger", "natural", "video", "director", "story"] \
+assert [p["id"] for p in pr["builtin"]] == ["assistant", "general", "search", "translator", "tagger", "natural", "video", "director", "story",
+                                           "spicy"] \
     and pr["default"] == "assistant"
 assert [p["id"] for p in pr["builtin"] if p.get("search")] == ["search"]
-assert all(p["text"] and p["name"] and p["hint"] for p in pr["builtin"]) and "image-to-video" in chat_presets.find("video")["text"]
+assert all(p["text"] and p["name"] and p["hint"] for p in pr["builtin"]) and "CSAM. Answer in" in chat_presets.find("spicy")["text"]
+assert all("\r" not in p["text"] for p in pr["builtin"]) and "image-to-video" in chat_presets.find("video")["text"]
 assert "adult" in chat_presets.find("story")["text"]
 v = c.post(B + "/new", json={"preset": "video"}).json()["chat"]
 assert v["preset"] == "video" and v["system"] == chat_presets.find("video")["text"]
@@ -636,6 +638,46 @@ assert [m["text"] for m in after[:3]] == ["one", before[1]["text"], "two"] and l
 assert "versions" not in after[3] and ev[-1]["done"]  # gone, not kept as another version
 assert c.post(B + "/regenerate", json={"id": rc, "rewind": after[3]["id"]}).status_code == 400
 print("rewind ok")
+
+# 📏 one answer longer or shorter than Settings' longest; cut at its length: said so, and ⏩ Continue carries it on
+lc = c.post(B + "/new").json()["chat"]["id"]
+long_words = "tell me a long story about " + "a knight and a dragon " * 12
+def go(path, body):
+    with c.stream("POST", B + path, json=dict(body, id=lc)) as r:
+        assert r.status_code == 200, r.read()
+        return [json.loads(x) for x in r.iter_lines() if x]
+ev = go("/send", {"text": long_words, "files": [], "length": 64})
+first = ev[-1]["message"]
+assert first["cut"] and 200 <= len(first["text"]) <= 256 and not first["stopped"], first
+assert chat._length(chat._chats[lc], 0, 0) == (1024, 0) and chat._length(chat._chats[lc], 4096, 0) == (4096, 3072)
+tokens, more = chat._length(chat._chats[lc], -1, 0)
+assert tokens > 1024 and more == tokens - 1024, (tokens, more)  # Max: what the context has left
+ev = go("/continue", {"message": first["id"]})
+done = ev[-1]["message"]
+msgs = c.get(B + "/one", params={"id": lc}).json()["chat"]["messages"]
+assert len(msgs) == 2 and msgs[1]["id"] == first["id"] and done["continued"] == 1 and not done["cut"], done
+assert done["text"].startswith(first["text"]) and len(done["text"]) > len(first["text"]) and "Continue it exactly" in done["text"], done["text"][-200:]
+assert chat._join("the knight", "rode on") == "the knight rode on" and chat._join("the knight ", "rode") == "the knight rode" \
+    and chat._join("he said", ", then left") == "he said, then left"
+r = c.post(B + "/continue", json={"id": lc, "message": msgs[0]["id"]})
+assert r.status_code == 400 and "last answer" in r.json()["error"]
+# ✎ an answer changed by hand: the model reads it as changed; ↩ Original brings back what it wrote
+d = c.post(B + "/edit-reply", json={"id": lc, "message": first["id"], "text": "The knight drew his sword and"}).json()["chat"]
+m = d["messages"][1]
+assert m["text"] == "The knight drew his sword and" and m["edited"] and m["unedited"] == done["text"], m
+os.environ["FAKE_PROMPT_LOG"] = os.path.join(tmp, "continue-prompt.json"); qwen.SERVER.stop()
+ev = go("/continue", {"message": first["id"]})
+assert ev[-1]["message"]["text"].startswith("The knight drew his sword and ")
+sent = json.load(open(os.environ["FAKE_PROMPT_LOG"], encoding="utf-8"))
+assert [m["role"] for m in sent] == ["system", "user", "assistant", "user"] and sent[2]["content"] == "The knight drew his sword and"
+assert sent[3]["content"] == chat.CONTINUE  # the model was given the changed answer, and asked to carry it on
+os.environ.pop("FAKE_PROMPT_LOG"); qwen.SERVER.stop()
+d = c.post(B + "/edit-reply", json={"id": lc, "message": first["id"], "restore": True}).json()["chat"]
+assert d["messages"][1]["text"] == done["text"] and "edited" not in d["messages"][1] and "unedited" not in d["messages"][1]
+assert c.post(B + "/edit-reply", json={"id": lc, "message": msgs[0]["id"], "text": "x"}).status_code == 400
+assert c.post(B + "/edit-reply", json={"id": lc, "message": first["id"], "text": "  "}).status_code == 400
+c.post(B + "/delete", json={"id": lc})
+print("length, continue, edit reply ok")
 
 # compact: the older part summed up and out of the model's memory, the last messages kept
 for w in ("four", "five"):

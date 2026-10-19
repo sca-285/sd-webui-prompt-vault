@@ -6,6 +6,13 @@ Your data (`prompt_vault/` in the WebUI folder) is never touched by an update.
 
 ## Unreleased
 
+### Answers
+- 📏 Length beside Verify: one answer from 2K to 32K tokens, or Max (all the context has left); Settings'
+  longest answer goes to 32K.
+- ⏩ Continue: the last answer carried on in the same message; an answer cut at its length says so.
+- ✎ on an answer: changed by hand, read by the model as changed; ↩ Original brings back what it wrote.
+- The 🌶️ Spicy preset: the line on minors made absolute, a missing space fixed, line endings made LF.
+
 ### Search
 - Tavily as a search engine (first in Auto with a key): results with their pages' passages on the question.
 - The search plan sees the end of the conversation and today's date: follow-ups searched in full, the year

@@ -592,6 +592,13 @@ html body .pv-chat-actions .pv-chat-btn { padding: 2px 7px; font-size: 11.5px; }
 .pv-chat-mine .pv-chat-actions { justify-content: flex-end; }
 .pv-chat-meta { font-size: 11px; opacity: 0.55; }
 .pv-chat-files { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+select.pv-chat-length { font: inherit !important; font-size: 12px !important; width: auto !important; max-width: 170px;
+    height: 26px !important; min-height: 0 !important; padding: 0 6px !important; margin: 0; border-radius: 8px !important;
+    box-shadow: none !important; cursor: pointer; appearance: auto;
+    background: var(--button-secondary-background-fill, transparent) !important; color: var(--body-text-color, inherit) !important;
+    border: 1px solid var(--button-secondary-border-color, var(--border-color-primary, rgba(127, 127, 127, .35))) !important; }
+select.pv-chat-length option { background: var(--background-fill-primary, #1f1f1f); color: var(--body-text-color, inherit); }
+.pv-chat-edit-reply { min-height: 120px; }
 .pv-chat-pictures { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin: 8px 0 2px; max-width: 520px; }
 .pv-chat-picture { position: relative; display: block; border-radius: 8px; overflow: hidden; aspect-ratio: 3 / 4;
     background: var(--block-background-fill, rgba(127, 127, 127, .12)); border: 1px solid var(--border-color-primary, rgba(127, 127, 127, .25)); }

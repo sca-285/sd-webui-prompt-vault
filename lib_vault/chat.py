@@ -700,8 +700,9 @@ def turns(messages):
     return out
 
 
-def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
-    """The model's answer as it comes: {"delta"} and {"thinking"} events; the pieces are kept in text and thought."""
+def _stream(messages, max_tokens, think, stop, text, thought, temperature=None, ended=None):
+    """The model's answer as it comes: {"delta"} and {"thinking"} events; the pieces are kept in text and thought,
+    why it ended in ended["why"] ("length": cut at max_tokens)."""
     from . import qwen
 
     split = _ThinkSplit()
@@ -733,9 +734,12 @@ def _stream(messages, max_tokens, think, stop, text, thought, temperature=None):
             if data == "[DONE]":
                 break
             try:
-                d = json.loads(data)["choices"][0].get("delta", {})
+                choice = json.loads(data)["choices"][0]
+                d = choice.get("delta") or {}
             except Exception:
                 continue
+            if choice.get("finish_reason") and ended is not None:
+                ended["why"] = choice["finish_reason"]
             qwen.SERVER.touch()
             if d.get("reasoning_content"):  # a thinking model's reasoning, given apart by llama-server
                 thought.append(d["reasoning_content"])
@@ -886,11 +890,48 @@ def wrap_up(cid):
     return events()
 
 
-def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None, verify=False, rewind=None):
+LONGEST = 65536  # tokens one answer may be given at most (Max: what the context has left, up to this)
+CONTINUE = ("[Your last answer was cut off. Continue it exactly where it stopped, from the very next word: do not "
+            "repeat anything, do not start over, do not comment on it. If it stopped mid-sentence, finish that sentence "
+            "first.]")
+
+
+def _length(c, length, extra):
+    """(the answer's max_tokens, the extra room the window keeps for it): length None/0 is Settings' longest answer,
+    -1 is Max (all the context has left once the conversation is in), else that many tokens."""
+    setting = int(settings.opt("pv_chat_max_tokens"))
+    think = bool(settings.opt("pv_chat_think"))
+    try:
+        length = int(length or 0)
+    except (TypeError, ValueError):
+        length = 0
+    if length == -1:
+        full = ctx.usage(c)
+        free = (full["room"] - extra - full["used"]) + ctx.reserve()  # the answer's own share is free as well
+        tokens = max(1024, free // (3 if think else 1))
+    else:
+        tokens = max(64, length) if length else setting
+    tokens = min(tokens, LONGEST)
+    return tokens, max(0, tokens - setting) * (3 if think else 1)
+
+
+def _join(old, new):
+    """An answer and its continuation, with a space between them where one is missing."""
+    new = new.rstrip()
+    if not new.strip():
+        return old
+    if not old or old[-1].isspace() or new[0].isspace() or new[0] in ",.;:!?)]}…'\"”’":
+        return old + new
+    return old + " " + new
+
+
+def send(cid, words, files=None, context="", regenerate=False, edit=None, again=None, verify=False, rewind=None,
+         length=None, cont=None):
     """A generator of events for the page: {"start"}, {"delta": text}..., then {"done", "message"} or {"error"}.
 
     regenerate: a new answer to the last message (again: to the one answered by that answer); edit: that message of
-    yours, with new words, answered anew. Either way the earlier version is kept, with what followed it."""
+    yours, with new words, answered anew. Either way the earlier version is kept, with what followed it. cont: the
+    last answer, carried on where it stopped. length: how long the answer may be (see _length)."""
     from . import qwen
 
     branch = None  # (the versions put aside, the new version's number) for the answer to come
@@ -899,7 +940,12 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         raise store.VaultError(qwen.NO_VISION)
     with _lock:
         c = _get(cid)
-        if regenerate and rewind:  # back to one of your messages: all after it is gone, and it is answered anew
+        if cont:
+            i = _at(c, cont)
+            if c["messages"][i]["role"] != "assistant" or i != len(c["messages"]) - 1:
+                raise store.VaultError("Continue goes on from the last answer.")
+            verify = False
+        elif regenerate and rewind:  # back to one of your messages: all after it is gone, and it is answered anew
             i = _at(c, rewind)
             if c["messages"][i]["role"] != "user":
                 raise store.VaultError("Rewind goes back to one of your messages.")
@@ -943,10 +989,11 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                 c["title"] = (first[:60] + ("…" if len(first) > 60 else "")) or "Conversation"
             _touch(c)
         stop = _stops[c["id"]] = threading.Event()
-        max_tokens = int(settings.opt("pv_chat_max_tokens"))
         preset = chat_presets.find(c.get("preset") or "")
-        search = bool(preset and preset.get("search"))  # the Web search preset: the web first, for every message
+        search = bool(preset and preset.get("search")) and not cont  # the Web search preset: the web first, every message
         extra = verify_mod.ROOM if verify or search else 0
+        max_tokens, longer = _length(c, length, extra)
+        extra += longer
         full = ctx.usage(c)
         auto = bool(settings.opt("pv_chat_autocompact")) and len(c["messages"]) > KEEP + 1 and \
             full["used"] > (full["room"] - extra) * AUTO_AT
@@ -1000,10 +1047,12 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
             yield {"step": f"Could not read the whole file ({exc}); answering from the pages on the question"}
         yield {"start": True, "left_out": left_out}
         text, thought, started = [], [], time.time()
-        checked = None
+        checked, ended = None, {}
         try:
             final = messages
-            if search:
+            if cont:
+                final = messages + [{"role": "user", "content": CONTINUE}]
+            elif search:
                 final, checked = yield from verify_mod.run(messages, max_tokens, stop, search_first=True)
             elif verify:
                 final, checked = yield from verify_mod.run(messages, max_tokens, stop)
@@ -1011,7 +1060,7 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                     text.append(checked.get("draft", ""))
                     yield {"delta": checked.get("draft", "")}
             if final is not None:
-                yield from _stream(final, max_tokens, bool(settings.opt("pv_chat_think")), stop, text, thought)
+                yield from _stream(final, max_tokens, bool(settings.opt("pv_chat_think")), stop, text, thought, ended=ended)
         except Exception as exc:
             if not text:
                 if branch:
@@ -1020,13 +1069,28 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
                             _unbranch(_chats[cid], branch[0])
                 yield {"error": f"{_who()}: {exc}"}
                 return
+        if cont:
+            with _lock:
+                live = _chats.get(cid)
+                m = next((x for x in (live or {}).get("messages", []) if x["id"] == cont), None)
+                if m is not None and "".join(text).strip():
+                    m["text"] = _join(m["text"], "".join(text))
+                    m["tokens"] = _tokens(m["text"], [])
+                    m["seconds"] = round(m.get("seconds", 0) + time.time() - started, 1)
+                    m["stopped"], m["cut"] = stop.is_set(), ended.get("why") == "length" and not stop.is_set()
+                    m["continued"] = m.get("continued", 0) + 1
+                    m["banned_hits"] = banned_in(m["text"])
+                    _touch(live)
+            yield {"done": True, "message": _shown(m) if m else None, "status": qwen.MEMORY.get("note", "")}
+            return
         answer = "".join(text).strip()
         if "</think>" in answer:  # a template that opens <think> itself: only the closing tag came back
             before, _, answer = answer.rpartition("</think>")
             thought.insert(0, before)
             answer = answer.strip()
         reply = {"id": uuid.uuid4().hex[:10], "role": "assistant", "text": answer, "files": [], "time": time.time(),
-                 "stopped": stop.is_set(), "seconds": round(time.time() - started, 1)}
+                 "stopped": stop.is_set(), "seconds": round(time.time() - started, 1),
+                 "cut": ended.get("why") == "length" and not stop.is_set()}
         if "".join(thought).strip():
             reply["thinking"] = "".join(thought).strip()
         reply["tokens"] = _tokens(answer, [])
@@ -1049,6 +1113,35 @@ def send(cid, words, files=None, context="", regenerate=False, edit=None, again=
         yield {"done": True, "message": _shown(reply), "status": qwen.MEMORY.get("note", "")}
 
     return events()
+
+
+def edit_reply(cid, mid, text=None, restore=False):
+    """An answer changed by hand: the model reads it as it now is from then on. The answer as the model wrote it is
+    kept (restore: back to it)."""
+    with _lock:
+        c = _get(cid)
+        m = c["messages"][_at(c, mid)]
+        if m["role"] != "assistant":
+            raise store.VaultError("Only an answer is changed this way; ✎ Edit on your own message answers it anew.")
+        if restore:
+            if "unedited" in m:
+                m["text"] = m.pop("unedited")
+                m.pop("edited", None)
+        else:
+            text = str(text or "").strip()
+            if not text:
+                raise store.VaultError("An answer cannot be empty.")
+            if text == m["text"]:
+                return _view(c)
+            m.setdefault("unedited", m["text"])
+            m["text"], m["edited"] = text, True
+            if text == m["unedited"]:
+                m.pop("unedited")
+                m.pop("edited")
+        m["tokens"] = _tokens(m["text"], [])
+        m["banned_hits"] = banned_in(m["text"])
+        _touch(c)
+        return _view(c)
 
 
 class _ThinkSplit:

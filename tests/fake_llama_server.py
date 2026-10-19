@@ -53,6 +53,7 @@ class H(BaseHTTPRequestHandler):
                                     "images": sum(1 for m in msgs if isinstance(m["content"], list)
                                                   for p in m["content"] if p.get("type") == "image_url"),
                                     "temperature": body.get("temperature"), "stream": bool(body.get("stream")),
+                                    "max_tokens": body.get("max_tokens"),
                                     "kwargs": body.get("chat_template_kwargs")}, ensure_ascii=False) + "\n")
         if STRICT and (any(m["role"] == "system" for m in msgs[1:]) or
                        any(r != ("user" if i % 2 == 0 else "assistant") for i, r in enumerate(roles))):
@@ -85,6 +86,9 @@ class H(BaseHTTPRequestHandler):
             self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
             self.wfile.write(json.dumps({"choices": [{"message": {"content": answer}}]}).encode())
             return
+        finish = "stop"
+        if body.get("max_tokens") and len(answer) > body["max_tokens"] * 4:  # about 4 characters a token: cut, as llama-server does
+            answer, finish = answer[:body["max_tokens"] * 4], "length"
         self.send_response(200); self.send_header("Content-Type", "text/event-stream"); self.end_headers()
         if think and not tags:
             for i in range(0, len(reason), 9):
@@ -95,6 +99,7 @@ class H(BaseHTTPRequestHandler):
             chunk = {"choices": [{"delta": {"content": answer[i:i + 12]}}]}
             self.wfile.write(f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n".encode("utf-8")); self.wfile.flush()
             time.sleep(float(os.environ.get("FAKE_DELAY", "0.01")))
+        self.wfile.write(f"data: {json.dumps({'choices': [{'delta': {}, 'finish_reason': finish}]})}\n\n".encode())
         self.wfile.write(b"data: [DONE]\n\n")
 
 

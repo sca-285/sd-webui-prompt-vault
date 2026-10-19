@@ -128,6 +128,15 @@ Qwen-VL and the WD14 tagger) in one tab.
     Qwen writes; a phrase or another form of a word is asked to be avoided, and ⚠ marks an answer that
     used one anyway. Tags with a banned word stay out of what → Vault, → txt2img and → Muse send. What the assistant will write
     is up to the model: nothing here filters or refuses; a model that refuses needs another model.
+  - **📏 Length**, beside 🔎 Verify: how long the next answers may be, from the usual one (Settings →
+    *longest answer*, up to 32K now) to 2K–32K tokens or **Max**, all the context has left once the
+    conversation is in. A longer answer leaves less room for the earlier messages.
+  - **⏩ Continue** on the last answer: it is carried on where it stopped, in the same message. An answer
+    cut at its length says *cut at its length* and its Continue lights up.
+  - **✎ on an answer** (or double-click it): change the model's answer by hand. From then on the model
+    reads it as you left it, so a fixed fact, a trimmed paragraph or a story turned your way stays. It is
+    marked *edited*, and **↩ Original** brings back what the model wrote. Cut an answer short and ⏩
+    Continue to have the model go on from your words.
   - **⏪ Rewind** on one of your messages: everything after it is removed for good, and it is answered
     anew (↻ Again keeps the earlier answer as a version; Rewind does not).
   - **🗜 Compact** and **📝 Wrap up**, beside the Context meter: Compact sums up the older part of the

@@ -207,12 +207,21 @@ def register(app):
     @app.post(f"{BASE}/chat/send")
     def chat_send(body: dict = Body(...)):
         return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), body.get("context") or "",
-                                        verify=bool(body.get("verify"))))
+                                        verify=bool(body.get("verify")), length=body.get("length")))
 
     @app.post(f"{BASE}/chat/regenerate")
     def chat_regenerate(body: dict = Body(...)):
         return stream(lambda: chat.send(body.get("id"), "", regenerate=True, again=body.get("message"), verify=bool(body.get("verify")),
-                                        rewind=body.get("rewind")))
+                                        rewind=body.get("rewind"), length=body.get("length")))
+
+    @app.post(f"{BASE}/chat/continue")
+    def chat_continue(body: dict = Body(...)):
+        return stream(lambda: chat.send(body.get("id"), "", cont=body.get("message"), length=body.get("length")))
+
+    @app.post(f"{BASE}/chat/edit-reply")
+    def chat_edit_reply(body: dict = Body(...)):
+        return run(lambda: {"chat": chat.edit_reply(body.get("id"), body.get("message"), body.get("text"),
+                                                    bool(body.get("restore")))})
 
     @app.post(f"{BASE}/chat/compact")
     def chat_compact(body: dict = Body(...)):
@@ -238,7 +247,7 @@ def register(app):
     @app.post(f"{BASE}/chat/edit")
     def chat_edit(body: dict = Body(...)):
         return stream(lambda: chat.send(body.get("id"), body.get("text"), body.get("files"), edit=body.get("message"),
-                                        verify=bool(body.get("verify"))))
+                                        verify=bool(body.get("verify")), length=body.get("length")))
 
     @app.post(f"{BASE}/chat/version")
     def chat_version(body: dict = Body(...)):
